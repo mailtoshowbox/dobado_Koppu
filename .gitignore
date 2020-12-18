@@ -61,5 +61,5 @@ typings/
 .next
 
 # build folder
-build/
+
 dist/

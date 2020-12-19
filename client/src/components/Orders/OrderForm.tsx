@@ -67,7 +67,7 @@ const OrderForm: React.FC = () => {
 
             dispatch(addNotification("Order added", `Order ${formState.name.value} added by you`));
             dispatch(clearSelectedProduct());
-            dispatch(changeProductAmount(selectedProduct._id, formState.amount.value));
+           // dispatch(changeProductAmount(selectedProduct._id, formState.amount.value));
             resetForm();
         }
     }

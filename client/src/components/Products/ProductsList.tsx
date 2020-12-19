@@ -10,9 +10,7 @@ export type productListProps = {
 
 function ProductList(props: productListProps): JSX.Element  {
   const products: IProductState = useSelector((state: IStateType) => state.products);
-
-   
-console.log("products----", products);
+ 
   const productElements: (JSX.Element | null)[] = products.products.map(product => {
     if (!product) { return null; }
     return (<tr className={`table-row ${(products.selectedProduct && products.selectedProduct._id === product._id) ? "selected" : ""}`}

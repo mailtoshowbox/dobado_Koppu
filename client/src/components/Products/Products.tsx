@@ -28,10 +28,7 @@ const Products: React.FC = () => {
       console.log("items---", items);
         dispatch(loadListOfProduct(items));
    
-    }); 
-         
-         
-          dispatch(clearSelectedProduct());
+    });   dispatch(clearSelectedProduct());
           dispatch(updateCurrentPath("products", "list"));
   
   }, [path.area, dispatch]);
@@ -60,9 +57,11 @@ const Products: React.FC = () => {
 
       <div className="row">
         <div className="col-xl-12 col-lg-12">
+          
           <div className="card shadow mb-4">
+            
             <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-green">Product List</h6>
+              <h6 className="m-0 font-weight-bold text-green">Document List</h6>
               <div className="header-buttons">
                 <button className="btn btn-success btn-green" onClick={() =>
                   dispatch(setModificationState(ProductModificationStatus.Create))}>
@@ -77,6 +76,9 @@ const Products: React.FC = () => {
                 </button>
               </div>
             </div>
+            {((products.modificationState === ProductModificationStatus.Create)
+          || (products.modificationState === ProductModificationStatus.Edit && products.selectedProduct)) ?
+          <ProductForm /> : null}
             <div className="card-body">
               <ProductList
                 onSelect={onProductSelect}
@@ -84,9 +86,7 @@ const Products: React.FC = () => {
             </div>
           </div>
         </div>
-        {((products.modificationState === ProductModificationStatus.Create)
-          || (products.modificationState === ProductModificationStatus.Edit && products.selectedProduct)) ?
-          <ProductForm /> : null}
+        
       </div>
 
 
@@ -108,7 +108,7 @@ const Products: React.FC = () => {
                   return;
                 }
                 dispatch(addNotification("Product removed", `Product ${products.selectedProduct.name} was removed`));
-                dispatch(removeProduct(products.selectedProduct._id));
+              //  dispatch(removeProduct(products.selectedProduct._id));
                 dispatch(clearSelectedProduct());
                 setPopup(false);
               }}>Remove

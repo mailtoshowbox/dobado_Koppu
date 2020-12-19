@@ -1,6 +1,55 @@
 
 const API_HOST_AT = "http://localhost:3000";
 
+
+
+
+export function updateDoc(item) {
+  console.log("ItemService.updateItem():");
+  console.log(item);
+  const {id=""} = item;
+  return fetch(API_HOST_AT+'/product/'+id, {
+    method: "PUT",
+    mode: "cors",
+    headers: {
+          "Content-Type": "application/json"
+        },
+    body: JSON.stringify(item)
+  })
+    .then(response => {
+      if (!response.ok) {
+        handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
+export function addNewDoc(newitem) {
+  
+  return fetch(API_HOST_AT+'/product', {
+    method: "POST",
+    mode: "cors",
+    headers: {
+          "Content-Type": "application/json"
+      },
+    body: JSON.stringify(newitem)
+  })
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
+
+
 export function getDocumentList() {
       return fetch(API_HOST_AT+"/products")      
             .then(response => {      

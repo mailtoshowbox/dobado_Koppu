@@ -4,13 +4,16 @@ import { ADD_ORDER } from "../actions/orders.actions";
 
 const initialState: IOrdersState = {
     orders: [
-        {
+       
+    ]
+};
+/** {
             id: 1,
             name: "Apple order",
             amount: 12,
             totalPrice: 100,
             product: {
-                _id: 2, name: "Apple", description: "This is Apple and it is healthy",
+                _id: "2", name: "Apple", description: "This is Apple and it is healthy",
                
             },
         },
@@ -20,12 +23,9 @@ const initialState: IOrdersState = {
             amount: 7,
             totalPrice: 7,
             product: {
-                _id: 3, name: "Straw", description: "This is Straw and you can use it for your drink"
+                _id: "3", name: "Straw", description: "This is Straw and you can use it for your drink"
             },
-        }
-    ]
-};
-
+        } */
 function orderReducer(state: IOrdersState = initialState, action: IActionBase): IOrdersState {
     switch (action.type) {
         case ADD_ORDER: {

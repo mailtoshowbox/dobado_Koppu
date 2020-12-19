@@ -1,7 +1,9 @@
 export interface IProduct {
-    _id: number;
+    _id: string;
     name: string;
     description: string;
+    box: string;
+    rack: number;
 }
 
 export enum ProductModificationStatus {

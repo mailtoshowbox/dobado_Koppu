@@ -10,8 +10,11 @@ export type OnChangeModel = {
 export interface IFormStateField<T> {error: string, value: T};
 
 export interface IProductFormState {
+    _id: IFormStateField<string>;
     name: IFormStateField<string>;
     description: IFormStateField<string>;
+    box: IFormStateField<string>;
+    rack: IFormStateField<number>;
      
 }
 export interface IBoxFormState {

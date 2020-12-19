@@ -5,9 +5,10 @@ import { IProduct, ProductModificationStatus } from "../../store/models/product.
 import TextInput from "../../common/components/TextInput";
 import { editProduct, clearSelectedProduct, setModificationState, addProduct } from "../../store/actions/products.action";
 import { addNotification } from "../../store/actions/notifications.action";
-import NumberInput from "../../common/components/NumberInput";
-import Checkbox from "../../common/components/Checkbox";
-import SelectInput from "../../common/components/Select";
+
+import {  addNewDoc, updateDoc  } from "../../services/index"; 
+
+ 
 import { OnChangeModel, IProductFormState } from "../../common/types/Form.types";
 
 const ProductForm: React.FC = () => {
@@ -17,12 +18,15 @@ const ProductForm: React.FC = () => {
   const isCreate: boolean = (products.modificationState === ProductModificationStatus.Create);
   
   if (!product || isCreate) {
-    product = { _id: 0, name: "", description: "",  };
+    product = { _id: "", name: "", description: "", box:"", rack:0 };
   }
 
   const [formState, setFormState] = useState({
+    _id: { error: "", value: product._id },
     name: { error: "", value: product.name },
-    description: { error: "", value: product.description }    
+    description: { error: "", value: product.description }  ,
+    box: { error: "", value: product.box } ,
+    rack: { error: "", value: product.rack } 
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -36,22 +40,53 @@ const ProductForm: React.FC = () => {
     }
 
     let saveUserFn: Function = (isCreate) ? addProduct : editProduct;
-    saveForm(formState, saveUserFn);
+    let modeOfAction: String = (isCreate) ? "ADD": "EDIT";
+    saveForm(formState, saveUserFn, modeOfAction);
   }
 
-  function saveForm(formState: IProductFormState, saveFn: Function): void {
-    if (product) {
-      dispatch(saveFn({
-        ...product,
-        name: formState.name.value,
-        description: formState.description.value,
-        
-      }));
+  function saveForm(formState: IProductFormState, saveFn: Function, mode: String): void {
+   
 
-      dispatch(addNotification("Product edited", `Product ${formState.name.value} edited by you`));
-      dispatch(clearSelectedProduct());
-      dispatch(setModificationState(ProductModificationStatus.None));
-    }
+
+    if (product) {
+      if(mode === 'ADD'){
+  let boxInfo  ={
+    "name": formState.name.value,
+    "description": formState.description.value,
+    "box": formState.box.value,
+    "rack": formState.rack.value
+      };
+      addNewDoc(boxInfo)
+  .then((status) => {   
+        dispatch(saveFn({
+          ...product,
+         ...status              
+        }));      
+        dispatch(addNotification("New Box added", `Box ${formState.name.value} added by you`));
+        dispatch(clearSelectedProduct());
+        dispatch(setModificationState(ProductModificationStatus.None));  
+  })
+}else if(mode === 'EDIT'){ 
+  let boxInfoUpt  ={
+    "id": formState._id.value,
+    "name": formState.name.value,
+    "description": formState.description.value,
+    "box": formState.box.value,
+    "rack": formState.rack.value };
+    updateDoc(boxInfoUpt)
+  .then((status) => {    
+        dispatch(saveFn({
+          ...product,
+         ...status              
+        }));      
+        dispatch(addNotification("Box ", `New Box ${formState.name.value} edited by you`));
+        dispatch(clearSelectedProduct());
+        dispatch(setModificationState(ProductModificationStatus.None));  
+  })
+}            
+}
+
+
   }
 
   function cancelForm(): void {
@@ -72,7 +107,7 @@ const ProductForm: React.FC = () => {
       <div className="col-xl-7 col-lg-7">
         <div className="card shadow mb-4">
           <div className="card-header py-3">
-            <h6 className="m-0 font-weight-bold text-green">Product {(isCreate ? "create" : "edit")}</h6>
+            <h6 className="m-0 font-weight-bold text-green">Document {(isCreate ? "create" : "edit")}</h6>
           </div>
           <div className="card-body">
             <form onSubmit={saveUser}>

@@ -8,21 +8,7 @@ import { IProduct, ProductModificationStatus } from "../models/product.interface
 const initialState: IProductState = {
     modificationState: ProductModificationStatus.None,
     selectedProduct: null,
-    products: [{
-        _id: 1, name: "Chocolate", description: "This is Chocolate and it is Sweet"
-    },
-    {
-        _id: 2, name: "Apple", description: "This is Apple and it is healthy" 
-    },
-    {
-        _id: 3, name: "Straw", description: "This is Straw and you can use it for your drink" 
-    },
-    {
-        _id: 4, name: "Spoon", description: "This is Spoon and it is useful while eating" 
-    },
-    {
-        _id: 5, name: "Sugar", description: "This is Sugar and it is to make your life sweet" 
-    }]
+    products: []
 };
 
 function productsReducer(state: IProductState = initialState, action: IActionBase): IProductState {
@@ -31,8 +17,8 @@ function productsReducer(state: IProductState = initialState, action: IActionBas
             return { ...state, products:  action.products};
         }        
         case ADD_PRODUCT: {
-            let maxId: number = Math.max.apply(Math, state.products.map(function(o) { return o._id; }));
-            action.product.id = maxId + 1;
+          //  let maxId: number = Math.max.apply(Math, state.products.map(function(o) { return o._id; }));
+          //  action.product.id = maxId + 1;
             return { ...state, products: [...state.products, action.product]};
         }
         case EDIT_PRODUCT: {

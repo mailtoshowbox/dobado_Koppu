@@ -55,7 +55,7 @@ const LeftMenu: React.FC = () => {
 
                  <li className="nav-item">
                     <Link className="nav-link" to={`/boxes`}>
-                        <i className="fas fa-fw fa-dollar-sign"></i>
+                        <i className="fas fa-fw fa-edit"></i>
                         <span>Boxes</span>
                     </Link>
                 </li> 

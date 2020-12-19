@@ -15,6 +15,7 @@ export interface IProductFormState {
      
 }
 export interface IBoxFormState {
+    _id: IFormStateField<string>;
     name: IFormStateField<string>;
     description: IFormStateField<string>;
     racks: IFormStateField<number>;

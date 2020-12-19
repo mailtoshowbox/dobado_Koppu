@@ -9,36 +9,24 @@ const initialState: IBoxState = {
     modificationState: BoxModificationStatus.None,
     selectedBox: null,
     boxes: [{
-        _id: 1, name: "Chocolate", description: "This is Chocolate and it is Sweet", "racks" :2
-    },
-    {
-        _id: 2, name: "Apple", description: "This is Apple and it is healthy" , "racks" :2
-    },
-    {
-        _id: 3, name: "Straw", description: "This is Straw and you can use it for your drink" , "racks" :2
-    },
-    {
-        _id: 4, name: "Spoon", description: "This is Spoon and it is useful while eating" , "racks" :2
-    },
-    {
-        _id: 5, name: "Sugar", description: "This is Sugar and it is to make your life sweet" , "racks" :2
-    }]
+        _id: "1", name: "Chocolate", description: "This is Chocolate and it is Sweet", "racks" :2
+    } ]
 };
 
-function productsReducer(state: IBoxState = initialState, action: IActionBase): IBoxState {
+function boxsReducer(state: IBoxState = initialState, action: IActionBase): IBoxState {
     switch (action.type) {         
         case LIST_BOX: {
             return { ...state, boxes:  action.boxes};
         }        
         case ADD_BOX: {
-            let maxId: number = Math.max.apply(Math, state.boxes.map(function(o) { return o._id; }));
-            action.product.id = maxId + 1;
-            return { ...state, boxes: [...state.boxes, action.product]};
+           // let maxId: number = Math.max.apply(Math, state.boxes.map(function(o) { return o._id; }));
+          //  action.box.id = maxId + 1;
+            return { ...state, boxes: [...state.boxes, action.box]};
         }
         case EDIT_BOX: {
-            const foundIndex: number = state.boxes.findIndex(pr => pr._id === action.product._id);
+            const foundIndex: number = state.boxes.findIndex(pr => pr._id === action.box._id);
             let boxes: IBox[] = state.boxes;
-            boxes[foundIndex] = action.product;
+            boxes[foundIndex] = action.box;
             return { ...state, boxes: boxes };
         }
         case REMOVE_BOX: {
@@ -64,4 +52,4 @@ function productsReducer(state: IBoxState = initialState, action: IActionBase): 
 }
 
 
-export default productsReducer;
+export default boxsReducer;

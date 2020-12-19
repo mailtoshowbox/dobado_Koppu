@@ -26,11 +26,9 @@ const Boxs: React.FC = () => {
     getBoxList()
     .then((items : IBoxList) => {   
         dispatch(loadListOfBox(items));   
-    }); 
-         
-         
-          dispatch(clearSelectedBox());
-          dispatch(updateCurrentPath("boxes", "list"));
+    });  
+    dispatch(clearSelectedBox());
+    dispatch(updateCurrentPath("boxes", "list"));
   
   }, [path.area, dispatch]);
 
@@ -108,7 +106,7 @@ const Boxs: React.FC = () => {
                   return;
                 }
                 dispatch(addNotification("Box removed", `Box ${boxes.selectedBox.name} was removed`));
-                dispatch(removeBox(boxes.selectedBox._id));
+               // dispatch(removeBox(boxes.selectedBox._id));
                 dispatch(clearSelectedBox());
                 setPopup(false);
               }}>Remove

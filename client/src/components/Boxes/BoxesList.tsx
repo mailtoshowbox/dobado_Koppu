@@ -19,7 +19,7 @@ function BoxList(props: productListProps): JSX.Element  {
         if(props.onSelect) props.onSelect(box);
       }}
       key={`product_${box._id}`}>
-      <th scope="row">{box._id}</th>
+     
       <td>{box.name}</td>
       <td>{box.racks}</td>
        
@@ -32,7 +32,7 @@ function BoxList(props: productListProps): JSX.Element  {
       <table className="table">
         <thead className="thead-light">
           <tr>
-            <th scope="col">#</th>
+            
             <th scope="col">Name</th>
             <th scope="col">No of Racks</th>
             

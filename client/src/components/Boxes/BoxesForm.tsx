@@ -1,13 +1,13 @@
 import React, { useState, FormEvent, Dispatch, Fragment } from "react";
 import { IStateType, IBoxState } from "../../store/models/root.interface";
 import { useSelector, useDispatch } from "react-redux";
-import { IProduct, ProductModificationStatus } from "../../store/models/product.interface";
+ 
 import TextInput from "../../common/components/TextInput";
-import { editProduct, clearSelectedProduct, setModificationState, addProduct } from "../../store/actions/products.action";
+import { editBox, clearSelectedBox, setModificationState, addBox } from "../../store/actions/box.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import NumberInput from "../../common/components/NumberInput";
-import Checkbox from "../../common/components/Checkbox";
-import SelectInput from "../../common/components/Select";
+import {  addNewBox, updateBox  } from "../../services/index"; 
+
 import { OnChangeModel, IBoxFormState } from "../../common/types/Form.types";
 import { BoxModificationStatus, IBox } from "../../store/models/box.interface";
 
@@ -18,10 +18,11 @@ const BoxForm: React.FC = () => {
   const isCreate: boolean = (boxes.modificationState === BoxModificationStatus.Create);
   
   if (!box || isCreate) {
-    box = { _id: 0, name: "", description: "",racks: 0  };
+    box = { _id: "", name: "111", description: "22",racks: 40  };
   }
 
   const [formState, setFormState] = useState({
+    _id: { error: "", value: box._id },
     name: { error: "", value: box.name },
     description: { error: "", value: box.description }    ,
     racks: { error: "", value: box.racks }    
@@ -33,33 +34,57 @@ const BoxForm: React.FC = () => {
   }
 
   function saveUser(e: FormEvent<HTMLFormElement>): void {
-    e.preventDefault();
-    if (isFormInvalid()) {
-      return;
+    e.preventDefault(); 
+    if (!isFormInvalid()) {
+       return;
     }
 
-    let saveUserFn: Function = (isCreate) ? addProduct : editProduct;
-    saveForm(formState, saveUserFn);
+    let saveUserFn: Function = (isCreate) ? addBox : editBox;
+    let modeOfAction: String = (isCreate) ? "ADD": "EDIT";
+    saveForm(formState, saveUserFn, modeOfAction);
   }
 
-  function saveForm(formState: IBoxFormState, saveFn: Function): void {
+  function saveForm(formState: IBoxFormState, saveFn: Function, mode: String): void {
     if (box) {
-      dispatch(saveFn({
-        ...box,
-        name: formState.name.value,
-        description: formState.description.value,
-        
-      }));
-
-      dispatch(addNotification("Product edited", `Product ${formState.name.value} edited by you`));
-      dispatch(clearSelectedProduct());
-      dispatch(setModificationState(ProductModificationStatus.None));
+              if(mode === 'ADD'){
+          let boxInfo  ={
+            "name": formState.name.value,
+            "description": formState.description.value,
+            "racks": formState.racks.value };
+          addNewBox(boxInfo)
+          .then((status) => {   
+                dispatch(saveFn({
+                  ...box,
+                 ...status              
+                }));      
+                dispatch(addNotification("New Box added", `Box ${formState.name.value} added by you`));
+                dispatch(clearSelectedBox());
+                dispatch(setModificationState(BoxModificationStatus.None));  
+          })
+        }else if(mode === 'EDIT'){ 
+          let boxInfoUpt  ={
+           "id": formState._id.value,
+            "name": formState.name.value,
+            "description": formState.description.value,
+            "racks": formState.racks.value };
+          updateBox(boxInfoUpt)
+          .then((status) => {    
+                dispatch(saveFn({
+                  ...box,
+                 ...status              
+                }));      
+                dispatch(addNotification("Box ", `New Box ${formState.name.value} edited by you`));
+                dispatch(clearSelectedBox());
+                dispatch(setModificationState(BoxModificationStatus.None));  
+          })
+        }            
     }
   }
-
   function cancelForm(): void {
-    dispatch(setModificationState(ProductModificationStatus.None));
+    dispatch(setModificationState(BoxModificationStatus.None));
   }
+
+ 
 
   function getDisabledClass(): string {
     let isError: boolean = isFormInvalid();

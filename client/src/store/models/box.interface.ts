@@ -1,5 +1,5 @@
 export interface IBox {
-    _id: number;
+    _id: string;
     name: string;
     description: string;
     racks: number;

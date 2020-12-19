@@ -5,11 +5,9 @@ import { IProduct, ProductModificationStatus } from "../../store/models/product.
 import TextInput from "../../common/components/TextInput";
 import { editProduct, clearSelectedProduct, setModificationState, addProduct } from "../../store/actions/products.action";
 import { addNotification } from "../../store/actions/notifications.action";
-
 import {  addNewDoc, updateDoc  } from "../../services/index"; 
-
- 
 import { OnChangeModel, IProductFormState } from "../../common/types/Form.types";
+import SelectInput from "../../common/components/Select";
 
 const ProductForm: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -134,6 +132,18 @@ const ProductForm: React.FC = () => {
                   label="Description"
                   placeholder="Description" />
               </div>
+
+              <div className="form-group col-md-6">
+                  <SelectInput
+                    id="input_category"
+                    field="category"
+                    label="Category"
+                    options={["Box1", "Box2", "Box3"]}
+                    required={true}
+                    onChange={hasFormValueChanged}
+                    value={""}
+                  />
+                </div>
               
               
               <button className="btn btn-danger" onClick={() => cancelForm()}>Cancel</button>

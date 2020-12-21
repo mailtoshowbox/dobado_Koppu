@@ -1,39 +1,44 @@
 import React, { useState, FormEvent, Dispatch, Fragment } from "react";
-import { IStateType, IBoxState } from "../../store/models/root.interface";
+import {
+  IStateType,
+  IDocCategoryState,
+} from "../../store/models/root.interface";
 import { useSelector, useDispatch } from "react-redux";
-
+import {
+  IDocCategory,
+  DocCategoryModificationStatus,
+} from "../../store/models/doccategory.interface";
 import TextInput from "../../common/components/TextInput";
 import {
-  editBox,
-  clearSelectedBox,
+  editDocCategory,
+  clearSelectedDocCategory,
   setModificationState,
-  addBox,
-} from "../../store/actions/box.action";
+  addDocCategory,
+} from "../../store/actions/doccategory.action";
 import { addNotification } from "../../store/actions/notifications.action";
-import NumberInput from "../../common/components/NumberInput";
-import { addNewBox, updateBox } from "../../services/index";
+import { addNewDocCat, updateDocCat } from "../../services/index";
+import {
+  OnChangeModel,
+  IDocCategoryFormState,
+} from "../../common/types/Form.types";
 
-import { OnChangeModel, IBoxFormState } from "../../common/types/Form.types";
-import { BoxModificationStatus, IBox } from "../../store/models/box.interface";
-
-const BoxForm: React.FC = () => {
+const ProductForm: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
-  const boxes: IBoxState | null = useSelector(
-    (state: IStateType) => state.boxes
+  const doccategories: IDocCategoryState | null = useSelector(
+    (state: IStateType) => state.docCategories
   );
-  let box: IBox | null = boxes.selectedBox;
+  let doccategory: IDocCategory | null = doccategories.selectedDocCategory;
   const isCreate: boolean =
-    boxes.modificationState === BoxModificationStatus.Create;
+    doccategories.modificationState === DocCategoryModificationStatus.Create;
 
-  if (!box || isCreate) {
-    box = { _id: "", name: "", description: "", racks: 0, rackList: [] };
+  if (!doccategory || isCreate) {
+    doccategory = { _id: "", name: "", description: "" };
   }
 
   const [formState, setFormState] = useState({
-    _id: { error: "", value: box._id },
-    name: { error: "", value: box.name },
-    description: { error: "", value: box.description },
-    racks: { error: "", value: box.racks },
+    _id: { error: "", value: doccategory._id },
+    name: { error: "", value: doccategory.name },
+    description: { error: "", value: doccategory.description },
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -49,27 +54,26 @@ const BoxForm: React.FC = () => {
       return;
     }
 
-    let saveUserFn: Function = isCreate ? addBox : editBox;
+    let saveUserFn: Function = isCreate ? addDocCategory : editDocCategory;
     let modeOfAction: String = isCreate ? "ADD" : "EDIT";
     saveForm(formState, saveUserFn, modeOfAction);
   }
 
   function saveForm(
-    formState: IBoxFormState,
+    formState: IDocCategoryFormState,
     saveFn: Function,
     mode: String
   ): void {
-    if (box) {
+    if (doccategory) {
       if (mode === "ADD") {
         let boxInfo = {
           name: formState.name.value,
           description: formState.description.value,
-          racks: formState.racks.value,
         };
-        addNewBox(boxInfo).then((status) => {
+        addNewDocCat(boxInfo).then((status) => {
           dispatch(
             saveFn({
-              ...box,
+              ...doccategory,
               ...status,
             })
           );
@@ -79,20 +83,19 @@ const BoxForm: React.FC = () => {
               `Box ${formState.name.value} added by you`
             )
           );
-          dispatch(clearSelectedBox());
-          dispatch(setModificationState(BoxModificationStatus.None));
+          dispatch(clearSelectedDocCategory());
+          dispatch(setModificationState(DocCategoryModificationStatus.None));
         });
       } else if (mode === "EDIT") {
         let boxInfoUpt = {
           id: formState._id.value,
           name: formState.name.value,
           description: formState.description.value,
-          racks: formState.racks.value,
         };
-        updateBox(boxInfoUpt).then((status) => {
+        updateDocCat(boxInfoUpt).then((status) => {
           dispatch(
             saveFn({
-              ...box,
+              ...doccategory,
               ...status,
             })
           );
@@ -102,14 +105,15 @@ const BoxForm: React.FC = () => {
               `New Box ${formState.name.value} edited by you`
             )
           );
-          dispatch(clearSelectedBox());
-          dispatch(setModificationState(BoxModificationStatus.None));
+          dispatch(clearSelectedDocCategory());
+          dispatch(setModificationState(DocCategoryModificationStatus.None));
         });
       }
     }
   }
+
   function cancelForm(): void {
-    dispatch(setModificationState(BoxModificationStatus.None));
+    dispatch(setModificationState(DocCategoryModificationStatus.None));
   }
 
   function getDisabledClass(): string {
@@ -123,11 +127,11 @@ const BoxForm: React.FC = () => {
 
   return (
     <Fragment>
-      <div className="col-xl-12 col-lg-12">
+      <div className="col-xl-7 col-lg-7">
         <div className="card shadow mb-4">
           <div className="card-header py-3">
             <h6 className="m-0 font-weight-bold text-green">
-              Box {isCreate ? "create" : "edit"}
+              Document {isCreate ? "create" : "edit"}
             </h6>
           </div>
           <div className="card-body">
@@ -140,7 +144,7 @@ const BoxForm: React.FC = () => {
                     field="name"
                     onChange={hasFormValueChanged}
                     required={true}
-                    maxLength={20}
+                    maxLength={100}
                     label="Name"
                     placeholder="Name"
                   />
@@ -159,15 +163,6 @@ const BoxForm: React.FC = () => {
                 />
               </div>
 
-              <div className="form-group">
-                <NumberInput
-                  id="input_ract"
-                  field="racks"
-                  value={formState.racks.value}
-                  onChange={hasFormValueChanged}
-                  label="No of Racks"
-                />
-              </div>
               <button className="btn btn-danger" onClick={() => cancelForm()}>
                 Cancel
               </button>
@@ -185,4 +180,4 @@ const BoxForm: React.FC = () => {
   );
 };
 
-export default BoxForm;
+export default ProductForm;

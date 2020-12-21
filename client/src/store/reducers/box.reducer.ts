@@ -9,7 +9,7 @@ const initialState: IBoxState = {
     modificationState: BoxModificationStatus.None,
     selectedBox: null,
     boxes: [{
-        _id: "1", name: "Chocolate", description: "This is Chocolate and it is Sweet", "racks" :2
+        _id: "1", name: "Chocolate", description: "This is Chocolate and it is Sweet", "racks" :2, rackList : []
     } ]
 };
 

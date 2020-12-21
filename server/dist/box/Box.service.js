@@ -17,9 +17,11 @@ const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
 const mongoose_2 = require("@nestjs/mongoose");
 const box_schema_1 = require("./schemas/box.schema");
+const rack_schema_1 = require("./schemas/rack.schema");
 let BoxService = class BoxService {
-    constructor(boxModel) {
+    constructor(boxModel, rackModel) {
         this.boxModel = boxModel;
+        this.rackModel = rackModel;
     }
     async findAll() {
         return await this.boxModel.find().exec();
@@ -27,9 +29,29 @@ let BoxService = class BoxService {
     async findOne(id) {
         return await this.boxModel.findOne({ _id: id });
     }
+    async getRacks(id) {
+        return await this.rackModel.find({ box: id });
+    }
+    async createRack(rack) {
+        const newRack = new this.rackModel(rack);
+        return await newRack.save();
+    }
     async create(box) {
+        const { racks = 0 } = box;
         const newBox = new this.boxModel(box);
-        return await newBox.save();
+        return await newBox.save().then((savedResult) => {
+            const { _id = "" } = savedResult;
+            if (racks > 0) {
+                var n = 0;
+                while (n < racks) {
+                    let name = n + 1;
+                    let rack = { name: name.toString(), status: "Available", box: _id, picked: false };
+                    n++;
+                    this.createRack(rack);
+                }
+            }
+            return savedResult;
+        });
     }
     async delete(id) {
         return await this.boxModel.findByIdAndRemove(id);
@@ -43,7 +65,9 @@ let BoxService = class BoxService {
 BoxService = __decorate([
     common_1.Injectable(),
     __param(0, mongoose_2.InjectModel(box_schema_1.BoxClass.name)),
-    __metadata("design:paramtypes", [mongoose_1.Model])
+    __param(1, mongoose_2.InjectModel(rack_schema_1.RackClass.name)),
+    __metadata("design:paramtypes", [mongoose_1.Model,
+        mongoose_1.Model])
 ], BoxService);
 exports.BoxService = BoxService;
 //# sourceMappingURL=Box.service.js.map

@@ -1,5 +1,7 @@
 import { IProduct, ProductModificationStatus } from "./product.interface";
 import { IBox, BoxModificationStatus } from "./box.interface";
+import { IDocCategory, DocCategoryModificationStatus } from "./doccategory.interface";
+
 import { INotification } from "./notification.interface";
 import { IUser } from "./user.interface";
 import { IOrder } from "./order.interface";
@@ -10,6 +12,10 @@ export interface IRootPageStateType {
     subArea: string;
 }
 
+export interface IRootOption {
+    id: string;
+    name: string;
+}
 export interface IRootStateType {
     page: IRootPageStateType;
 }
@@ -21,6 +27,7 @@ export interface IStateType {
     orders: IOrdersState;
     account: IAccount;
     boxes: IBoxState;
+    docCategories: IDocCategoryState;
 }
 
 export interface IProductState {
@@ -52,3 +59,10 @@ export interface IBoxState {
     selectedBox: IBox | null;
     modificationState: BoxModificationStatus;
 }
+
+export interface IDocCategoryState {
+    docCategories: IDocCategory[];
+    selectedDocCategory: IDocCategory | null;
+    modificationState: DocCategoryModificationStatus;
+}
+

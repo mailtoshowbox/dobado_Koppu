@@ -14,15 +14,15 @@ export interface IProductFormState {
     name: IFormStateField<string>;
     description: IFormStateField<string>;
     box: IFormStateField<string>;
-    rack: IFormStateField<number>;
+    rack: IFormStateField<string>;
+    category: IFormStateField<string>;
      
 }
 export interface IBoxFormState {
     _id: IFormStateField<string>;
     name: IFormStateField<string>;
     description: IFormStateField<string>;
-    racks: IFormStateField<number>;
-     
+    racks: IFormStateField<number>;  
 }
 export  interface IOrderFormState {
     name: IFormStateField<string>;
@@ -30,3 +30,9 @@ export  interface IOrderFormState {
     amount: IFormStateField<number>;
     totalPrice: IFormStateField<number>;
 };
+
+export interface IDocCategoryFormState {
+    _id: IFormStateField<string>;
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+}

@@ -12,6 +12,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const box_controller_1 = require("./box.controller");
 const box_service_1 = require("./box.service");
 const box_schema_1 = require("./schemas/box.schema");
+const rack_schema_1 = require("./schemas/rack.schema");
 let BoxModule = class BoxModule {
 };
 BoxModule = __decorate([
@@ -19,6 +20,7 @@ BoxModule = __decorate([
         imports: [
             mongoose_1.MongooseModule.forFeature([
                 { name: box_schema_1.BoxClass.name, schema: box_schema_1.BoxSchema },
+                { name: rack_schema_1.RackClass.name, schema: rack_schema_1.RackSchema },
             ]),
         ],
         controllers: [box_controller_1.BoxController],

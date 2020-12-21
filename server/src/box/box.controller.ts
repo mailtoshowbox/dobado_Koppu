@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { CreateBoxDto } from './dto/create-box.dto';
 import { Box } from './interfaces/box.interface';
+import { Rack } from './interfaces/rack.interface';
 import { BoxService } from './Box.service';
+import { RackService } from './Rack.service';
 
 @Controller('Box')
 export class BoxController {
@@ -25,9 +27,14 @@ export class BoxController {
     return this.BoxService.findOne(id);
   }
 
+  @Get(':action/:id')
+  getRacks(@Param('id') id: string): Promise<Rack[]> {
+    return this.BoxService.getRacks(id);
+  }
+
+
   @Post()
-  create(@Body() createBoxDto: CreateBoxDto): Promise<Box> {
-    console.log("!!!-");
+  create(@Body() createBoxDto: CreateBoxDto): Promise<Box> { 
     return this.BoxService.create(createBoxDto);
   }
 

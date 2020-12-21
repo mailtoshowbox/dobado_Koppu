@@ -1,3 +1,8 @@
+import {
+     
+    IRootOption,
+  } from "../../store/models/root.interface";
+
 export type SelectProps = {
     required?: boolean,
     onChange: Function,
@@ -5,6 +10,7 @@ export type SelectProps = {
     label: string,
     value: string,
     inputClass?: string,
-    options: string[],
-    field: string
+    options: IRootOption[],
+    field: string,
+    type: string
 };

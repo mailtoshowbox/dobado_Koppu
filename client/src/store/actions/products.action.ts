@@ -19,6 +19,8 @@ export const LIST_PRODUCT: string = "LIST_PRODUCT";
        
     
         }
+         
+        
 export function addProduct(product: IProduct): IAddProductActionType {
     return { type: ADD_PRODUCT, product: product };
 }

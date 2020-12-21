@@ -3,6 +3,15 @@ export interface IBox {
     name: string;
     description: string;
     racks: number;
+    rackList : IRackList
+}
+
+export interface IRack {
+    _id: string;
+    name: string; 
+    box: string; 
+    status: string;
+    picked: boolean;    
 }
 
 export enum BoxModificationStatus {
@@ -12,3 +21,4 @@ export enum BoxModificationStatus {
 }
 
 export interface IBoxList extends Array<IBox>{}
+export interface IRackList extends Array<IRack>{}

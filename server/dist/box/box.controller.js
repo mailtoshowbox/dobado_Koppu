@@ -26,8 +26,10 @@ let BoxController = class BoxController {
     findOne(id) {
         return this.BoxService.findOne(id);
     }
+    getRacks(id) {
+        return this.BoxService.getRacks(id);
+    }
     create(createBoxDto) {
-        console.log("!!!-");
         return this.BoxService.create(createBoxDto);
     }
     delete(id) {
@@ -50,6 +52,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BoxController.prototype, "findOne", null);
+__decorate([
+    common_1.Get(':action/:id'),
+    __param(0, common_1.Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], BoxController.prototype, "getRacks", null);
 __decorate([
     common_1.Post(),
     __param(0, common_1.Body()),

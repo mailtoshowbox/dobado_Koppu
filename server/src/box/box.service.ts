@@ -3,13 +3,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Box } from './interfaces/box.interface';
 import { BoxClass } from './schemas/box.schema';
+import { RackClass } from './schemas/rack.schema';
+import { Rack } from './interfaces/rack.interface';
 
 @Injectable()
 export class BoxService {
-  constructor(
+/*   constructor(
     @InjectModel(BoxClass.name)
     private boxModel: Model<BoxClass>,
-  ) {}
+  ) {} */
+  constructor(
+    @InjectModel(BoxClass.name) private readonly boxModel:Model<BoxClass>,
+    @InjectModel(RackClass.name) private readonly rackModel:Model<RackClass>
+    ){
+
+    }
 
   async findAll(): Promise<Box[]> {
     return await this.boxModel.find().exec();
@@ -19,9 +27,58 @@ export class BoxService {
     return await this.boxModel.findOne({ _id: id });
   }
 
+  async getRacks(id: string): Promise<Rack[]> { 
+    return await this.rackModel.find({ box: id });
+  }
+  
+
+
+  async createRack(rack: Rack): Promise<Rack> {
+      const newRack = new this.rackModel(rack);
+      return await newRack.save();  
+  }
+
   async create(box: Box): Promise<Box> {
+
+    const {racks = 0} = box;
     const newBox = new this.boxModel(box);
-    return await newBox.save();
+    return await newBox.save().then((savedResult)=>{
+      const {_id= ""} = savedResult;
+      if(racks>0){
+        var n=0;
+        while(n<racks){
+          let name = n+1;
+          let rack= {name : name.toString(), status : "Available", box : _id, picked:false };       
+          n++;      
+          this.createRack(rack); 
+        }        
+      }
+      return savedResult; 
+    });
+    /* if(newBox.save()){
+
+      const {racks = 0} = box;
+
+      if(racks>0){
+        var n=0;
+        while(n<racks){
+          let name = n+1;
+          let rack= {name : name.toString(), status : true, };
+          //listOfRacks.push(rack);            
+          n++;      
+           this.createRack(rack); 
+        }
+        
+      } */
+       
+
+  
+
+    
+    
+     
+    
+  
   }
 
   async delete(id: string): Promise<Box> {

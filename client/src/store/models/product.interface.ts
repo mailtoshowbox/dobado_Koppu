@@ -3,7 +3,8 @@ export interface IProduct {
     name: string;
     description: string;
     box: string;
-    rack: number;
+    rack:  string;
+    category :  string;
 }
 
 export enum ProductModificationStatus {

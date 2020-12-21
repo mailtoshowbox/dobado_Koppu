@@ -5,7 +5,9 @@ export type CheckboxProps = {
     label: string,
     value: boolean,
     inputClass?: string,
-    field: string
+    field: string,
+    name : string
+    disabled : boolean
 };
 
 export type OnChangeCheckboxModel = {

@@ -11,12 +11,13 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const products_module_1 = require("./products/products.module");
 const box_module_1 = require("./box/box.module");
+const docCategory_module_1 = require("./docCategory/docCategory.module");
 const keys_1 = require("./config/keys");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
-        imports: [mongoose_1.MongooseModule.forRoot(keys_1.default.mongoURI), products_module_1.ProductsModule, box_module_1.BoxModule],
+        imports: [mongoose_1.MongooseModule.forRoot(keys_1.default.mongoURI), products_module_1.ProductsModule, box_module_1.BoxModule, docCategory_module_1.DocCategoryModule,],
     })
 ], AppModule);
 exports.AppModule = AppModule;

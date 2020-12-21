@@ -1,87 +1,73 @@
 import React, { Fragment, Dispatch, useState, useEffect } from "react";
-import ProductList from "./ProductsList";
-import ProductForm from "./ProductsForm";
+import DocCategoryList from "./DocCategoryList";
+import ProductForm from "./DocCategoryForm";
 import TopCard from "../../common/components/TopCard";
-import "./Products.css";
+import "./DocCategory.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCurrentPath } from "../../store/actions/root.actions";
 import {
-  IProductState,
+  IDocCategoryState,
   IStateType,
   IRootPageStateType,
 } from "../../store/models/root.interface";
 import Popup from "reactjs-popup";
 import {
-  removeProduct,
-  clearSelectedProduct,
+  removeDocCategory,
+  clearSelectedDocCategory,
   setModificationState,
-  changeSelectedProduct,
-  loadListOfProduct,
-} from "../../store/actions/products.action";
-import { loadListOfDocCategory } from "../../store/actions/doccategory.action";
+  changeDocCategoryAmount,
+  loadListOfDocCategory,
+  changeSelectedDocCategory,
+} from "../../store/actions/doccategory.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
-  ProductModificationStatus,
-  IProduct,
-  IProductList,
-} from "../../store/models/product.interface";
-import { IDocCategoryList } from "../../store/models/doccategory.interface";
-
-import { IBoxList } from "../../store/models/box.interface";
-import { loadListOfBox } from "../../store/actions/box.action";
-import {
-  getDocumentList,
-  getDocCategoryList,
-  getBoxList,
-} from "../../services/index";
+  DocCategoryModificationStatus,
+  IDocCategory,
+  IDocCategoryList,
+} from "../../store/models/doccategory.interface";
+import { getDocCategoryList } from "../../services/index";
 
 const Products: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
-  const products: IProductState = useSelector(
-    (state: IStateType) => state.products
+  const doccategories: IDocCategoryState = useSelector(
+    (state: IStateType) => state.docCategories
   );
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
-  const numberItemsCount: number = products.products.length;
+
+  //console.log("doccategories---", doccategories.docCategories.length);
+  console.log(doccategories);
+  const numberItemsCount: number =
+    doccategories.docCategories !== undefined
+      ? doccategories.docCategories.length
+      : 0;
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
-    //Load Documents
-    getDocumentList().then((items: IProductList) => {
-      dispatch(loadListOfProduct(items));
-    });
-    //Load Available Doc Categories
     getDocCategoryList().then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
     });
-    //Load Available Boxes
-    getBoxList().then((items: IBoxList) => {
-      dispatch(loadListOfBox(items));
-    });
-
-    dispatch(clearSelectedProduct());
-    dispatch(updateCurrentPath("products", "list"));
   }, [path.area, dispatch]);
 
-  function onProductSelect(product: IProduct): void {
-    dispatch(changeSelectedProduct(product));
-    dispatch(setModificationState(ProductModificationStatus.None));
+  function onProductSelect(product: IDocCategory): void {
+    dispatch(changeSelectedDocCategory(product));
+    dispatch(setModificationState(DocCategoryModificationStatus.None));
   }
 
   function onProductRemove() {
-    if (products.selectedProduct) {
+    if (doccategories.selectedDocCategory) {
       setPopup(true);
     }
   }
 
   return (
     <Fragment>
-      <h1 className="h3 mb-2 text-gray-800">Documents</h1>
-      <p className="mb-4">Documents here</p>
+      <h1 className="h3 mb-2 text-gray-800">Categories</h1>
+      <p className="mb-4">Document Category here</p>
       <div className="row">
         <TopCard
-          title="Documents COUNT"
+          title="Categories COUNT"
           text={`${numberItemsCount}`}
           icon="box"
           class="success"
@@ -98,7 +84,7 @@ const Products: React.FC = () => {
                   className="btn btn-success btn-green"
                   onClick={() =>
                     dispatch(
-                      setModificationState(ProductModificationStatus.Create)
+                      setModificationState(DocCategoryModificationStatus.Create)
                     )
                   }
                 >
@@ -108,7 +94,7 @@ const Products: React.FC = () => {
                   className="btn btn-success btn-blue"
                   onClick={() =>
                     dispatch(
-                      setModificationState(ProductModificationStatus.Edit)
+                      setModificationState(DocCategoryModificationStatus.Edit)
                     )
                   }
                 >
@@ -122,13 +108,15 @@ const Products: React.FC = () => {
                 </button>
               </div>
             </div>
-            {products.modificationState === ProductModificationStatus.Create ||
-            (products.modificationState === ProductModificationStatus.Edit &&
-              products.selectedProduct) ? (
+            {doccategories.modificationState ===
+              DocCategoryModificationStatus.Create ||
+            (doccategories.modificationState ===
+              DocCategoryModificationStatus.Edit &&
+              doccategories.selectedDocCategory) ? (
               <ProductForm />
             ) : null}
             <div className="card-body">
-              <ProductList onSelect={onProductSelect} />
+              <DocCategoryList onSelect={onProductSelect} />
             </div>
           </div>
         </div>
@@ -147,17 +135,17 @@ const Products: React.FC = () => {
               type="button"
               className="btn btn-danger"
               onClick={() => {
-                if (!products.selectedProduct) {
+                if (!doccategories.selectedDocCategory) {
                   return;
                 }
                 dispatch(
                   addNotification(
                     "Product removed",
-                    `Product ${products.selectedProduct.name} was removed`
+                    `Product ${doccategories.selectedDocCategory.name} was removed`
                   )
                 );
-                //  dispatch(removeProduct(products.selectedProduct._id));
-                dispatch(clearSelectedProduct());
+                //  dispatch(removeDocCategory(products.selectedProduct._id));
+                dispatch(clearSelectedDocCategory());
                 setPopup(false);
               }}
             >

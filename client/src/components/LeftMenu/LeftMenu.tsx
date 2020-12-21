@@ -2,82 +2,90 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 const LeftMenu: React.FC = () => {
+  let [leftMenuVisibility, setLeftMenuVisibility] = useState(false);
 
-    let [leftMenuVisibility, setLeftMenuVisibility] = useState(false);
+  function changeLeftMenuVisibility() {
+    setLeftMenuVisibility(!leftMenuVisibility);
+  }
 
-    function changeLeftMenuVisibility() {
-        setLeftMenuVisibility(!leftMenuVisibility);
-    }
+  function getCollapseClass() {
+    return leftMenuVisibility ? "" : "collapsed";
+  }
 
-    function getCollapseClass() {
-        return (leftMenuVisibility) ? "" : "collapsed";
-    }
+  return (
+    <Fragment>
+      <div className="toggle-area">
+        <button
+          className="btn btn-primary toggle-button"
+          onClick={() => changeLeftMenuVisibility()}
+        >
+          <i className="fas fa-bolt"></i>
+        </button>
+      </div>
 
-    return (
-        <Fragment>
-            <div className="toggle-area">
-                <button className="btn btn-primary toggle-button" onClick={() => changeLeftMenuVisibility()}>
-                    <i className="fas fa-bolt"></i>
-                </button>
-            </div>
+      <ul
+        className={`navbar-nav bg-gradient-primary-green sidebar sidebar-dark accordion ${getCollapseClass()}`}
+        id="collapseMenu"
+      >
+        <a
+          className="sidebar-brand d-flex align-items-center justify-content-center"
+          href="index.html"
+        >
+          <div className="sidebar-brand-icon icon-green rotate-n-15">
+            <i className="fas fa-bolt"></i>
+          </div>
+          <div className="sidebar-brand-text mx-3">
+            Doument <sup>Loction Tracker</sup>
+          </div>
+        </a>
 
-            <ul className={`navbar-nav bg-gradient-primary-green sidebar sidebar-dark accordion ${getCollapseClass()}`}
-                id="collapseMenu">
+        <hr className="sidebar-divider my-0" />
 
-                <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                    <div className="sidebar-brand-icon icon-green rotate-n-15">
-                        <i className="fas fa-bolt"></i>
-                    </div>
-                    <div className="sidebar-brand-text mx-3">REACT <sup>Admin</sup></div>
-                </a>
+        <li className="nav-item active">
+          <Link className="nav-link" to="Home">
+            <i className="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </Link>
+        </li>
 
-                <hr className="sidebar-divider my-0" />
+        <hr className="sidebar-divider" />
+        <div className="sidebar-heading">Warehouse</div>
 
-                <li className="nav-item active">
+        <li className="nav-item">
+          <Link className="nav-link" to={`/products`}>
+            <i className="fas fa-fw fa-warehouse"></i>
+            <span>Documents</span>
+          </Link>
+        </li>
 
-                    <Link className="nav-link" to="Home">
-                        <i className="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </Link>
-                </li>
+        <li className="nav-item">
+          <Link className="nav-link" to={`/doccategory`}>
+            <i className="fas fa-fw fa-edit"></i>
+            <span>Categories</span>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to={`/boxes`}>
+            <i className="fas fa-fw fa-edit"></i>
+            <span>Boxes</span>
+          </Link>
+        </li>
 
-                <hr className="sidebar-divider" />
-                <div className="sidebar-heading">
-                    Warehouse
-                </div>
+        <hr className="sidebar-divider" />
 
-                <li className="nav-item">
-                    <Link className="nav-link" to={`/products`}>
-                        <i className="fas fa-fw fa-warehouse"></i>
-                        <span>Documents</span>
-                    </Link>
-                </li>
+        <div className="sidebar-heading">Admin</div>
 
-                 <li className="nav-item">
-                    <Link className="nav-link" to={`/boxes`}>
-                        <i className="fas fa-fw fa-edit"></i>
-                        <span>Boxes</span>
-                    </Link>
-                </li> 
+        <li className="nav-item">
+          <Link className="nav-link" to={`/users`}>
+            <i className="fas fa-fw fa-user"></i>
+            <span>Users</span>
+          </Link>
+        </li>
 
-                <hr className="sidebar-divider" />
-
-                <div className="sidebar-heading">
-                    Admin
-                </div>
-
-
-                <li className="nav-item">
-                    <Link className="nav-link" to={`/users`}>
-                        <i className="fas fa-fw fa-user"></i>
-                        <span>Users</span>
-                    </Link>
-                </li>
-
-                <hr className="sidebar-divider d-none d-md-block" />
-            </ul>
-        </Fragment>
-    );
+        <hr className="sidebar-divider d-none d-md-block" />
+      </ul>
+    </Fragment>
+  );
 };
 
 export default LeftMenu;

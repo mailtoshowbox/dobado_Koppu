@@ -7,6 +7,7 @@ import userReducer from "./users.reducer";
 import orderReducer from "./order.reducer";
 import accountReducer from "./account.reducer";
 import boxReducer from "./box.reducer";
+import categoryReducer from "./doccategory.reducer";
 
 
 const initialState: IRootStateType = {
@@ -28,7 +29,8 @@ const rootReducers: Reducer<IStateType> = combineReducers({root: rootReducer,
     users: userReducer,
     orders: orderReducer,
     account: accountReducer,
-    boxes: boxReducer
+    boxes: boxReducer,
+    docCategories: categoryReducer
 });
 
 

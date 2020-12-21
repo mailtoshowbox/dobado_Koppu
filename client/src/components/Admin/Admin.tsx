@@ -7,10 +7,10 @@ import Products from "../Products/Products";
 import Orders from "../Orders/Orders";
 import Boxes from "../Boxes/Boxes";
 import Home from "../Home/Home";
+import DocCategories from "../DocCategory/DocCategory";
 import Notifications from "../../common/components/Notification";
 
 const Admin: React.FC = () => {
-
   return (
     <Fragment>
       <Notifications />
@@ -20,11 +20,24 @@ const Admin: React.FC = () => {
           <TopMenu />
           <div className="container-fluid">
             <Switch>
-              <Route path={`/users`}><Users /></Route>
-              <Route path={`/products`}><Products /></Route>
-              <Route path={`/orders`}><Orders /></Route>
-              <Route path={`/boxes`}><Boxes /></Route>
-              <Route path="/"><Home /></Route>
+              <Route path={`/users`}>
+                <Users />
+              </Route>
+              <Route path={`/products`}>
+                <Products />
+              </Route>
+              <Route path={`/orders`}>
+                <Orders />
+              </Route>
+              <Route path={`/doccategory`}>
+                <DocCategories />
+              </Route>
+              <Route path={`/boxes`}>
+                <Boxes />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
             </Switch>
           </div>
         </div>

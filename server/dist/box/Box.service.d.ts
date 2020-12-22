@@ -1,12 +1,12 @@
 import { Model } from 'mongoose';
 import { Box } from './interfaces/box.interface';
-import { BoxClass } from './schemas/box.schema';
-import { RackClass } from './schemas/rack.schema';
+import { Boxes } from './schemas/box.schema';
+import { Racks } from './schemas/rack.schema';
 import { Rack } from './interfaces/rack.interface';
 export declare class BoxService {
     private readonly boxModel;
     private readonly rackModel;
-    constructor(boxModel: Model<BoxClass>, rackModel: Model<RackClass>);
+    constructor(boxModel: Model<Boxes>, rackModel: Model<Racks>);
     findAll(): Promise<Box[]>;
     findOne(id: string): Promise<Box>;
     getRacks(id: string): Promise<Rack[]>;

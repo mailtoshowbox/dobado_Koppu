@@ -45,28 +45,13 @@ const ProductForm: React.FC = () => {
       box: "",
       rack: "",
       category: "",
+      type_of_space: "",
     };
   }
   //Document Category loaded
   const doccategoriesList: IDocCategoryState | null = useSelector(
     (state: IStateType) => state.docCategories
   );
-  const racksMe = [
-    {
-      box: "5fe08cc22b4678042c669de1",
-      name: "1",
-      status: "Available",
-      picked: false,
-      _id: "5fe08cc22b4678042c669de2",
-    },
-    {
-      box: "5fe08cc22b4678042c669de1",
-      name: "1",
-      status: "Occupied",
-      picked: false,
-      _id: "5fe08cc22b4678042c669de2",
-    },
-  ];
 
   let listOfCate: { id: string; name: string }[] = [];
   doccategoriesList.docCategories.forEach((doc) => {
@@ -83,46 +68,58 @@ const ProductForm: React.FC = () => {
 
   const [formState, setFormState] = useState({
     _id: { error: "", value: product._id },
-    name: { error: "", value: product.name },
+    name: { error: "ertert", value: product.name },
     description: { error: "", value: product.description },
     box: { error: "", value: product.box },
     rack: { error: "", value: product.rack },
     category: { error: "", value: product.category },
+    type_of_space: { error: "", value: product.type_of_space },
   });
 
   const [boxRacks, setBoxRacks] = useState([]);
-  const [pickedRack, setPickedRack] = useState(-1);
-  const selectField = ["category"];
+  const [pickRack, setPickedRack] = useState(false);
+  const selectField = ["box"];
 
   function hasFormValueChanged(model: OnChangeModel): void {
-    console.log(model);
-    const { field, value = "" } = model;
+    const { field, value = "", name = "" } = model;
     if (selectField.indexOf(field) > -1) {
       getRacks(value).then((racks = []) => {
         if (racks.length > 0) {
-          setPickedRack(-1);
+          setPickedRack(true);
           setBoxRacks(racks);
           // dispatch(updateRacks(racks));
         }
       });
-    } else {
       setFormState({
         ...formState,
         [model.field]: { error: model.error, value: model.value },
       });
+    } else {
+      console.log("name-", name);
+      if (name === "type_of_space") {
+        setFormState({
+          ...formState,
+          [model.name]: { error: model.error, value: model.field },
+        });
+      } else {
+        setFormState({
+          ...formState,
+          [model.field]: { error: model.error, value: model.value },
+        });
+      }
     }
   }
   function hasRacksValueChanged(model: OnChangeModel): void {
     const newObj: any = boxRacks;
-    console.log("model---", model);
     const { field = "" } = model;
 
+    console.log("model---", model);
+
     boxRacks.forEach((rack: IRack, index) => {
-      console.log("rack--", rack);
       if (rack._id === field) {
         // newObj[index]["status"] = "Occupied";
         newObj[index]["picked"] = true;
-        setPickedRack(index);
+        // setPickedRack(index);
       } else {
         //  newObj[index]["status"] = "Available";
         newObj[index]["picked"] = false;
@@ -137,13 +134,13 @@ const ProductForm: React.FC = () => {
 
     setFormState({
       ...formState,
+      ["rack"]: { error: model.error, value: model.field },
     });
-
-    console.log("SETEED");
   }
   function saveUser(e: FormEvent<HTMLFormElement>): void {
+    console.log("FORM---", formState);
     e.preventDefault();
-    if (isFormInvalid()) {
+    if (!isFormInvalid()) {
       return;
     }
 
@@ -223,6 +220,7 @@ const ProductForm: React.FC = () => {
   function isFormInvalid(): boolean {
     return true;
   }
+
   function loadRacks() {
     if (boxRacks.length > 0) {
       return boxRacks.map((rack, index) => {
@@ -254,6 +252,13 @@ const ProductForm: React.FC = () => {
     }
   }
 
+  const { type_of_space = {} } = formState;
+  let type_of_space_Check = "";
+  if (formState.type_of_space !== undefined) {
+    type_of_space_Check = formState.type_of_space.value;
+  }
+
+  let ty;
   return (
     <Fragment>
       <div className="col-xl-7 col-lg-7">
@@ -309,7 +314,7 @@ const ProductForm: React.FC = () => {
                 <div className="form-group col-md-6">
                   <SelectInput
                     id="input_category"
-                    field="category"
+                    field="box"
                     label="Box"
                     options={listOfBoxws}
                     required={true}
@@ -320,7 +325,70 @@ const ProductForm: React.FC = () => {
                 </div>
                 <div className="form-group col-md-6">
                   {" "}
-                  <div className="form-row">Racks {loadRacks()}</div>
+                  {pickRack && (
+                    <div className="form-row">Racks {loadRacks()}</div>
+                  )}
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group col-md-6">
+                  Type of Space
+                  <div className="form-row">
+                    <div
+                      className="col-xs-3"
+                      style={{ paddingLeft: "41px" }}
+                      key={"non_perceptual_space"}
+                    >
+                      {" "}
+                      <Checkbox
+                        id="input_email"
+                        field={"non_perceptual"}
+                        onChange={hasFormValueChanged}
+                        label={"Non Perpetual documents "}
+                        value={
+                          type_of_space_Check === "non_perceptual"
+                            ? true
+                            : false
+                        }
+                        name={"type_of_space"}
+                        disabled={false}
+                      />
+                    </div>
+                    <div
+                      className="col-xs-3"
+                      style={{ paddingLeft: "41px" }}
+                      key={"perceptual_space"}
+                    >
+                      {" "}
+                      <Checkbox
+                        id="input_email"
+                        field={"perceptual"}
+                        onChange={hasFormValueChanged}
+                        label={"Perpetual documents "}
+                        value={
+                          type_of_space_Check === "perceptual" ? true : false
+                        }
+                        name={"type_of_space"}
+                        disabled={false}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="form-group col-md-6">
+                  <div className="form-row">
+                    <div className="col-xs-12"> QR Code</div>
+                  </div>
+                  <div className="form-row">
+                    <div
+                      className="col-xs-6"
+                      style={{ paddingLeft: "41px" }}
+                      key={"non_perceptual_space"}
+                    >
+                      <button type="submit" className={`btn btn-dark  `}>
+                        Genarate
+                      </button>
+                    </div>{" "}
+                  </div>
                 </div>
               </div>
               <button className="btn btn-danger" onClick={() => cancelForm()}>

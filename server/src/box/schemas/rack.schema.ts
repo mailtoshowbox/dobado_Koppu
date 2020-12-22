@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema()
-export class RackClass extends Document {
+export class Racks extends Document {
   @Prop()
   name: string; 
 
@@ -16,4 +16,4 @@ export class RackClass extends Document {
   picked: boolean; 
 }
 
-export const RackSchema = SchemaFactory.createForClass(RackClass);
+export const RackSchema = SchemaFactory.createForClass(Racks);

@@ -8,41 +8,50 @@ export type productListProps = {
   children?: React.ReactNode;
 };
 
-function ProductList(props: productListProps): JSX.Element  {
-  const products: IProductState = useSelector((state: IStateType) => state.products);
- 
-  const productElements: (JSX.Element | null)[] = products.products.map(product => {
-    if (!product) { return null; }
-    return (<tr className={`table-row ${(products.selectedProduct && products.selectedProduct._id === product._id) ? "selected" : ""}`}
-      onClick={() => {
-        if(props.onSelect) props.onSelect(product);
-      }}
-      key={`product_${product._id}`}>
-      <th scope="row">{product._id}</th>
-      <td>{product.name}</td>
-      <td>{product.description}</td>
-       
-    </tr>);
-  });
+function ProductList(props: productListProps): JSX.Element {
+  const products: IProductState = useSelector(
+    (state: IStateType) => state.products
+  );
 
+  const productElements: (JSX.Element | null)[] = products.products.map(
+    (product, io) => {
+      if (!product) {
+        return null;
+      }
+      return (
+        <tr
+          className={`table-row ${
+            products.selectedProduct &&
+            products.selectedProduct._id === product._id
+              ? "selected"
+              : ""
+          }`}
+          onClick={() => {
+            if (props.onSelect) props.onSelect(product);
+          }}
+          key={`product_${io}`}
+        >
+          <td>{product.name}</td>
+          <td>{product.box}</td>
+          <td>{product.rack}</td>
+        </tr>
+      );
+    }
+  );
 
   return (
     <div className="table-responsive portlet">
       <table className="table">
         <thead className="thead-light">
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">description</th>
-            
+            <th scope="col">Box</th>
+            <th scope="col">Rack</th>
           </tr>
         </thead>
-        <tbody>
-          {productElements}
-        </tbody>
+        <tbody>{productElements}</tbody>
       </table>
     </div>
-
   );
 }
 

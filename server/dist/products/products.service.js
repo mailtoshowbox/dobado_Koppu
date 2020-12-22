@@ -12,12 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductsService = void 0;
+exports.DocumentsService = void 0;
 const mongoose_1 = require("mongoose");
 const common_1 = require("@nestjs/common");
 const mongoose_2 = require("@nestjs/mongoose");
 const product_schema_1 = require("./schemas/product.schema");
-let ProductsService = class ProductsService {
+let DocumentsService = class DocumentsService {
     constructor(productModel) {
         this.productModel = productModel;
     }
@@ -40,10 +40,10 @@ let ProductsService = class ProductsService {
         });
     }
 };
-ProductsService = __decorate([
+DocumentsService = __decorate([
     common_1.Injectable(),
-    __param(0, mongoose_2.InjectModel(product_schema_1.ProductClass.name)),
+    __param(0, mongoose_2.InjectModel(product_schema_1.Documents.name)),
     __metadata("design:paramtypes", [mongoose_1.Model])
-], ProductsService);
-exports.ProductsService = ProductsService;
+], DocumentsService);
+exports.DocumentsService = DocumentsService;
 //# sourceMappingURL=products.service.js.map

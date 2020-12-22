@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DocCategoryService } from './docCategory.service';
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { DocCategorySchema, DocCategoryClass } from './schemas/docCategory.schema';
+import { DocCategorySchema, DocCategories } from './schemas/docCategory.schema';
 import DbModule, {
   closeMongoConnection,
 } from '../../test/utils/db-test-module';
@@ -18,7 +18,7 @@ describe('ProductService', () => {
           connectionName: (new Date().getTime() * Math.random()).toString(16),
         }),
         MongooseModule.forFeature([
-          { name: DocCategoryClass.name, schema: DocCategorySchema },
+          { name: DocCategories.name, schema: DocCategorySchema },
         ]),
       ],
       providers: [DocCategoryService],

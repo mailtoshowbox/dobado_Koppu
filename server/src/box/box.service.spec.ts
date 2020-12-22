@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BoxService } from './box.service';
 import { MongooseModule, getConnectionToken } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { BoxClass, BoxSchema } from './schemas/box.schema';
+import { Boxes, BoxSchema } from './schemas/box.schema';
 import DbModule, {
   closeMongoConnection,
 } from '../../test/utils/db-test-module';
@@ -18,7 +18,7 @@ describe('ProductService', () => {
           connectionName: (new Date().getTime() * Math.random()).toString(16),
         }),
         MongooseModule.forFeature([
-          { name: BoxClass.name, schema: BoxSchema },
+          { name: Boxes.name, schema: BoxSchema },
         ]),
       ],
       providers: [BoxService],

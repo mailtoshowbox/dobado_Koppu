@@ -5,6 +5,7 @@ export interface IProduct {
     box: string;
     rack:  string;
     category :  string;
+    type_of_space:  string;
 }
 
 export enum ProductModificationStatus {

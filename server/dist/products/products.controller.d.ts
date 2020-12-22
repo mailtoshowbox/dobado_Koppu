@@ -1,12 +1,11 @@
-import { CreateProductDto } from './dto/create-product.dto';
-import { Product } from './interfaces/product.interface';
-import { ProductsService } from './products.service';
-export declare class ProductsController {
+import { CreateDocumentDto } from './dto/create-product.dto';
+import { Document } from './interfaces/product.interface';
+import { DocumentsService } from './products.service';
+export declare class DocumentsController {
     private readonly productsService;
-    constructor(productsService: ProductsService);
-    findAll(): Promise<Product[]>;
-    findOne(id: string): Promise<Product>;
-    create(createProductDto: CreateProductDto): Promise<Product>;
-    delete(id: string): Promise<Product>;
-    update(id: string, updateProductDto: CreateProductDto): Promise<Product>;
+    constructor(productsService: DocumentsService);
+    findAll(): Promise<Document[]>;
+    findOne(id: string): Promise<Document>;
+    create(createProductDto: CreateDocumentDto): Promise<Document>;
+    delete(id: string): Promise<Document>;
 }

@@ -64,8 +64,8 @@ let BoxService = class BoxService {
 };
 BoxService = __decorate([
     common_1.Injectable(),
-    __param(0, mongoose_2.InjectModel(box_schema_1.BoxClass.name)),
-    __param(1, mongoose_2.InjectModel(rack_schema_1.RackClass.name)),
+    __param(0, mongoose_2.InjectModel(box_schema_1.Boxes.name)),
+    __param(1, mongoose_2.InjectModel(rack_schema_1.Racks.name)),
     __metadata("design:paramtypes", [mongoose_1.Model,
         mongoose_1.Model])
 ], BoxService);

@@ -19,8 +19,8 @@ BoxModule = __decorate([
     common_1.Module({
         imports: [
             mongoose_1.MongooseModule.forFeature([
-                { name: box_schema_1.BoxClass.name, schema: box_schema_1.BoxSchema },
-                { name: rack_schema_1.RackClass.name, schema: rack_schema_1.RackSchema },
+                { name: box_schema_1.Boxes.name, schema: box_schema_1.BoxSchema },
+                { name: rack_schema_1.Racks.name, schema: rack_schema_1.RackSchema },
             ]),
         ],
         controllers: [box_controller_1.BoxController],

@@ -1,5 +1,7 @@
-export class CreateProductDto {
+export class CreateDocumentDto {
   readonly name: string;
   readonly description: string;
-  readonly qty: number;
+  readonly box: string;
+  readonly rack:  string;
+  readonly category :  string; 
 }

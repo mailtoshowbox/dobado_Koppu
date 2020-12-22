@@ -1,12 +1,12 @@
 import { Model } from 'mongoose';
-import { Product } from './interfaces/product.interface';
-import { ProductClass } from './schemas/product.schema';
-export declare class ProductsService {
+import { Document } from './interfaces/product.interface';
+import { Documents } from './schemas/product.schema';
+export declare class DocumentsService {
     private productModel;
-    constructor(productModel: Model<ProductClass>);
-    findAll(): Promise<Product[]>;
-    findOne(id: string): Promise<Product>;
-    create(product: Product): Promise<Product>;
-    delete(id: string): Promise<Product>;
-    update(id: string, product: Product): Promise<Product>;
+    constructor(productModel: Model<Documents>);
+    findAll(): Promise<Document[]>;
+    findOne(id: string): Promise<Document>;
+    create(product: Document): Promise<Document>;
+    delete(id: string): Promise<Document>;
+    update(id: string, product: Document): Promise<Document>;
 }

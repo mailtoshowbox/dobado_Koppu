@@ -7,39 +7,42 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { Product } from './interfaces/product.interface';
-import { ProductsService } from './products.service';
+import { CreateDocumentDto } from './dto/create-product.dto';
+import { Document } from './interfaces/product.interface';
+import { DocumentsService } from './products.service';
 
 @Controller('products')
-export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+export class DocumentsController {
+  constructor(private readonly productsService: DocumentsService) {}
 
   @Get()
-  findAll(): Promise<Product[]> {
+  findAll(): Promise<Document[]> {
     return this.productsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Product> {
+  findOne(@Param('id') id: string): Promise<Document> {
     return this.productsService.findOne(id);
   }
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto): Promise<Product> {
+  create(@Body() createProductDto: CreateDocumentDto): Promise<Document> {
+
+
+
     return this.productsService.create(createProductDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<Product> {
+  delete(@Param('id') id: string): Promise<Document> {
     return this.productsService.delete(id);
   }
 
-  @Put(':id')
+/*   @Put(':id')
   update(
     @Param('id') id: string,
     @Body() updateProductDto: CreateProductDto,
   ): Promise<Product> {
     return this.productsService.update(id, updateProductDto);
-  }
+  } */
 }

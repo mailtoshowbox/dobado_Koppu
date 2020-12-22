@@ -12,11 +12,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductsController = void 0;
+exports.DocumentsController = void 0;
 const common_1 = require("@nestjs/common");
 const create_product_dto_1 = require("./dto/create-product.dto");
 const products_service_1 = require("./products.service");
-let ProductsController = class ProductsController {
+let DocumentsController = class DocumentsController {
     constructor(productsService) {
         this.productsService = productsService;
     }
@@ -32,48 +32,37 @@ let ProductsController = class ProductsController {
     delete(id) {
         return this.productsService.delete(id);
     }
-    update(id, updateProductDto) {
-        return this.productsService.update(id, updateProductDto);
-    }
 };
 __decorate([
     common_1.Get(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
-], ProductsController.prototype, "findAll", null);
+], DocumentsController.prototype, "findAll", null);
 __decorate([
     common_1.Get(':id'),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], ProductsController.prototype, "findOne", null);
+], DocumentsController.prototype, "findOne", null);
 __decorate([
     common_1.Post(),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_product_dto_1.CreateProductDto]),
+    __metadata("design:paramtypes", [create_product_dto_1.CreateDocumentDto]),
     __metadata("design:returntype", Promise)
-], ProductsController.prototype, "create", null);
+], DocumentsController.prototype, "create", null);
 __decorate([
     common_1.Delete(':id'),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], ProductsController.prototype, "delete", null);
-__decorate([
-    common_1.Put(':id'),
-    __param(0, common_1.Param('id')),
-    __param(1, common_1.Body()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, create_product_dto_1.CreateProductDto]),
-    __metadata("design:returntype", Promise)
-], ProductsController.prototype, "update", null);
-ProductsController = __decorate([
+], DocumentsController.prototype, "delete", null);
+DocumentsController = __decorate([
     common_1.Controller('products'),
-    __metadata("design:paramtypes", [products_service_1.ProductsService])
-], ProductsController);
-exports.ProductsController = ProductsController;
+    __metadata("design:paramtypes", [products_service_1.DocumentsService])
+], DocumentsController);
+exports.DocumentsController = DocumentsController;
 //# sourceMappingURL=products.controller.js.map

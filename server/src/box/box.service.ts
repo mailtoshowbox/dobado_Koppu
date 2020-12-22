@@ -2,8 +2,8 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Box } from './interfaces/box.interface';
-import { BoxClass } from './schemas/box.schema';
-import { RackClass } from './schemas/rack.schema';
+import { Boxes } from './schemas/box.schema';
+import { Racks } from './schemas/rack.schema';
 import { Rack } from './interfaces/rack.interface';
 
 @Injectable()
@@ -13,11 +13,9 @@ export class BoxService {
     private boxModel: Model<BoxClass>,
   ) {} */
   constructor(
-    @InjectModel(BoxClass.name) private readonly boxModel:Model<BoxClass>,
-    @InjectModel(RackClass.name) private readonly rackModel:Model<RackClass>
-    ){
-
-    }
+    @InjectModel(Boxes.name) private readonly boxModel:Model<Boxes>,
+    @InjectModel(Racks.name) private readonly rackModel:Model<Racks>
+    ){}
 
   async findAll(): Promise<Box[]> {
     return await this.boxModel.find().exec();

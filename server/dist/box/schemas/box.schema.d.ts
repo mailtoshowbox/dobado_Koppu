@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-export declare class BoxClass extends Document {
+export declare class Boxes extends Document {
     name: string;
     racks: number;
     description: string;

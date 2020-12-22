@@ -2,13 +2,13 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DocCategory } from './interfaces/docCategory.interface';
-import { DocCategoryClass } from './schemas/docCategory.schema';
+import { DocCategories } from './schemas/docCategory.schema';
 
 @Injectable()
 export class DocCategoryService {
   constructor(
-    @InjectModel(DocCategoryClass.name)
-    private DocCategoryModel: Model<DocCategoryClass>,
+    @InjectModel(DocCategories.name)
+    private DocCategoryModel: Model<DocCategories>,
   ) {}
 
   async findAll(): Promise<DocCategory[]> {

@@ -42,7 +42,7 @@ export function updateDoc(item) {
 
 export function addNewDoc(newitem) {
   
-  return fetch(API_HOST_AT+'/product', {
+  return fetch(API_HOST_AT+'/products', {
     method: "POST",
     mode: "cors",
     headers: {

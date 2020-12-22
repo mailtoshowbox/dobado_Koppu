@@ -4,7 +4,8 @@ export type OnChangeModel = {
     value: string | number | boolean,
     error: string,
     touched: boolean,
-    field: string
+    field: string,
+    name: string,
 };
 
 export interface IFormStateField<T> {error: string, value: T};

@@ -6,24 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductsModule = void 0;
+exports.DocumentsModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const products_controller_1 = require("./products.controller");
 const products_service_1 = require("./products.service");
 const product_schema_1 = require("./schemas/product.schema");
-let ProductsModule = class ProductsModule {
+let DocumentsModule = class DocumentsModule {
 };
-ProductsModule = __decorate([
+DocumentsModule = __decorate([
     common_1.Module({
         imports: [
             mongoose_1.MongooseModule.forFeature([
-                { name: product_schema_1.ProductClass.name, schema: product_schema_1.ProductSchema },
+                { name: product_schema_1.Documents.name, schema: product_schema_1.DocumentSchema },
             ]),
         ],
-        controllers: [products_controller_1.ProductsController],
-        providers: [products_service_1.ProductsService],
+        controllers: [products_controller_1.DocumentsController],
+        providers: [products_service_1.DocumentsService],
     })
-], ProductsModule);
-exports.ProductsModule = ProductsModule;
+], DocumentsModule);
+exports.DocumentsModule = DocumentsModule;
 //# sourceMappingURL=products.module.js.map

@@ -1,0 +1,5 @@
+https://stackoverflow.com/questions/6502541/mongodb-query-multiple-collections-at-once
+
+https://wanago.io/2020/05/25/api-nestjs-authenticating-users-bcrypt-passport-jwt-cookies/
+
+https://www.red-gate.com/simple-talk/sql/t-sql-programming/faking-arrays-in-transact-sql/

@@ -143,6 +143,7 @@ const BoxForm: React.FC = () => {
                     maxLength={20}
                     label="Name"
                     placeholder="Name"
+                    customError={formState.name.error}
                   />
                 </div>
               </div>
@@ -156,6 +157,7 @@ const BoxForm: React.FC = () => {
                   maxLength={100}
                   label="Description"
                   placeholder="Description"
+                  customError={formState.description.error}
                 />
               </div>
 
@@ -166,6 +168,7 @@ const BoxForm: React.FC = () => {
                   value={formState.racks.value}
                   onChange={hasFormValueChanged}
                   label="No of Racks"
+                  customError={formState.racks.error}
                 />
               </div>
               <button className="btn btn-danger" onClick={() => cancelForm()}>

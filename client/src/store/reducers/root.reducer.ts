@@ -15,9 +15,12 @@ const initialState: IRootStateType = {
 };
 
 function rootReducer(state: IRootStateType = initialState, action: IActionBase): IRootStateType {
+
+
     switch (action.type) {
         case UPDATE_CURRENT_PATH:
             return { ...state, page: {area: action.area, subArea: action.subArea}};
+
         default:
             return state;
     }

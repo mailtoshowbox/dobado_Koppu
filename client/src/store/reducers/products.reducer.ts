@@ -1,6 +1,6 @@
 import { IProductState, IActionBase } from "../models/root.interface";
 import { ADD_PRODUCT, CHANGE_PRODUCT_PENDING_EDIT, EDIT_PRODUCT, REMOVE_PRODUCT,
-    CLEAR_PRODUCT_PENDING_EDIT, SET_MODIFICATION_STATE, CHANGE_PRODUCT_AMOUNT, LIST_PRODUCT} from "../actions/products.action";
+    CLEAR_PRODUCT_PENDING_EDIT, SET_MODIFICATION_STATE, CHANGE_PRODUCT_AMOUNT, LIST_PRODUCT, UPDATE_QR_CODE} from "../actions/products.action";
 import { IProduct, ProductModificationStatus } from "../models/product.interface";
 
 
@@ -12,7 +12,14 @@ const initialState: IProductState = {
 };
 
 function productsReducer(state: IProductState = initialState, action: IActionBase): IProductState {
-    switch (action.type) {         
+    switch (action.type) {    
+        case UPDATE_QR_CODE:{
+            console.log("qrCodeFor---",action); //qrCodeFor
+            const foundIndex: number = state.products.findIndex(pr => pr._id === action.qrCodeFor);
+            let products: IProduct[] = state.products;
+            products[foundIndex] = {...state.products[foundIndex], ['qr_code'] : action.qrCodeFor};
+            return { ...state, products: products };            
+        }  
         case LIST_PRODUCT: {
             return { ...state, products:  action.products};
         }        

@@ -2,6 +2,7 @@ export const ADD_NOTIFICATION: string = "ADD_NOTIFICATION";
 export const REMOVE_NOTIFICATION: string = "REMOVE_NOTIFICATION";
 
 export function addNotification(title: string, text: string): IAddNotificationActionType {
+    console.log("dfasdf");
     return { type: ADD_NOTIFICATION, text: text, title: title };
 }
 

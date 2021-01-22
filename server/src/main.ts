@@ -5,10 +5,12 @@ async function bootstrap() {
   //console.log("ENTRY");
   const app = await NestFactory.create(AppModule);
 
+  console.log("dsfasd-----");
+
   var whitelist = ['http://localhost:3001', 'http://localhost:3000', 'undefined'];
   app.enableCors({
   origin: function (origin, callback) {
-   // console.log("origin---",origin);
+    console.log("origin-->>-",origin);
     if (whitelist.indexOf(origin) !== -1) {
      // console.log("allowed cors for:", origin)
       callback(null, true)

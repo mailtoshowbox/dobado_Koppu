@@ -9,4 +9,5 @@ export type TextInputProps = {
     maxLength: number,
     inputClass?: string,
     field: string
+    customError :string
 };

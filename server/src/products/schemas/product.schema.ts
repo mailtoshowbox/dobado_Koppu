@@ -20,6 +20,9 @@ export class Documents extends Document {
 
   @Prop()
   category: string;
+
+  @Prop()
+  qr_code: string;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Documents);

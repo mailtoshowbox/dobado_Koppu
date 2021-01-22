@@ -25,6 +25,7 @@ BoxModule = __decorate([
         ],
         controllers: [box_controller_1.BoxController],
         providers: [box_service_1.BoxService],
+        exports: [box_service_1.BoxService, mongoose_1.MongooseModule]
     })
 ], BoxModule);
 exports.BoxModule = BoxModule;

@@ -36,8 +36,6 @@ const Products: React.FC = () => {
     (state: IStateType) => state.root.page
   );
 
-  //console.log("doccategories---", doccategories.docCategories.length);
-  console.log(doccategories);
   const numberItemsCount: number =
     doccategories.docCategories !== undefined
       ? doccategories.docCategories.length

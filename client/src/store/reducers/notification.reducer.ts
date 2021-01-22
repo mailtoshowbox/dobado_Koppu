@@ -8,6 +8,7 @@ const initialState: INotificationState = {
 function notificationReducer(state: INotificationState = initialState, action: IActionBase): INotificationState {
     switch (action.type) {
         case ADD_NOTIFICATION: {
+            console.log("dsfdsf-------");
             let maxId: number= Math.max.apply(Math, state.notifications.map(o =>  o.id));
             if(maxId === -Infinity) { maxId = 0; }
             let newItem = {

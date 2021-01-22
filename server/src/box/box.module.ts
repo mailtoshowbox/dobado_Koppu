@@ -15,5 +15,6 @@ import { Racks, RackSchema } from './schemas/rack.schema';
   ],
   controllers: [BoxController],
   providers: [BoxService ],
+  exports: [BoxService, MongooseModule]
 })
 export class BoxModule {}

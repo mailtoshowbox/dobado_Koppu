@@ -5,4 +5,5 @@ export function updateCurrentPath(area: string, subArea: string): IUpdateCurrent
 }
 
 
+
 interface IUpdateCurrentPathActionType { type: string, area: string, subArea: string };

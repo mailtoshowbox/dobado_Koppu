@@ -6,6 +6,15 @@ export interface IProduct {
     rack:  string;
     category :  string;
     type_of_space:  string;
+    qr_code:  string;
+   /*  box_info:  Array<IProduct>;
+    rack_info:   Array<Info>;
+    category_info :   Array<Info>; */
+}
+
+interface Info{
+    id : string
+    name : string,
 }
 
 export enum ProductModificationStatus {

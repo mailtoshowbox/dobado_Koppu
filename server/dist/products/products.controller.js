@@ -14,14 +14,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsController = void 0;
 const common_1 = require("@nestjs/common");
-const create_product_dto_1 = require("./dto/create-product.dto");
 const products_service_1 = require("./products.service");
 let DocumentsController = class DocumentsController {
     constructor(productsService) {
         this.productsService = productsService;
     }
     findAll() {
-        return this.productsService.findAll();
+        let res = this.productsService.findAll().then((succ = []) => {
+            let onfo = succ.map((doc) => {
+                const { box_info = [], rack_info = [], category_info = [] } = doc;
+                if (box_info.length > 0) {
+                    doc.box = box_info[0].name;
+                }
+                if (box_info.length > 0) {
+                    doc.rack = rack_info[0].name;
+                }
+                if (box_info.length > 0) {
+                    doc.category = category_info[0].name;
+                }
+                delete doc.box_info;
+                delete doc.rack_info;
+                delete doc.category_info;
+                return doc;
+            });
+            return onfo;
+        });
+        return res;
     }
     findOne(id) {
         return this.productsService.findOne(id);
@@ -31,6 +49,9 @@ let DocumentsController = class DocumentsController {
     }
     delete(id) {
         return this.productsService.delete(id);
+    }
+    getQRCode(generateQrCode) {
+        return this.productsService.getQRCode(generateQrCode);
     }
 };
 __decorate([
@@ -44,22 +65,29 @@ __decorate([
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "findOne", null);
 __decorate([
     common_1.Post(),
     __param(0, common_1.Body()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_product_dto_1.CreateDocumentDto]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "create", null);
 __decorate([
     common_1.Delete(':id'),
     __param(0, common_1.Param('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "delete", null);
+__decorate([
+    common_1.Post(':getQRCode'),
+    __param(0, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "getQRCode", null);
 DocumentsController = __decorate([
     common_1.Controller('products'),
     __metadata("design:paramtypes", [products_service_1.DocumentsService])

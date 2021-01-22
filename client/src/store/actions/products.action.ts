@@ -8,19 +8,21 @@ export const CHANGE_PRODUCT_PENDING_EDIT: string = "CHANGE_PRODUCT_PENDING_EDIT"
 export const CLEAR_PRODUCT_PENDING_EDIT: string = "CLEAR_PRODUCT_PENDING_EDIT";
 export const SET_MODIFICATION_STATE: string = "SET_MODIFICATION_STATE";
 export const LIST_PRODUCT: string = "LIST_PRODUCT";
+export const UPDATE_QR_CODE: string = "UPDATE_QR_CODE";
+ 
 
 
+export function updateQrCode(qrCode : string, qrCodeFor : any ) {
+    console.log("updateQrCode" 
+    );  
+    return { type: UPDATE_QR_CODE , qrCode, qrCodeFor};
+}
 
 
-    export function loadListOfProduct(items : IProductList) { 
-  
-            return { type: LIST_PRODUCT , products:  items  };
-        
-       
-    
-        }
-         
-        
+export function loadListOfProduct(items : IProductList) { 
+    return { type: LIST_PRODUCT , products:  items  };
+}
+            
 export function addProduct(product: IProduct): IAddProductActionType {
     return { type: ADD_PRODUCT, product: product };
 }

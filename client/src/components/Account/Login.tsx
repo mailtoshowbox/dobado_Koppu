@@ -3,28 +3,52 @@ import { OnChangeModel } from "../../common/types/Form.types";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/actions/account.actions";
 import TextInput from "../../common/components/TextInput";
+import { Link } from "react-router-dom";
+import { loginUser } from "../../services/index";
+import { addNotification } from "../../store/actions/notifications.action";
 
 const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
 
+  dispatch(addNotification("New Box added", `Box  added by you`));
   const [formState, setFormState] = useState({
     email: { error: "", value: "" },
-    password: { error: "", value: "" }
+    password: { error: "", value: "" },
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
-    setFormState({ ...formState, [model.field]: { error: model.error, value: model.value } });
+    setFormState({
+      ...formState,
+      [model.field]: { error: model.error, value: model.value },
+    });
   }
 
   function submit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    if(isFormInvalid()) { return; }
+    if (isFormInvalid()) {
+      return;
+    }
+    /*  loginUser({
+      email: formState.email.value,
+      password: formState.password.value,
+    })
+      .then(() => {
+        dispatch(login(formState.email.value));
+      })
+      .catch((err) => {
+        console.log(err);
+      }); */
+
     dispatch(login(formState.email.value));
   }
 
   function isFormInvalid() {
-    return (formState.email.error || formState.password.error
-      || !formState.email.value || !formState.password.value);
+    return (
+      formState.email.error ||
+      formState.password.error ||
+      !formState.email.value ||
+      !formState.password.value
+    );
   }
 
   function getDisabledClass(): string {
@@ -33,7 +57,6 @@ const Login: React.FC = () => {
   }
 
   return (
-
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-xl-10 col-lg-12 col-md-9">
@@ -48,18 +71,21 @@ const Login: React.FC = () => {
                     </div>
                     <form className="user" onSubmit={submit}>
                       <div className="form-group">
-
-                        <TextInput id="input_email"
+                        <TextInput
+                          id="input_email"
                           field="email"
                           value={formState.email.value}
                           onChange={hasFormValueChanged}
                           required={true}
                           maxLength={100}
                           label="Email"
-                          placeholder="Email" />
+                          customError={formState.email.error}
+                          placeholder="Email"
+                        />
                       </div>
                       <div className="form-group">
-                        <TextInput id="input_password"
+                        <TextInput
+                          id="input_password"
                           field="password"
                           value={formState.password.value}
                           onChange={hasFormValueChanged}
@@ -67,20 +93,25 @@ const Login: React.FC = () => {
                           maxLength={100}
                           type="password"
                           label="Password"
-                          placeholder="Password" />
+                          customError={formState.password.error}
+                          placeholder="Password"
+                        />
                       </div>
-                      <div className="form-group">
-                        <div className="custom-control custom-checkbox small">
-                          <input type="checkbox" className="custom-control-input" id="customCheck" />
-                          <label className="custom-control-label"
-                            htmlFor="customCheck">Remember Me</label>
-                        </div>
-                      </div>
+
                       <button
                         className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
-                        type="submit">
+                        type="submit"
+                      >
                         Login
                       </button>
+
+                      <Link
+                        className={`btn btn-warning btn-user btn-block ${getDisabledClass()}`}
+                        style={{ color: "#fff" }}
+                        to="/register"
+                      >
+                        Register
+                      </Link>
                     </form>
                   </div>
                 </div>

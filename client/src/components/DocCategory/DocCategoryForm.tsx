@@ -147,6 +147,7 @@ const ProductForm: React.FC = () => {
                     maxLength={100}
                     label="Name"
                     placeholder="Name"
+                    customError={formState.name.error}
                   />
                 </div>
               </div>
@@ -160,6 +161,7 @@ const ProductForm: React.FC = () => {
                   maxLength={100}
                   label="Description"
                   placeholder="Description"
+                  customError={formState.description.error}
                 />
               </div>
 

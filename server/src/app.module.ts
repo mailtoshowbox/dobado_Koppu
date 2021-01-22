@@ -3,10 +3,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { DocumentsModule } from './products/products.module';
 import { BoxModule } from './box/box.module';
 import { DocCategoryModule } from './docCategory/docCategory.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 import config from './config/keys';
-console.log("config---", config);
+
 
 @Module({
-  imports: [MongooseModule.forRoot(config.mongoURI), DocumentsModule,BoxModule, DocCategoryModule, ],
+  imports: [MongooseModule.forRoot(config.mongoURI), DocumentsModule,BoxModule, DocCategoryModule, AuthModule ]
+ 
 })
 export class AppModule {}

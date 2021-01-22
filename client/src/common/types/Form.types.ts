@@ -17,6 +17,8 @@ export interface IProductFormState {
     box: IFormStateField<string>;
     rack: IFormStateField<string>;
     category: IFormStateField<string>;
+    qr_code: IFormStateField<string>;
+    
      
 }
 export interface IBoxFormState {

@@ -6,7 +6,8 @@ export type NumberInputProps = {
     max?: number,
     min?: number,
     inputClass?: string,
-    field: string
+    field: string,
+    customError :string
 };
 
 export type OnChangeNumberModel = {

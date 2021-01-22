@@ -2,6 +2,47 @@
 const API_HOST_AT = "http://localhost:3000";
 
 
+export function loginUser(newitem) {
+  
+  return fetch(API_HOST_AT+'/auth/email/login', {
+    method: "POST",
+    mode: "cors",
+    headers: {
+          "Content-Type": "application/json"
+      },
+    body: JSON.stringify(newitem)
+  })
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
+export function registerUser(newitem) {
+  
+  return fetch(API_HOST_AT+'/auth/email/register', {
+    method: "POST",
+    mode: "cors",
+    headers: {
+          "Content-Type": "application/json"
+      },
+    body: JSON.stringify(newitem)
+  })
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
 
 export function getDocCategoryList() {
   return fetch(API_HOST_AT+"/doccategory")      
@@ -61,6 +102,27 @@ export function addNewDoc(newitem) {
     });
 }
 
+export function getNewQrCode(newitem) {
+  return fetch(API_HOST_AT+'/products/getQRCode', {
+    method: "POST",    
+    headers: {
+          "Content-Type": "application/json"
+      },
+    body: JSON.stringify(newitem)
+  })
+    .then((response) => { 
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    }).then((dtatus) =>  { 
+      return dtatus;
+     })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
 
 
 export function getDocumentList() {
@@ -95,9 +157,7 @@ export function getDocumentList() {
           });
 }
 
-export function getRacks(id) { 
-
-  console.log("id----++",id);
+export function getRacks(id) {  
    
   return fetch(API_HOST_AT+'/box/racks/'+id)
     .then(response => {

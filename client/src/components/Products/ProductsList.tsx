@@ -18,6 +18,8 @@ function ProductList(props: productListProps): JSX.Element {
       if (!product) {
         return null;
       }
+
+      // let cate = products.rack;
       return (
         <tr
           className={`table-row ${
@@ -31,7 +33,9 @@ function ProductList(props: productListProps): JSX.Element {
           }}
           key={`product_${io}`}
         >
+          <td>{io + 1}</td>
           <td>{product.name}</td>
+          <td>{product.category}</td>
           <td>{product.box}</td>
           <td>{product.rack}</td>
         </tr>
@@ -44,7 +48,9 @@ function ProductList(props: productListProps): JSX.Element {
       <table className="table">
         <thead className="thead-light">
           <tr>
+            <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col">Category</th>
             <th scope="col">Box</th>
             <th scope="col">Rack</th>
           </tr>

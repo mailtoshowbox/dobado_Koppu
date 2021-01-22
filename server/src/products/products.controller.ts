@@ -17,25 +17,46 @@ export class DocumentsController {
 
   @Get()
   findAll(): Promise<Document[]> {
-    return this.productsService.findAll();
+    let res = this.productsService.findAll().then((succ=[])=>{   
+     let onfo =  succ.map((doc)=>{
+        const {box_info=[], rack_info=[], category_info =[] } = doc;
+        if(box_info.length > 0){
+          doc.box= box_info[0].name;
+        }
+        if(box_info.length > 0){
+          doc.rack= rack_info[0].name;
+        }
+        if(box_info.length > 0){
+          doc.category= category_info[0].name;
+        }
+        delete doc.box_info;
+        delete doc.rack_info;
+        delete doc.category_info;
+       return doc;
+      })
+      return onfo;
+    });
+    return res;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Document> {
+  findOne(@Param('id') id: string)  {
     return this.productsService.findOne(id);
   }
 
   @Post()
-  create(@Body() createProductDto: CreateDocumentDto): Promise<Document> {
-
-
-
+  create(@Body() createProductDto)  {
     return this.productsService.create(createProductDto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<Document> {
+  delete(@Param('id') id: string)  {
     return this.productsService.delete(id);
+  }
+
+  @Post(':getQRCode')
+  getQRCode(@Body() generateQrCode)  {
+    return this.productsService.getQRCode(generateQrCode);
   }
 
 /*   @Put(':id')

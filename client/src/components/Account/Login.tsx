@@ -6,14 +6,15 @@ import TextInput from "../../common/components/TextInput";
 import { Link } from "react-router-dom";
 import { loginUser } from "../../services/index";
 import { addNotification } from "../../store/actions/notifications.action";
+import logo from "../../assets/images/login-logo.png";
 
 const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
 
   dispatch(addNotification("New Box added", `Box  added by you`));
   const [formState, setFormState] = useState({
-    email: { error: "", value: "" },
-    password: { error: "", value: "" },
+    email: { error: "", value: "test@gmail.com" },
+    password: { error: "", value: "test@123" },
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -59,15 +60,15 @@ const Login: React.FC = () => {
   return (
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-xl-10 col-lg-12 col-md-9">
+        <div className="col-lg-5 col-md-5">
           <div className="card o-hidden border-0 shadow-lg my-5">
             <div className="card-body p-0">
               <div className="row">
-                <div className="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                <div className="col-lg-6">
+                
+                <div className="col-lg-12">
                   <div className="p-5">
                     <div className="text-center">
-                      <h1 className="h4 text-gray-900 mb-4">Welcome!</h1>
+                      <h1 className="h4 text-gray-900 mb-4"><img src={logo}/></h1>
                     </div>
                     <form className="user" onSubmit={submit}>
                       <div className="form-group">

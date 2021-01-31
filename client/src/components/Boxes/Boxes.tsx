@@ -57,18 +57,18 @@ const Boxs: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-green">Box List</h6>
+            <div className="card-header py-2">
+              <h6 className="m-0 font-weight-bold text-white">Box List</h6>
               <div className="header-buttons">
-                <button className="btn btn-success btn-green" onClick={() =>
+                <button className="btn btn-border" onClick={() =>
                   dispatch(setModificationState(BoxModificationStatus.Create))}>
                   <i className="fas fa fa-plus"></i>
                 </button>
-                <button className="btn btn-success btn-blue" onClick={() =>
+                <button className="btn btn-border" onClick={() =>
                   dispatch(setModificationState(BoxModificationStatus.Edit))}>
                   <i className="fas fa fa-pen"></i>
                 </button>
-                <button className="btn btn-success btn-red" onClick={() => onBoxRemove()}>
+                <button className="btn btn-border btn-red-color" onClick={() => onBoxRemove()}>
                   <i className="fas fa fa-times"></i>
                 </button>
               </div>

@@ -8,7 +8,7 @@ import Register from "../../components/Account/Register";
 const Admin: React.FC = () => {
   return (
     <Fragment>
-      <div id="content-wrapper" className="d-flex flex-column">
+      <div id="content-wrapper" className="d-flex flex-column main-bg">
         <div id="content">
           <div className="container-fluid">
             <Switch>

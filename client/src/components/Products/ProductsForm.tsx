@@ -353,8 +353,8 @@ const ProductForm: React.FC = () => {
     <Fragment>
       <div className="col-xl-7 col-lg-7">
         <div className="card shadow mb-4">
-          <div className="card-header py-3">
-            <h6 className="m-0 font-weight-bold text-green">
+          <div className="card-header py-2">
+            <h6 className="m-0 font-weight-bold text-white">
               Document {isCreate ? "create" : "edit"}
             </h6>
           </div>

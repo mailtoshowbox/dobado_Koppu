@@ -59,8 +59,8 @@ const Users: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-green">Approved List</h6>
+            <div className="card-header py-2">
+              <h6 className="m-0 font-weight-bold text-white">Approved List</h6>
               <div className="header-buttons">
               </div>
             </div>
@@ -89,8 +89,8 @@ const Users: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-green">Pending for Approval</h6>
+            <div className="card-header py-2">
+              <h6 className="m-0 font-weight-bold text-white">Pending for Approval</h6>
               <div className="header-buttons">
               </div>
             </div>

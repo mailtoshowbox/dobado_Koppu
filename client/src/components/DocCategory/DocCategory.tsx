@@ -75,11 +75,11 @@ const Products: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-green">Document List</h6>
+            <div className="card-header py-2">
+              <h6 className="m-0 font-weight-bold text-white">Document List</h6>
               <div className="header-buttons">
                 <button
-                  className="btn btn-success btn-green"
+                  className="btn btn-border"
                   onClick={() =>
                     dispatch(
                       setModificationState(DocCategoryModificationStatus.Create)
@@ -89,7 +89,7 @@ const Products: React.FC = () => {
                   <i className="fas fa fa-plus"></i>
                 </button>
                 <button
-                  className="btn btn-success btn-blue"
+                  className="btn btn-border"
                   onClick={() =>
                     dispatch(
                       setModificationState(DocCategoryModificationStatus.Edit)
@@ -99,7 +99,7 @@ const Products: React.FC = () => {
                   <i className="fas fa fa-pen"></i>
                 </button>
                 <button
-                  className="btn btn-success btn-red"
+                  className="btn btn-border  btn-red-color"
                   onClick={() => onProductRemove()}
                 >
                   <i className="fas fa fa-times"></i>

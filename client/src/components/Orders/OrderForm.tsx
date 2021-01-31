@@ -101,8 +101,8 @@ const OrderForm: React.FC = () => {
   return (
     <Fragment>
       <div className="card shadow mb-4">
-        <div className="card-header py-3">
-          <h6 className="m-0 font-weight-bold text-green">Create order</h6>
+        <div className="card-header py-2">
+          <h6 className="m-0 font-weight-bold text-white">Create order</h6>
         </div>
         <div className="card-body">
           <form onSubmit={saveOrder}>

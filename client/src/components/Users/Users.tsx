@@ -27,13 +27,13 @@ const Users: React.FC = () => {
     (state: IStateType) => state.users.admins
   );
 
-  useEffect(() => {
+  /*  useEffect(() => {
     getUserList().then((items: IUserList) => {
       console.log("items---", items);
       dispatch(loadListOfuser(items));
     });
     dispatch(updateCurrentPath("users", "list"));
-  }, [path.area, dispatch]);
+  }, [path.area, dispatch]); */
 
   function setUserAdmin(user: IUser): void {
     dispatch(addAdmin(user));

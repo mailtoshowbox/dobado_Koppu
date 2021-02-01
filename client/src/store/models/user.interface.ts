@@ -4,3 +4,5 @@ export interface IUser {
     lastName: string;
     email: string;
 }
+
+export interface IUserList extends Array<IUser>{}

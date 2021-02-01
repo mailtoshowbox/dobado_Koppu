@@ -4,10 +4,12 @@ import { Switch, Route } from "react-router";
 
 import Login from "../../components/Account/Login";
 import Register from "../../components/Account/Register";
+import Notifications from "../../common/components/Notification";
 
 const Admin: React.FC = () => {
   return (
     <Fragment>
+      <Notifications />
       <div id="content-wrapper" className="d-flex flex-column main-bg">
         <div id="content">
           <div className="container-fluid">

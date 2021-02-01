@@ -33,7 +33,7 @@ export class UsersService {
       if(!userRegistered){
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
         var createdUser = new this.userModel(newUser);
-        createdUser.roles = ["User"];
+        createdUser.roles = ["Employee"];
         return await createdUser.save();
       } else if (!userRegistered.auth.email.valid) {
         return userRegistered;

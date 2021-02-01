@@ -18,6 +18,7 @@ export class ResponseError implements IResponse{
 
 export class ResponseSuccess implements IResponse{
   constructor (infoMessage:string, data?: any, notLog?: boolean) {
+    console.log("data----", data);
     this.success = true;
     this.message = infoMessage;
     this.data = data;

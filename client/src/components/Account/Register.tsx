@@ -5,9 +5,11 @@ import { login } from "../../store/actions/account.actions";
 import TextInput from "../../common/components/TextInput";
 import { registerUser } from "../../services/index";
 import "react-notifications/lib/notifications.css";
+import { addNotification } from "../../store/actions/notifications.action";
 
 const Register: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
+  //
 
   const [formState, setFormState] = useState({
     email: { error: "", value: "" },
@@ -60,10 +62,16 @@ const Register: React.FC = () => {
     };
     registerUser(boxInfo).then((status) => {
       setStartApi(false);
-      console.log("Nw USer Regidter--", status);
       const { success = false } = status;
       if (success) {
         setRegError({ status: false, message: "" });
+        dispatch(
+          addNotification(
+            "Registered successfully",
+            `please verify the email ${formState.email.value} to complete the registration`
+          )
+        );
+
         setFormState({
           email: { error: "", value: "" },
           password: { error: "", value: "" },
@@ -71,6 +79,9 @@ const Register: React.FC = () => {
           name: { error: "", value: "" },
         });
       } else {
+        dispatch(
+          addNotification("Registration failed", `please try again later`)
+        );
         setRegError({
           status: true,
           message: "Unable to register the user",

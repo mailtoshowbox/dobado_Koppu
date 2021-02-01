@@ -14,7 +14,6 @@ import { AccountRoute } from "./common/components/AccountRoute";
 const App: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
 
-  console.log("DEMO-----", account, !account.email);
   return (
     <div className="App" id="wrapper">
       <Router>{account.email ? <Admin /> : <Client />}</Router>

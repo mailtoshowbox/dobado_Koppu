@@ -145,10 +145,10 @@ const ProductForm: React.FC = () => {
         });
       }
     }
-    checkPossibleToGenerateQR({
+    /*  checkPossibleToGenerateQR({
       ...formState,
       [model.field]: { error: model.error, value: model.value },
-    });
+    }); */
   }
   function hasRacksValueChanged(model: OnChangeModel): void {
     const newObj: any = boxRacks;
@@ -207,7 +207,7 @@ const ProductForm: React.FC = () => {
           dispatch(
             addNotification(
               "New Docuemnt added",
-              `Box ${formState.name.value} added by you`
+              `Docuemnt ${formState.name.value} added by you`
             )
           );
           dispatch(clearSelectedProduct());
@@ -251,7 +251,6 @@ const ProductForm: React.FC = () => {
     return isError ? "disabled" : "";
   }
   function isFormInvalid(): boolean {
-    console.log("formState---->>>", formState);
     let formIsValid = true;
     if (formState.name.value === "") {
       formIsValid = false;
@@ -501,10 +500,7 @@ const ProductForm: React.FC = () => {
               <button className="btn btn-danger" onClick={() => cancelForm()}>
                 Cancel
               </button>
-              <button
-                type="submit"
-                className={`btn btn-success left-margin ${getDisabledClass()}`}
-              >
+              <button type="submit" className={`btn btn-success left-margin `}>
                 Save
               </button>
             </form>

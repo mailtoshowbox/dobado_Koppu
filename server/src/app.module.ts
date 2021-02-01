@@ -9,7 +9,7 @@ import config from './config/keys';
 
 
 @Module({
-  imports: [MongooseModule.forRoot(config.mongoURI), DocumentsModule,BoxModule, DocCategoryModule, AuthModule ]
+  imports: [MongooseModule.forRoot(config.mongoURI), DocumentsModule,BoxModule, DocCategoryModule, AuthModule,UsersModule  ]
  
 })
 export class AppModule {}

@@ -1,7 +1,14 @@
-import { IUser } from "../models/user.interface";
+import { IUser,IUserList } from "../models/user.interface";
 
 export const ADD_ADMIN: string = "ADD_ADMIN";
 export const REMOVE_ADMIN: string = "REMOVE_ADMIN";
+export const LIST_USER: string = "LIST_USER";
+
+
+export function loadListOfuser(items : IUserList) {   
+    return { type: LIST_USER , users:  items  };      
+}
+
 
 export function addAdmin(user: IUser): IAddAdminActionType {
     return { type: ADD_ADMIN, user: user };

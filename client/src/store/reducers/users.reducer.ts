@@ -1,10 +1,10 @@
 import { IUserState, IActionBase } from "../models/root.interface";
-import { ADD_ADMIN, REMOVE_ADMIN } from "../actions/users.action";
+import { ADD_ADMIN, REMOVE_ADMIN,LIST_USER } from "../actions/users.action";
 
 const initialState: IUserState = {
-    users: [
-        { id: 1, firstName: "John", lastName: "Smith", email: "jsmith@em.pl", },
-        { id: 2, firstName: "Jannice", lastName: "Bing", email: "ohmy@fr.pl" }
+    users: [         { id: 1, firstName: "John", lastName: "Smith", email: "jsmith@em.pl", },
+    { id: 2, firstName: "Jannice", lastName: "Bing", email: "ohmy@fr.pl" }
+
     ],
     admins: [
         { id: 3, firstName: "Jannet", lastName: "Crock", email: "jcrock@em.pl" },
@@ -13,6 +13,10 @@ const initialState: IUserState = {
 
 function userReducer(state: IUserState = initialState, action: IActionBase): IUserState {
     switch (action.type) {
+        case LIST_USER: {
+            console.log("USERLIST----", action.users.data.data.users);
+            return { ...state, users:  action.users.data.data.users};
+        } 
         case ADD_ADMIN: {
             return { ...state, users: state.users.filter(x=>x.id !== action.user.id), admins: [...state.admins, action.user]};
         }

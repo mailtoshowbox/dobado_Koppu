@@ -60,8 +60,8 @@ const Products: React.FC = () => {
       dispatch(loadListOfBox(items));
     });
 
-    dispatch(clearSelectedProduct());
-    dispatch(updateCurrentPath("products", "list"));
+    // dispatch(clearSelectedProduct());
+    // dispatch(updateCurrentPath("products", "list"));
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IProduct): void {
@@ -114,12 +114,12 @@ const Products: React.FC = () => {
                 >
                   <i className="fas fa fa-pen"></i>
                 </button>
-                <button
+                {/*  <button
                   className="btn btn-border btn-red-color"
                   onClick={() => onProductRemove()}
                 >
                   <i className="fas fa fa-times"></i>
-                </button>
+                </button> */}
               </div>
             </div>
             {products.modificationState === ProductModificationStatus.Create ||

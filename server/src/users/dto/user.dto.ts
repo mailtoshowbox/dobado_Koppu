@@ -6,6 +6,7 @@ export class UserDto {
     this.name = object.name;
     this.surname = object.surname;
     this.email = object.email;
+    this.roles = object.roles;
     this.phone = object.phone;
     this.birthdaydate = object.birthdaydate;
     this.settings = new SettingsDto(object.settings);
@@ -22,6 +23,7 @@ export class UserDto {
   readonly name: string;
   readonly surname: string;
   readonly email: string;
+  readonly roles: string;
   readonly phone: string;
   readonly birthdaydate: Date;
   settings: SettingsDto

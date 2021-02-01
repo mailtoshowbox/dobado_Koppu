@@ -98,12 +98,12 @@ const Products: React.FC = () => {
                 >
                   <i className="fas fa fa-pen"></i>
                 </button>
-                <button
+                {/*  <button
                   className="btn btn-border  btn-red-color"
                   onClick={() => onProductRemove()}
                 >
                   <i className="fas fa fa-times"></i>
-                </button>
+                </button> */}
               </div>
             </div>
             {doccategories.modificationState ===

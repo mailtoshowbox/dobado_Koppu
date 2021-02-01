@@ -15,7 +15,6 @@ const Notifications: React.FC = () => {
   }
 
   const notificationList = notifications.map((notification) => {
-    console.log("sdfsdfdsfdf");
     return (
       <div className="toast" key={`notification_${notification.id}`}>
         <div className="toast-header">

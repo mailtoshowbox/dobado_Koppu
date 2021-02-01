@@ -55,7 +55,7 @@ export class AuthService {
         {new: true, upsert: true}
       );
 
-      console.log("emailVerificationModel----", emailVerificationModel);
+      console.log("emailVerificationModel---->", emailVerificationModel);
       return true;
     }
   }
@@ -126,9 +126,11 @@ export class AuthService {
     
 
     if(model && model.emailToken){
+
+      console.log("config---", config);
         let transporter = nodemailer.createTransport({
             host: config.mail.host,
-          //  port: config.mail.port,
+            port: config.mail.port,
             secure: config.mail.secure, // true for 465, false for other ports
             auth: {
                 user: config.mail.user,

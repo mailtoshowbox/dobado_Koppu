@@ -5,16 +5,17 @@ import { login } from "../../store/actions/account.actions";
 import TextInput from "../../common/components/TextInput";
 import { Link } from "react-router-dom";
 import { loginUser } from "../../services/index";
-import { addNotification } from "../../store/actions/notifications.action";
+import {
+  addNotification,
+  parseApiResult,
+} from "../../store/actions/notifications.action";
 import logo from "../../assets/images/login-logo.png";
 
 const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
-
-  dispatch(addNotification("New Box added", `Box  added by you`));
   const [formState, setFormState] = useState({
     email: { error: "", value: "test@gmail.com" },
-    password: { error: "", value: "test@123" },
+    password: { error: "", value: "test" },
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -29,18 +30,32 @@ const Login: React.FC = () => {
     if (isFormInvalid()) {
       return;
     }
-    /*  loginUser({
+    loginUser({
       email: formState.email.value,
       password: formState.password.value,
     })
-      .then(() => {
-        dispatch(login(formState.email.value));
+      .then((status) => {
+        const { titleMesage = "", bodyMessage = "" } = parseApiResult(status);
+        const { success = false } = status;
+        if (success) {
+          dispatch(addNotification(titleMesage, bodyMessage));
+
+          dispatch(login(status.data));
+        } else {
+          dispatch(
+            addNotification(
+              titleMesage,
+              bodyMessage ? bodyMessage : "Unable to login"
+            )
+          );
+        }
+        console.log("statusstatus", status);
       })
       .catch((err) => {
         console.log(err);
-      }); */
+      });
 
-    dispatch(login(formState.email.value));
+    // dispatch(login(formState.email.value));
   }
 
   function isFormInvalid() {
@@ -64,11 +79,12 @@ const Login: React.FC = () => {
           <div className="card o-hidden border-0 shadow-lg my-5">
             <div className="card-body p-0">
               <div className="row">
-                
                 <div className="col-lg-12">
                   <div className="p-5">
                     <div className="text-center">
-                      <h1 className="h4 text-gray-900 mb-4"><img src={logo}/></h1>
+                      <h1 className="h4 text-gray-900 mb-4">
+                        <img src={logo} />
+                      </h1>
                     </div>
                     <form className="user" onSubmit={submit}>
                       <div className="form-group">

@@ -8,7 +8,7 @@ export default {
         "authSource": null
     },
     "host": {
-        "url": "<server-url>",
+        "url": "localhost",
         "port": "3000"
     },
     "jwt": {
@@ -16,11 +16,11 @@ export default {
         "expiresIn": 36000000
     },
     "mail":{
-        "host": "smtp.gmail.com",
-        "port": "<port>",
-        "secure": false,
-        "user": "yusuff007@gmail.com",
-        "pass": "nisha007"
+        "host": "smtp.mailtrap.io",
+        "port": "2525",
+        "secure": true,
+        "user": "02ebe9d026e397",
+        "pass": "e3763186314862"
     }
   }
   

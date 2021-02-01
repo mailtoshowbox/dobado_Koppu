@@ -2,6 +2,23 @@
 const API_HOST_AT = "http://localhost:3000";
 
 
+
+
+export function getUserList() {
+  return fetch(API_HOST_AT+"/users/list")      
+        .then(response => {      
+          if (!response.ok) {      
+            handleResponseError(response);      
+          }      
+          return response.json();      
+        })      
+        .then(json => {   
+            return json;
+        })      
+        .catch(error => {      
+          handleError(error);      
+        });
+}
 export function loginUser(newitem) {
   
   return fetch(API_HOST_AT+'/auth/email/login', {

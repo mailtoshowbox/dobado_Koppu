@@ -53,9 +53,7 @@ export class AuthService {
           timestamp: new Date()
         },
         {new: true, upsert: true}
-      );
-
-      console.log("emailVerificationModel---->", emailVerificationModel);
+      ); 
       return true;
     }
   }
@@ -127,7 +125,6 @@ export class AuthService {
 
     if(model && model.emailToken){
 
-      console.log("config---", config);
         let transporter = nodemailer.createTransport({
             host: config.mail.host,
             port: config.mail.port,

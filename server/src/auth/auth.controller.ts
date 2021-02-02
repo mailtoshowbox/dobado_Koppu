@@ -29,7 +29,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async register(@Body() createUserDto: CreateUserDto): Promise<IResponse> {    
     try { 
-      var newUser = new UserDto(await this.userService.createNewUser(createUserDto)); 
+      var newUser = new UserDto(await this.userService.createNewUser(createUserDto));  
       await this.authService.createEmailToken(newUser.email); 
       await this.authService.saveUserConsent(newUser.email); 
       var sent = await this.authService.sendEmailVerification(newUser.email);

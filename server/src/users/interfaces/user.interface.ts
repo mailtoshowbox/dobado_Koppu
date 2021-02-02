@@ -9,6 +9,7 @@ export interface User extends Document{
   birthdaydate: Date;
   password: string;
   roles: string[];
+  approved : boolean;
   auth: {
     email : {
       valid : boolean,
@@ -25,5 +26,6 @@ export interface User extends Document{
   photos: {
     profilePic: Photo;
     gallery: Photo[];
-  }
+  }, 
+  
 }

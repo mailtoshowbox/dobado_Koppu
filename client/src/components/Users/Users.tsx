@@ -12,12 +12,12 @@ import {
   loadListOfuser,
 } from "../../store/actions/users.action";
 import { updateCurrentPath } from "../../store/actions/root.actions";
-import { getUserList } from "../../services/index";
+import { getUserList, approveUser } from "../../services/index";
 import { IUser, IUserList } from "../../store/models/user.interface";
-
+import SelectInput from "../../common/components/Select";
+import { OnChangeModel } from "../../common/types/Form.types";
 const Users: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
-  dispatch(updateCurrentPath("user", "list"));
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
@@ -27,13 +27,13 @@ const Users: React.FC = () => {
     (state: IStateType) => state.users.admins
   );
 
-  /*  useEffect(() => {
+  useEffect(() => {
     getUserList().then((items: IUserList) => {
       console.log("items---", items);
       dispatch(loadListOfuser(items));
     });
     dispatch(updateCurrentPath("users", "list"));
-  }, [path.area, dispatch]); */
+  }, [path.area, dispatch]);
 
   function setUserAdmin(user: IUser): void {
     dispatch(addAdmin(user));
@@ -42,40 +42,94 @@ const Users: React.FC = () => {
   function setUserNotAdmin(admin: IUser): void {
     dispatch(removeAdmin(admin));
   }
+  function activateUser(admin: IUser, model: OnChangeModel): void {
+    approveUser({ user: admin, selected: model }).then((status) => {
+      getUserList().then((items: IUserList) => {
+        console.log("items---", items);
+        dispatch(loadListOfuser(items));
+      });
+      console.log("APproved Suer");
+
+      // dispatch(addNotification("New Box added", `User  added by you`));
+      //  dispatch(clearSelectedBox());
+      //  dispatch(setModificationState(BoxModificationStatus.None));
+    });
+
+    // dispatch(removeAdmin(admin));
+  }
 
   const userElements: JSX.Element[] = users.map((user) => {
+    console.log("user----", user);
+    const verified = user.auth.email.valid;
+    const roles = user.roles[0];
     return (
       <tr className={`table-row`} key={`user_${user.id}`}>
         <th scope="row">{user.id}</th>
-        <td>{user.firstName}</td>
-        <td>{user.lastName}</td>
+        <td>{user.name}</td>
+
         <td>{user.email}</td>
-        <td>
-          <button
-            className="btn btn-success"
-            onClick={() => setUserAdmin(user)}
-          >
-            Approve
-          </button>{" "}
-        </td>
+        {verified && (
+          <td>
+            {/*   <button
+              className="btn btn-success"
+              onClick={() => activateUser(user)}
+            >
+              Activate
+            </button> */}
+            <SelectInput
+              id="input_category"
+              field="Activate as"
+              label=""
+              options={[
+                { id: "Documentcreater", name: "Document Creater" },
+                { id: "Qualityuser", name: "Quality User" },
+                { id: "Deactivated", name: "Waiting for Approval" },
+              ]}
+              required={true}
+              onChange={(event: any) => activateUser(user, event)}
+              value={roles}
+              type="select"
+              customError="dsf"
+            />{" "}
+          </td>
+        )}
+        {!verified && (
+          <td>
+            <button className="btn btn-warning">Email not verified</button>{" "}
+          </td>
+        )}
       </tr>
     );
   });
 
   const adminElements: JSX.Element[] = admins.map((admin) => {
+    const roless = admin.roles[0];
+
     return (
       <tr className={`table-row`} key={`user_${admin.id}`}>
         <th scope="row">{admin.id}</th>
-        <td>{admin.firstName}</td>
-        <td>{admin.lastName}</td>
+        <td>{admin.name}</td>
+
         <td>{admin.email}</td>
         <td>
-          <button
-            className="btn btn-danger"
-            onClick={() => setUserNotAdmin(admin)}
-          >
-            Revert
-          </button>{" "}
+          <button className="btn btn-success">{admin.roles[0]}</button>{" "}
+        </td>
+        <td>
+          <SelectInput
+            id="input_category"
+            field="Activate as"
+            label=""
+            options={[
+              { id: "Documentcreater", name: "Document Creater" },
+              { id: "Qualityuser", name: "Quality User" },
+              { id: "Deactivated", name: "Deactivated" },
+            ]}
+            required={true}
+            onChange={(event: any) => activateUser(admin, event)}
+            value={roless}
+            type="select"
+            customError="dsf"
+          />{" "}
         </td>
       </tr>
     );
@@ -114,10 +168,11 @@ const Users: React.FC = () => {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">First name</th>
-                      <th scope="col">Last name</th>
+                      <th scope="col">Name</th>
+
                       <th scope="col">Email</th>
-                      <th scope="col">Admin</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Revert as</th>
                     </tr>
                   </thead>
                   <tbody>{adminElements}</tbody>
@@ -143,10 +198,9 @@ const Users: React.FC = () => {
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">First name</th>
-                      <th scope="col">Last name</th>
+                      <th scope="col">Name</th>
                       <th scope="col">Email</th>
-                      <th scope="col">Admin</th>
+                      <th scope="col">Activate as</th>
                     </tr>
                   </thead>
                   <tbody>{userElements}</tbody>

@@ -18,7 +18,8 @@ export class UserDto {
       object.photos.gallery.forEach(photo => {
         this.photos.gallery.push(new PhotoDto(photo));
       });
-    }
+    };
+    this.approved = object.approved;
   };
   readonly name: string;
   readonly surname: string;
@@ -26,9 +27,11 @@ export class UserDto {
   readonly roles: string;
   readonly phone: string;
   readonly birthdaydate: Date;
+  readonly approved: boolean;
   settings: SettingsDto
   photos: {
     profilePic: PhotoDto;
     gallery: PhotoDto[];
   };
+  
 }

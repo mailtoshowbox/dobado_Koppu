@@ -50,10 +50,21 @@ export class UsersController {
   async allUsers(): Promise<IResponse>{ 
     try {
       var users =  await this.usersService.findAll();
-      console.log("users---", users);
+    //  console.log("users---", users);
       return new ResponseSuccess("COMMON.SUCCESS", new UsersDto({users : users}));
     } catch(error){
       return new ResponseError("COMMON.ERROR.GENERIC_ERROR", error);
+    }
+  }
+
+  @Post('profile/updateStatus')
+  async updateStatus(@Body() profileDto: ProfileDto): Promise<IResponse> {
+   
+    try {
+      var user =  await this.usersService.updateProfile(profileDto);
+      return new ResponseSuccess("PROFILE.UPDATE_SUCCESS", new UserDto(user));
+    } catch(error){
+      return new ResponseError("PROFILE.UPDATE_ERROR", error);
     }
   }
   

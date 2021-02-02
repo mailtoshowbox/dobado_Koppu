@@ -19,7 +19,7 @@ export class UsersService {
 
   
   async findAll(): Promise<User[]> {
-    return await this.userModel.find().exec();
+    return await this.userModel.find({ roles: { $nin: ["Superadmin"] } }).exec();
   }
 
   async findByEmail(email: string): Promise<User> {
@@ -27,13 +27,17 @@ export class UsersService {
   }
 
   async createNewUser(newUser: CreateUserDto): Promise<User> { 
+    
     if(this.isValidEmail(newUser.email) && newUser.password){
-      var userRegistered = await this.findByEmail(newUser.email);
-      console.log("userRegistered----", userRegistered);
+      var userRegistered = await this.findByEmail(newUser.email); 
       if(!userRegistered){
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
+        newUser.approved =false;
         var createdUser = new this.userModel(newUser);
-        createdUser.roles = ["Employee"];
+        createdUser.approved = false; 
+        createdUser.roles = ["Deactivated"];
+        console.log("createdUser----", createdUser);
+       // 
         return await createdUser.save();
       } else if (!userRegistered.auth.email.valid) {
         return userRegistered;
@@ -64,15 +68,19 @@ export class UsersService {
   }
 
   async updateProfile(profileDto: ProfileDto): Promise<User> {
-    let userFromDb = await this.userModel.findOne({ email: profileDto.email});
+
+    console.log("profileDtoSERVCIE--", profileDto);
+    let userFromDb = await this.userModel.findOne({ _id: profileDto._id});
+
+    console.log("userFromDb---", userFromDb);
     if(!userFromDb) throw new HttpException('COMMON.USER_NOT_FOUND', HttpStatus.NOT_FOUND);
 
-    if(profileDto.name) userFromDb.name = profileDto.name;
-    if(profileDto.surname) userFromDb.surname = profileDto.surname;
-    if(profileDto.phone) userFromDb.phone = profileDto.phone;
-    if(profileDto.birthdaydate) userFromDb.birthdaydate = profileDto.birthdaydate;
+    if(profileDto.roles) userFromDb.roles = [...profileDto.roles];
+   // if(profileDto.surname) userFromDb.surname = profileDto.surname;
+   // if(profileDto.phone) userFromDb.phone = profileDto.phone;
+   // if(profileDto.birthdaydate) userFromDb.birthdaydate = profileDto.birthdaydate;
 
-    if(profileDto.profilepicture){
+   /*  if(profileDto.profilepicture){
       let base64Data = profileDto.profilepicture.replace(/^data:image\/png;base64,/, "");
       let dir = "../public/users/"+ userFromDb.email;
       
@@ -83,7 +91,7 @@ export class UsersService {
         userFromDb.photos.profilePic.date = new Date();
         userFromDb.photos.profilePic.url = "/public/users/" + userFromDb.email + "/profilepic.png"
       }
-    }
+    } */
     
     await userFromDb.save();
     return userFromDb;

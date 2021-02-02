@@ -59,6 +59,7 @@ const Register: React.FC = () => {
       name: formState.name.value,
       email: formState.email.value,
       password: formState.password.value,
+      approved: false,
     };
     registerUser(boxInfo).then((status) => {
       setStartApi(false);

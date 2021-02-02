@@ -3,6 +3,36 @@ const API_HOST_AT = "http://localhost:3000";
 
 
 
+export function approveUser(newitem) { 
+  const {value=0} = newitem.selected;
+  let role = '';
+  /* if(value ==="1"){
+    role ="Documentcreater";
+  }else if(value ==="2"){
+    role ="Qualityuser";
+  }else{
+    role ="Employee";
+  } */
+  let ypdatedStaus= Object.assign({...newitem.user,roles : [value] });
+  
+  return fetch(API_HOST_AT+'/users/profile/updateStatus', {
+    method: "POST",
+    mode: "cors",
+    headers: {
+          "Content-Type": "application/json"
+      },
+    body: JSON.stringify(ypdatedStaus)
+  })
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
 
 export function getUserList() {
   return fetch(API_HOST_AT+"/users/list")      

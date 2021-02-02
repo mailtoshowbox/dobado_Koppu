@@ -2,20 +2,22 @@ import { IUserState, IActionBase } from "../models/root.interface";
 import { ADD_ADMIN, REMOVE_ADMIN,LIST_USER } from "../actions/users.action";
 
 const initialState: IUserState = {
-    users: [         { id: 1, firstName: "John", lastName: "Smith", email: "jsmith@em.pl", },
-    { id: 2, firstName: "Jannice", lastName: "Bing", email: "ohmy@fr.pl" }
+    users: [        
 
     ],
     admins: [
-        { id: 3, firstName: "Jannet", lastName: "Crock", email: "jcrock@em.pl" },
+         
     ]
 };
 
 function userReducer(state: IUserState = initialState, action: IActionBase): IUserState {
     switch (action.type) {
-        case LIST_USER: {
-            console.log("USERLIST----", action.users.data.data.users);
-            return { ...state, users:  action.users.data.data.users};
+        case LIST_USER: { 
+            return { ...state, 
+                users:  action.users.data.data.users.filter((x:any)=>x.roles[0] === "Deactivated"),
+                admins:  action.users.data.data.users.filter((x:any)=>x.roles[0] !== "Deactivated"),
+
+            };
         } 
         case ADD_ADMIN: {
             return { ...state, users: state.users.filter(x=>x.id !== action.user.id), admins: [...state.admins, action.user]};

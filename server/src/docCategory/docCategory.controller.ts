@@ -5,13 +5,15 @@ import {
   Put,
   Delete,
   Body,
-  Param,
+  Param,UseGuards
 } from '@nestjs/common';
 import { CreateDocCategoryDto } from './dto/create-docCategory.dto';
 import { DocCategory } from './interfaces/docCategory.interface';
 import { DocCategoryService } from './docCategory.service';
+import { AuthGuard } from '../../node_modules/@nestjs/passport';
 
 @Controller('DocCategory')
+@UseGuards(AuthGuard('jwt'))
 export class DocCategoryController {
   constructor(private readonly DocCategoryService: DocCategoryService) {}
 

@@ -25,7 +25,7 @@ import { UsersDto } from './dto/users.dto';
 
 
 @Controller('users')
-//@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @UseInterceptors(LoggingInterceptor, TransformInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -59,7 +59,8 @@ export class UsersController {
 
   @Post('profile/updateStatus')
   async updateStatus(@Body() profileDto: ProfileDto): Promise<IResponse> {
-   
+    console
+    .log("profileDto", profileDto);
     try {
       var user =  await this.usersService.updateProfile(profileDto);
       return new ResponseSuccess("PROFILE.UPDATE_SUCCESS", new UserDto(user));

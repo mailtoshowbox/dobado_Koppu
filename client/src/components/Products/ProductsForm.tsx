@@ -43,8 +43,11 @@ import {
 } from "../../common/types/Form.types";
 import SelectInput from "../../common/components/Select";
 import Checkbox from "../../common/components/Checkbox";
+import { IAccount } from "../../store/models/account.interface";
 
 const ProductForm: React.FC = () => {
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+
   const dispatch: Dispatch<any> = useDispatch();
   const products: IProductState | null = useSelector(
     (state: IStateType) => state.products
@@ -200,8 +203,8 @@ const ProductForm: React.FC = () => {
           category: formState.category.value,
           qr_code: formState.qr_code.value,
         };
-        addNewDoc(boxInfo).then((status) => {
-          getDocumentList().then((items: IProductList) => {
+        addNewDoc(boxInfo, account.auth).then((status) => {
+          getDocumentList(account.auth).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(

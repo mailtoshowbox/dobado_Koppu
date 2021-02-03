@@ -4,7 +4,6 @@ import ProductForm from "./DocCategoryForm";
 import TopCard from "../../common/components/TopCard";
 import "./DocCategory.css";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCurrentPath } from "../../store/actions/root.actions";
 import {
   IDocCategoryState,
   IStateType,
@@ -12,10 +11,8 @@ import {
 } from "../../store/models/root.interface";
 import Popup from "reactjs-popup";
 import {
-  removeDocCategory,
   clearSelectedDocCategory,
   setModificationState,
-  changeDocCategoryAmount,
   loadListOfDocCategory,
   changeSelectedDocCategory,
 } from "../../store/actions/doccategory.action";
@@ -26,8 +23,11 @@ import {
   IDocCategoryList,
 } from "../../store/models/doccategory.interface";
 import { getDocCategoryList } from "../../services/index";
+import { IAccount } from "../../store/models/account.interface";
 
 const Products: React.FC = () => {
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+
   const dispatch: Dispatch<any> = useDispatch();
   const doccategories: IDocCategoryState = useSelector(
     (state: IStateType) => state.docCategories
@@ -43,7 +43,7 @@ const Products: React.FC = () => {
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
-    getDocCategoryList().then((items: IDocCategoryList) => {
+    getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
     });
   }, [path.area, dispatch]);

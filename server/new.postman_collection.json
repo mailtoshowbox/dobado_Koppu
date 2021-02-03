@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "2fe3d3aa-6b29-4f69-a4f9-3f77493377af",
+		"name": "new",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "amoyutyu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFmYWxhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlN1cGVyYWRtaW4iXSwiaWF0IjoxNjEyMzUxNjM3LCJleHAiOjE2NDgzNTE2Mzd9.kz9fCk8VaA8YucE69rjZ3sjpmBPZhQLscpCTGoIF8g8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inl1c3VmZjAwN0BnbWFpbC5jb20iLCJyb2xlcyI6WyJTdXBlcmFkbWluIl0sImlhdCI6MTYxMjI4OTk3MywiZXhwIjoxNjQ4Mjg5OTczfQ.XEtcY7VhXVcEOgignY4hbgAapI5Onf_tD9Z8eCM3ZSA",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/users/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

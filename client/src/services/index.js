@@ -1,9 +1,11 @@
 
+import { getDocCustomGetOptions, getDocCustomPostOptions, getDocCustomPutOptions } from "../common/utils";
+
 const API_HOST_AT = "http://localhost:3000";
 
 
+export function approveUser(newitem, options) { 
 
-export function approveUser(newitem) { 
   const {value=0} = newitem.selected;
   let role = '';
   /* if(value ==="1"){
@@ -14,15 +16,9 @@ export function approveUser(newitem) {
     role ="Employee";
   } */
   let ypdatedStaus= Object.assign({...newitem.user,roles : [value] });
-  
-  return fetch(API_HOST_AT+'/users/profile/updateStatus', {
-    method: "POST",
-    mode: "cors",
-    headers: {
-          "Content-Type": "application/json"
-      },
-    body: JSON.stringify(ypdatedStaus)
-  })
+  var myOptions = getDocCustomPostOptions(options, ypdatedStaus);  
+
+  return fetch(API_HOST_AT+'/users/profile/updateStatus', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -34,20 +30,21 @@ export function approveUser(newitem) {
     });
 }
 
-export function getUserList() {
-  return fetch(API_HOST_AT+"/users/list")      
-        .then(response => {      
-          if (!response.ok) {      
-            handleResponseError(response);      
-          }      
-          return response.json();      
-        })      
-        .then(json => {   
-            return json;
-        })      
-        .catch(error => {      
-          handleError(error);      
-        });
+export function getUserList(options) { 
+  var url = API_HOST_AT+"/users/list";
+   var myOptions = getDocCustomGetOptions(options);
+   return fetch(url, myOptions).then(response => {      
+    if (!response.ok) {      
+      handleResponseError(response);      
+    }      
+    return response.json();      
+  })      
+  .then(json => {   
+      return json;
+  })      
+  .catch(error => {      
+    handleError(error);      
+  });
 }
 export function loginUser(newitem) {
   
@@ -91,8 +88,9 @@ export function registerUser(newitem) {
     });
 }
 
-export function getDocCategoryList() {
-  return fetch(API_HOST_AT+"/doccategory")      
+export function getDocCategoryList(options={}) {
+  var myOptions = getDocCustomGetOptions(options);
+  return fetch(API_HOST_AT+"/doccategory", myOptions)      
         .then(response => {      
           if (!response.ok) {      
             handleResponseError(response);      
@@ -107,16 +105,11 @@ export function getDocCategoryList() {
         });
 }
 
-export function updateDoc(item) { 
+export function updateDoc(item,options ) { 
+  var myOptions = getDocCustomPutOptions(options, item);  
+
   const {id=""} = item;
-  return fetch(API_HOST_AT+'/product/'+id, {
-    method: "PUT",
-    mode: "cors",
-    headers: {
-          "Content-Type": "application/json"
-        },
-    body: JSON.stringify(item)
-  })
+  return fetch(API_HOST_AT+'/product/'+id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -128,16 +121,9 @@ export function updateDoc(item) {
     });
 }
 
-export function addNewDoc(newitem) {
-  
-  return fetch(API_HOST_AT+'/products', {
-    method: "POST",
-    mode: "cors",
-    headers: {
-          "Content-Type": "application/json"
-      },
-    body: JSON.stringify(newitem)
-  })
+export function addNewDoc(newitem,options ) {
+  var myOptions = getDocCustomPostOptions(options, newitem);  
+  return fetch(API_HOST_AT+'/products', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -172,8 +158,11 @@ export function getNewQrCode(newitem) {
 
 
 
-export function getDocumentList() {
-      return fetch(API_HOST_AT+"/products")      
+export function getDocumentList(options) {
+
+  var myOptions = getDocCustomGetOptions(options);
+
+      return fetch(API_HOST_AT+"/products", myOptions)      
             .then(response => {      
               if (!response.ok) {      
                 handleResponseError(response);      
@@ -188,8 +177,10 @@ export function getDocumentList() {
             });
   }
 
-  export function getBoxList() {
-    return fetch(API_HOST_AT+"/box")      
+  export function getBoxList(options) {
+    var myOptions = getDocCustomGetOptions(options);
+
+    return fetch(API_HOST_AT+"/box", myOptions)      
           .then(response => {      
             if (!response.ok) {      
               handleResponseError(response);      
@@ -219,16 +210,10 @@ export function getRacks(id) {
     });
 }
 
-export function updateBox(item) { 
+export function updateBox(item,options) { 
+  var myOptions = getDocCustomPutOptions(options, item); 
   const {id=""} = item;
-  return fetch(API_HOST_AT+'/box/'+id, {
-    method: "PUT",
-    mode: "cors",
-    headers: {
-          "Content-Type": "application/json"
-        },
-    body: JSON.stringify(item)
-  })
+  return fetch(API_HOST_AT+'/box/'+id, myOptions )
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -240,16 +225,10 @@ export function updateBox(item) {
     });
 }
 
-export function addNewBox(newitem) {
-  
-  return fetch(API_HOST_AT+'/box', {
-    method: "POST",
-    mode: "cors",
-    headers: {
-          "Content-Type": "application/json"
-      },
-    body: JSON.stringify(newitem)
-  })
+export function addNewBox(newitem, options) {
+  var myOptions = getDocCustomPostOptions(options, newitem);  
+
+  return fetch(API_HOST_AT+'/box',  myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -263,16 +242,11 @@ export function addNewBox(newitem) {
 
 
 
-export function updateDocCat(item) { 
+export function updateDocCat(item,options) { 
   const {id=""} = item;
-  return fetch(API_HOST_AT+'/doccategory/'+id, {
-    method: "PUT",
-    mode: "cors",
-    headers: {
-          "Content-Type": "application/json"
-        },
-    body: JSON.stringify(item)
-  })
+  var myOptions = getDocCustomPostOptions(options, item);  
+
+  return fetch(API_HOST_AT+'/doccategory/'+id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -284,16 +258,9 @@ export function updateDocCat(item) {
     });
 }
 
-export function addNewDocCat(newitem) {
-  
-  return fetch(API_HOST_AT+'/doccategory', {
-    method: "POST",
-    mode: "cors",
-    headers: {
-          "Content-Type": "application/json"
-      },
-    body: JSON.stringify(newitem)
-  })
+export function addNewDocCat(newitem, options) {
+  var myOptions = getDocCustomGetOptions(options, newitem);  
+  return fetch(API_HOST_AT+'/doccategory', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);

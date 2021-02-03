@@ -21,8 +21,11 @@ import {
   OnChangeModel,
   IDocCategoryFormState,
 } from "../../common/types/Form.types";
+import { IAccount } from "../../store/models/account.interface";
 
 const ProductForm: React.FC = () => {
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+
   const dispatch: Dispatch<any> = useDispatch();
   const doccategories: IDocCategoryState | null = useSelector(
     (state: IStateType) => state.docCategories
@@ -70,7 +73,7 @@ const ProductForm: React.FC = () => {
           name: formState.name.value,
           description: formState.description.value,
         };
-        addNewDocCat(boxInfo).then((status) => {
+        addNewDocCat(boxInfo, account.auth).then((status) => {
           dispatch(
             saveFn({
               ...doccategory,
@@ -92,7 +95,7 @@ const ProductForm: React.FC = () => {
           name: formState.name.value,
           description: formState.description.value,
         };
-        updateDocCat(boxInfoUpt).then((status) => {
+        updateDocCat(boxInfoUpt, account.auth).then((status) => {
           dispatch(
             saveFn({
               ...doccategory,
@@ -136,18 +139,18 @@ const ProductForm: React.FC = () => {
           </div>
           <div className="card-body">
             <form onSubmit={saveUser}>
-                <div className="form-group">
-                  <TextInput
-                    id="input_email"
-                    value={formState.name.value}
-                    field="name"
-                    onChange={hasFormValueChanged}
-                    required={true}
-                    maxLength={100}
-                    label="Name"
-                    placeholder="Name"
-                    customError={formState.name.error}
-                  />
+              <div className="form-group">
+                <TextInput
+                  id="input_email"
+                  value={formState.name.value}
+                  field="name"
+                  onChange={hasFormValueChanged}
+                  required={true}
+                  maxLength={100}
+                  label="Name"
+                  placeholder="Name"
+                  customError={formState.name.error}
+                />
               </div>
               <div className="form-group">
                 <TextInput

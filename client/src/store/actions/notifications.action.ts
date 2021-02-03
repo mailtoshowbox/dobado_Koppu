@@ -9,17 +9,22 @@ export function removeNotification(id: number): IRemoveNotificationActionType {
     return { type: REMOVE_NOTIFICATION, id: id };
 }
 export function parseApiResult(result: any) {
-
-    console.log("result----", result);
     const {status,message="", data:{ user={}}}  = result; 
     let titleMesage = '';
     let bodyMessage = '';
-    console.log("message-", message);
+    console.log("message-", result.data);
     const processMassage = message ? message : result.data.message;
     switch (processMassage){
         case "LOGIN.ERROR":
-            bodyMessage = "account not registered properly";
-            titleMesage = "Failed";
+            if(result.data.message && result.data.message === "LOGIN.LOGIN_NOT_ACTIVATED"){
+                bodyMessage = "account not activated";
+                titleMesage = "Contact Administrator";
+            }else{
+                bodyMessage = "account not registered properly";
+                titleMesage = "Failed";
+            }
+            
+           
             break;
         case "LOGIN.SUCCESS": 
             titleMesage =  `Hello ${user.name} `;

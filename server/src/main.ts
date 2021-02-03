@@ -3,11 +3,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   //console.log("ENTRY");
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule); 
 
-  console.log("dsfasd-----");
-
-  var whitelist = ['http://localhost:3001', 'http://localhost:3000', 'undefined'];
+  var whitelist = ['http://localhost:3001', 'http://localhost:3001/', 'http://localhost:3000', 'undefined'];
   app.enableCors({
   origin: function (origin, callback) {
     console.log("origin-->>-",origin);
@@ -20,7 +18,8 @@ async function bootstrap() {
       //callback(new Error('Not allowed by CORS'))
     }
   },
-  allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe',
+  
+  allowedHeaders: 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Observe, Authorization',
   methods: "GET,PUT,POST,DELETE,UPDATE,OPTIONS",
   credentials: true,
   });

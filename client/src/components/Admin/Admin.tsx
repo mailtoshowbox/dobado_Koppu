@@ -9,8 +9,14 @@ import Boxes from "../Boxes/Boxes";
 import Home from "../Home/Home";
 import DocCategories from "../DocCategory/DocCategory";
 import Notifications from "../../common/components/Notification";
+import { useSelector } from "react-redux";
+import { IStateType } from "../../store/models/root.interface";
+import { IAccount } from "../../store/models/account.interface";
 
 const Admin: React.FC = () => {
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+  const { roles } = account;
+
   return (
     <Fragment>
       <Notifications />
@@ -20,9 +26,11 @@ const Admin: React.FC = () => {
           <TopMenu />
           <div className="container-fluid">
             <Switch>
-              <Route path={`/users`}>
-                <Users />
-              </Route>
+              {roles[0] === "Superadmin" && (
+                <Route path={`/users`}>
+                  <Users />
+                </Route>
+              )}
               <Route path={`/products`}>
                 <Products />
               </Route>

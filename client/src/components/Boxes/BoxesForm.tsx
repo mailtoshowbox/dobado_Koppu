@@ -15,8 +15,11 @@ import { addNewBox, updateBox } from "../../services/index";
 
 import { OnChangeModel, IBoxFormState } from "../../common/types/Form.types";
 import { BoxModificationStatus, IBox } from "../../store/models/box.interface";
+import { IAccount } from "../../store/models/account.interface";
 
 const BoxForm: React.FC = () => {
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+
   const dispatch: Dispatch<any> = useDispatch();
   const boxes: IBoxState | null = useSelector(
     (state: IStateType) => state.boxes
@@ -66,7 +69,7 @@ const BoxForm: React.FC = () => {
           description: formState.description.value,
           racks: formState.racks.value,
         };
-        addNewBox(boxInfo).then((status) => {
+        addNewBox(boxInfo, account.auth).then((status) => {
           dispatch(
             saveFn({
               ...box,
@@ -89,7 +92,7 @@ const BoxForm: React.FC = () => {
           description: formState.description.value,
           racks: formState.racks.value,
         };
-        updateBox(boxInfoUpt).then((status) => {
+        updateBox(boxInfoUpt, account.auth).then((status) => {
           dispatch(
             saveFn({
               ...box,
@@ -132,19 +135,19 @@ const BoxForm: React.FC = () => {
           </div>
           <div className="card-body">
             <form onSubmit={saveUser}>
-                <div className="form-group">
-                  <TextInput
-                    id="input_email"
-                    value={formState.name.value}
-                    field="name"
-                    onChange={hasFormValueChanged}
-                    required={true}
-                    maxLength={20}
-                    label="Name"
-                    placeholder="Name"
-                    customError={formState.name.error}
-                  />
-                </div>
+              <div className="form-group">
+                <TextInput
+                  id="input_email"
+                  value={formState.name.value}
+                  field="name"
+                  onChange={hasFormValueChanged}
+                  required={true}
+                  maxLength={20}
+                  label="Name"
+                  placeholder="Name"
+                  customError={formState.name.error}
+                />
+              </div>
               <div className="form-group">
                 <TextInput
                   id="input_description"

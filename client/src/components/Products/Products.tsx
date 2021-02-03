@@ -34,8 +34,11 @@ import {
   getDocCategoryList,
   getBoxList,
 } from "../../services/index";
+import { IAccount } from "../../store/models/account.interface";
 
 const Products: React.FC = () => {
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+
   const dispatch: Dispatch<any> = useDispatch();
   const products: IProductState = useSelector(
     (state: IStateType) => state.products
@@ -48,15 +51,15 @@ const Products: React.FC = () => {
 
   useEffect(() => {
     //Load Documents
-    getDocumentList().then((items: IProductList) => {
+    getDocumentList(account.auth).then((items: IProductList) => {
       dispatch(loadListOfProduct(items));
     });
     //Load Available Doc Categories
-    getDocCategoryList().then((items: IDocCategoryList) => {
+    getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
     });
     //Load Available Boxes
-    getBoxList().then((items: IBoxList) => {
+    getBoxList(account.auth).then((items: IBoxList) => {
       dispatch(loadListOfBox(items));
     });
 

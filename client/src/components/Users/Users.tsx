@@ -16,7 +16,12 @@ import { getUserList, approveUser } from "../../services/index";
 import { IUser, IUserList } from "../../store/models/user.interface";
 import SelectInput from "../../common/components/Select";
 import { OnChangeModel } from "../../common/types/Form.types";
+import { IAccount } from "../../store/models/account.interface";
+
 const Users: React.FC = () => {
+  //Block to get the token and set Token
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+
   const dispatch: Dispatch<any> = useDispatch();
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
@@ -28,7 +33,7 @@ const Users: React.FC = () => {
   );
 
   useEffect(() => {
-    getUserList().then((items: IUserList) => {
+    getUserList(account.auth).then((items: IUserList) => {
       console.log("items---", items);
       dispatch(loadListOfuser(items));
     });
@@ -43,23 +48,24 @@ const Users: React.FC = () => {
     dispatch(removeAdmin(admin));
   }
   function activateUser(admin: IUser, model: OnChangeModel): void {
-    approveUser({ user: admin, selected: model }).then((status) => {
-      getUserList().then((items: IUserList) => {
-        console.log("items---", items);
-        dispatch(loadListOfuser(items));
-      });
-      console.log("APproved Suer");
+    approveUser({ user: admin, selected: model }, account.auth).then(
+      (status) => {
+        getUserList(account.auth).then((items: IUserList) => {
+          console.log("items---", items);
+          dispatch(loadListOfuser(items));
+        });
+        console.log("APproved Suer");
 
-      // dispatch(addNotification("New Box added", `User  added by you`));
-      //  dispatch(clearSelectedBox());
-      //  dispatch(setModificationState(BoxModificationStatus.None));
-    });
+        // dispatch(addNotification("New Box added", `User  added by you`));
+        //  dispatch(clearSelectedBox());
+        //  dispatch(setModificationState(BoxModificationStatus.None));
+      }
+    );
 
     // dispatch(removeAdmin(admin));
   }
 
   const userElements: JSX.Element[] = users.map((user) => {
-    console.log("user----", user);
     const verified = user.auth.email.valid;
     const roles = user.roles[0];
     return (

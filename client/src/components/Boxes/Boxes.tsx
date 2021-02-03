@@ -25,8 +25,11 @@ import {
   IBoxList,
 } from "../../store/models/box.interface";
 import { getBoxList } from "../../services/index";
+import { IAccount } from "../../store/models/account.interface";
 
 const Boxs: React.FC = () => {
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+
   const dispatch: Dispatch<any> = useDispatch();
   const boxes: IBoxState = useSelector((state: IStateType) => state.boxes);
   const path: IRootPageStateType = useSelector(
@@ -36,7 +39,7 @@ const Boxs: React.FC = () => {
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
-    getBoxList().then((items: IBoxList) => {
+    getBoxList(account.auth).then((items: IBoxList) => {
       dispatch(loadListOfBox(items));
     });
     dispatch(clearSelectedBox());

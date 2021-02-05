@@ -6,6 +6,7 @@ import TextInput from "../../common/components/TextInput";
 import { registerUser } from "../../services/index";
 import "react-notifications/lib/notifications.css";
 import { addNotification } from "../../store/actions/notifications.action";
+import logo from "../../assets/images/login-logo.png";
 
 const Register: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -157,18 +158,20 @@ const Register: React.FC = () => {
   return (
     <div className={`container  ${loaderClass}`}>
       <div className="row justify-content-center">
-        <div className="col-xl-10 col-lg-12 col-md-9">
-          <div className=" ">
-            <div className="car ">
+        <div className="col-lg-5 col-md-5">
+          <div className="card o-hidden border-0 shadow-lg my-5">
+            <div className="card-body p-0">
               <div className="row">
-                <div className="col-lg-6">
+                <div className="col-lg-12">
                   <div className="p-5">
                     <div className="text-center">
-                      <h1 className="h4 text-gray-900 mb-4">
-                        New User Registration!
+                      <h1 className="h4 text-gray-900 mb-3">
+                      <img src={logo} />
                       </h1>
+                      <h4 className="mb-3">New User Registration!</h4>
                     </div>
                     <form onSubmit={submit}>
+                    <div className="form-group">
                       <TextInput
                         id="input_name"
                         field="name"
@@ -180,7 +183,8 @@ const Register: React.FC = () => {
                         customError={formState.name.error}
                         placeholder="Enter your Name"
                       />
-
+                      </div>
+<div className="form-group">
                       <TextInput
                         id="input_email"
                         field="email"
@@ -191,8 +195,8 @@ const Register: React.FC = () => {
                         label="Email"
                         customError={formState.email.error}
                         placeholder="Email"
-                      />
-
+                      /></div>
+<div className="form-group">
                       <TextInput
                         id="input_password_1"
                         field="password"
@@ -205,7 +209,7 @@ const Register: React.FC = () => {
                         placeholder="Password"
                         type="password"
                       />
-
+</div><div className="form-group">
                       <TextInput
                         id="input_confirmPassword"
                         field="confirmPassword"
@@ -218,6 +222,7 @@ const Register: React.FC = () => {
                         placeholder="Confirm Password"
                         type="password"
                       />
+                      </div>
                       {formState.confirmPassword.error ? (
                         <div className="invalid-field">
                           {formState.confirmPassword.error}

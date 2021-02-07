@@ -355,7 +355,7 @@ const ProductForm: React.FC = () => {
     <Fragment>
       <div className="col-xl-7 col-lg-7">
         <div className="card shadow mb-4">
-          <div className="card-header py-2">
+          <div className="card-header py-1">
             <h6 className="m-0 font-weight-bold text-white">
               Document {isCreate ? "create" : "edit"}
             </h6>
@@ -363,7 +363,7 @@ const ProductForm: React.FC = () => {
           <div className="card-body">
             <form onSubmit={saveUser}>
               <div className="form-row 14">
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <TextInput
                     id="input_email"
                     value={formState.name.value}
@@ -381,7 +381,7 @@ const ProductForm: React.FC = () => {
                     </div>
                   ) : null}
                 </div>
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <SelectInput
                     id="input_category"
                     field="category"
@@ -396,7 +396,7 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
               <div className="form-row 13">
-                <div className="form-group col-md-12">
+                <div className="form-group col-md-12 font-14">
                   <TextInput
                     id="input_description"
                     field="description"
@@ -411,9 +411,9 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
               <div className="form-row 12">
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <div className="form-row">
-                    <div className="form-group col-md-12">
+                    <div className="form-group col-md-12 font-14">
                       <SelectInput
                         id="input_category"
                         field="box"
@@ -436,11 +436,11 @@ const ProductForm: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <div className="form-row">
                     <div
                       className="col-xs-10"
-                      style={{ paddingLeft: "41px" }}
+                      style={{ paddingLeft: "20px" }}
                       key={"non_perceptual_space"}
                     >
                       {" "}
@@ -454,12 +454,12 @@ const ProductForm: React.FC = () => {
               </div>
 
               <div className="form-row">
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   Type of Space
                   <div className="form-row">
                     <div
                       className="col-xs-3"
-                      style={{ paddingLeft: "41px" }}
+                      style={{ paddingLeft: "20px" }}
                       key={"non_perceptual_space"}
                     >
                       {" "}
@@ -479,8 +479,8 @@ const ProductForm: React.FC = () => {
                       />
                     </div>
                     <div
-                      className="col-xs-3"
-                      style={{ paddingLeft: "41px" }}
+                      className="col-xs-3 font-14"
+                      style={{ paddingLeft: "20px" }}
                       key={"perceptual_space"}
                     >
                       {" "}
@@ -500,10 +500,10 @@ const ProductForm: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <button className="btn btn-danger" onClick={() => cancelForm()}>
+              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
                 Cancel
               </button>
-              <button type="submit" className={`btn btn-success left-margin `}>
+              <button type="submit" className={`btn btn-success left-margin font-14`}>
                 Save
               </button>
             </form>

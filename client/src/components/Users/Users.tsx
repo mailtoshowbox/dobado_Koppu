@@ -143,8 +143,8 @@ const Users: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h3 mb-2 text-gray-800">Users</h1>
-      <p className="mb-4">Users here</p>
+      <h1 className="h5 mb-2 font-bold">Users</h1>
+      <p className="mb-4 font-14">Users here</p>
 
       <div className="row">
         <TopCard
@@ -164,8 +164,8 @@ const Users: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-2">
-              <h6 className="m-0 font-weight-bold text-white">Approved List</h6>
+            <div className="card-header py-1">
+              <h6 className="m-0 font-weight-bold text-white font-12">Approved List</h6>
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">
@@ -192,8 +192,8 @@ const Users: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-2">
-              <h6 className="m-0 font-weight-bold text-white">
+            <div className="card-header py-1">
+              <h6 className="m-0 font-weight-bold text-white font-12">
                 Pending for Approval
               </h6>
               <div className="header-buttons"></div>

@@ -36,6 +36,8 @@ import {
 } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 
+import DataTableComp from '../../common/components/DataTableComp';
+
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
 
@@ -48,7 +50,152 @@ const Products: React.FC = () => {
   );
   const numberItemsCount: number = products.products.length;
   const [popup, setPopup] = useState(false);
+  const dataSet = [
+    {
+      id: 1,
+      name: "Tiger Nixon",
+      position: "System Architect",
+      office: "Edinburgh",
+      ext: 5421,
+      date: "2011/04/25",
+      salary: "$320,800",
+    },
+    {
+      id: 2,
+      name: "Garrett Winters",
+      position: "Accountant",
+      office: "Tokyo",
+      ext: 8422,
+      date: "2011/07/25",
+      salary: "$170,750",
+    },
+    {
+      id: 3,
+      name: "Ashton Cox",
+      position: "Junior Technical Author",
+      office: "San Francisco",
+      ext: 1562,
+      date: "2009/01/12",
+      salary: "$86,000",
+    },
+    {
+      id: 1,
+      name: "Tiger Nixon",
+      position: "System Architect",
+      office: "Edinburgh",
+      ext: 5421,
+      date: "2011/04/25",
+      salary: "$320,800",
+    },
+    {
+      id: 2,
+      name: "Garrett Winters",
+      position: "Accountant",
+      office: "Tokyo",
+      ext: 8422,
+      date: "2011/07/25",
+      salary: "$170,750",
+    },
+    {
+      id: 3,
+      name: "Ashton Cox",
+      position: "Junior Technical Author",
+      office: "San Francisco",
+      ext: 1562,
+      date: "2009/01/12",
+      salary: "$86,000",
+    },
+    {
+      id: 1,
+      name: "Tiger Nixon",
+      position: "System Architect",
+      office: "Edinburgh",
+      ext: 5421,
+      date: "2011/04/25",
+      salary: "$320,800",
+    },
+    {
+      id: 2,
+      name: "Garrett Winters",
+      position: "Accountant",
+      office: "Tokyo",
+      ext: 8422,
+      date: "2011/07/25",
+      salary: "$170,750",
+    },
+    {
+      id: 3,
+      name: "Ashton Cox",
+      position: "Junior Technical Author",
+      office: "San Francisco",
+      ext: 1562,
+      date: "2009/01/12",
+      salary: "$86,000",
+    },
+    {
+      id: 1,
+      name: "Tiger Nixon",
+      position: "System Architect",
+      office: "Edinburgh",
+      ext: 5421,
+      date: "2011/04/25",
+      salary: "$320,800",
+    },
+    {
+      id: 2,
+      name: "Garrett Winters",
+      position: "Accountant",
+      office: "Tokyo",
+      ext: 8422,
+      date: "2011/07/25",
+      salary: "$170,750",
+    },
+    {
+      id: 3,
+      name: "Ashton Cox",
+      position: "Junior Technical Author",
+      office: "San Francisco",
+      ext: 1562,
+      date: "2009/01/12",
+      salary: "$86,000",
+    },
+    {
+      id: 1,
+      name: "Tiger Nixon",
+      position: "System Architect",
+      office: "Edinburgh",
+      ext: 5421,
+      date: "2011/04/25",
+      salary: "$320,800",
+    },
+    {
+      id: 2,
+      name: "Garrett Winters",
+      position: "Accountant",
+      office: "Tokyo",
+      ext: 8422,
+      date: "2011/07/25",
+      salary: "$170,750",
+    },
+    {
+      id: 3,
+      name: "Ashton Cox",
+      position: "Junior Technical Author",
+      office: "San Francisco",
+      ext: 1562,
+      date: "2009/01/12",
+      salary: "$86,000",
+    }
+  ];
 
+  const columns = [
+    { title: "Name", data:'name' },
+    { title: "Position", data:'position'  },
+    { title: "Office", data:'office' },
+    { title: "Extn.", data: 'ext' },
+    { title: "Start date", data:"date" },
+    { title: "Salary", data: 'salary' },
+  ];
   useEffect(() => {
     //Load Documents
     getDocumentList(account.auth).then((items: IProductList) => {
@@ -78,10 +225,15 @@ const Products: React.FC = () => {
     }
   }
 
+  // deleteRow = (id) => {
+  //   const filteredData = this.state.data.filter((i) =>  i.id !== id);
+  //   this.setState({data: filteredData});
+  // };
+
   return (
     <Fragment>
-      <h1 className="h3 mb-2 text-gray-800">Documents</h1>
-      <p className="mb-4">Documents here</p>
+      <h1 className="h5 mb-2 text-gray-800 font-bold">Documents</h1>
+      <p className="mb-4 font-14">Documents here</p>
       <div className="row">
         <TopCard
           title="Documents COUNT"
@@ -94,8 +246,8 @@ const Products: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-2">
-              <h6 className="m-0 font-weight-bold text-white">Document List</h6>
+            <div className="card-header py-1">
+              <h6 className="m-0 font-weight-bold text-white font-12">Document List</h6>
               <div className="header-buttons">
                 <button
                   className="btn btn-border"
@@ -132,6 +284,7 @@ const Products: React.FC = () => {
             ) : null}
             <div className="card-body">
               <ProductList onSelect={onProductSelect} />
+              <DataTableComp data={dataSet} columns={columns}/>
             </div>
           </div>
         </div>

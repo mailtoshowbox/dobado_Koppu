@@ -128,14 +128,14 @@ const BoxForm: React.FC = () => {
     <Fragment>
       <div className="col-xl-7 col-lg-7">
         <div className="card shadow mb-4">
-          <div className="card-header py-2">
+          <div className="card-header py-1">
             <h6 className="m-0 font-weight-bold text-white">
               Box {isCreate ? "create" : "edit"}
             </h6>
           </div>
           <div className="card-body">
             <form onSubmit={saveUser}>
-              <div className="form-group">
+              <div className="form-group font-14">
                 <TextInput
                   id="input_email"
                   value={formState.name.value}
@@ -148,7 +148,7 @@ const BoxForm: React.FC = () => {
                   customError={formState.name.error}
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group font-14">
                 <TextInput
                   id="input_description"
                   field="description"
@@ -162,7 +162,7 @@ const BoxForm: React.FC = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="form-group font-14">
                 <NumberInput
                   id="input_ract"
                   field="racks"
@@ -172,12 +172,12 @@ const BoxForm: React.FC = () => {
                   customError={formState.racks.error}
                 />
               </div>
-              <button className="btn btn-danger" onClick={() => cancelForm()}>
+              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
                 Cancel
               </button>
               <button
                 type="submit"
-                className={`btn btn-success left-margin ${getDisabledClass()}`}
+                className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
               >
                 Save
               </button>

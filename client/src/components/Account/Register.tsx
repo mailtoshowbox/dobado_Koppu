@@ -171,7 +171,7 @@ const Register: React.FC = () => {
                       <h4 className="mb-3">New User Registration!</h4>
                     </div>
                     <form onSubmit={submit}>
-                    <div className="form-group">
+                    <div className="form-group font-14">
                       <TextInput
                         id="input_name"
                         field="name"
@@ -184,7 +184,7 @@ const Register: React.FC = () => {
                         placeholder="Enter your Name"
                       />
                       </div>
-<div className="form-group">
+                    <div className="form-group font-14">
                       <TextInput
                         id="input_email"
                         field="email"
@@ -196,7 +196,7 @@ const Register: React.FC = () => {
                         customError={formState.email.error}
                         placeholder="Email"
                       /></div>
-<div className="form-group">
+                    <div className="form-group font-14">
                       <TextInput
                         id="input_password_1"
                         field="password"
@@ -209,7 +209,7 @@ const Register: React.FC = () => {
                         placeholder="Password"
                         type="password"
                       />
-</div><div className="form-group">
+                    </div><div className="form-group font-14">
                       <TextInput
                         id="input_confirmPassword"
                         field="confirmPassword"

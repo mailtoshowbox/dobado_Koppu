@@ -15,7 +15,7 @@ const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const [formState, setFormState] = useState({
     email: { error: "", value: "afala@gmail.com" },
-    password: { error: "", value: "afala" },
+    password: { error: "", value: "afala@123" },
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -88,7 +88,7 @@ const Login: React.FC = () => {
                       </h1>
                     </div>
                     <form className="user" onSubmit={submit}>
-                      <div className="form-group">
+                      <div className="form-group font-14">
                         <TextInput
                           id="input_email"
                           field="email"
@@ -101,7 +101,7 @@ const Login: React.FC = () => {
                           placeholder="Email"
                         />
                       </div>
-                      <div className="form-group">
+                      <div className="form-group font-14">
                         <TextInput
                           id="input_password"
                           field="password"

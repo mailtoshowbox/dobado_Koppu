@@ -109,7 +109,7 @@ export function updateDoc(item,options ) {
   var myOptions = getDocCustomPutOptions(options, item);  
 
   const {id=""} = item;
-  return fetch(API_HOST_AT+'/product/'+id, myOptions)
+  return fetch(API_HOST_AT+'/products/'+id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -259,7 +259,7 @@ export function updateDocCat(item,options) {
 }
 
 export function addNewDocCat(newitem, options) {
-  var myOptions = getDocCustomGetOptions(options, newitem);  
+  var myOptions = getDocCustomPostOptions(options, newitem);  
   return fetch(API_HOST_AT+'/doccategory', myOptions)
     .then(response => {
       if (!response.ok) {

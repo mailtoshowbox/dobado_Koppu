@@ -8,4 +8,5 @@ export declare class DocumentsController {
     create(createProductDto: any): Promise<import("./schemas/product.schema").Documents>;
     delete(id: string): Promise<import("./schemas/product.schema").Documents>;
     getQRCode(generateQrCode: any): Promise<any>;
+    update(id: string, updateProductDto: any): Promise<import("./schemas/product.schema").Documents>;
 }

@@ -11,7 +11,6 @@ function TextInput(props: TextInputProps): JSX.Element {
     let [error, validClass, elementValue] = ["", "", event.target.value];
 
     const { field, customError } = props;
-    console.log("props----", props);
 
     if (field === "email") {
       var pattern = new RegExp(
@@ -45,7 +44,6 @@ function TextInput(props: TextInputProps): JSX.Element {
           : ["", "is-valid"];
     }
 
-    console.log("fsdf", props);
     props.onChange({
       value: elementValue,
       error: error,
@@ -59,6 +57,7 @@ function TextInput(props: TextInputProps): JSX.Element {
     setValue(elementValue);
   }
 
+  const { customError } = props;
   return (
     <div>
       <label htmlFor={props.id.toString()}>{props.label}</label>
@@ -71,6 +70,7 @@ function TextInput(props: TextInputProps): JSX.Element {
         placeholder={props.placeholder}
       />
       {error ? <div className="invalid-feedback">{error}</div> : null}
+      {customError ? <div className="invalid-field">{customError}</div> : null}
     </div>
   );
 }

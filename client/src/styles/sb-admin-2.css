@@ -2167,8 +2167,16 @@ textarea.form-control.is-valid {
   font-size: 80%;
   color: #e74a3b;
 }
+
 .invalid-feedback {
-  display: none;
+  display: inline;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #e74a3b;
+}
+
+.invalid-field {
   width: 100%;
   margin-top: 0.25rem;
   font-size: 80%;
@@ -11417,4 +11425,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 .regLoader input {
   cursor: not-allowed;
+}
+.react-datepicker-wrapper {
+  width: 100%;
 }

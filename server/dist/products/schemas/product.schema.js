@@ -42,6 +42,18 @@ __decorate([
     mongoose_1.Prop(),
     __metadata("design:type", String)
 ], Documents.prototype, "qr_code", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Date)
+], Documents.prototype, "manufacturedate", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Date)
+], Documents.prototype, "expiredate", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", String)
+], Documents.prototype, "type_of_space", void 0);
 Documents = __decorate([
     mongoose_1.Schema()
 ], Documents);

@@ -23,6 +23,15 @@ export class Documents extends Document {
 
   @Prop()
   qr_code: string;
+
+  @Prop()
+  manufacturedate: Date;
+
+  @Prop()
+  expiredate: Date;
+
+  @Prop()
+  type_of_space: string;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Documents);

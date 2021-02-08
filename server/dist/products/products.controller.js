@@ -37,6 +37,7 @@ let DocumentsController = class DocumentsController {
                 delete doc.category_info;
                 return doc;
             });
+            console.log("onfo---", onfo);
             return onfo;
         });
         return res;
@@ -52,6 +53,10 @@ let DocumentsController = class DocumentsController {
     }
     getQRCode(generateQrCode) {
         return this.productsService.getQRCode(generateQrCode);
+    }
+    update(id, updateProductDto) {
+        console.log("updateProductDto----", updateProductDto);
+        return this.productsService.update(id, updateProductDto);
     }
 };
 __decorate([
@@ -88,6 +93,14 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], DocumentsController.prototype, "getQRCode", null);
+__decorate([
+    common_1.Put(':id'),
+    __param(0, common_1.Param('id')),
+    __param(1, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], DocumentsController.prototype, "update", null);
 DocumentsController = __decorate([
     common_1.Controller('products'),
     __metadata("design:paramtypes", [products_service_1.DocumentsService])

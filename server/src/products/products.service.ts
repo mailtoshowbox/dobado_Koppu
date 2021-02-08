@@ -34,6 +34,10 @@ export class DocumentsService {
           },
           boxInfo: 1,
           name: 1,
+          manufacturedate:1, 
+          expiredate:1,
+          qr_code:1,
+          type_of_space:1,
           _id: 1
         }
       },

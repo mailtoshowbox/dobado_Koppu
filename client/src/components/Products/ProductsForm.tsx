@@ -12,6 +12,7 @@ import {
   IBoxState,
 } from "../../store/models/root.interface";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   IProduct,
   ProductModificationStatus,
@@ -20,6 +21,7 @@ import {
 import { IRack } from "../../store/models/box.interface";
 import { IProductList } from "../../store/models/product.interface";
 import TextInput from "../../common/components/TextInput";
+import DateInput from "../../common/components/DateInput";
 import QRCODE from "../../common/components/QrCode";
 import {
   editProduct,
@@ -44,36 +46,45 @@ import {
 import SelectInput from "../../common/components/Select";
 import Checkbox from "../../common/components/Checkbox";
 import { IAccount } from "../../store/models/account.interface";
+/* import DatePicker, {
+  DayValue,
+  DayRange,
+  Day,
+} from "react-modern-calendar-datepicker"; */
+import uniquebg from "../../assets/images/uniquebg.png";
 
 const ProductForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
 
+  const { roles = [] } = account;
+
+  const [boxRacks, setBoxRacks] = useState([]);
+  const [formWithError, setFormWithError] = useState(false);
+  const [pickRack, setPickedRack] = useState(false);
+  const [userRole] = useState(roles[0]);
+  const [qrRequested, setQrRequested] = useState({
+    name: "",
+    box: "",
+    rack: "",
+  });
+  const [qrModified, setQrModified] = useState(false);
+  const selectField = ["box"];
+  const qrFields = ["box", "name", "rack"];
   const dispatch: Dispatch<any> = useDispatch();
   const products: IProductState | null = useSelector(
     (state: IStateType) => state.products
   );
+
   let product: IProduct | null = products.selectedProduct;
   const isCreate: boolean =
     products.modificationState === ProductModificationStatus.Create;
 
-  if (!product || isCreate) {
-    product = {
-      _id: "",
-      name: "",
-      description: "",
-      box: "",
-      rack: "",
-      category: "",
-      type_of_space: "",
-      qr_code: "",
-    };
-  }
+  //"expiredate" manufacturedate
 
   //Document Category loaded
   const doccategoriesList: IDocCategoryState | null = useSelector(
     (state: IStateType) => state.docCategories
   );
-
   let listOfCate: { id: string; name: string }[] = [];
   doccategoriesList.docCategories.forEach((doc) => {
     let me = { id: doc._id, name: doc.name };
@@ -87,6 +98,62 @@ const ProductForm: React.FC = () => {
     listOfBoxws.push(me);
   });
 
+  if (!product || isCreate) {
+    product = {
+      _id: "",
+      name: "",
+      description: "",
+      box: "",
+      rack: "",
+      category: "",
+      type_of_space: "",
+      qr_code: "",
+      manufacturedate: new Date(),
+      expiredate: new Date(),
+    };
+  } else {
+    const { box = "", category = "", rack = "" } = product;
+    let updatedProduct: IProduct = product;
+    if (box) {
+      let selectedBox = boxes.boxes.filter((boxe) => boxe.name === box);
+
+      if (selectedBox.length > 0) {
+        updatedProduct.box = selectedBox[0]._id;
+      }
+
+      if (rack && boxRacks.length === 0) {
+        getRacks(product.box).then((racks = []) => {
+          if (racks.length > 0) {
+            if (boxRacks.length === 0) {
+              let selectedRacks = racks.filter((rck: any) => rck.name === rack);
+              // console.log("fsdf--444", selectedRacks);
+              if (selectedRacks.length > 0) {
+                //  console.log("selectedRacks----", selectedRacks);
+                updatedProduct.rack = selectedRacks[0]._id;
+              }
+            }
+            setPickedRack(true);
+            setBoxRacks(racks);
+          }
+        });
+      }
+    }
+
+    if (category) {
+      let selectedCat = doccategoriesList.docCategories.filter(
+        (catee) => catee.name === category
+      );
+
+      if (selectedCat.length > 0) {
+        updatedProduct.category = selectedCat[0]._id;
+      }
+    }
+
+    console.log("updatedProduct----", updatedProduct);
+
+    product = updatedProduct;
+  }
+
   const [formState, setFormState] = useState({
     _id: { error: "", value: product._id },
     name: { error: "", value: product.name },
@@ -96,19 +163,19 @@ const ProductForm: React.FC = () => {
     category: { error: "", value: product.category },
     type_of_space: { error: "", value: product.type_of_space },
     qr_code: { error: "", value: product.qr_code },
+    manufacturedate: { error: "", value: product.manufacturedate },
+    expiredate: { error: "", value: product.expiredate },
   });
+  function makeid() {
+    var text = "";
+    var possible =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  const [boxRacks, setBoxRacks] = useState([]);
-  const [pickRack, setPickedRack] = useState(false);
-  const [qrRequested, setQrRequested] = useState({
-    name: "",
-    box: "",
-    rack: "",
-  });
-  const [qrModified, setQrModified] = useState(false);
-  const selectField = ["box"];
-  const qrFields = ["box", "name", "rack"];
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
 
+    return text;
+  }
   function hasFormValueChanged(model: OnChangeModel): void {
     const { field, value = "", name = "" } = model;
     if (selectField.indexOf(field) > -1) {
@@ -137,10 +204,20 @@ const ProductForm: React.FC = () => {
       }
 
       if (name === "type_of_space") {
-        setFormState({
-          ...formState,
-          [model.name]: { error: model.error, value: model.field },
-        });
+        if (formState.qr_code.value === "") {
+          setFormState({
+            ...formState,
+            [model.name]: { error: model.error, value: model.field },
+            ["qr_code"]: { error: model.error, value: makeid() },
+          });
+        } else {
+          setFormState({
+            ...formState,
+            [model.name]: { error: model.error, value: model.field },
+          });
+        }
+
+        // generateCode();
       } else {
         setFormState({
           ...formState,
@@ -148,10 +225,6 @@ const ProductForm: React.FC = () => {
         });
       }
     }
-    /*  checkPossibleToGenerateQR({
-      ...formState,
-      [model.field]: { error: model.error, value: model.value },
-    }); */
   }
   function hasRacksValueChanged(model: OnChangeModel): void {
     const newObj: any = boxRacks;
@@ -166,13 +239,18 @@ const ProductForm: React.FC = () => {
     });
     setBoxRacks(newObj);
 
-    let newObject = Object.assign(
+    setFormState({
+      ...formState,
+      ["rack"]: { error: model.error, value: field },
+    });
+
+    /*  let newObject = Object.assign(
       {},
       { ...formState },
       { ["rack"]: { error: model.error, value: field } }
     );
 
-    checkPossibleToGenerateQR(newObject);
+    checkPossibleToGenerateQR(newObject); */
   }
 
   function saveUser(event: FormEvent<HTMLFormElement>): void {
@@ -180,12 +258,12 @@ const ProductForm: React.FC = () => {
 
     event.preventDefault();
     if (!isFormInvalid()) {
-      return;
+      setFormWithError(!formWithError);
+    } else {
+      let saveUserFn: Function = isCreate ? addProduct : editProduct;
+      let modeOfAction: String = isCreate ? "ADD" : "EDIT";
+      saveForm(formState, saveUserFn, modeOfAction);
     }
-
-    let saveUserFn: Function = isCreate ? addProduct : editProduct;
-    let modeOfAction: String = isCreate ? "ADD" : "EDIT";
-    saveForm(formState, saveUserFn, modeOfAction);
   }
 
   function saveForm(
@@ -202,7 +280,14 @@ const ProductForm: React.FC = () => {
           rack: formState.rack.value,
           category: formState.category.value,
           qr_code: formState.qr_code.value,
+          manufacturedate: formState.manufacturedate.value,
+          expiredate: formState.expiredate.value,
+          type_of_space: formState.type_of_space.value,
         };
+
+        /* if (roles[0] === "Qualityuser") {
+          boxInfo =  {...boxInfo, }
+        } */
         addNewDoc(boxInfo, account.auth).then((status) => {
           getDocumentList(account.auth).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
@@ -224,14 +309,23 @@ const ProductForm: React.FC = () => {
           box: formState.box.value,
           rack: formState.rack.value,
           category: formState.category.value,
+          manufacturedate: formState.manufacturedate.value,
+          expiredate: formState.expiredate.value,
+          type_of_space: formState.type_of_space.value,
+          qr_code: formState.qr_code.value,
         };
-        updateDoc(boxInfoUpt).then((status) => {
+
+        updateDoc(boxInfoUpt, account.auth).then((status) => {
           dispatch(
             saveFn({
               ...product,
               ...status,
             })
           );
+
+          getDocumentList(account.auth).then((items: IProductList) => {
+            dispatch(loadListOfProduct(items));
+          });
           dispatch(
             addNotification(
               "Box ",
@@ -257,41 +351,63 @@ const ProductForm: React.FC = () => {
     let formIsValid = true;
     if (formState.name.value === "") {
       formIsValid = false;
-      formState.name.error = "Docuemnt name is mandatory";
-      setFormState(formState);
-    } else if (formState.box.value === "") {
-      formIsValid = false;
-      formState.name.error = "Box name is mandatory";
-    } else if (formState.rack.value === "") {
-      formIsValid = false;
-      formState.name.error = "Rack name is mandatory";
+      formState.name.error = "Document name is mandatory";
     } else if (formState.category.value === "") {
       formIsValid = false;
-      formState.name.error = "Category name is mandatory";
-    } else if (formState.type_of_space.value === "") {
+      formState.category.error = "Category name is mandatory";
+    } else if (formState.box.value === "") {
       formIsValid = false;
-      formState.name.error = "Type of space is mandatory";
-    } else if (formState.qr_code.value === "") {
+      formState.box.error = "Box name is mandatory";
+    } else if (formState.description.value === "") {
       formIsValid = false;
-      formState.name.error = "Qr Code for the doc is mandatory";
+      formState.description.error = "Box Desc is mandatory";
+    } else if (formState.rack.value === "") {
+      formIsValid = false;
+      formState.rack.error = "Rack name is mandatory";
+    } else if (formState.category.value === "") {
+      formIsValid = false;
+      formState.category.error = "Category name is mandatory";
+    } else if (
+      formState.type_of_space.value === "" &&
+      roles[0] === "Qualityuser"
+    ) {
+      formIsValid = false;
+      formState.type_of_space.error = "Type of space is mandatory";
+    } else if (formState.qr_code.value === "" && roles[0] === "Qualityuser") {
+      formIsValid = false;
+      formState.qr_code.error = "Qr Code for the doc is mandatory";
     }
+    setFormState(formState);
 
     return formIsValid;
   }
 
   function loadRacks() {
     if (boxRacks.length > 0) {
-      return boxRacks.map((rack, index) => {
-        const { name, _id, status, picked = false } = rack; //destructuring
+      const { rack = "" } = product || {};
+      return boxRacks.map((rack2) => {
+        const { name, _id, status, picked = false, box = "" } = rack2; //destructuring
 
         let disbaledStatus = false;
         let pickedStatus = picked;
+        if (formState.rack.value) {
+          if (formState.rack.value === name) {
+            pickedStatus = true;
+          } else if (formState.rack.value === _id) {
+            pickedStatus = true;
+          }
+        } else {
+          if (product?.box === box) {
+            let selectdRack = _id === rack ? _id : "";
+            pickedStatus = _id === selectdRack ? true : pickedStatus;
+          }
+        }
+
         if (status === "Occupied") {
           disbaledStatus = true;
           pickedStatus = true;
         }
 
-        // let pickedStatus = rack.picked;
         return (
           <div className="col-xs-2" key={_id}>
             {" "}
@@ -345,17 +461,29 @@ const ProductForm: React.FC = () => {
     }
   }
 
+  function generateCode() {
+    getNewQrCode(formState).then((status) => {
+      let newObject = Object.assign(
+        {},
+        { ...formState },
+        { ["qr_code"]: { error: "", value: status.qrImage } }
+      );
+
+      setQrModified(false);
+      setFormState(newObject);
+    });
+  }
+
   let type_of_space_Check = "";
   if (formState.type_of_space !== undefined) {
     type_of_space_Check = formState.type_of_space.value;
   }
-  console.log("RENDER--", formState);
 
   return (
     <Fragment>
       <div className="col-xl-7 col-lg-7">
         <div className="card shadow mb-4">
-          <div className="card-header py-1">
+          <div className="card-header py-2">
             <h6 className="m-0 font-weight-bold text-white">
               Document {isCreate ? "create" : "edit"}
             </h6>
@@ -363,7 +491,7 @@ const ProductForm: React.FC = () => {
           <div className="card-body">
             <form onSubmit={saveUser}>
               <div className="form-row 14">
-                <div className="form-group col-md-6 font-14">
+                <div className="form-group col-md-6">
                   <TextInput
                     id="input_email"
                     value={formState.name.value}
@@ -375,13 +503,8 @@ const ProductForm: React.FC = () => {
                     label="Name"
                     placeholder="Name"
                   />
-                  {formState.name.error ? (
-                    <div className="invalid-feedback">
-                      {formState.name.error}
-                    </div>
-                  ) : null}
                 </div>
-                <div className="form-group col-md-6 font-14">
+                <div className="form-group col-md-6">
                   <SelectInput
                     id="input_category"
                     field="category"
@@ -389,14 +512,14 @@ const ProductForm: React.FC = () => {
                     options={listOfCate}
                     required={true}
                     onChange={hasFormValueChanged}
-                    value={""}
+                    value={formState.category.value}
                     type="select"
-                    customError={formState.name.error}
+                    customError={formState.category.error}
                   />
                 </div>
               </div>
               <div className="form-row 13">
-                <div className="form-group col-md-12 font-14">
+                <div className="form-group col-md-12">
                   <TextInput
                     id="input_description"
                     field="description"
@@ -406,24 +529,48 @@ const ProductForm: React.FC = () => {
                     maxLength={100}
                     label="Description"
                     placeholder="Description"
-                    customError={formState.name.error}
+                    customError={formState.description.error}
                   />
                 </div>
               </div>
               <div className="form-row 12">
-                <div className="form-group col-md-6 font-14">
+                <div className="form-group col-md-6">
+                  <DateInput
+                    id="manufacturedate"
+                    field="manufacturedate"
+                    value={formState.manufacturedate.value}
+                    required={false}
+                    label="Manufacture date"
+                    placeholder="Manufacture date"
+                    onChange={hasFormValueChanged}
+                  />
+                </div>
+                <div className="form-group col-md-6">
+                  <DateInput
+                    id="expiredate"
+                    field="expiredate"
+                    value={new Date(formState.expiredate.value)}
+                    required={false}
+                    label="Expire date   "
+                    placeholder="Expire date"
+                    onChange={hasFormValueChanged}
+                  />
+                </div>
+              </div>
+              <div className="form-row 12">
+                <div className="form-group col-md-6">
                   <div className="form-row">
-                    <div className="form-group col-md-12 font-14">
+                    <div className="form-group col-md-12">
                       <SelectInput
-                        id="input_category"
+                        id="input_box"
                         field="box"
                         label="Box"
                         options={listOfBoxws}
                         required={true}
                         onChange={hasFormValueChanged}
-                        value={""}
+                        value={formState.box.value}
                         type="select"
-                        customError={formState.name.error}
+                        customError={formState.box.error}
                       />
                     </div>
                   </div>
@@ -436,74 +583,94 @@ const ProductForm: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <div className="form-group col-md-6 font-14">
-                  <div className="form-row">
-                    <div
-                      className="col-xs-10"
-                      style={{ paddingLeft: "20px" }}
-                      key={"non_perceptual_space"}
-                    >
-                      {" "}
-                      <QRCODE
-                        value={formState.qr_code.value}
-                        modified={qrModified}
-                      />
-                    </div>{" "}
-                  </div>
-                </div>
               </div>
-
-              <div className="form-row">
-                <div className="form-group col-md-6 font-14">
-                  Type of Space
-                  <div className="form-row">
-                    <div
-                      className="col-xs-3"
-                      style={{ paddingLeft: "20px" }}
-                      key={"non_perceptual_space"}
-                    >
-                      {" "}
-                      <Checkbox
-                        id="input_email"
-                        field={"non_perceptual"}
-                        onChange={hasFormValueChanged}
-                        label={"Non Perpetual documents "}
-                        value={
-                          type_of_space_Check === "non_perceptual"
-                            ? true
-                            : false
-                        }
-                        name={"type_of_space"}
-                        disabled={false}
-                        customError={formState.name.error}
-                      />
-                    </div>
-                    <div
-                      className="col-xs-3 font-14"
-                      style={{ paddingLeft: "20px" }}
-                      key={"perceptual_space"}
-                    >
-                      {" "}
-                      <Checkbox
-                        id="input_email"
-                        field={"perceptual"}
-                        onChange={hasFormValueChanged}
-                        label={"Perpetual documents "}
-                        value={
-                          type_of_space_Check === "perceptual" ? true : false
-                        }
-                        name={"type_of_space"}
-                        disabled={false}
-                        customError={formState.name.error}
-                      />
+              {roles[0] === "Qualityuser" && (
+                <div className="form-row">
+                  <div className="form-group col-md-6">
+                    Type of Space
+                    <div className="form-row">
+                      <div
+                        className="col-xs-3"
+                        style={{ paddingLeft: "41px" }}
+                        key={"non_perceptual_space"}
+                      >
+                        {" "}
+                        <Checkbox
+                          id="input_email"
+                          field={"non_perceptual"}
+                          onChange={hasFormValueChanged}
+                          label={"Non Perpetual documents "}
+                          value={
+                            type_of_space_Check === "non_perceptual"
+                              ? true
+                              : false
+                          }
+                          name={"type_of_space"}
+                          disabled={false}
+                          customError={formState.name.error}
+                        />
+                      </div>
+                      <div
+                        className="col-xs-3"
+                        style={{ paddingLeft: "41px" }}
+                        key={"perceptual_space"}
+                      >
+                        {" "}
+                        <Checkbox
+                          id="input_email"
+                          field={"perceptual"}
+                          onChange={hasFormValueChanged}
+                          label={"Perpetual documents "}
+                          value={
+                            type_of_space_Check === "perceptual" ? true : false
+                          }
+                          name={"type_of_space"}
+                          disabled={false}
+                          customError={formState.name.error}
+                        />
+                      </div>
                     </div>
                   </div>
+                  <div className="form-group col-md-6">
+                    <div className="form-row">
+                      <div
+                        className="col-xs-10"
+                        style={{ paddingLeft: "41px" }}
+                        key={"non_perceptual_space"}
+                      >
+                        {" "}
+                        {/*  <QRCODE
+                          value={formState.qr_code.value}
+                          modified={qrModified}
+                        />  style={{                
+             "backgroundImage": URL(uniquebg : string),                                
+              height: "576px"          
+     }} */}
+                        <div
+                          className="uniquename"
+                          style={{
+                            backgroundImage: "url(" + uniquebg + ")",
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                            height: "58px",
+                            width: "160px",
+                            textAlign: "center",
+                          }}
+                        >
+                          <span style={{ fontSize: "32px" }}>
+                            {formState.qr_code.value}
+                          </span>
+                        </div>
+                      </div>{" "}
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
+              )}
+              <button className="btn btn-danger" onClick={() => cancelForm()}>
                 Cancel
               </button>
-              <button type="submit" className={`btn btn-success left-margin font-14`}>
+              <button type="submit" className={`btn btn-success left-margin `}>
                 Save
               </button>
             </form>

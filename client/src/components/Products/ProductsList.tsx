@@ -12,9 +12,17 @@ function ProductList(props: productListProps): JSX.Element {
   const products: IProductState = useSelector(
     (state: IStateType) => state.products
   );
+  function convert(str: Date) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
 
+    return [date.getFullYear(), mnth, day].join("-");
+  }
   const productElements: (JSX.Element | null)[] = products.products.map(
     (product, io) => {
+      const prdMDate = convert(product.manufacturedate);
+      const prdEDate = convert(product.expiredate);
       if (!product) {
         return null;
       }
@@ -38,6 +46,8 @@ function ProductList(props: productListProps): JSX.Element {
           <td>{product.category}</td>
           <td>{product.box}</td>
           <td>{product.rack}</td>
+          <td>{prdMDate}</td>
+          <td>{prdEDate}</td>
         </tr>
       );
     }
@@ -53,6 +63,8 @@ function ProductList(props: productListProps): JSX.Element {
             <th scope="col">Category</th>
             <th scope="col">Box</th>
             <th scope="col">Rack</th>
+            <th scope="col">M Date</th>
+            <th scope="col">E Date</th>
           </tr>
         </thead>
         <tbody>{productElements}</tbody>

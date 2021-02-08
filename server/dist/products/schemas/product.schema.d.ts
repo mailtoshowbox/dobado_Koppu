@@ -7,5 +7,8 @@ export declare class Documents extends Document {
     rack: string;
     category: string;
     qr_code: string;
+    manufacturedate: Date;
+    expiredate: Date;
+    type_of_space: string;
 }
 export declare const DocumentSchema: import("mongoose").Schema<any>;

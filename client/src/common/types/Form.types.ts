@@ -18,6 +18,11 @@ export interface IProductFormState {
     rack: IFormStateField<string>;
     category: IFormStateField<string>;
     qr_code: IFormStateField<string>;
+    manufacturedate: IFormStateField<Date>;
+    expiredate: IFormStateField<Date>;
+    type_of_space : IFormStateField<string>;
+
+    
     
      
 }

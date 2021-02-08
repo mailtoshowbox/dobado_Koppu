@@ -28,19 +28,29 @@ function SelectInput(props: SelectProps): JSX.Element {
     setValue(elementValue);
   }
 
+  let selectedValue = "";
   const getOptions = props.options.map((option) => {
+    if (!selectedValue) {
+      selectedValue =
+        option.id === value
+          ? option.id
+          : option.name === value
+          ? option.id
+          : "";
+    }
     return (
       <option key={option.id} value={`${option.id}`}>
         {option.name}
       </option>
     );
   });
+  const { customError } = props;
 
   return (
     <Fragment>
       <label htmlFor={`${props.id}`}>{props.label}</label>
       <select
-        value={value}
+        value={selectedValue}
         id={`${props.id}`}
         className={`form-control ${
           props.inputClass ? props.inputClass : ""
@@ -51,6 +61,7 @@ function SelectInput(props: SelectProps): JSX.Element {
         {getOptions}
       </select>
       {error ? <div className="invalid-feedback">{error}</div> : null}
+      {customError ? <div className="invalid-field">{customError}</div> : null}
     </Fragment>
   );
 }

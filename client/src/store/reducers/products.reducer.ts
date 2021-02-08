@@ -13,8 +13,7 @@ const initialState: IProductState = {
 
 function productsReducer(state: IProductState = initialState, action: IActionBase): IProductState {
     switch (action.type) {    
-        case UPDATE_QR_CODE:{
-            console.log("qrCodeFor---",action); //qrCodeFor
+        case UPDATE_QR_CODE:{ 
             const foundIndex: number = state.products.findIndex(pr => pr._id === action.qrCodeFor);
             let products: IProduct[] = state.products;
             products[foundIndex] = {...state.products[foundIndex], ['qr_code'] : action.qrCodeFor};

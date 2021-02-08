@@ -1903,7 +1903,7 @@ textarea.form-control.is-valid {
   box-shadow: 0 0 0 0.2rem rgba(28, 200, 138, 0.25);
 }
 .invalid-feedback {
-  display: none;
+  display: inline;
   width: 100%;
   margin-top: 0.25rem;
   font-size: 80%;
@@ -10013,6 +10013,9 @@ body.sidebar-toggled footer.sticky-footer {
 .regLoader {
   opacity: 0.4;
 }
-.regLoader input{
+.regLoader input {
   cursor: not-allowed;
+}
+.react-datepicker-wrapper {
+  width: 100%;
 }

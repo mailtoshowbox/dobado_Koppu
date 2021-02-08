@@ -34,6 +34,7 @@ export class DocumentsController {
         delete doc.category_info;
        return doc;
       })
+      console.log("onfo---", onfo);
       return onfo;
     });
     return res;
@@ -59,11 +60,12 @@ export class DocumentsController {
     return this.productsService.getQRCode(generateQrCode);
   }
 
-/*   @Put(':id')
+  @Put(':id')
   update(
     @Param('id') id: string,
-    @Body() updateProductDto: CreateProductDto,
-  ): Promise<Product> {
+    @Body() updateProductDto,
+  ) {
+    console.log("updateProductDto----", updateProductDto);
     return this.productsService.update(id, updateProductDto);
-  } */
+  } 
 }

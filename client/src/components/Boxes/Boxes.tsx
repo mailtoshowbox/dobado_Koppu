@@ -59,8 +59,8 @@ const Boxs: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h3 mb-2 text-gray-800">Boxes</h1>
-      <p className="mb-4">Boxes here</p>
+      <h1 className="h5 mb-2 font-bold">Boxes</h1>
+      <p className="mb-4 font-14">Boxes here</p>
       <div className="row">
         <TopCard
           title="Boxes COUNT"
@@ -73,7 +73,7 @@ const Boxs: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-2">
+            <div className="card-header py-1">
               <h6 className="m-0 font-weight-bold text-white">Box List</h6>
               <div className="header-buttons">
                 <button

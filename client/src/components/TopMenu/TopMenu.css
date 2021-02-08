@@ -6,3 +6,11 @@
 .portlet {
     max-height: 350px;
 }
+
+.topbar, .topbar .nav-item .nav-link {
+    height: 3.375rem;
+}
+
+.navbar .breadcrumb {
+    margin-bottom: 0;
+}

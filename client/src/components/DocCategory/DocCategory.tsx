@@ -61,8 +61,8 @@ const Products: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h3 mb-2 text-gray-800">Categories</h1>
-      <p className="mb-4">Document Category here</p>
+      <h1 className="h5 mb-2 font-bold">Categories</h1>
+      <p className="mb-4 font-14">Document Category here</p>
       <div className="row">
         <TopCard
           title="Categories COUNT"
@@ -75,8 +75,8 @@ const Products: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-2">
-              <h6 className="m-0 font-weight-bold text-white">Document List</h6>
+            <div className="card-header py-1">
+              <h6 className="m-0 font-weight-bold text-white font-12">Document List</h6>
               <div className="header-buttons">
                 <button
                   className="btn btn-border"

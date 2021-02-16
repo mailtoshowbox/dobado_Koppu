@@ -491,7 +491,7 @@ const ProductForm: React.FC = () => {
           <div className="card-body">
             <form onSubmit={saveUser}>
               <div className="form-row 14">
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <TextInput
                     id="input_email"
                     value={formState.name.value}
@@ -504,7 +504,7 @@ const ProductForm: React.FC = () => {
                     placeholder="Name"
                   />
                 </div>
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <SelectInput
                     id="input_category"
                     field="category"
@@ -519,7 +519,7 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
               <div className="form-row 13">
-                <div className="form-group col-md-12">
+                <div className="form-group col-md-12 font-14">
                   <TextInput
                     id="input_description"
                     field="description"
@@ -534,7 +534,7 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
               <div className="form-row 12">
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <DateInput
                     id="manufacturedate"
                     field="manufacturedate"
@@ -545,7 +545,7 @@ const ProductForm: React.FC = () => {
                     onChange={hasFormValueChanged}
                   />
                 </div>
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <DateInput
                     id="expiredate"
                     field="expiredate"
@@ -558,9 +558,9 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
               <div className="form-row 12">
-                <div className="form-group col-md-6">
+                <div className="form-group col-md-6 font-14">
                   <div className="form-row">
-                    <div className="form-group col-md-12">
+                    <div className="form-group col-md-12 font-14">
                       <SelectInput
                         id="input_box"
                         field="box"
@@ -575,7 +575,7 @@ const ProductForm: React.FC = () => {
                     </div>
                   </div>
                   <div className="form-row">
-                    <div className="form-group col-md-12">
+                    <div className="form-group col-md-12 font-14">
                       {" "}
                       {pickRack && (
                         <div className="form-row">Racks {loadRacks()}</div>
@@ -586,7 +586,7 @@ const ProductForm: React.FC = () => {
               </div>
               {roles[0] === "Qualityuser" && (
                 <div className="form-row">
-                  <div className="form-group col-md-6">
+                  <div className="form-group col-md-6 font-14">
                     Type of Space
                     <div className="form-row">
                       <div
@@ -631,7 +631,7 @@ const ProductForm: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="form-group col-md-6">
+                  <div className="form-group col-md-6 font-14">
                     <div className="form-row">
                       <div
                         className="col-xs-10"
@@ -667,10 +667,10 @@ const ProductForm: React.FC = () => {
                   </div>
                 </div>
               )}
-              <button className="btn btn-danger" onClick={() => cancelForm()}>
+              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
                 Cancel
               </button>
-              <button type="submit" className={`btn btn-success left-margin `}>
+              <button type="submit" className={`btn btn-success left-margin font-14`}>
                 Save
               </button>
             </form>

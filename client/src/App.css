@@ -289,7 +289,12 @@ html, #root, #wrapper {
 .form-check-input.is-valid~.form-check-label, .was-validated .form-check-input:valid~.form-check-label {
     color: darkslategray !important 
 }
-
+.user-table .btn, .user-table select {
+    font-size: 0.725rem;
+}
+.user-table label, .user-table .invalid-field {
+    display: none;
+ }
 @media (max-width: 380px) {
     .collapsed {
         display:none !important;

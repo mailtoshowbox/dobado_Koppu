@@ -118,7 +118,9 @@ const Users: React.FC = () => {
 
         <td>{admin.email}</td>
         <td>
-          <button className="btn btn-success">{admin.roles[0]}</button>{" "}
+         {admin.roles[0] && (
+          <button className="btn btn-success">{admin.roles[0]}</button>
+          )}{" "}
         </td>
         <td>
           <SelectInput
@@ -143,8 +145,8 @@ const Users: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h5 mb-2 font-bold">Users</h1>
-      <p className="mb-4 font-14">Users here</p>
+      <h1 className="h5 mb-4 font-bold">Users</h1>
+      {/* <p className="mb-4 font-14">Users here</p> */}
 
       <div className="row">
         <TopCard
@@ -169,8 +171,8 @@ const Users: React.FC = () => {
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">
-              <div className="table-responsive portlet">
-                <table className="table">
+              <div className="table-responsive portlet custom-table-style  table-bordered table-hover">
+                <table className="table user-table">
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">#</th>
@@ -199,8 +201,8 @@ const Users: React.FC = () => {
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">
-              <div className="table-responsive portlet">
-                <table className="table">
+              <div className="table-responsive portlet custom-table-style  table-bordered table-hover">
+                <table className="table user-table">
                   <thead className="thead-light">
                     <tr>
                       <th scope="col">#</th>

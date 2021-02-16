@@ -232,13 +232,13 @@ const Products: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h5 mb-2 text-gray-800 font-bold">Documents</h1>
-      <p className="mb-4 font-14">Documents here</p>
+      <h1 className="h5 mb-4 text-gray-800 font-bold">Documents</h1>
+      {/* <p className="mb-4 font-14">Documents here</p> */}
       <div className="row">
         <TopCard
           title="Documents COUNT"
           text={`${numberItemsCount}`}
-          icon="box"
+          icon="file-contract"
           class="success"
         />
       </div>
@@ -301,7 +301,7 @@ const Products: React.FC = () => {
           <div className="popup-content">
             <button
               type="button"
-              className="btn btn-danger"
+              className="btn btn-danger font-14"
               onClick={() => {
                 if (!products.selectedProduct) {
                   return;

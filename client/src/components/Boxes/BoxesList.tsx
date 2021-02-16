@@ -28,7 +28,7 @@ function BoxList(props: productListProps): JSX.Element  {
 
 
   return (
-    <div className="table-responsive portlet">
+    <div className="table-responsive portlet custom-table-style  table-bordered table-hover">
       <table className="table">
         <thead className="thead-light">
           <tr>

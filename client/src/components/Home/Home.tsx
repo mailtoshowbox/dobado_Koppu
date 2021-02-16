@@ -12,32 +12,44 @@ const Home: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h5 mb-2 font-bold">Dashboard</h1>
-      <p className="mb-4 font-14">Dashboard data</p>
+      <h1 className="h5 mb-4 font-bold">Dashboard</h1>
+      {/* <p className="mb-4 font-14">Dashboard data</p> */}
 
      <div className="row">
         <TopCard
-          title="Documents COUNT-1"
+          title="Documents"
           text={`${numberItemsCount}`}
-          icon="user"
+          icon="file-contract"
           class="success"
         />
         <TopCard
-          title="Documents COUNT-2"
+          title="Users"
           text={`${numberItemsCount}`}
-          icon="box"
-          class="primary"
+          icon="users"
+          class="success"
         />
          <TopCard
-          title="Documents COUNT-3"
+          title="Categories"
           text={`${numberItemsCount}`}
-          icon="user"
-          class="danger"
+          icon="project-diagram"
+          class="success"
         />
         <TopCard
-          title="Documents COUNT-3"
+          title="Boxes"
           text={`${numberItemsCount}`}
-          icon="box"
+          icon="box-open"
+          class="success"
+        />
+         <TopCard
+          title="Pending Documents"
+          text={`${numberItemsCount}`}
+          icon="file-contract"
+          class="danger"
+        />
+         <TopCard
+          title="Non Pending Documents"
+          text={`${numberItemsCount}`}
+          icon="file-contract"
           class="success"
         />
       </div>

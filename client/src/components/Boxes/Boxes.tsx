@@ -59,13 +59,13 @@ const Boxs: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h5 mb-2 font-bold">Boxes</h1>
-      <p className="mb-4 font-14">Boxes here</p>
+      <h1 className="h5 mb-4 font-bold">Boxes</h1>
+      {/* <p className="mb-4 font-14">Boxes here</p> */}
       <div className="row">
         <TopCard
-          title="Boxes COUNT"
+          title="Boxes"
           text={`${numberItemsCount}`}
-          icon="box"
+          icon="box-open"
           class="success"
         />
       </div>

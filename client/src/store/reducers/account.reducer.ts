@@ -3,6 +3,7 @@ import { IAccount } from "../models/account.interface";
 import { LOG_IN, LOG_OUT } from "../actions/account.actions";
 
 const initialState: IAccount = {
+    name:"",
     email: "" ,
     roles:[] ,
     auth:{}
@@ -10,7 +11,7 @@ const initialState: IAccount = {
 
 function accountReducer(state: IAccount = initialState, action: IActionBase): IAccount { 
     switch (action.type) {
-        case LOG_IN: {
+        case LOG_IN: { 
             return { ...state, ...action.loginData.user, auth : {...action.loginData.token}};
         }
         case LOG_OUT: {

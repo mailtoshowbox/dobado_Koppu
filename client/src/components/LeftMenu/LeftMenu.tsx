@@ -8,7 +8,7 @@ const LeftMenu: React.FC = () => {
   let [leftMenuVisibility, setLeftMenuVisibility] = useState(false);
 
   const roles: any = useSelector((state: IStateType) => state.account.roles);
-  let [userRoles] = useState(roles);
+  let [userRole] = useState(roles[0] ? roles[0] : "Developer");
 
   function changeLeftMenuVisibility() {
     setLeftMenuVisibility(!leftMenuVisibility);
@@ -16,21 +16,6 @@ const LeftMenu: React.FC = () => {
 
   function getCollapseClass() {
     return leftMenuVisibility ? "" : "collapsed";
-  }
-  function checkAccess() {
-    console.log("userRoles---", userRoles);
-    var data = userRoles.map((item: string) => {
-      console.log("item----", item);
-      if (item === "Superadmin") {
-        return -1;
-      } else if (item === "admin") {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
-    console.log("data---", data);
-    return data[0];
   }
 
   return (
@@ -73,20 +58,29 @@ const LeftMenu: React.FC = () => {
             <span>Documents</span>
           </Link>
         </li>
-
         <li className="nav-item">
-          <Link className="nav-link" to={`/doccategory`}>
+          <Link className="nav-link" to={`/doctype`}>
             <i className="fas fa-project-diagram"></i>
-            <span>Categories</span>
+            <span>Types</span>
           </Link>
         </li>
-        <li className="nav-item">
-          <Link className="nav-link" to={`/boxes`}>
-            <i className="fas fa-box-open"></i>
-            <span>Boxes</span>
-          </Link>
-        </li>
-        {checkAccess() === -1 && (
+        {["Superadmin", "Developer", "Qualityuser"].includes(userRole) && (
+          <>
+            <li className="nav-item">
+              <Link className="nav-link" to={`/doccategory`}>
+                <i className="fas fa-project-diagram"></i>
+                <span>Categories</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={`/boxes`}>
+                <i className="fas fa-box-open"></i>
+                <span>Boxes</span>
+              </Link>
+            </li>
+          </>
+        )}
+        {["Superadmin", "Developer"].includes(userRole) && (
           <div>
             <hr className="sidebar-divider" />
             <div className="sidebar-heading">Admin</div>

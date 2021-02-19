@@ -1,5 +1,6 @@
 export interface IAccount {
-    email: string;
+    name: string;
+    email: string; 
     roles:Array<string> ;
     auth:any;
 }

@@ -1,0 +1,76 @@
+import React, { useState, ChangeEvent } from "react";
+
+function TextInput(props: any): JSX.Element {
+  const [touched, setTouch] = useState(false);
+  const [error, setError] = useState("");
+  const [htmlClass, setHtmlClass] = useState("");
+  const [, setValue] = useState(0);
+
+  function onValueChanged(event: ChangeEvent<HTMLInputElement>): void {
+    let [error, validClass, elementValue] = ["", "", event.target.value];
+
+    if (elementValue.length > 2) {
+      elementValue = elementValue.slice(0, 2);
+    }
+
+    props.onChange({
+      value: parseInt(elementValue),
+      error: error,
+      touched: touched,
+      field: props.field,
+    });
+
+    setTouch(true);
+    setError(error);
+    setHtmlClass(validClass);
+    setValue(parseInt(elementValue));
+  }
+
+  function add_years(n: number) {
+    return 2;
+    //return new Date(dt.setFullYear(dt.getFullYear() + n));
+  }
+
+  let dt = new Date();
+
+  const {
+    customError,
+    value: { time = 0, defaultYear = 3, calculateNonPerceptualTime = "MM/YY" },
+  } = props;
+
+  return (
+    <div className="form-row">
+      <div className="form-group col-md-6">
+        <label style={{ color: "#736AFF" }}>{"To be retention Upto"}</label>
+        <input
+          value={time}
+          onChange={onValueChanged}
+          type="number"
+          className={`form-control `}
+          placeholder={"YY"}
+          min="1"
+          max="99"
+        />
+      </div>
+      <div
+        className="form-group col-md-6"
+        style={{
+          padding: "39px 36px 4px 1px",
+          textAlign: "center",
+        }}
+      >
+        <span
+          style={{
+            border: "1px solid",
+            padding: "10px",
+            boxShadow: "5px 10px",
+          }}
+        >
+          {calculateNonPerceptualTime}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export default TextInput;

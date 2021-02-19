@@ -24,11 +24,14 @@ import {
   IBox,
   IBoxList,
 } from "../../store/models/box.interface";
-import { getBoxList } from "../../services/index";
+import { getBoxList, updateBox } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 
 const Boxs: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
+  const allowedUsers = ["Superadmin", "Developer", "Qualityuser"];
+  const roles: any = useSelector((state: IStateType) => state.account.roles);
+  let [userRole] = useState(roles[0] ? roles[0] : "Developer");
 
   const dispatch: Dispatch<any> = useDispatch();
   const boxes: IBoxState = useSelector((state: IStateType) => state.boxes);
@@ -49,9 +52,22 @@ const Boxs: React.FC = () => {
   function onBoxSelect(box: IBox): void {
     dispatch(changeSelectedBox(box));
     dispatch(setModificationState(BoxModificationStatus.None));
+    dispatch(setModificationState(BoxModificationStatus.Edit));
   }
 
   function onBoxRemove() {
+    if (boxes.selectedBox) {
+      setPopup(true);
+    }
+  }
+
+  function onDeleteProduct(box: IBox): void {
+    dispatch(changeSelectedBox(box));
+    dispatch(setModificationState(BoxModificationStatus.None));
+    onProductRemove();
+  }
+
+  function onProductRemove() {
     if (boxes.selectedBox) {
       setPopup(true);
     }
@@ -84,14 +100,7 @@ const Boxs: React.FC = () => {
                 >
                   <i className="fas fa fa-plus"></i>
                 </button>
-                <button
-                  className="btn btn-border"
-                  onClick={() =>
-                    dispatch(setModificationState(BoxModificationStatus.Edit))
-                  }
-                >
-                  <i className="fas fa fa-pen"></i>
-                </button>
+
                 {/*  <button className="btn btn-border btn-red-color" onClick={() => onBoxRemove()}>
                   <i className="fas fa fa-times"></i>
                 </button> */}
@@ -104,7 +113,12 @@ const Boxs: React.FC = () => {
               <BoxForm />
             ) : null}
             <div className="card-body">
-              <BoxesList onSelect={onBoxSelect} />
+              <BoxesList
+                onSelect={onBoxSelect}
+                onSelectDelete={onDeleteProduct}
+                boxModificationStatus={boxes.modificationState}
+                allowDelete={allowedUsers.includes(userRole)}
+              />
             </div>
           </div>
         </div>
@@ -126,15 +140,22 @@ const Boxs: React.FC = () => {
                 if (!boxes.selectedBox) {
                   return;
                 }
-                dispatch(
-                  addNotification(
-                    "Box removed",
-                    `Box ${boxes.selectedBox.name} was removed`
-                  )
-                );
-                // dispatch(removeBox(boxes.selectedBox._id));
-                dispatch(clearSelectedBox());
-                setPopup(false);
+                let boxInfoUpt = {
+                  id: boxes.selectedBox._id,
+                  isActive: false,
+                };
+                updateBox(boxInfoUpt, account)
+                  .then((status) => {
+                    dispatch(
+                      addNotification("Box removed", `Box  was removed`)
+                    );
+                    dispatch(clearSelectedBox());
+                    setPopup(false);
+                  })
+                  .catch((err) => {
+                    dispatch(addNotification("Failed", `Box  not removed`));
+                    setPopup(false);
+                  });
               }}
             >
               Remove

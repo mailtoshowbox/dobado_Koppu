@@ -3,4 +3,5 @@ export interface Box {
     name: string;
     description: string;
     racks: number;
+    isActive: boolean;
 }

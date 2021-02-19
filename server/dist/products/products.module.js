@@ -13,6 +13,7 @@ const products_controller_1 = require("./products.controller");
 const products_service_1 = require("./products.service");
 const product_schema_1 = require("./schemas/product.schema");
 const box_module_1 = require("../box/box.module");
+const docType_module_1 = require("../docType/docType.module");
 let DocumentsModule = class DocumentsModule {
 };
 DocumentsModule = __decorate([
@@ -20,7 +21,7 @@ DocumentsModule = __decorate([
         imports: [
             mongoose_1.MongooseModule.forFeature([
                 { name: product_schema_1.Documents.name, schema: product_schema_1.DocumentSchema },
-            ]), box_module_1.BoxModule
+            ]), box_module_1.BoxModule, docType_module_1.DocTypeModule
         ],
         controllers: [products_controller_1.DocumentsController],
         providers: [products_service_1.DocumentsService]

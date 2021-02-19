@@ -34,7 +34,6 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     getUserList(account.auth).then((items: IUserList) => {
-      console.log("items---", items);
       dispatch(loadListOfuser(items));
     });
     dispatch(updateCurrentPath("users", "list"));
@@ -51,10 +50,8 @@ const Users: React.FC = () => {
     approveUser({ user: admin, selected: model }, account.auth).then(
       (status) => {
         getUserList(account.auth).then((items: IUserList) => {
-          console.log("items---", items);
           dispatch(loadListOfuser(items));
         });
-        console.log("APproved Suer");
 
         // dispatch(addNotification("New Box added", `User  added by you`));
         //  dispatch(clearSelectedBox());
@@ -118,8 +115,8 @@ const Users: React.FC = () => {
 
         <td>{admin.email}</td>
         <td>
-         {admin.roles[0] && (
-          <button className="btn btn-success">{admin.roles[0]}</button>
+          {admin.roles[0] && (
+            <button className="btn btn-success">{admin.roles[0]}</button>
           )}{" "}
         </td>
         <td>
@@ -167,7 +164,9 @@ const Users: React.FC = () => {
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
             <div className="card-header py-1">
-              <h6 className="m-0 font-weight-bold text-white font-12">Approved List</h6>
+              <h6 className="m-0 font-weight-bold text-white font-12">
+                Approved List
+              </h6>
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">

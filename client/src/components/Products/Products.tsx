@@ -4,7 +4,7 @@ import ProductForm from "./ProductsForm";
 import TopCard from "../../common/components/TopCard";
 import "./Products.css";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCurrentPath } from "../../store/actions/root.actions";
+
 import {
   IProductState,
   IStateType,
@@ -12,7 +12,6 @@ import {
 } from "../../store/models/root.interface";
 import Popup from "reactjs-popup";
 import {
-  removeProduct,
   clearSelectedProduct,
   setModificationState,
   changeSelectedProduct,
@@ -29,18 +28,22 @@ import { IDocCategoryList } from "../../store/models/doccategory.interface";
 
 import { IBoxList } from "../../store/models/box.interface";
 import { loadListOfBox } from "../../store/actions/box.action";
+import { loadListOfDocType } from "../../store/actions/doctype.action";
+
 import {
   getDocumentList,
   getDocCategoryList,
   getBoxList,
+  getDocTypeList,
+  updateDoc,
 } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 
-import DataTableComp from '../../common/components/DataTableComp';
-
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
-
+  const allowedUsers = ["Superadmin", "Developer", "Qualityuser"];
+  const roles: any = useSelector((state: IStateType) => state.account.roles);
+  let [userRole] = useState(roles[0] ? roles[0] : "Developer");
   const dispatch: Dispatch<any> = useDispatch();
   const products: IProductState = useSelector(
     (state: IStateType) => state.products
@@ -50,152 +53,6 @@ const Products: React.FC = () => {
   );
   const numberItemsCount: number = products.products.length;
   const [popup, setPopup] = useState(false);
-  const dataSet = [
-    {
-      id: 1,
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      ext: 5421,
-      date: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      id: 2,
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      ext: 8422,
-      date: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      id: 3,
-      name: "Ashton Cox",
-      position: "Junior Technical Author",
-      office: "San Francisco",
-      ext: 1562,
-      date: "2009/01/12",
-      salary: "$86,000",
-    },
-    {
-      id: 1,
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      ext: 5421,
-      date: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      id: 2,
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      ext: 8422,
-      date: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      id: 3,
-      name: "Ashton Cox",
-      position: "Junior Technical Author",
-      office: "San Francisco",
-      ext: 1562,
-      date: "2009/01/12",
-      salary: "$86,000",
-    },
-    {
-      id: 1,
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      ext: 5421,
-      date: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      id: 2,
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      ext: 8422,
-      date: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      id: 3,
-      name: "Ashton Cox",
-      position: "Junior Technical Author",
-      office: "San Francisco",
-      ext: 1562,
-      date: "2009/01/12",
-      salary: "$86,000",
-    },
-    {
-      id: 1,
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      ext: 5421,
-      date: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      id: 2,
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      ext: 8422,
-      date: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      id: 3,
-      name: "Ashton Cox",
-      position: "Junior Technical Author",
-      office: "San Francisco",
-      ext: 1562,
-      date: "2009/01/12",
-      salary: "$86,000",
-    },
-    {
-      id: 1,
-      name: "Tiger Nixon",
-      position: "System Architect",
-      office: "Edinburgh",
-      ext: 5421,
-      date: "2011/04/25",
-      salary: "$320,800",
-    },
-    {
-      id: 2,
-      name: "Garrett Winters",
-      position: "Accountant",
-      office: "Tokyo",
-      ext: 8422,
-      date: "2011/07/25",
-      salary: "$170,750",
-    },
-    {
-      id: 3,
-      name: "Ashton Cox",
-      position: "Junior Technical Author",
-      office: "San Francisco",
-      ext: 1562,
-      date: "2009/01/12",
-      salary: "$86,000",
-    }
-  ];
-
-  const columns = [
-    { title: "Name", data:'name' },
-    { title: "Position", data:'position'  },
-    { title: "Office", data:'office' },
-    { title: "Extn.", data: 'ext' },
-    { title: "Start date", data:"date" },
-    { title: "Salary", data: 'salary' },
-  ];
   useEffect(() => {
     //Load Documents
     getDocumentList(account.auth).then((items: IProductList) => {
@@ -210,13 +67,22 @@ const Products: React.FC = () => {
       dispatch(loadListOfBox(items));
     });
 
-    // dispatch(clearSelectedProduct());
-    // dispatch(updateCurrentPath("products", "list"));
+    //Load Available Doc Types
+    getDocTypeList(account.auth).then((items: IBoxList) => {
+      dispatch(loadListOfDocType(items));
+    });
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IProduct): void {
     dispatch(changeSelectedProduct(product));
     dispatch(setModificationState(ProductModificationStatus.None));
+    dispatch(setModificationState(ProductModificationStatus.Edit));
+  }
+
+  function onDeleteProduct(product: IProduct): void {
+    dispatch(changeSelectedProduct(product));
+    dispatch(setModificationState(ProductModificationStatus.None));
+    onProductRemove();
   }
 
   function onProductRemove() {
@@ -224,11 +90,6 @@ const Products: React.FC = () => {
       setPopup(true);
     }
   }
-
-  // deleteRow = (id) => {
-  //   const filteredData = this.state.data.filter((i) =>  i.id !== id);
-  //   this.setState({data: filteredData});
-  // };
 
   return (
     <Fragment>
@@ -247,7 +108,9 @@ const Products: React.FC = () => {
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
             <div className="card-header py-1">
-              <h6 className="m-0 font-weight-bold text-white font-12">Document List</h6>
+              <h6 className="m-0 font-weight-bold text-white font-12">
+                Document List
+              </h6>
               <div className="header-buttons">
                 <button
                   className="btn btn-border"
@@ -259,22 +122,6 @@ const Products: React.FC = () => {
                 >
                   <i className="fas fa fa-plus"></i>
                 </button>
-                <button
-                  className="btn btn-border"
-                  onClick={() =>
-                    dispatch(
-                      setModificationState(ProductModificationStatus.Edit)
-                    )
-                  }
-                >
-                  <i className="fas fa fa-pen"></i>
-                </button>
-                {/*  <button
-                  className="btn btn-border btn-red-color"
-                  onClick={() => onProductRemove()}
-                >
-                  <i className="fas fa fa-times"></i>
-                </button> */}
               </div>
             </div>
             {products.modificationState === ProductModificationStatus.Create ||
@@ -283,8 +130,13 @@ const Products: React.FC = () => {
               <ProductForm />
             ) : null}
             <div className="card-body">
-              <ProductList onSelect={onProductSelect} />
-              <DataTableComp data={dataSet} columns={columns}/>
+              <ProductList
+                onSelect={onProductSelect}
+                onSelectDelete={onDeleteProduct}
+                allowDelete={allowedUsers.includes(userRole)}
+                productModificationStatus={products.modificationState}
+                currentUser={account}
+              />
             </div>
           </div>
         </div>
@@ -306,15 +158,23 @@ const Products: React.FC = () => {
                 if (!products.selectedProduct) {
                   return;
                 }
-                dispatch(
-                  addNotification(
-                    "Product removed",
-                    `Product ${products.selectedProduct.name} was removed`
-                  )
-                );
-                //  dispatch(removeProduct(products.selectedProduct._id));
-                dispatch(clearSelectedProduct());
-                setPopup(false);
+
+                let boxInfoUpt = {
+                  id: products.selectedProduct._id,
+                  isActive: false,
+                };
+                updateDoc(boxInfoUpt, account)
+                  .then(() => {
+                    dispatch(
+                      addNotification("Product removed", `Product  was removed`)
+                    );
+                    dispatch(clearSelectedProduct());
+                    setPopup(false);
+                  })
+                  .catch((err) => {
+                    dispatch(addNotification("Failed", `Product  not removed`));
+                    setPopup(false);
+                  });
               }}
             >
               Remove

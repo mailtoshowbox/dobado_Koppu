@@ -4,6 +4,70 @@ import { getDocCustomGetOptions, getDocCustomPostOptions, getDocCustomPutOptions
 const API_HOST_AT = "http://localhost:3000";
 
 
+
+export function getDashboardList(options) {
+
+  var myOptions = getDocCustomGetOptions(options);
+
+      return fetch(API_HOST_AT+"/products/dashboard/602eb4222e3f11162ccdb0da", myOptions)      
+            .then(response => {      
+              if (!response.ok) {      
+                handleResponseError(response);      
+              }      
+              return response.json();      
+            })      
+            .then(json => {   
+                return json;
+            })      
+            .catch(error => {      
+              handleError(error);      
+            });
+  }
+export function updateDocType(item,options) { 
+  const {id=""} = item;
+  var myOptions = getDocCustomPutOptions(options, item);  
+
+  return fetch(API_HOST_AT+'/doctype/'+id, myOptions)
+    .then(response => {
+      if (!response.ok) {
+        handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+export function addNewDocType(newitem, options) {
+  var myOptions = getDocCustomPostOptions(options, newitem);  
+  return fetch(API_HOST_AT+'/doctype', myOptions)
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+export function getDocTypeList(options={}) {
+  var myOptions = getDocCustomGetOptions(options);
+  return fetch(API_HOST_AT+"/doctype", myOptions)      
+        .then(response => {      
+          if (!response.ok) {      
+            handleResponseError(response);      
+          }      
+          return response.json();      
+        })      
+        .then(json => {   
+            return json;
+        })      
+        .catch(error => {      
+          handleError(error);      
+        });
+}
+
 export function approveUser(newitem, options) { 
 
   const {value=0} = newitem.selected;
@@ -136,7 +200,7 @@ export function addNewDoc(newitem,options ) {
 }
 
 export function getNewQrCode(newitem) {
-  return fetch(API_HOST_AT+'/products/getQRCode', {
+  return fetch(API_HOST_AT+'/products/getRandomCode', {
     method: "POST",    
     headers: {
           "Content-Type": "application/json"
@@ -204,8 +268,7 @@ export function getRacks(id) {
       }
       return response.json();
     })
-    .catch(error => {
-      console.log("error--", error);
+    .catch(error => { 
       handleError(error);
     });
 }
@@ -244,7 +307,7 @@ export function addNewBox(newitem, options) {
 
 export function updateDocCat(item,options) { 
   const {id=""} = item;
-  var myOptions = getDocCustomPostOptions(options, item);  
+  var myOptions = getDocCustomPutOptions(options, item);  
 
   return fetch(API_HOST_AT+'/doccategory/'+id, myOptions)
     .then(response => {

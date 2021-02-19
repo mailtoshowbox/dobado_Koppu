@@ -23,11 +23,7 @@ function TopMenuAccount(): JSX.Element {
         aria-expanded="false"
       >
         <span className="mr-2 d-none d-lg-inline small cadet">{email}</span>
-        <img
-          className="img-profile rounded-circle"
-          alt=""
-          src="https://source.unsplash.com/QAB-WJcbgJk/60x60"
-        />
+        <img className="img-profile rounded-circle" alt="" />
       </a>
 
       <div

@@ -31,6 +31,7 @@ function Checkbox(props: CheckboxProps): JSX.Element {
     setValue(elementValue);
   }
 
+  const { customError } = props;
   return (
     <div className="form-check">
       <input
@@ -48,7 +49,12 @@ function Checkbox(props: CheckboxProps): JSX.Element {
         {props.label}
       </label>
 
-      {error ? <div className="invalid-feedback">{error}</div> : null}
+      {!customError && error ? (
+        <div className="invalid-feedback">{error}</div>
+      ) : null}
+      {!error && customError ? (
+        <div className="invalid-field">{customError}</div>
+      ) : null}
     </div>
   );
 }

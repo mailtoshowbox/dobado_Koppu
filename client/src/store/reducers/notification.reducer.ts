@@ -15,8 +15,7 @@ function notificationReducer(state: INotificationState = initialState, action: I
                 date: new Date(),
                 title: action.title,
                 text: action.text
-            };
-            console.log( {...state, notifications: [...state.notifications, newItem]});
+            }; 
             return {...state, notifications: [...state.notifications, newItem]};
         }
         case REMOVE_NOTIFICATION: {

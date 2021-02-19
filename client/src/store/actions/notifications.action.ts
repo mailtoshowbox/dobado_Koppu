@@ -11,8 +11,7 @@ export function removeNotification(id: number): IRemoveNotificationActionType {
 export function parseApiResult(result: any) {
     const {status,message="", data:{ user={}}}  = result; 
     let titleMesage = '';
-    let bodyMessage = '';
-    console.log("message-", result.data);
+    let bodyMessage = ''; 
     const processMassage = message ? message : result.data.message;
     switch (processMassage){
         case "LOGIN.ERROR":

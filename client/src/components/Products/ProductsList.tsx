@@ -1,10 +1,14 @@
-import React, { Fragment, Dispatch, useState, useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { IStateType, IProductState } from "../../store/models/root.interface";
 import { IProduct } from "../../store/models/product.interface";
-
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 export type productListProps = {
   onSelect?: (product: IProduct) => void;
+  productModificationStatus: any;
+  onSelectDelete?: (box: IProduct) => void;
+  currentUser: any;
+  allowDelete: boolean;
   children?: React.ReactNode;
 };
 
@@ -12,50 +16,167 @@ function ProductList(props: productListProps): JSX.Element {
   const products: IProductState = useSelector(
     (state: IStateType) => state.products
   );
-  function convert(str: Date) {
+  function convertDate(str: Date) {
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
 
     return [date.getFullYear(), mnth, day].join("-");
   }
-  const productElements: (JSX.Element | null)[] = products.products.map(
-    (product, io) => {
-      const prdMDate = convert(product.manufacturedate);
-      const prdEDate = convert(product.expiredate);
-      if (!product) {
-        return null;
-      }
 
-      // let cate = products.rack;
+  function onClickProductSelected(cell: any, row: any, rowIndex: any) {
+    if (props.onSelect) props.onSelect(row);
+  }
+  function onClickProductDelete(cell: any, row: any, rowIndex: any) {
+    if (props.onSelectDelete) props.onSelectDelete(row);
+  }
+  function buttonFormatter(
+    cell: any,
+    row: any,
+    enumObject: any,
+    rowIndex: any
+  ) {
+    const { status = "n-approved" } = row.document_info || {};
+    const {
+      productModificationStatus = 0,
+      currentUser: { roles = [] },
+      allowDelete = false,
+    } = props;
+    const loggedInUserRole = roles[0] ? roles[0] : "Developer";
+
+    if (productModificationStatus === 0) {
       return (
-        <tr
-          className={`table-row ${
-            products.selectedProduct &&
-            products.selectedProduct._id === product._id
-              ? "selected"
-              : ""
-          }`}
-          onClick={() => {
-            if (props.onSelect) props.onSelect(product);
-          }}
-          key={`product_${io}`}
-        >
-          <td>{io + 1}</td>
-          <td>{product.name}</td>
-          <td>{product.category}</td>
-          <td>{product.box}</td>
-          <td>{product.rack}</td>
-          <td>{prdMDate}</td>
-          <td>{prdEDate}</td>
-        </tr>
+        <>
+          <button
+            type="button"
+            onClick={() => onClickProductSelected(cell, row, rowIndex)}
+          >
+            <i className="fas fa fa-pen"></i>
+          </button>
+          {status === "n-approved" && loggedInUserRole === "Qualityuser" && (
+            <span
+              style={{ padding: "6px 8px 6px 10px", margin: "2% 4% 2% 3%" }}
+              className="badge  badge-danger"
+            >
+              New
+            </span>
+          )}
+          {allowDelete && (
+            <button
+              className="btn btn-border  btn-red-color"
+              onClick={() => onClickProductDelete(cell, row, rowIndex)}
+            >
+              <i className="fas fa fa-times"></i>
+            </button>
+          )}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <button type="button" disabled style={{ cursor: "not-allowed" }}>
+            <i className="fas fa fa-pen"></i>
+          </button>
+          {status === "n-approved" && loggedInUserRole === "Qualityuser" && (
+            <span
+              style={{ padding: "6px 8px 6px 10px", margin: "2% 4% 2% 3%" }}
+              className="badge  badge-danger"
+            >
+              New
+            </span>
+          )}
+          <button
+            className="btn btn-border  btn-red-color"
+            onClick={() => onClickProductDelete(cell, row, rowIndex)}
+          >
+            <i className="fas fa fa-times"></i>
+          </button>
+        </>
       );
     }
-  );
+  }
 
+  const options = {
+    clearSearch: true,
+  };
   return (
-    <div className="table-responsive portlet custom-table-style  table-bordered table-hover">
-      <table className="table">
+    <div className="table-responsive portlet">
+      <BootstrapTable
+        options={options}
+        data={products.products}
+        pagination={true}
+        hover={true}
+        search={true}
+      >
+        <TableHeaderColumn
+          dataField="_id"
+          isKey
+          searchable={false}
+          hidden={true}
+        >
+          ID
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="name"
+          width="16%"
+          className="thead-light-1"
+        >
+          Name
+        </TableHeaderColumn>
+
+        <TableHeaderColumn
+          dataField="category"
+          className="thead-light-1"
+          width="16%"
+        >
+          Compactor
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="box"
+          className="thead-light-1"
+          width="14%"
+        >
+          Rack system
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="document_type"
+          className="thead-light-1"
+          width="14%"
+        >
+          Type
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="manufacturedate"
+          className="thead-light-1"
+          dataFormat={convertDate}
+          width="14%"
+        >
+          M Date
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="expiredate"
+          className="thead-light-1"
+          dataFormat={convertDate}
+          width="14%"
+        >
+          E Date
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="button"
+          dataFormat={buttonFormatter}
+          className="thead-light-1"
+          width="10%"
+        >
+          Action
+        </TableHeaderColumn>
+      </BootstrapTable>
+      {/*  <Table
+        columns={columns}
+        data={products.products}
+        formatFunction={convertDate}
+        onCustomSelect={props.onSelect}
+      /> */}
+      {/*  <table className="table">
         <thead className="thead-light">
           <tr>
             <th scope="col">#</th>
@@ -68,7 +189,7 @@ function ProductList(props: productListProps): JSX.Element {
           </tr>
         </thead>
         <tbody>{productElements}</tbody>
-      </table>
+      </table> */}
     </div>
   );
 }

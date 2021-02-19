@@ -26,8 +26,6 @@ const Register: React.FC = () => {
     const { field = "", value = undefined, error } = model;
     let newError = error;
 
-    console.log("field----", field);
-
     if (field === "confirmPassword") {
       if (
         typeof formState.password.value !== "undefined" &&
@@ -38,8 +36,6 @@ const Register: React.FC = () => {
         } else {
           newError = "";
         }
-
-        console.log("newError---", newError);
       }
     }
 
@@ -166,62 +162,64 @@ const Register: React.FC = () => {
                   <div className="p-5">
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-3">
-                      <img src={logo} />
+                        <img src={logo} />
                       </h1>
                       <h4 className="mb-3">New User Registration!</h4>
                     </div>
                     <form onSubmit={submit}>
-                    <div className="form-group font-14">
-                      <TextInput
-                        id="input_name"
-                        field="name"
-                        value={formState.name.value}
-                        onChange={hasFormValueChanged}
-                        required={true}
-                        maxLength={100}
-                        label="Name"
-                        customError={formState.name.error}
-                        placeholder="Enter your Name"
-                      />
+                      <div className="form-group font-14">
+                        <TextInput
+                          id="input_name"
+                          field="name"
+                          value={formState.name.value}
+                          onChange={hasFormValueChanged}
+                          required={true}
+                          maxLength={100}
+                          label="Name"
+                          customError={formState.name.error}
+                          placeholder="Enter your Name"
+                        />
                       </div>
-                    <div className="form-group font-14">
-                      <TextInput
-                        id="input_email"
-                        field="email"
-                        value={formState.email.value}
-                        onChange={hasFormValueChanged}
-                        required={true}
-                        maxLength={100}
-                        label="Email"
-                        customError={formState.email.error}
-                        placeholder="Email"
-                      /></div>
-                    <div className="form-group font-14">
-                      <TextInput
-                        id="input_password_1"
-                        field="password"
-                        value={formState.password.value}
-                        onChange={hasFormValueChanged}
-                        required={true}
-                        maxLength={100}
-                        label="Password"
-                        customError={formState.password.error}
-                        placeholder="Password"
-                        type="password"
-                      />
-                    </div><div className="form-group font-14">
-                      <TextInput
-                        id="input_confirmPassword"
-                        field="confirmPassword"
-                        value={formState.confirmPassword.value}
-                        onChange={hasFormValueChanged}
-                        required={true}
-                        maxLength={100}
-                        label="Confirm Password"
-                        customError={formState.confirmPassword.error}
-                        placeholder="Confirm Password"
-                        type="password"
-                      />
+                      <div className="form-group font-14">
+                        <TextInput
+                          id="input_email"
+                          field="email"
+                          value={formState.email.value}
+                          onChange={hasFormValueChanged}
+                          required={true}
+                          maxLength={100}
+                          label="Email"
+                          customError={formState.email.error}
+                          placeholder="Email"
+                        />
+                      </div>
+                      <div className="form-group font-14">
+                        <TextInput
+                          id="input_password_1"
+                          field="password"
+                          value={formState.password.value}
+                          onChange={hasFormValueChanged}
+                          required={true}
+                          maxLength={100}
+                          label="Password"
+                          customError={formState.password.error}
+                          placeholder="Password"
+                          type="password"
+                        />
+                      </div>
+                      <div className="form-group font-14">
+                        <TextInput
+                          id="input_confirmPassword"
+                          field="confirmPassword"
+                          value={formState.confirmPassword.value}
+                          onChange={hasFormValueChanged}
+                          required={true}
+                          maxLength={100}
+                          label="Confirm Password"
+                          customError={formState.confirmPassword.error}
+                          placeholder="Confirm Password"
+                          type="password"
+                        />
                       </div>
                       {formState.confirmPassword.error ? (
                         <div className="invalid-field">

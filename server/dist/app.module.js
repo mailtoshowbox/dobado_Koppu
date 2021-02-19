@@ -12,6 +12,7 @@ const mongoose_1 = require("@nestjs/mongoose");
 const products_module_1 = require("./products/products.module");
 const box_module_1 = require("./box/box.module");
 const docCategory_module_1 = require("./docCategory/docCategory.module");
+const docType_module_1 = require("./docType/docType.module");
 const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
 const keys_1 = require("./config/keys");
@@ -19,7 +20,7 @@ let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
-        imports: [mongoose_1.MongooseModule.forRoot(keys_1.default.mongoURI), products_module_1.DocumentsModule, box_module_1.BoxModule, docCategory_module_1.DocCategoryModule, auth_module_1.AuthModule, users_module_1.UsersModule]
+        imports: [mongoose_1.MongooseModule.forRoot(keys_1.default.mongoURI), products_module_1.DocumentsModule, box_module_1.BoxModule, docCategory_module_1.DocCategoryModule, auth_module_1.AuthModule, users_module_1.UsersModule, docType_module_1.DocTypeModule]
     })
 ], AppModule);
 exports.AppModule = AppModule;

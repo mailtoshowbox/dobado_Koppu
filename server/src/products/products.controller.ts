@@ -10,16 +10,45 @@ import {
 import { CreateDocumentDto } from './dto/create-product.dto';
 import { Document } from './interfaces/product.interface';
 import { DocumentsService } from './products.service';
+import { BoxService } from '../box/box.service';
+import { DocCategoryService } from '../docCategory/docCategory.service';
+import { UsersService } from '../users/users.service';
+import { DocTypeService } from '../docType/docType.service';
+import { promises } from 'dns';
+import { resolve } from 'path';
 
 @Controller('products')
 export class DocumentsController {
-  constructor(private readonly productsService: DocumentsService) {}
+  constructor(
+    private readonly productsService: DocumentsService, 
+     private readonly boxService: BoxService
+     
+     ) {}
+
+
+  @Get('dashboard/:loginUser')
+  getDashboardList(@Param('loginUser') loginUser: string)  {
+    let dashboardItems = {};
+    const pS =   this.productsService.findAllDocuments();     
+    const bS =   this.boxService.findAll();
+    return Promise.all([pS, bS]).then(([docs, boxes]) => { 
+      dashboardItems['documents'] = {data :  docs, status:'Success'}
+      dashboardItems['box'] = {data :  boxes, status:'Success'} 
+      return dashboardItems;
+    }).catch((error)=>{
+      dashboardItems['documents'] = {data :  [], status:'Failed'+error}
+      dashboardItems['box'] = {data :  [], status:'Failed'} 
+      return dashboardItems;
+    });
+  }
+
 
   @Get()
   findAll(): Promise<Document[]> {
     let res = this.productsService.findAll().then((succ=[])=>{   
-     let onfo =  succ.map((doc)=>{
-        const {box_info=[], rack_info=[], category_info =[] } = doc;
+     let onfo =  succ.map((doc)=>{ 
+
+        const {box_info=[], rack_info=[], category_info =[], docType_info=[] } = doc;
         if(box_info.length > 0){
           doc.box= box_info[0].name;
         }
@@ -29,12 +58,15 @@ export class DocumentsController {
         if(box_info.length > 0){
           doc.category= category_info[0].name;
         }
+        if(docType_info.length > 0){
+          doc.document_type= docType_info[0].name;
+        }
         delete doc.box_info;
         delete doc.rack_info;
         delete doc.category_info;
+        delete doc.docType_info; 
        return doc;
-      })
-      console.log("onfo---", onfo);
+      }) 
       return onfo;
     });
     return res;
@@ -57,7 +89,15 @@ export class DocumentsController {
 
   @Post(':getQRCode')
   getQRCode(@Body() generateQrCode)  {
-    return this.productsService.getQRCode(generateQrCode);
+    console.log("getRandomCode---",);
+    return this.productsService.getRandomCode(generateQrCode);
+  }
+
+  
+  @Post(':getRandomCode')
+  getRandomCode(@Body() generateQrCode)  {
+    console.log("getRandomCode---",);
+    return this.productsService.getRandomCode(generateQrCode);
   }
 
   @Put(':id')

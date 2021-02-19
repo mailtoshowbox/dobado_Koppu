@@ -9,9 +9,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DocumentSchema = exports.Documents = void 0;
+exports.DocumentSchema = exports.Documents = exports.Retenstion = exports.CDocument = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+class CDocument extends mongoose_2.Document {
+}
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Boolean)
+], CDocument.prototype, "isActive", void 0);
+exports.CDocument = CDocument;
+class Retenstion extends mongoose_2.Document {
+}
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Number)
+], Retenstion.prototype, "time", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Number)
+], Retenstion.prototype, "defaultYear", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", String)
+], Retenstion.prototype, "calculateNonPerceptualTime", void 0);
+exports.Retenstion = Retenstion;
 let Documents = class Documents extends mongoose_2.Document {
 };
 __decorate([
@@ -54,6 +76,22 @@ __decorate([
     mongoose_1.Prop(),
     __metadata("design:type", String)
 ], Documents.prototype, "type_of_space", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", CDocument)
+], Documents.prototype, "document_info", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", String)
+], Documents.prototype, "document_type", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Retenstion)
+], Documents.prototype, "retension_time", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Boolean)
+], Documents.prototype, "isActive", void 0);
 Documents = __decorate([
     mongoose_1.Schema()
 ], Documents);

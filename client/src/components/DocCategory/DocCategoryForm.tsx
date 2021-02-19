@@ -73,7 +73,7 @@ const ProductForm: React.FC = () => {
           name: formState.name.value,
           description: formState.description.value,
         };
-        addNewDocCat(boxInfo, account.auth).then((status) => {
+        addNewDocCat(boxInfo, account).then((status) => {
           dispatch(
             saveFn({
               ...doccategory,
@@ -95,7 +95,7 @@ const ProductForm: React.FC = () => {
           name: formState.name.value,
           description: formState.description.value,
         };
-        updateDocCat(boxInfoUpt, account.auth).then((status) => {
+        updateDocCat(boxInfoUpt, account).then((status) => {
           dispatch(
             saveFn({
               ...doccategory,
@@ -166,7 +166,10 @@ const ProductForm: React.FC = () => {
                 />
               </div>
 
-              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
+              <button
+                className="btn btn-danger font-14"
+                onClick={() => cancelForm()}
+              >
                 Cancel
               </button>
               <button

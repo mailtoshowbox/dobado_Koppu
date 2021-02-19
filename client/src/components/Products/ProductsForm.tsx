@@ -1,15 +1,10 @@
-import React, {
-  useState,
-  FormEvent,
-  Dispatch,
-  Fragment,
-  useEffect,
-} from "react";
+import React, { useRef, useState, FormEvent, Dispatch, Fragment } from "react";
 import {
   IStateType,
   IProductState,
   IDocCategoryState,
   IBoxState,
+  IDocTypeState,
 } from "../../store/models/root.interface";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -22,7 +17,9 @@ import { IRack } from "../../store/models/box.interface";
 import { IProductList } from "../../store/models/product.interface";
 import TextInput from "../../common/components/TextInput";
 import DateInput from "../../common/components/DateInput";
-import QRCODE from "../../common/components/QrCode";
+import PrintCode from "../../common/components/PrintCode";
+import CalculateNonPerceptualTime from "../../common/components/CalculateNonPerceptualTime";
+
 import {
   editProduct,
   clearSelectedProduct,
@@ -55,22 +52,8 @@ import uniquebg from "../../assets/images/uniquebg.png";
 
 const ProductForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
+  const componentRef = useRef();
 
-  const { roles = [] } = account;
-
-  const [boxRacks, setBoxRacks] = useState([]);
-  const [formWithError, setFormWithError] = useState(false);
-  const [pickRack, setPickedRack] = useState(false);
-  const [userRole] = useState(roles[0]);
-  const [qrRequested, setQrRequested] = useState({
-    name: "",
-    box: "",
-    rack: "",
-  });
-  const [qrModified, setQrModified] = useState(false);
-  const selectField = ["box"];
-  const qrFields = ["box", "name", "rack"];
-  const dispatch: Dispatch<any> = useDispatch();
   const products: IProductState | null = useSelector(
     (state: IStateType) => state.products
   );
@@ -78,6 +61,28 @@ const ProductForm: React.FC = () => {
   let product: IProduct | null = products.selectedProduct;
   const isCreate: boolean =
     products.modificationState === ProductModificationStatus.Create;
+
+  const { roles = [], name, email } = account;
+
+  const [boxRacks, setBoxRacks] = useState([]);
+  const [formWithError, setFormWithError] = useState(false);
+  const [pickRack, setPickedRack] = useState(false);
+  const [qrRequested, setQrRequested] = useState({
+    name: "",
+    box: "",
+    rack: "",
+  });
+  const [qrModified, setQrModified] = useState(false);
+  const selectField = ["box"];
+  const dispatch: Dispatch<any> = useDispatch();
+
+  const [touchedFields, setTouchedFields] = useState({
+    box: false,
+    rack: false,
+    category: false,
+    document_type: false,
+    type_of_space: false,
+  });
 
   //"expiredate" manufacturedate
 
@@ -98,6 +103,16 @@ const ProductForm: React.FC = () => {
     listOfBoxws.push(me);
   });
 
+  //Document Types loaded
+  const docTypeList: IDocTypeState | null = useSelector(
+    (state: IStateType) => state.docTypes
+  );
+  let listOfType: { id: string; name: string }[] = [];
+  docTypeList.docTypes.forEach((doc) => {
+    let me = { id: doc._id, name: doc.name };
+    listOfType.push(me);
+  });
+
   if (!product || isCreate) {
     product = {
       _id: "",
@@ -107,51 +122,36 @@ const ProductForm: React.FC = () => {
       rack: "",
       category: "",
       type_of_space: "",
+      document_type: "",
       qr_code: "",
       manufacturedate: new Date(),
       expiredate: new Date(),
+      document_info: {},
+      retension_time: {
+        time: 0,
+        defaultYear: 4,
+        calculateNonPerceptualTime: "",
+      },
     };
   } else {
-    const { box = "", category = "", rack = "" } = product;
-    let updatedProduct: IProduct = product;
-    if (box) {
-      let selectedBox = boxes.boxes.filter((boxe) => boxe.name === box);
+    const { box = "", rack = "" } = product;
 
-      if (selectedBox.length > 0) {
-        updatedProduct.box = selectedBox[0]._id;
+    if (box) {
+      let selectBox = boxes.boxes.filter((boxe) => boxe.name === box);
+      let selectedBox = "";
+      if (selectBox.length > 0) {
+        selectedBox = selectBox[0]._id;
       }
 
-      if (rack && boxRacks.length === 0) {
-        getRacks(product.box).then((racks = []) => {
+      if (selectedBox && rack && boxRacks.length === 0) {
+        getRacks(selectedBox).then((racks = []) => {
           if (racks.length > 0) {
-            if (boxRacks.length === 0) {
-              let selectedRacks = racks.filter((rck: any) => rck.name === rack);
-              // console.log("fsdf--444", selectedRacks);
-              if (selectedRacks.length > 0) {
-                //  console.log("selectedRacks----", selectedRacks);
-                updatedProduct.rack = selectedRacks[0]._id;
-              }
-            }
-            setPickedRack(true);
             setBoxRacks(racks);
+            setPickedRack(true);
           }
         });
       }
     }
-
-    if (category) {
-      let selectedCat = doccategoriesList.docCategories.filter(
-        (catee) => catee.name === category
-      );
-
-      if (selectedCat.length > 0) {
-        updatedProduct.category = selectedCat[0]._id;
-      }
-    }
-
-    console.log("updatedProduct----", updatedProduct);
-
-    product = updatedProduct;
   }
 
   const [formState, setFormState] = useState({
@@ -162,10 +162,31 @@ const ProductForm: React.FC = () => {
     rack: { error: "", value: product.rack },
     category: { error: "", value: product.category },
     type_of_space: { error: "", value: product.type_of_space },
+    document_type: { error: "", value: product.document_type },
+
     qr_code: { error: "", value: product.qr_code },
     manufacturedate: { error: "", value: product.manufacturedate },
     expiredate: { error: "", value: product.expiredate },
+    retension_time: {
+      error: "",
+      value: {
+        time: product.retension_time.time,
+        defaultYear: product.retension_time.defaultYear,
+        calculateNonPerceptualTime:
+          product.retension_time.calculateNonPerceptualTime,
+      },
+    },
   });
+
+  if (formState.qr_code.value === "") {
+    generateCode().then((res) => {
+      setFormState({
+        ...formState,
+
+        ["qr_code"]: { error: "", value: res.code },
+      });
+    });
+  }
   function makeid() {
     var text = "";
     var possible =
@@ -176,9 +197,34 @@ const ProductForm: React.FC = () => {
 
     return text;
   }
+  function add_years(n: number) {
+    let dt = new Date();
+    const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
+    return (
+      ("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear()
+    );
+  }
+
+  function hasRetensionChanged(model: OnChangeModel) {
+    const { value = 0 } = model;
+    let timeSeed = parseInt(value.toString());
+
+    setFormState({
+      ...formState,
+      ["retension_time"]: {
+        error: "",
+        value: {
+          time: timeSeed,
+          defaultYear: 3,
+          calculateNonPerceptualTime: add_years(timeSeed).toString(),
+        },
+      },
+    });
+  }
   function hasFormValueChanged(model: OnChangeModel): void {
     const { field, value = "", name = "" } = model;
     if (selectField.indexOf(field) > -1) {
+      setTouchedFields({ ...touchedFields, [model.field]: true });
       getRacks(value).then((racks = []) => {
         if (racks.length > 0) {
           setPickedRack(true);
@@ -204,11 +250,20 @@ const ProductForm: React.FC = () => {
       }
 
       if (name === "type_of_space") {
-        if (formState.qr_code.value === "") {
+        setTouchedFields({ ...touchedFields, ["type_of_space"]: true });
+
+        if (model.field === "perceptual") {
           setFormState({
             ...formState,
+            ["retension_time"]: {
+              error: "",
+              value: {
+                time: 0,
+                defaultYear: 3,
+                calculateNonPerceptualTime: "",
+              },
+            },
             [model.name]: { error: model.error, value: model.field },
-            ["qr_code"]: { error: model.error, value: makeid() },
           });
         } else {
           setFormState({
@@ -216,9 +271,8 @@ const ProductForm: React.FC = () => {
             [model.name]: { error: model.error, value: model.field },
           });
         }
-
-        // generateCode();
       } else {
+        setTouchedFields({ ...touchedFields, [model.field]: true });
         setFormState({
           ...formState,
           [model.field]: { error: model.error, value: model.value },
@@ -243,14 +297,7 @@ const ProductForm: React.FC = () => {
       ...formState,
       ["rack"]: { error: model.error, value: field },
     });
-
-    /*  let newObject = Object.assign(
-      {},
-      { ...formState },
-      { ["rack"]: { error: model.error, value: field } }
-    );
-
-    checkPossibleToGenerateQR(newObject); */
+    setTouchedFields({ ...touchedFields, ["rack"]: true });
   }
 
   function saveUser(event: FormEvent<HTMLFormElement>): void {
@@ -272,6 +319,13 @@ const ProductForm: React.FC = () => {
     mode: String
   ): void {
     if (product) {
+      const loggedInUserRole = roles[0] ? roles[0] : "Developer";
+      const currentUser = {
+        role: loggedInUserRole,
+        name,
+        email,
+      };
+
       if (mode === "ADD") {
         let boxInfo = {
           name: formState.name.value,
@@ -283,13 +337,19 @@ const ProductForm: React.FC = () => {
           manufacturedate: formState.manufacturedate.value,
           expiredate: formState.expiredate.value,
           type_of_space: formState.type_of_space.value,
+          document_type: formState.document_type.value,
+          document_info: {
+            active: true,
+            status:
+              loggedInUserRole === "Qualityuser" ? "approved" : "n-approved",
+            createdBy: { ...currentUser },
+            createdOn: new Date(),
+          },
+          retension_time: formState.retension_time.value,
         };
 
-        /* if (roles[0] === "Qualityuser") {
-          boxInfo =  {...boxInfo, }
-        } */
-        addNewDoc(boxInfo, account.auth).then((status) => {
-          getDocumentList(account.auth).then((items: IProductList) => {
+        addNewDoc(boxInfo, account).then((status) => {
+          getDocumentList(account).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(
@@ -313,9 +373,76 @@ const ProductForm: React.FC = () => {
           expiredate: formState.expiredate.value,
           type_of_space: formState.type_of_space.value,
           qr_code: formState.qr_code.value,
+          document_type: formState.document_type.value,
+          retension_time: formState.retension_time.value,
         };
+        let seltdPro = products?.products.filter(
+          (pro) => pro._id === formState._id.value
+        )[0];
+        const { document_info = {} } = seltdPro || {};
 
-        updateDoc(boxInfoUpt, account.auth).then((status) => {
+        let updatedByArrau = [{ ...currentUser, updatedOn: new Date() }];
+        if (document_info.updatedBy) {
+          updatedByArrau = [
+            ...document_info.updatedBy,
+            { ...currentUser, updatedOn: new Date() },
+          ];
+        }
+
+        let updatedDoc_Info = {
+          ...document_info,
+          updatedBy: updatedByArrau,
+        };
+        if (
+          formState.type_of_space.value &&
+          loggedInUserRole === "Qualityuser" &&
+          document_info.status === "n-approved"
+        ) {
+          updatedDoc_Info = {
+            ...updatedDoc_Info,
+            status: "approved",
+            approvedBy: currentUser,
+          };
+        }
+        boxInfoUpt = { ...boxInfoUpt, ...{ document_info: updatedDoc_Info } };
+
+        const {
+          box = "",
+          category = "",
+          rack = "",
+          document_type = "",
+        } = product;
+        if (category && !touchedFields.category) {
+          // console.log("doccategoriesList---", doccategoriesList);
+          let selectedCat =
+            doccategoriesList?.docCategories.filter(
+              (catee) => catee.name === category
+            ) || [];
+          if (selectedCat.length > 0) {
+            boxInfoUpt.category = selectedCat[0]._id;
+          }
+        }
+        if (box && !touchedFields.box) {
+          let selectBox = boxes.boxes.filter((boxe) => boxe.name === box);
+          if (selectBox.length > 0) {
+            boxInfoUpt.box = selectBox[0]._id;
+          }
+        }
+        if (rack && !touchedFields.rack) {
+          let selectedRacks = boxRacks.filter((rck: any) => rck.name === rack);
+          if (selectedRacks.length > 0) {
+            boxInfoUpt.rack = selectedRacks[0]["_id"];
+          }
+        }
+        if (document_type && !touchedFields.document_type) {
+          let selectedTypeOfDoc =
+            listOfType.filter((dcT: any) => dcT.name === document_type) || [];
+
+          if (selectedTypeOfDoc.length > 0) {
+            boxInfoUpt.document_type = selectedTypeOfDoc[0].id;
+          }
+        }
+        updateDoc(boxInfoUpt, account).then((status) => {
           dispatch(
             saveFn({
               ...product,
@@ -323,7 +450,7 @@ const ProductForm: React.FC = () => {
             })
           );
 
-          getDocumentList(account.auth).then((items: IProductList) => {
+          getDocumentList(account).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(
@@ -352,31 +479,32 @@ const ProductForm: React.FC = () => {
     if (formState.name.value === "") {
       formIsValid = false;
       formState.name.error = "Document name is mandatory";
-    } else if (formState.category.value === "") {
+    } else if (formState.document_type.value === "") {
       formIsValid = false;
-      formState.category.error = "Category name is mandatory";
-    } else if (formState.box.value === "") {
+      formState.document_type.error = "Document Type is mandatory";
+    } else if (formState.category.value === "" && roles[0] === "Qualityuser") {
       formIsValid = false;
-      formState.box.error = "Box name is mandatory";
+      formState.category.error = "Compactor is mandatory";
     } else if (formState.description.value === "") {
       formIsValid = false;
-      formState.description.error = "Box Desc is mandatory";
-    } else if (formState.rack.value === "") {
+      formState.description.error = "Description is mandatory";
+    } else if (formState.qr_code.value === "" && roles[0] === "Qualityuser") {
       formIsValid = false;
-      formState.rack.error = "Rack name is mandatory";
-    } else if (formState.category.value === "") {
+      formState.qr_code.error = "Qr Code for the doc is mandatory";
+    } else if (formState.box.value === "" && roles[0] === "Qualityuser") {
       formIsValid = false;
-      formState.category.error = "Category name is mandatory";
+      formState.box.error = "Rack system is mandatory";
+    } else if (formState.rack.value === "" && roles[0] === "Qualityuser") {
+      formIsValid = false;
+      formState.rack.error = "Series is mandatory";
     } else if (
       formState.type_of_space.value === "" &&
       roles[0] === "Qualityuser"
     ) {
       formIsValid = false;
       formState.type_of_space.error = "Type of space is mandatory";
-    } else if (formState.qr_code.value === "" && roles[0] === "Qualityuser") {
-      formIsValid = false;
-      formState.qr_code.error = "Qr Code for the doc is mandatory";
     }
+
     setFormState(formState);
 
     return formIsValid;
@@ -462,21 +590,25 @@ const ProductForm: React.FC = () => {
   }
 
   function generateCode() {
-    getNewQrCode(formState).then((status) => {
-      let newObject = Object.assign(
-        {},
-        { ...formState },
-        { ["qr_code"]: { error: "", value: status.qrImage } }
-      );
-
-      setQrModified(false);
-      setFormState(newObject);
+    return getNewQrCode(formState).then((status) => {
+      return status;
     });
   }
 
   let type_of_space_Check = "";
   if (formState.type_of_space !== undefined) {
     type_of_space_Check = formState.type_of_space.value;
+  }
+  function printOrder() {
+    var myWindow = window.open("", "", "width=750,height=750");
+    myWindow?.document.write(
+      document.getElementById("uniquename")?.innerHTML || "No Code"
+    );
+
+    myWindow?.document.close();
+    myWindow?.focus();
+    // myWindow?.print();
+    // myWindow?.close();
   }
 
   return (
@@ -491,7 +623,7 @@ const ProductForm: React.FC = () => {
           <div className="card-body">
             <form onSubmit={saveUser}>
               <div className="form-row 14">
-                <div className="form-group col-md-6 font-14">
+                <div className="form-group col-md-6">
                   <TextInput
                     id="input_email"
                     value={formState.name.value}
@@ -500,26 +632,42 @@ const ProductForm: React.FC = () => {
                     onChange={hasFormValueChanged}
                     required={true}
                     maxLength={20}
-                    label="Name"
-                    placeholder="Name"
+                    label="Name of the document"
+                    placeholder="Name of the document"
                   />
                 </div>
-                <div className="form-group col-md-6 font-14">
+
+                <div className="form-group col-md-6">
                   <SelectInput
-                    id="input_category"
-                    field="category"
-                    label="Category"
-                    options={listOfCate}
+                    id="input_document_type"
+                    field="document_type"
+                    label="Type of Document"
+                    options={listOfType}
                     required={true}
                     onChange={hasFormValueChanged}
-                    value={formState.category.value}
+                    value={formState.document_type.value}
                     type="select"
-                    customError={formState.category.error}
+                    customError={formState.document_type.error}
                   />
                 </div>
+                {roles[0] === "Qualityuser" && (
+                  <div className="form-group col-md-6">
+                    <SelectInput
+                      id="input_category"
+                      field="category"
+                      label="Compactor"
+                      options={listOfCate}
+                      required={true}
+                      onChange={hasFormValueChanged}
+                      value={formState.category.value}
+                      type="select"
+                      customError={formState.category.error}
+                    />
+                  </div>
+                )}
               </div>
               <div className="form-row 13">
-                <div className="form-group col-md-12 font-14">
+                <div className="form-group col-md-12">
                   <TextInput
                     id="input_description"
                     field="description"
@@ -534,7 +682,7 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
               <div className="form-row 12">
-                <div className="form-group col-md-6 font-14">
+                <div className="form-group col-md-6">
                   <DateInput
                     id="manufacturedate"
                     field="manufacturedate"
@@ -545,7 +693,7 @@ const ProductForm: React.FC = () => {
                     onChange={hasFormValueChanged}
                   />
                 </div>
-                <div className="form-group col-md-6 font-14">
+                <div className="form-group col-md-6">
                   <DateInput
                     id="expiredate"
                     field="expiredate"
@@ -557,120 +705,150 @@ const ProductForm: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="form-row 12">
-                <div className="form-group col-md-6 font-14">
-                  <div className="form-row">
-                    <div className="form-group col-md-12 font-14">
-                      <SelectInput
-                        id="input_box"
-                        field="box"
-                        label="Box"
-                        options={listOfBoxws}
-                        required={true}
-                        onChange={hasFormValueChanged}
-                        value={formState.box.value}
-                        type="select"
-                        customError={formState.box.error}
-                      />
+              {roles[0] === "Qualityuser" && (
+                <div className="form-row 12">
+                  <div className="form-group col-md-6">
+                    <div className="form-row">
+                      <div className="form-group col-md-12">
+                        <SelectInput
+                          id="input_box"
+                          field="box"
+                          label="Rack system"
+                          options={listOfBoxws}
+                          required={true}
+                          onChange={hasFormValueChanged}
+                          value={formState.box.value}
+                          type="select"
+                          customError={formState.box.error}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="form-row">
-                    <div className="form-group col-md-12 font-14">
-                      {" "}
-                      {pickRack && (
-                        <div className="form-row">Racks {loadRacks()}</div>
-                      )}
+                    <div className="form-row">
+                      <div className="form-group col-md-12">
+                        {" "}
+                        {pickRack && (
+                          <div className="form-row">Series {loadRacks()}</div>
+                        )}
+                        {formState.rack.error ? (
+                          <div className="invalid-field">
+                            {formState.rack.error}
+                          </div>
+                        ) : null}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              {roles[0] === "Qualityuser" && (
-                <div className="form-row">
-                  <div className="form-group col-md-6 font-14">
-                    Type of Space
-                    <div className="form-row">
-                      <div
-                        className="col-xs-3"
-                        style={{ paddingLeft: "41px" }}
-                        key={"non_perceptual_space"}
-                      >
-                        {" "}
-                        <Checkbox
-                          id="input_email"
-                          field={"non_perceptual"}
-                          onChange={hasFormValueChanged}
-                          label={"Non Perpetual documents "}
-                          value={
-                            type_of_space_Check === "non_perceptual"
-                              ? true
-                              : false
-                          }
-                          name={"type_of_space"}
-                          disabled={false}
-                          customError={formState.name.error}
-                        />
-                      </div>
-                      <div
-                        className="col-xs-3"
-                        style={{ paddingLeft: "41px" }}
-                        key={"perceptual_space"}
-                      >
-                        {" "}
-                        <Checkbox
-                          id="input_email"
-                          field={"perceptual"}
-                          onChange={hasFormValueChanged}
-                          label={"Perpetual documents "}
-                          value={
-                            type_of_space_Check === "perceptual" ? true : false
-                          }
-                          name={"type_of_space"}
-                          disabled={false}
-                          customError={formState.name.error}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form-group col-md-6 font-14">
-                    <div className="form-row">
-                      <div
-                        className="col-xs-10"
-                        style={{ paddingLeft: "41px" }}
-                        key={"non_perceptual_space"}
-                      >
-                        {" "}
-                        {/*  <QRCODE
+              )}
+
+              <div className="form-row">
+                <div className="form-group col-md-8">
+                  {roles[0] === "Qualityuser" && (
+                    <>
+                      {" "}
+                      Type of Space
+                      <div className="form-row">
+                        <div
+                          className="col-md-12"
+                          style={{ paddingLeft: "41px" }}
+                          key={"perceptual_space"}
+                        >
+                          {" "}
+                          <Checkbox
+                            id="input_email"
+                            field={"perceptual"}
+                            onChange={hasFormValueChanged}
+                            label={"Perpetual documents "}
+                            value={
+                              type_of_space_Check === "perceptual"
+                                ? true
+                                : false
+                            }
+                            name={"type_of_space"}
+                            disabled={false}
+                            customError={""}
+                          />
+                          <br />{" "}
+                          <Checkbox
+                            id="input_email"
+                            field={"non_perceptual"}
+                            onChange={hasFormValueChanged}
+                            label={"Non Perpetual documents "}
+                            value={
+                              type_of_space_Check === "non_perceptual"
+                                ? true
+                                : false
+                            }
+                            name={"type_of_space"}
+                            disabled={false}
+                            customError={""}
+                          />
+                          {type_of_space_Check === "non_perceptual" && (
+                            <CalculateNonPerceptualTime
+                              onChange={hasRetensionChanged}
+                              value={formState.retension_time.value}
+                            />
+                          )}
+                        </div>
+                        <div className="col-md-12">
+                          {formState.type_of_space.error ? (
+                            <div className="invalid-field">
+                              {formState.type_of_space.error}
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>{" "}
+                    </>
+                  )}
+                </div>
+
+                <div className="form-group col-md-4">
+                  <div className="form-row">
+                    <div className="col-xs-10" key={"non_perceptual_space"}>
+                      {" "}
+                      {/*  <QRCODE
                           value={formState.qr_code.value}
                           modified={qrModified}
                         />  style={{                
              "backgroundImage": URL(uniquebg : string),                                
               height: "576px"          
-     }} */}
-                        <div
-                          className="uniquename"
-                          style={{
-                            backgroundImage: "url(" + uniquebg + ")",
-                            backgroundPosition: "center",
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            height: "58px",
-                            width: "160px",
-                            textAlign: "center",
-                          }}
-                        >
-                          <span style={{ fontSize: "32px" }}>
-                            {formState.qr_code.value}
-                          </span>
+     }} */}{" "}
+                      <div className="card">
+                        <div className="card-body">
+                          <div
+                            className="uniquename"
+                            style={{
+                              backgroundImage: "url(" + uniquebg + ")",
+                              backgroundPosition: "center",
+                              backgroundSize: "cover",
+                              backgroundRepeat: "no-repeat",
+                              height: "58px",
+                              width: "160px",
+                              textAlign: "center",
+                            }}
+                          >
+                            <span style={{ fontSize: "32px" }}>
+                              {formState.qr_code.value}
+                            </span>
+                          </div>{" "}
+                          <PrintCode code={formState} />
                         </div>
-                      </div>{" "}
-                    </div>
+                        <div className="card-footer">
+                          <div>
+                            <button onClick={printOrder}>
+                              Print this out!
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>{" "}
                   </div>
                 </div>
-              )}
-              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
+              </div>
+
+              <button className="btn btn-danger" onClick={() => cancelForm()}>
                 Cancel
               </button>
-              <button type="submit" className={`btn btn-success left-margin font-14`}>
+              <button type="submit" className={`btn btn-success left-margin `}>
                 Save
               </button>
             </form>

@@ -21,6 +21,8 @@ export interface IProductFormState {
     manufacturedate: IFormStateField<Date>;
     expiredate: IFormStateField<Date>;
     type_of_space : IFormStateField<string>;
+    document_type : IFormStateField<string>;
+    retension_time :IFormStateField<object>;
 
     
     
@@ -43,4 +45,10 @@ export interface IDocCategoryFormState {
     _id: IFormStateField<string>;
     name: IFormStateField<string>;
     description: IFormStateField<string>;
+}
+export interface IDocTypeFormState {
+    _id: IFormStateField<string>;
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+    
 }

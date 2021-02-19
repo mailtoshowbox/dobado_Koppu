@@ -6,7 +6,8 @@ import { Documents } from './schemas/product.schema';
 
 import { Boxes } from './schemas/box.schema';
 import { Racks } from './schemas/rack.schema';
-import { promises } from 'dns';
+import { DocType } from './schemas/docType.schema';
+ 
 
 var QRCode = require('qrcode')
 
@@ -21,57 +22,85 @@ export class DocumentsService {
 
   async findAll(): Promise<Document[]> {
     return await this.productModel.aggregate([
-      { $match: { category: { "$ne": "" } , rack: { "$ne": "" } },  },
-      {
-        $project: {
-          rack: {
-            $toObjectId: "$rack"
-          },
-          category: {
-            $toObjectId: "$category"
-          }, box: {
-            $toObjectId: "$box"
-          },
-          boxInfo: 1,
-          name: 1,
-          manufacturedate:1, 
-          expiredate:1,
-          qr_code:1,
-          type_of_space:1,
-          _id: 1
-        }
+      { $match: { name: { "$ne": "" }   },  },
+      { $addFields: {
+        converted_rack: {
+            $convert: { 
+                input: "$rack",
+                to: "objectId",
+                onError: 0
+            }
+        },
+        converted_category: {
+          $convert: { 
+              input: "$category",
+              to: "objectId",
+              onError: 0
+          }
       },
-      {
-        $lookup:
-        {
-          from: "boxes",
-          localField: "box",
-          foreignField: "_id",
-          as: "box_info"
+      converted_box: {
+        $convert: { 
+            input: "$box",
+            to: "objectId",
+            onError: 0
         }
-      },
-      { $match: { "box_info": { $ne: [] } } },
+    },
+    converted_doctype: {
+      $convert: { 
+          input: "$document_type",
+          to: "objectId",
+          onError: 0
+      }
+  }
+    }},
+   
+    {
+      $lookup:
       {
-        $lookup:
-        {
-          from: "racks",
-          localField: "rack",
-          foreignField: "_id",
-          as: "rack_info"
-        }
-      },
+        from: "racks",
+        localField: "converted_rack",
+        foreignField: "_id",
+        as: "rack_info"
+      }
+    },
+    {
+      $lookup:
       {
-        $lookup:
-        {
-          from: "doccategories",
-          localField: "category",
-          foreignField: "_id",
-          as: "category_info"
-        }
-      },
-
-
+        from: "doccategories",
+        localField: "converted_category",
+        foreignField: "_id",
+        as: "category_info"
+      }
+    },
+    {
+      $lookup:
+      {
+        from: "boxes",
+        localField: "converted_box",
+        foreignField: "_id",
+        as: "box_info"
+      }
+    },
+    {
+      $lookup:
+      {
+        from: "doctypes",
+        localField: "converted_doctype",
+        foreignField: "_id",
+        as: "docType_info"
+      }
+    }
     ])
+  } 
+
+  async findAllDocuments()  {
+    return await this.productModel.find().exec();
+  }
+
+  
+
+  async getDashboardList(id: string) {
+    return await this.productModel.findOne({ _id: id });
   }
 
   async findOne(id: string) {
@@ -79,7 +108,9 @@ export class DocumentsService {
   }
 
   async create(product: Document) {
+    console.log("PRODCUTI____", product);
     const newProduct = new this.productModel(product);
+    console.log("newProduct-->>", newProduct);
     return await newProduct.save();
   }
 
@@ -87,11 +118,11 @@ export class DocumentsService {
     return await this.productModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, product: Document) {
+   async update(id: string, product: Document) {
     return await this.productModel.findByIdAndUpdate(id, product, {
       new: true,
     });
-  }
+  } 
 
   async getQRCode(qrData) {
     return await this.runAsyncFunctions(qrData).then((result) => {
@@ -103,7 +134,36 @@ export class DocumentsService {
         .catch(err => {
           //reject(url)
         })
-    }); 
+    });
+  }
+
+  async getRandomCode(dat) {
+    console.log("TESTS");
+    var text = "";
+    var possible =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return await this.productModel.findOne({ 'qr_code': text }).then((retuh) => {
+      if (retuh === null) {
+        return { code: text };
+      } else {
+        this.getRandomCode({})
+      }
+
+
+    });
+
+
+    /* }, function(err, result){
+      if (err) callback(err);
+      else if (result) return this.getNumber(callback);
+      else return {text}
+  }); */
+
+
   }
 
 

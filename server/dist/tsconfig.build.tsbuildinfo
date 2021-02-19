@@ -1522,18 +1522,18 @@
         "affectsGlobalScope": false
       },
       "../src/products/dto/create-product.dto.ts": {
-        "version": "530345eba5330d069b54c06e65eee3a3f25d60d640f6136edbf9a73fc2bbdb70",
-        "signature": "8b15c7227eee40df54dd8d7c030cba2473c74263dbafed923ee0eacaf0565635",
+        "version": "170f7f495747ca848870a76359a987b6959e5aa0232e86994d87f468e4bf8611",
+        "signature": "401a56f716412fddfb357ae675cb3f3d5cb9f024f9bc92e0b91bb714c4f58ad3",
         "affectsGlobalScope": false
       },
       "../src/products/interfaces/product.interface.ts": {
-        "version": "2791fa7369878743b626ce4eb583cc0195375965f7b90afc3fbd86599415b3e9",
-        "signature": "da9f05834b9313e338c9fb931e8edbc86caf2927d1774e4f473d861b404d698c",
+        "version": "588a9ea694d7c90ccd06a0ea745fe68497e5f19bee6a611431a08f2f40dd484d",
+        "signature": "4ce1422422ed28743fbed1b26adb5ad95b52f273db93cf1798e3baab6b5f2d29",
         "affectsGlobalScope": false
       },
       "../src/products/schemas/product.schema.ts": {
-        "version": "625d3aaaf15f86ffcc548fca062a1b18f574ed2adb787b02b3aa9bca70c6821a",
-        "signature": "3545014a0c2c368571217f3ba1b4f1898c75129c76df6b819ceb56cb3f50429b",
+        "version": "a55faf813dbf264db4e204aa5eceeabc0b63f6b84ead694c0d62e7c2de8cb57c",
+        "signature": "aeb4648259ececae0b70c52f8b77b1fd259bf1009c843aa7aa19f70f4f7b6af4",
         "affectsGlobalScope": false
       },
       "../src/products/schemas/box.schema.ts": {
@@ -1546,34 +1546,24 @@
         "signature": "71b4ebc94fb6b02916850c95d121e2c4ea77ccd57d6e45cd966328c8bc664a37",
         "affectsGlobalScope": false
       },
+      "../src/products/schemas/doctype.schema.ts": {
+        "version": "8dee437da890c4ba13847fd3d2a9725f7e6a9377ed9cea34aae1ce0ea2159947",
+        "signature": "cbb847d0ff040791b85dc43a2b6ae08dc4450b1a5c3e3e94fc50c24b464810e2",
+        "affectsGlobalScope": false
+      },
       "../src/products/products.service.ts": {
-        "version": "0ffbcdf026770676eaafa03b349070d152d7032b24b708e3c03b03e0d96b2d51",
-        "signature": "33f45948c27b0e9c88d8c7c01c9693547d2fef99ff0c91fc1ab3459795ae66f1",
-        "affectsGlobalScope": false
-      },
-      "../src/products/products.controller.ts": {
-        "version": "5991e57ef9365474f93e16b7670b3a94f19829101c6ea9b7bec324a8675d1f49",
-        "signature": "22ea539e7ca3c1a691eec10f4e147f68e0e0f6890ed1e413a0ecd89c24305370",
-        "affectsGlobalScope": false
-      },
-      "../src/box/dto/create-box.dto.ts": {
-        "version": "3d03c460f5f092fc09ab56a36b40be65584d2ad86ad647ed97112efc710665eb",
-        "signature": "402949d3cd8bb5ac5ecf82ed2783b2253b52dd6ccfef87a8600c4b7bdfdfc160",
+        "version": "2368b60b0fecfbb2d8e0a7a4189424bb40c41fc0054c8288203ec976970d94a3",
+        "signature": "4ddbe671620dfb5b6aa77772f2c4b76c547d1622401b2e9aa50103c42f2bfd34",
         "affectsGlobalScope": false
       },
       "../src/box/interfaces/box.interface.ts": {
-        "version": "c02aa5fb72334d916c9a3a6fb8961106704ea5ccab0177e6eda10fd4feb4b171",
-        "signature": "a27425f89cb5c8b74d56368a55c2fbf54ce5e5db0f36a1cedad16a2b86104d35",
-        "affectsGlobalScope": false
-      },
-      "../src/box/interfaces/rack.interface.ts": {
-        "version": "e39ab75cb1c48d4dce1f1007447fc104971c588bc5bc1e24fcd06d30eb717f84",
-        "signature": "6aef516eee0ccc724f479403a9c5023ae2a8cd7e550acd36d488497421276497",
+        "version": "8c60de82cda43a2c44bdb5c95f4f1c08b13d3ee2eda55eb7c9e32e81b8b6e6a6",
+        "signature": "d69625cd3ee4de589c055eaa788b4ea7a5a761d31274d5bfdf83726a04a43137",
         "affectsGlobalScope": false
       },
       "../src/box/schemas/box.schema.ts": {
-        "version": "8d8ec9c53022a0949ae32e6d78267b4bb74c7fd0e4665322ecaccacafb135d0e",
-        "signature": "c16f69bca72d12c4b05b5ca059fef7b8c05d1803e59ef956315d5a1e35cd7a6a",
+        "version": "875bb89b5f6fe0f3f69ee9076f663d3b87ab5debc5d621d0cf977da76faaec08",
+        "signature": "5078009fb64460ba40c178cf50b5cad65c16b2a1ce27361204ba168088c039fb",
         "affectsGlobalScope": false
       },
       "../src/box/schemas/rack.schema.ts": {
@@ -1581,9 +1571,99 @@
         "signature": "71b4ebc94fb6b02916850c95d121e2c4ea77ccd57d6e45cd966328c8bc664a37",
         "affectsGlobalScope": false
       },
+      "../src/box/interfaces/rack.interface.ts": {
+        "version": "e39ab75cb1c48d4dce1f1007447fc104971c588bc5bc1e24fcd06d30eb717f84",
+        "signature": "6aef516eee0ccc724f479403a9c5023ae2a8cd7e550acd36d488497421276497",
+        "affectsGlobalScope": false
+      },
       "../src/box/box.service.ts": {
         "version": "8c2d87d1e3324fdc2bd55441b99ef512909defcaf71231c1782c16b13951e210",
         "signature": "48042a9ea78ff9c2e2b2b25c1c00bf45b7eacc4fd0917306af0163fa5a812de9",
+        "affectsGlobalScope": false
+      },
+      "../src/doccategory/interfaces/doccategory.interface.ts": {
+        "version": "e1d246e79ee3b2adcbafe24c80985e08c3592d679f0259ae0acc72ae29963461",
+        "signature": "440b24cf845e844cbd81c182831202ac3840b5487b65de245a5fd209aecc6def",
+        "affectsGlobalScope": false
+      },
+      "../src/doccategory/schemas/doccategory.schema.ts": {
+        "version": "25c103ad56ad41b7e024a93df55efb30b23831e52275b2d02adf5639d253b8c1",
+        "signature": "a42296e9ac30491fb8dd18214350e2e5efe241841ce031e1650d2f5b51eec4ee",
+        "affectsGlobalScope": false
+      },
+      "../src/doccategory/doccategory.service.ts": {
+        "version": "051cf768945790440c760c8209642a493aec10af7a3195a7d9283eea3d252645",
+        "signature": "ab60ea86870a04e251cf094ed268ae2322bf6aa4c02d8dde3ad5621996463e4a",
+        "affectsGlobalScope": false
+      },
+      "../src/users/dto/create-user.dto.ts": {
+        "version": "ae97eaee9707a1d836f3ad96f557983834c04a3434d9fe77b15bbce0823a1f2c",
+        "signature": "de9bdefc55dfd991078ca34eadd7e3a17dc0d0bd304d90de0f89833355619496",
+        "affectsGlobalScope": false
+      },
+      "../src/common/interfaces/photo.interface.ts": {
+        "version": "66cdca028b29d7b93d012ec727eecd889f5b4662dfe84fd8b2b73dfeacc2124d",
+        "signature": "7c5975b1c374cbbcdcacc7640fef715f70cdf5c4182694236ebb66a9d157b858",
+        "affectsGlobalScope": false
+      },
+      "../src/users/interfaces/user.interface.ts": {
+        "version": "272daf575431bc5afdbca8df2540c3a440b6ba10d0a5c14431134514d36c0022",
+        "signature": "ebeb1cee915fded8f393aec64358cbe34cb95421d9f8ba6aecb3135b27ca6741",
+        "affectsGlobalScope": false
+      },
+      "../src/users/dto/profile.dto.ts": {
+        "version": "0b2d4dd66874be12712b45f49bc52464e7031335a2d2246a914ca0722d53cf0c",
+        "signature": "bcef6455f87cb4dde27288b7ebaec68e0abc0db2224e77c9d9012a55b73e4f9c",
+        "affectsGlobalScope": false
+      },
+      "../src/users/dto/settings.dto.ts": {
+        "version": "1a17901c3f04968d394823d0d40dc4bcdd91ed637f046d83d8a6b19a3827af23",
+        "signature": "849c07cf419ffbd7385bc9c4e3f8886af248c681fa12246a016b3dacf86116d0",
+        "affectsGlobalScope": false
+      },
+      "../src/common/dto/photo.dto.ts": {
+        "version": "6837c43d6805c418d7733a5e82894b35d73186028d328c27991b444e734eb120",
+        "signature": "05da0a82373d8a8128044efb5ac09cfaccc97f5392a506054d96f32743cd60c1",
+        "affectsGlobalScope": false
+      },
+      "../src/common/dto/create-photo.dto.ts": {
+        "version": "50f4a33b7532186501ec6ae6cb2e756d867f598d39ee6fa224947d136e862f61",
+        "signature": "7a0ab17ceb744f1032cc3ffe71f7cf0dcfbb58d6ed83965df226c0b1aabd5075",
+        "affectsGlobalScope": false
+      },
+      "../src/users/dto/update-gallery.dto.ts": {
+        "version": "d242da77312d9c214d26b88c27ca4af151aa1d99677a8b38b1495d516cbe57fe",
+        "signature": "d32e36367bbe1967edf7e4db425fb9af533720538e7e27e35a544b734b0df779",
+        "affectsGlobalScope": false
+      },
+      "../src/users/users.service.ts": {
+        "version": "aa1f96668e675bb117be44c1c1bf939f5b09053ee817025a6314e7357ab716ea",
+        "signature": "420f5aca890a6d3842a186ec511c2d232ee90cf5084bb41cdb71565bf3cd17f1",
+        "affectsGlobalScope": false
+      },
+      "../src/doctype/interfaces/doctype.interface.ts": {
+        "version": "4f9a7ef9bce636ee9f7c524db3ceebf494507ffa054797c16b545bc3507431ab",
+        "signature": "555be4534460ee5132f6491ec8f0fc78468b093412828288c8833f377bf5e23b",
+        "affectsGlobalScope": false
+      },
+      "../src/doctype/schemas/doctype.schema.ts": {
+        "version": "1e923c66e91889b06fde1e9eac253d63598fcca771acbaba74662578e4d63906",
+        "signature": "78813f0c77b59b3a5dfc5341dff284a7ef52fb3c2521d33f7b66b324cc8fb4a2",
+        "affectsGlobalScope": false
+      },
+      "../src/doctype/doctype.service.ts": {
+        "version": "c41668f6feb529d8c3e80f1564ec4a9f49688537f1a6dfe568d85eee749a5bf5",
+        "signature": "7881838791698ebebee612620fd8864d133604d8750572dce60b9a4a24c76245",
+        "affectsGlobalScope": false
+      },
+      "../src/products/products.controller.ts": {
+        "version": "629e5f8f77b98d33125939da3e429ef37bd07a7c467e788e77ee8e6069d7be0b",
+        "signature": "649e3a8057f8e247ff0d50b1166e5aa830776b0b15856a8fd68cfe8a9d57912c",
+        "affectsGlobalScope": false
+      },
+      "../src/box/dto/create-box.dto.ts": {
+        "version": "7602eea3b4419ed4901b383d93f1344f260a1b2c739e43438325295072de070a",
+        "signature": "15379a8002ec55b8553a234c08249196b3f3555db39f38e784e9419f8d558c3b",
         "affectsGlobalScope": false
       },
       "../src/box/rack.service.ts": {
@@ -1601,29 +1681,9 @@
         "signature": "3928f63e29f0fc8ad5c4e09b7bdb93fd19bc66a1bdde4a9351e8fbc939368989",
         "affectsGlobalScope": false
       },
-      "../src/products/products.module.ts": {
-        "version": "3858514e83d904814999f413ee5173e2265530572bbc9ac265451442a02d9465",
-        "signature": "b60bc1dbc78a80b74ad7dcc42ffe952169b9b0f651d6e52405b53f00899c33f7",
-        "affectsGlobalScope": false
-      },
-      "../src/doccategory/dto/create-doccategory.dto.ts": {
-        "version": "c7eed1a282617c2477bea67e867a41c74894bcf96ba85c09a8dd00a92e1b3207",
-        "signature": "1009912b890bd7c31bc9aa85ccd7c3fd2ad6e2ff887b71cfc7c4fa11372076b9",
-        "affectsGlobalScope": false
-      },
-      "../src/doccategory/interfaces/doccategory.interface.ts": {
-        "version": "9d4df204a075371e797054d81f05f0111cf430ec8295e74a7be9bc26cb13ccb0",
-        "signature": "922c7da6291f85d8ef1b7ca1fb31c120ebd6a8e93c0ec08adbea33ae695ecca3",
-        "affectsGlobalScope": false
-      },
-      "../src/doccategory/schemas/doccategory.schema.ts": {
-        "version": "bc5ae4fa7b3a3110453e615b891f512bd78ebd851b9a38c82083935cecf9106d",
-        "signature": "a0a0152402831da4ec625f0b5da3f2b702c999bfb700363242318418af521b4a",
-        "affectsGlobalScope": false
-      },
-      "../src/doccategory/doccategory.service.ts": {
-        "version": "9f6a94237ea37516704e6d70a00cd20820d7ed6c8ef0b7448030f8903c28cfb8",
-        "signature": "ab60ea86870a04e251cf094ed268ae2322bf6aa4c02d8dde3ad5621996463e4a",
+      "../src/doctype/dto/create-doctype.dto.ts": {
+        "version": "01ca35206d425a9240cfd612fb5569ffd4a36eb43ba9a2c379740611481668f3",
+        "signature": "3b41f47dc188a00511b85d4be80f7e8643371173beeb26de89557298d7e55163",
         "affectsGlobalScope": false
       },
       "../node_modules/@nestjs/passport/dist/abstract.strategy.d.ts": {
@@ -1676,8 +1736,28 @@
         "signature": "8f1241f5d9f0d3d72117768b3c974e462840fbd85026fb66685078945404cf2f",
         "affectsGlobalScope": false
       },
+      "../src/doctype/doctype.controller.ts": {
+        "version": "fb446d9fb582f3c9176b21194e1fa72ceedec90c26e7a0a1d1d079fb34a9a271",
+        "signature": "046736d5bd58d67ce86c79464b0846f885e3f224572e95ceddd356fe8f52500a",
+        "affectsGlobalScope": false
+      },
+      "../src/doctype/doctype.module.ts": {
+        "version": "94298b0f7a2362501416d7e73acd2c06440420e63f3b133ba18e939913cf84f2",
+        "signature": "8dde116dec37536d9c860d1151b6a17992084e17e73bba22a3fa054fb84ebabd",
+        "affectsGlobalScope": false
+      },
+      "../src/products/products.module.ts": {
+        "version": "29b0d2fad4a0f7f33290de578a0892e3177f752e86283fe03fa5d1bd7e0457a7",
+        "signature": "b60bc1dbc78a80b74ad7dcc42ffe952169b9b0f651d6e52405b53f00899c33f7",
+        "affectsGlobalScope": false
+      },
+      "../src/doccategory/dto/create-doccategory.dto.ts": {
+        "version": "4a25073f68e10d5e2a7f9c1ae474d61ba0f42dda6dab34ec0ff6579585aade62",
+        "signature": "1dd16c4bd57967053993bbc5ba6530c41feb00817ac4e0d95435547c74eedab8",
+        "affectsGlobalScope": false
+      },
       "../src/doccategory/doccategory.controller.ts": {
-        "version": "494aa30ff2f238dc8103cf053cf87ab3c1c17131de6d3cbf8d0ab6c514009dbb",
+        "version": "8ba66b09950a54cc0b2d5bedff0e8a30be97a044cbddc9a25eef2feee1a1be13",
         "signature": "0d4a3258116eddda867f8c219ce19485ed1b1cf5b57232c5de163a723b4ad338",
         "affectsGlobalScope": false
       },
@@ -1686,54 +1766,9 @@
         "signature": "cb73a1070fc6a4a92f2a916d8e0bf640ad5296792164dba82e1217c5b3e0b56a",
         "affectsGlobalScope": false
       },
-      "../src/users/dto/settings.dto.ts": {
-        "version": "1a17901c3f04968d394823d0d40dc4bcdd91ed637f046d83d8a6b19a3827af23",
-        "signature": "849c07cf419ffbd7385bc9c4e3f8886af248c681fa12246a016b3dacf86116d0",
-        "affectsGlobalScope": false
-      },
-      "../src/common/dto/photo.dto.ts": {
-        "version": "6837c43d6805c418d7733a5e82894b35d73186028d328c27991b444e734eb120",
-        "signature": "05da0a82373d8a8128044efb5ac09cfaccc97f5392a506054d96f32743cd60c1",
-        "affectsGlobalScope": false
-      },
       "../src/users/dto/user.dto.ts": {
         "version": "09cf9aea79b366b2bf46ac019bf0a617d69cd4f55bef0322a609b947c76e2416",
         "signature": "59d5846699282fb3aa4383d61176b637559853300c903183ef7c1e8b467511a0",
-        "affectsGlobalScope": false
-      },
-      "../src/users/dto/create-user.dto.ts": {
-        "version": "ae97eaee9707a1d836f3ad96f557983834c04a3434d9fe77b15bbce0823a1f2c",
-        "signature": "de9bdefc55dfd991078ca34eadd7e3a17dc0d0bd304d90de0f89833355619496",
-        "affectsGlobalScope": false
-      },
-      "../src/common/interfaces/photo.interface.ts": {
-        "version": "66cdca028b29d7b93d012ec727eecd889f5b4662dfe84fd8b2b73dfeacc2124d",
-        "signature": "7c5975b1c374cbbcdcacc7640fef715f70cdf5c4182694236ebb66a9d157b858",
-        "affectsGlobalScope": false
-      },
-      "../src/users/interfaces/user.interface.ts": {
-        "version": "272daf575431bc5afdbca8df2540c3a440b6ba10d0a5c14431134514d36c0022",
-        "signature": "ebeb1cee915fded8f393aec64358cbe34cb95421d9f8ba6aecb3135b27ca6741",
-        "affectsGlobalScope": false
-      },
-      "../src/users/dto/profile.dto.ts": {
-        "version": "0b2d4dd66874be12712b45f49bc52464e7031335a2d2246a914ca0722d53cf0c",
-        "signature": "bcef6455f87cb4dde27288b7ebaec68e0abc0db2224e77c9d9012a55b73e4f9c",
-        "affectsGlobalScope": false
-      },
-      "../src/common/dto/create-photo.dto.ts": {
-        "version": "50f4a33b7532186501ec6ae6cb2e756d867f598d39ee6fa224947d136e862f61",
-        "signature": "7a0ab17ceb744f1032cc3ffe71f7cf0dcfbb58d6ed83965df226c0b1aabd5075",
-        "affectsGlobalScope": false
-      },
-      "../src/users/dto/update-gallery.dto.ts": {
-        "version": "d242da77312d9c214d26b88c27ca4af151aa1d99677a8b38b1495d516cbe57fe",
-        "signature": "d32e36367bbe1967edf7e4db425fb9af533720538e7e27e35a544b734b0df779",
-        "affectsGlobalScope": false
-      },
-      "../src/users/users.service.ts": {
-        "version": "aa1f96668e675bb117be44c1c1bf939f5b09053ee817025a6314e7357ab716ea",
-        "signature": "420f5aca890a6d3842a186ec511c2d232ee90cf5084bb41cdb71565bf3cd17f1",
         "affectsGlobalScope": false
       },
       "../src/common/interfaces/response.interface.ts": {
@@ -2567,7 +2602,7 @@
         "affectsGlobalScope": false
       },
       "../src/app.module.ts": {
-        "version": "0c6725c9d67bda808667812bfa12e566afd913f246f884789b8d4f75ac0dfb61",
+        "version": "21a7474d043e20f3c08f1fba0d6435213cccba5a0f47384d590564103da6305f",
         "signature": "9fc7f7b6ad854404973b8cba8e6d883f758237991968e9a3965d716d46f1da88",
         "affectsGlobalScope": false
       },
@@ -5975,6 +6010,7 @@
         "../src/box/box.module.ts",
         "../src/config/keys.ts",
         "../src/doccategory/doccategory.module.ts",
+        "../src/doctype/doctype.module.ts",
         "../src/products/products.module.ts",
         "../src/users/users.module.ts"
       ],
@@ -6155,20 +6191,52 @@
         "../node_modules/@nestjs/mongoose/index.d.ts",
         "../node_modules/@types/mongoose/index.d.ts"
       ],
+      "../src/doctype/doctype.controller.ts": [
+        "../node_modules/@nestjs/common/index.d.ts",
+        "../node_modules/@nestjs/passport/index.d.ts",
+        "../src/doctype/doctype.service.ts",
+        "../src/doctype/dto/create-doctype.dto.ts",
+        "../src/doctype/interfaces/doctype.interface.ts"
+      ],
+      "../src/doctype/doctype.module.ts": [
+        "../node_modules/@nestjs/common/index.d.ts",
+        "../node_modules/@nestjs/mongoose/index.d.ts",
+        "../src/doctype/doctype.controller.ts",
+        "../src/doctype/doctype.service.ts",
+        "../src/doctype/schemas/doctype.schema.ts"
+      ],
+      "../src/doctype/doctype.service.ts": [
+        "../node_modules/@nestjs/common/index.d.ts",
+        "../node_modules/@nestjs/mongoose/index.d.ts",
+        "../node_modules/@types/mongoose/index.d.ts",
+        "../src/doctype/interfaces/doctype.interface.ts",
+        "../src/doctype/schemas/doctype.schema.ts"
+      ],
+      "../src/doctype/schemas/doctype.schema.ts": [
+        "../node_modules/@nestjs/mongoose/index.d.ts",
+        "../node_modules/@types/mongoose/index.d.ts"
+      ],
       "../src/main.ts": [
         "../node_modules/@nestjs/core/index.d.ts",
         "../src/app.module.ts"
       ],
       "../src/products/products.controller.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
+        "../node_modules/@types/node/dns.d.ts",
+        "../node_modules/@types/node/path.d.ts",
+        "../src/box/box.service.ts",
+        "../src/doccategory/doccategory.service.ts",
+        "../src/doctype/doctype.service.ts",
         "../src/products/dto/create-product.dto.ts",
         "../src/products/interfaces/product.interface.ts",
-        "../src/products/products.service.ts"
+        "../src/products/products.service.ts",
+        "../src/users/users.service.ts"
       ],
       "../src/products/products.module.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
         "../node_modules/@nestjs/mongoose/index.d.ts",
         "../src/box/box.module.ts",
+        "../src/doctype/doctype.module.ts",
         "../src/products/products.controller.ts",
         "../src/products/products.service.ts",
         "../src/products/schemas/product.schema.ts",
@@ -6178,13 +6246,17 @@
         "../node_modules/@nestjs/common/index.d.ts",
         "../node_modules/@nestjs/mongoose/index.d.ts",
         "../node_modules/@types/mongoose/index.d.ts",
-        "../node_modules/@types/node/dns.d.ts",
         "../src/products/interfaces/product.interface.ts",
         "../src/products/schemas/box.schema.ts",
+        "../src/products/schemas/doctype.schema.ts",
         "../src/products/schemas/product.schema.ts",
         "../src/products/schemas/rack.schema.ts"
       ],
       "../src/products/schemas/box.schema.ts": [
+        "../node_modules/@nestjs/mongoose/index.d.ts",
+        "../node_modules/@types/mongoose/index.d.ts"
+      ],
+      "../src/products/schemas/doctype.schema.ts": [
         "../node_modules/@nestjs/mongoose/index.d.ts",
         "../node_modules/@types/mongoose/index.d.ts"
       ],
@@ -8735,7 +8807,20 @@
       "../src/doccategory/schemas/doccategory.schema.ts": [
         "../node_modules/@types/mongoose/index.d.ts"
       ],
+      "../src/doctype/doctype.controller.ts": [
+        "../src/doctype/dto/create-doctype.dto.ts",
+        "../src/doctype/interfaces/doctype.interface.ts"
+      ],
+      "../src/doctype/doctype.service.ts": [
+        "../node_modules/@types/mongoose/index.d.ts",
+        "../src/doctype/interfaces/doctype.interface.ts",
+        "../src/doctype/schemas/doctype.schema.ts"
+      ],
+      "../src/doctype/schemas/doctype.schema.ts": [
+        "../node_modules/@types/mongoose/index.d.ts"
+      ],
       "../src/products/products.controller.ts": [
+        "../src/box/box.service.ts",
         "../src/products/interfaces/product.interface.ts",
         "../src/products/products.service.ts",
         "../src/products/schemas/product.schema.ts"
@@ -8748,6 +8833,9 @@
         "../src/products/schemas/rack.schema.ts"
       ],
       "../src/products/schemas/box.schema.ts": [
+        "../node_modules/@types/mongoose/index.d.ts"
+      ],
+      "../src/products/schemas/doctype.schema.ts": [
         "../node_modules/@types/mongoose/index.d.ts"
       ],
       "../src/products/schemas/product.schema.ts": [
@@ -9491,6 +9579,12 @@
       "../src/doccategory/dto/create-doccategory.dto.ts",
       "../src/doccategory/interfaces/doccategory.interface.ts",
       "../src/doccategory/schemas/doccategory.schema.ts",
+      "../src/doctype/doctype.controller.ts",
+      "../src/doctype/doctype.module.ts",
+      "../src/doctype/doctype.service.ts",
+      "../src/doctype/dto/create-doctype.dto.ts",
+      "../src/doctype/interfaces/doctype.interface.ts",
+      "../src/doctype/schemas/doctype.schema.ts",
       "../src/main.ts",
       "../src/products/dto/create-product.dto.ts",
       "../src/products/interfaces/product.interface.ts",
@@ -9498,6 +9592,7 @@
       "../src/products/products.module.ts",
       "../src/products/products.service.ts",
       "../src/products/schemas/box.schema.ts",
+      "../src/products/schemas/doctype.schema.ts",
       "../src/products/schemas/product.schema.ts",
       "../src/products/schemas/rack.schema.ts",
       "../src/users/dto/create-user.dto.ts",

@@ -13,8 +13,6 @@ export const UPDATE_QR_CODE: string = "UPDATE_QR_CODE";
 
 
 export function updateQrCode(qrCode : string, qrCodeFor : any ) {
-    console.log("updateQrCode" 
-    );  
     return { type: UPDATE_QR_CODE , qrCode, qrCodeFor};
 }
 

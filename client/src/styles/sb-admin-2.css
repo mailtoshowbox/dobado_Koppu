@@ -10998,6 +10998,11 @@ a:focus {
     height: calc(20rem - 43px) !important;
   }
 }
+@media print {
+  .no-print {
+    display: none;
+  }
+}
 
 .bg-login-image {
   background: url("../../public/login.png");
@@ -11428,4 +11433,10 @@ body.sidebar-toggled footer.sticky-footer {
 }
 .react-datepicker-wrapper {
   width: 100%;
+}
+
+.thead-light-1 {
+  color: #6e707e;
+  background-color: #eaecf4;
+  border-color: #e3e6f0;
 }

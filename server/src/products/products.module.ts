@@ -4,6 +4,7 @@ import { DocumentsController } from './products.controller';
 import { DocumentsService } from './products.service';
 import { Documents, DocumentSchema } from './schemas/product.schema';
 import { BoxModule } from '../box/box.module';
+import { DocTypeModule } from '../docType/docType.module';
 import { Racks, RackSchema } from './schemas/rack.schema';
 
 
@@ -12,7 +13,7 @@ import { Racks, RackSchema } from './schemas/rack.schema';
     MongooseModule.forFeature([
       { name: Documents.name, schema: DocumentSchema } ,  
          
-    ],) ,BoxModule
+    ],) ,BoxModule,DocTypeModule
   ],
   controllers: [DocumentsController],
   providers: [DocumentsService] 

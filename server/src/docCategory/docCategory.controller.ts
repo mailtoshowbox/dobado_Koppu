@@ -41,7 +41,7 @@ export class DocCategoryController {
   update(
     @Param('id') id: string,
     @Body() updateDocCategoryDto: CreateDocCategoryDto,
-  ): Promise<DocCategory> {
+  ): Promise<DocCategory> { 
     return this.DocCategoryService.update(id, updateDocCategoryDto);
   }
 }

@@ -19,15 +19,7 @@ function TextInput(props: TextInputProps): JSX.Element {
       [error, validClass] = !pattern.test(elementValue)
         ? ["Complete field with proper email", "is-invalid"]
         : ["", "is-valid"];
-    } /*  else if (field === "confirmPassword") {
-      console.log("PE--", customError);
-      [error, validClass] =
-        (!elementValue && props.required) || customError
-          ? [customError ? customError : "Value cannot be empty", "is-invalid"]
-          : ["", "is-valid"];
-
-      console.log("-error--", error);
-    } */ else {
+    } else {
       [error, validClass] =
         !elementValue && props.required
           ? ["Value cannot be empty", "is-invalid"]
@@ -69,8 +61,12 @@ function TextInput(props: TextInputProps): JSX.Element {
         id={`id_${props.label}`}
         placeholder={props.placeholder}
       />
-      {error ? <div className="invalid-feedback">{error}</div> : null}
-      {customError ? <div className="invalid-field">{customError}</div> : null}
+      {!customError && error ? (
+        <div className="invalid-feedback">{error}</div>
+      ) : null}
+      {!error && customError ? (
+        <div className="invalid-field">{customError}</div>
+      ) : null}
     </div>
   );
 }

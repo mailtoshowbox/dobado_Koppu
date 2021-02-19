@@ -8,6 +8,7 @@ import Orders from "../Orders/Orders";
 import Boxes from "../Boxes/Boxes";
 import Home from "../Home/Home";
 import DocCategories from "../DocCategory/DocCategory";
+import DocTypes from "../DocType/DocType";
 import Notifications from "../../common/components/Notification";
 import { useSelector } from "react-redux";
 import { IStateType } from "../../store/models/root.interface";
@@ -42,6 +43,9 @@ const Admin: React.FC = () => {
               </Route>
               <Route path={`/boxes`}>
                 <Boxes />
+              </Route>
+              <Route path={`/doctype`}>
+                <DocTypes />
               </Route>
               <Route path="/">
                 <Home />

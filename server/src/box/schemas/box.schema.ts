@@ -11,6 +11,9 @@ export class Boxes extends Document {
 
   @Prop()
   description: string;
+
+  @Prop()
+  isActive: boolean;
 }
 
 export const BoxSchema = SchemaFactory.createForClass(Boxes);

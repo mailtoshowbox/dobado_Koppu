@@ -10,7 +10,6 @@ const LoginPage = () => {
   const { token } = match.params as any;
   //const { app } = useContext(StoreContext);
   const [confirmationLoading, setConfirmationLoading] = useState(false);
-  console.log(token);
 
   /* const submitConfirmation = async (token: string) => {
     setConfirmationLoading(true);

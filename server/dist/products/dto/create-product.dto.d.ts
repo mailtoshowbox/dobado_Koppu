@@ -4,4 +4,5 @@ export declare class CreateDocumentDto {
     readonly box: string;
     readonly rack: string;
     readonly category: string;
+    readonly isActive: boolean;
 }

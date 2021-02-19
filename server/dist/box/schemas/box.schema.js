@@ -26,6 +26,10 @@ __decorate([
     mongoose_1.Prop(),
     __metadata("design:type", String)
 ], Boxes.prototype, "description", void 0);
+__decorate([
+    mongoose_1.Prop(),
+    __metadata("design:type", Boolean)
+], Boxes.prototype, "isActive", void 0);
 Boxes = __decorate([
     mongoose_1.Schema()
 ], Boxes);

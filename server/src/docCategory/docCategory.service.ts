@@ -28,7 +28,7 @@ export class DocCategoryService {
     return await this.DocCategoryModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, DocCategory: DocCategory): Promise<DocCategory> {
+  async update(id: string, DocCategory: DocCategory): Promise<DocCategory> { 
     return await this.DocCategoryModel.findByIdAndUpdate(id, DocCategory, {
       new: true,
     });

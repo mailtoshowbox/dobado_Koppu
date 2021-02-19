@@ -69,7 +69,7 @@ const BoxForm: React.FC = () => {
           description: formState.description.value,
           racks: formState.racks.value,
         };
-        addNewBox(boxInfo, account.auth).then((status) => {
+        addNewBox(boxInfo, account).then((status) => {
           dispatch(
             saveFn({
               ...box,
@@ -92,7 +92,7 @@ const BoxForm: React.FC = () => {
           description: formState.description.value,
           racks: formState.racks.value,
         };
-        updateBox(boxInfoUpt, account.auth).then((status) => {
+        updateBox(boxInfoUpt, account).then((status) => {
           dispatch(
             saveFn({
               ...box,
@@ -172,7 +172,10 @@ const BoxForm: React.FC = () => {
                   customError={formState.racks.error}
                 />
               </div>
-              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
+              <button
+                className="btn btn-danger font-14"
+                onClick={() => cancelForm()}
+              >
                 Cancel
               </button>
               <button

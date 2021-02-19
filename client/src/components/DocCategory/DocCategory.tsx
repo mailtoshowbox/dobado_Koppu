@@ -22,12 +22,14 @@ import {
   IDocCategory,
   IDocCategoryList,
 } from "../../store/models/doccategory.interface";
-import { getDocCategoryList } from "../../services/index";
+import { getDocCategoryList, updateDocCat } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
-
+  const allowedUsers = ["Superadmin", "Developer", "Qualityuser"];
+  const roles: any = useSelector((state: IStateType) => state.account.roles);
+  let [userRole] = useState(roles[0] ? roles[0] : "Developer");
   const dispatch: Dispatch<any> = useDispatch();
   const doccategories: IDocCategoryState = useSelector(
     (state: IStateType) => state.docCategories
@@ -51,6 +53,13 @@ const Products: React.FC = () => {
   function onProductSelect(product: IDocCategory): void {
     dispatch(changeSelectedDocCategory(product));
     dispatch(setModificationState(DocCategoryModificationStatus.None));
+    dispatch(setModificationState(DocCategoryModificationStatus.Edit));
+  }
+
+  function onDeleteProduct(product: IDocCategory): void {
+    dispatch(changeSelectedDocCategory(product));
+    dispatch(setModificationState(DocCategoryModificationStatus.None));
+    onProductRemove();
   }
 
   function onProductRemove() {
@@ -76,7 +85,9 @@ const Products: React.FC = () => {
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
             <div className="card-header py-1">
-              <h6 className="m-0 font-weight-bold text-white font-12">Document List</h6>
+              <h6 className="m-0 font-weight-bold text-white font-12">
+                Document List
+              </h6>
               <div className="header-buttons">
                 <button
                   className="btn btn-border"
@@ -88,22 +99,6 @@ const Products: React.FC = () => {
                 >
                   <i className="fas fa fa-plus"></i>
                 </button>
-                <button
-                  className="btn btn-border"
-                  onClick={() =>
-                    dispatch(
-                      setModificationState(DocCategoryModificationStatus.Edit)
-                    )
-                  }
-                >
-                  <i className="fas fa fa-pen"></i>
-                </button>
-                {/*  <button
-                  className="btn btn-border  btn-red-color"
-                  onClick={() => onProductRemove()}
-                >
-                  <i className="fas fa fa-times"></i>
-                </button> */}
               </div>
             </div>
             {doccategories.modificationState ===
@@ -114,7 +109,12 @@ const Products: React.FC = () => {
               <ProductForm />
             ) : null}
             <div className="card-body">
-              <DocCategoryList onSelect={onProductSelect} />
+              <DocCategoryList
+                onSelect={onProductSelect}
+                onSelectDelete={onDeleteProduct}
+                allowDelete={allowedUsers.includes(userRole)}
+                docCategoryModificationStatus={doccategories.modificationState}
+              />
             </div>
           </div>
         </div>
@@ -136,15 +136,30 @@ const Products: React.FC = () => {
                 if (!doccategories.selectedDocCategory) {
                   return;
                 }
-                dispatch(
-                  addNotification(
-                    "Product removed",
-                    `Product ${doccategories.selectedDocCategory.name} was removed`
-                  )
-                );
-                //  dispatch(removeDocCategory(products.selectedProduct._id));
-                dispatch(clearSelectedDocCategory());
-                setPopup(false);
+
+                let boxInfoUpt = {
+                  id: doccategories.selectedDocCategory._id,
+                  isActive: false,
+                };
+                updateDocCat(boxInfoUpt, account)
+                  .then((status) => {
+                    dispatch(
+                      addNotification(
+                        "Category removed",
+                        `Category  was removed`
+                      )
+                    );
+                    dispatch(clearSelectedDocCategory());
+                    setPopup(false);
+                  })
+                  .catch((err) => {
+                    dispatch(
+                      addNotification(
+                        "Category not removed",
+                        `Category  not removed`
+                      )
+                    );
+                  });
               }}
             >
               Remove

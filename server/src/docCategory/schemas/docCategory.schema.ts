@@ -8,6 +8,9 @@ export class DocCategories extends Document {
 
   @Prop()
   description: string;
+
+  @Prop()
+  isActive: boolean;
 }
 
 export const DocCategorySchema = SchemaFactory.createForClass(DocCategories);

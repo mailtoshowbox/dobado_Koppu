@@ -1,6 +1,7 @@
 import { IProduct, ProductModificationStatus } from "./product.interface";
 import { IBox, BoxModificationStatus } from "./box.interface";
 import { IDocCategory, DocCategoryModificationStatus } from "./doccategory.interface";
+import { IDocType, DocTypeModificationStatus } from "./doctype.interface";
 
 import { INotification } from "./notification.interface";
 import { IUser } from "./user.interface";
@@ -28,6 +29,8 @@ export interface IStateType {
     account: IAccount;
     boxes: IBoxState;
     docCategories: IDocCategoryState;
+    docTypes: IDocTypeState;
+    home: any;
 }
 
 export interface IProductState {
@@ -66,3 +69,8 @@ export interface IDocCategoryState {
     modificationState: DocCategoryModificationStatus;
 }
 
+export interface IDocTypeState {
+    docTypes: IDocType[];
+    selectedDocType: IDocType | null;
+    modificationState: DocTypeModificationStatus;
+}

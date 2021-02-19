@@ -4,21 +4,20 @@ export interface IProduct {
     description: string;
     box: string;
     rack:  string;
-    category :  string;
+    category :  string; //compactor
+    document_type :  string;
     type_of_space:  string;
     qr_code:  string;
     manufacturedate: Date;  
-    expiredate: Date;   
+    expiredate: Date;  
+    document_info : any; 
+    retension_time: { time: Number, defaultYear: Number,calculateNonPerceptualTime : String },
 
    /*  box_info:  Array<IProduct>;
     rack_info:   Array<Info>;
     category_info :   Array<Info>; */
 }
 
-interface Info{
-    id : string
-    name : string,
-}
 
 export enum ProductModificationStatus {
     None = 0,

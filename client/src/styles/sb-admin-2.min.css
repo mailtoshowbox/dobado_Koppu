@@ -9610,6 +9610,11 @@ a:focus {
     height: calc(20rem - 43px) !important;
   }
 }
+@media print {
+  .no-print {
+    display: none;
+  }
+}
 .bg-login-image {
   background: url(https://source.unsplash.com/K4mSJ7kc0As/600x800);
   background-position: center;
@@ -10018,4 +10023,18 @@ body.sidebar-toggled footer.sticky-footer {
 }
 .react-datepicker-wrapper {
   width: 100%;
+}
+
+.thead-light-1 {
+  color: #6e707e;
+  background-color: #eaecf4;
+  border-color: #e3e6f0;
+}
+
+.react-bs-table-search-clear-btn {
+  height: 30px;
+  padding: 5px 20px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
 }

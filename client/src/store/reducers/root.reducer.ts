@@ -8,6 +8,8 @@ import orderReducer from "./order.reducer";
 import accountReducer from "./account.reducer";
 import boxReducer from "./box.reducer";
 import categoryReducer from "./doccategory.reducer";
+import typeReducer from "./doctype.reducer";
+import homeReducer from "./home.reducer";
 
 
 const initialState: IRootStateType = {
@@ -33,7 +35,9 @@ const rootReducers: Reducer<IStateType> = combineReducers({root: rootReducer,
     orders: orderReducer,
     account: accountReducer,
     boxes: boxReducer,
-    docCategories: categoryReducer
+    docCategories: categoryReducer,
+    docTypes: typeReducer,
+    home: homeReducer,
 });
 
 

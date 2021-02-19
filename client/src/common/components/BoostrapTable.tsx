@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BootstrapTable,
   TableHeaderColumn,
@@ -6,14 +6,6 @@ import {
 } from "react-bootstrap-table";
 
 function BoostrapTable(props: any): JSX.Element {
-  const columns = [
-    { title: "Name", data: "name" },
-    { title: "Position", data: "position" },
-    { title: "Office", data: "office" },
-    { title: "Extn.", data: "ext" },
-    { title: "Start date", data: "date" },
-    { title: "Salary", data: "salary" },
-  ];
   const products: any[] = [];
   function convertDate(str: Date) {
     var date = new Date(str),
@@ -54,23 +46,6 @@ function BoostrapTable(props: any): JSX.Element {
       }
     }
   );
-  function handleInsertButtonClick() {
-    // Custom your onClick event here,
-    // it's not necessary to implement this function if you have no any process before onClick
-    console.log("This is my custom function for InserButton click event");
-    //onClick();
-  }
-  function createCustomInsertButton() {
-    return (
-      <InsertButton
-        btnText="CustomInsertText"
-        btnContextual="btn-warning"
-        className="my-custom-class"
-        btnGlyphicon="glyphicon-edit"
-        /*  onClick={() => this.handleInsertButtonClick(onClick)} */
-      />
-    );
-  }
 
   function addProducts(quantity: any) {
     const startId = products.length;
@@ -83,9 +58,7 @@ function BoostrapTable(props: any): JSX.Element {
       });
     }
   }
-  const options = {
-    noDataText: "This is custom text for empty data",
-  };
+
   addProducts(50);
   function onClickProductSelected(cell: any, row: any, rowIndex: any) {
     if (props.onCustomSelect) props.onCustomSelect(row);

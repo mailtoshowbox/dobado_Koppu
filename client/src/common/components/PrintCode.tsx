@@ -8,7 +8,7 @@ function PrintCode(props: any): ReactElement {
       style={{ width: "18rem", display: "none" }}
       id="uniquename"
     >
-      <img className="card-img-top" src="..." alt="Card image cap" />
+      <img className="card-img-top" src="..." alt="Card cap" />
       <div className="card-body">
         <h5 className="card-title">PRINT LABEL</h5>
         <div className="form-row">

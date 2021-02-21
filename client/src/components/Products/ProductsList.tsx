@@ -30,6 +30,33 @@ function ProductList(props: productListProps): JSX.Element {
   function onClickProductDelete(cell: any, row: any, rowIndex: any) {
     if (props.onSelectDelete) props.onSelectDelete(row);
   }
+
+  function dataFormatter(
+    documentName: string,
+    row: any) {
+      const {
+        productModificationStatus = 0,
+        currentUser: { roles = [] },
+        allowDelete = false,
+      } = props;
+    const { status = "n-approved" } = row.document_info || {};
+    const loggedInUserRole = roles[0] ? roles[0] : "Developer";
+    return  (
+      <>
+      
+      {status === "n-approved" && loggedInUserRole === "Qualityuser" ?
+      <div>
+      <span>{documentName}</span>
+      <span
+        style={{ padding: "6px 8px 6px 10px", margin: "2% 4% 2% 3%" }}
+        className="blink_me"
+      > 
+        New
+      </span></div> : <span>{documentName}</span>
+    }
+    </>)
+  }
+
   function buttonFormatter(
     cell: any,
     row: any,
@@ -53,14 +80,14 @@ function ProductList(props: productListProps): JSX.Element {
           >
             <i className="fas fa fa-pen"></i>
           </button>
-          {status === "n-approved" && loggedInUserRole === "Qualityuser" && (
+          {/* {status === "n-approved" && loggedInUserRole === "Qualityuser" && (
             <span
               style={{ padding: "6px 8px 6px 10px", margin: "2% 4% 2% 3%" }}
               className="badge  badge-danger"
             >
               New
             </span>
-          )}
+          )} */}
           {allowDelete && (
             <button
               className="btn btn-border  btn-red-color"
@@ -77,14 +104,14 @@ function ProductList(props: productListProps): JSX.Element {
           <button type="button" className="btn btn-border" disabled style={{ cursor: "not-allowed" }}>
             <i className="fas fa fa-pen"></i>
           </button>
-          {status === "n-approved" && loggedInUserRole === "Qualityuser" && (
+          {/* {status === "n-approved" && loggedInUserRole === "Qualityuser" && (
             <span
               style={{ padding: "6px 8px 6px 10px", margin: "2% 4% 2% 3%" }}
               className="badge  badge-danger"
             >
               New
             </span>
-          )}
+          )} */}
           <button
             className="btn btn-border  btn-red-color"
             onClick={() => onClickProductDelete(cell, row, rowIndex)}
@@ -120,6 +147,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataField="name"
           width="16%"
           className="thead-light-1"
+          dataFormat={dataFormatter}
         >
           Name
         </TableHeaderColumn>

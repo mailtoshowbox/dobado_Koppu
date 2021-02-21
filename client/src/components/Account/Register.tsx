@@ -245,6 +245,7 @@ const Register: React.FC = () => {
                     {regError.status ? (
                       <div className="invalid-field">{regError.message}</div>
                     ) : null}
+                    <p className="text-center font-14 mt-3"><a href="/login">Click here to login</a></p>
                   </div>
                 </div>
               </div>

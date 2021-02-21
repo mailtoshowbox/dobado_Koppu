@@ -54,7 +54,7 @@ const LeftMenu: React.FC = () => {
 
         <li className="nav-item">
           <Link className="nav-link" to={`/products`}>
-            <i className="fas fa-file-medical-alt"></i>
+            <i className="fas fa-folder-open"></i>
             <span>Documents</span>
           </Link>
         </li>
@@ -68,14 +68,14 @@ const LeftMenu: React.FC = () => {
           <>
             <li className="nav-item">
               <Link className="nav-link" to={`/doccategory`}>
-                <i className="fas fa-project-diagram"></i>
+                <i className="fas fa-sitemap"></i>
                 <span>Categories</span>
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to={`/boxes`}>
                 <i className="fas fa-box-open"></i>
-                <span>Boxes</span>
+                <span>Rack system</span>
               </Link>
             </li>
           </>

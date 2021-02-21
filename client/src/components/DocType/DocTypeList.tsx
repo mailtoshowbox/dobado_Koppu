@@ -33,17 +33,17 @@ function DocCategoryList(props: productListProps): JSX.Element {
       return (
         <>
           <button
-            type="button"
+            type="button" className="btn btn-border"
             onClick={() => onClickProductSelected(cell, row, rowIndex)}
           >
             <i className="fas fa fa-pen"></i>
           </button>
           {allowDelete && (
             <button
-              className="btn btn-border  btn-red-color"
+              className="btn btn-border btn-red-color"
               onClick={() => onClickProductDelete(cell, row, rowIndex)}
             >
-              <i className="fas fa fa-times"></i>
+              <i className="fas fa fa-trash" aria-hidden="true"></i>
             </button>
           )}
         </>
@@ -52,7 +52,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
       return (
         <>
           <button
-            type="button"
+            type="button" className="btn btn-border"
             disabled
             style={{ cursor: "not-allowed" }}
             onClick={() => onClickProductSelected(cell, row, rowIndex)}
@@ -63,7 +63,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
             className="btn btn-border  btn-red-color"
             onClick={() => onClickProductDelete(cell, row, rowIndex)}
           >
-            <i className="fas fa fa-times"></i>
+            <i className="fas fa fa-trash" aria-hidden="true"></i>
           </button>
         </>
       );
@@ -74,7 +74,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
     clearSearch: true,
   };
   return (
-    <div className="table-responsive portlet">
+    <div className="portlet">
       <BootstrapTable
         options={options}
         data={docTypes.docTypes}

@@ -55,19 +55,22 @@ function TextInput(props: any): JSX.Element {
       <div
         className="form-group col-md-6"
         style={{
-          padding: "39px 36px 4px 1px",
-          textAlign: "center",
+          padding: "35px 36px 4px 1px",
+          textAlign: "left",
         }}
       >
+        { calculateNonPerceptualTime ?
         <span
-          style={{
-            border: "1px solid",
-            padding: "10px",
-            boxShadow: "5px 10px",
-          }}
-        >
-          {calculateNonPerceptualTime}
-        </span>
+        style={{
+          border: "1px solid",
+          padding: "7px 10px",
+          borderRadius: "3px",
+        }}
+      >
+        {calculateNonPerceptualTime}
+      </span> : null
+        }
+        
       </div>
     </div>
   );

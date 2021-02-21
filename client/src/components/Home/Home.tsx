@@ -66,13 +66,13 @@ const Home: React.FC = () => {
 
       <div className="row">
         <TopCard
-          title="Documents"
+          title="Total docs archived"
           text={dashboardCounter.totalDocuments.toString() || "0"}
-          icon="file-contract"
+          icon="folder-open"
           class="success"
         />
         <TopCard
-          title="Users"
+          title="No of employees"
           text={dashboardCounter.users?.toString() || "0"}
           icon="users"
           class="success"
@@ -80,25 +80,25 @@ const Home: React.FC = () => {
         <TopCard
           title="Categories"
           text={dashboardCounter.docCategories.toString() || "0"}
-          icon="project-diagram"
+          icon="sitemap"
           class="success"
         />
         <TopCard
-          title="Boxes"
+          title="Rack system"
           text={dashboardCounter.boxes.toString() || "0"}
           icon="box-open"
           class="success"
         />
         <TopCard
-          title="Pending Documents"
+          title="Archival to be done"
           text={dashboardCounter.nApprovedDocuments.toString() || "0"}
-          icon="file-contract"
+          icon="folder-open"
           class="danger"
         />
         <TopCard
           title="Non Pending Documents"
           text={dashboardCounter.approvedDocuments.toString() || "0"}
-          icon="file-contract"
+          icon="folder-open"
           class="success"
         />
       </div>

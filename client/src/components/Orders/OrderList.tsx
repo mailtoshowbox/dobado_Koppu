@@ -19,7 +19,7 @@ const OrderList: React.FC = () => {
     })
 
     return (
-        <div className="table-responsive portlet">
+        <div className="portlet">
             <table className="table">
                 <thead className="thead-light">
                     <tr>

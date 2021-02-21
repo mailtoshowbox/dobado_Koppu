@@ -70,4 +70,4 @@ BoxService = __decorate([
         mongoose_1.Model])
 ], BoxService);
 exports.BoxService = BoxService;
-//# sourceMappingURL=Box.service.js.map
+//# sourceMappingURL=box.service.js.map

@@ -57,17 +57,17 @@ function BoxList(props: productListProps): JSX.Element {
       return (
         <>
           <button
-            type="button"
+            type="button" className="btn btn-border"
             onClick={() => onClickProductSelected(cell, row, rowIndex)}
           >
-            <i className="fas fa fa-pen"></i>
+            <i className="fas fa fa-pen" aria-hidden="true"></i>
           </button>
           {allowDelete && (
             <button
-              className="btn btn-border  btn-red-color"
+              className="btn btn-border btn-red-color"
               onClick={() => onClickProductDelete(cell, row, rowIndex)}
             >
-              <i className="fas fa fa-times"></i>
+              <i className="fas fa fa-trash" aria-hidden="true"></i>
             </button>
           )}
         </>
@@ -76,7 +76,7 @@ function BoxList(props: productListProps): JSX.Element {
       return (
         <>
           <button
-            type="button"
+            type="button" className="btn btn-border"
             disabled
             style={{ cursor: "not-allowed" }}
             onClick={() => onClickProductSelected(cell, row, rowIndex)}
@@ -84,17 +84,17 @@ function BoxList(props: productListProps): JSX.Element {
             <i className="fas fa fa-pen"></i>
           </button>
           <button
-            className="btn btn-border  btn-red-color"
+            className="btn btn-border"
             onClick={() => onClickProductDelete(cell, row, rowIndex)}
           >
-            <i className="fas fa fa-times"></i>
+            <i className="fas fa fa-trash" aria-hidden="true"></i>
           </button>
         </>
       );
     }
   }
   return (
-    <div className="table-responsive portlet custom-table-style  table-bordered table-hover">
+    <div className=" portlet custom-table-style  table-bordered table-hover">
       <BootstrapTable
         options={options}
         data={boxes.boxes}

@@ -76,7 +76,7 @@ const Products: React.FC = () => {
         <TopCard
           title="Categories"
           text={`${numberItemsCount}`}
-          icon="project-diagram"
+          icon="sitemap"
           class="success"
         />
       </div>

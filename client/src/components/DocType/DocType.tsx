@@ -103,7 +103,7 @@ const Products: React.FC = () => {
                   className="btn btn-border  btn-red-color"
                   onClick={() => onProductRemove()}
                 >
-                  <i className="fas fa fa-times"></i>
+                  <i className="fas fa fa-trash" aria-hidden="true"></i>
                 </button> */}
               </div>
             </div>

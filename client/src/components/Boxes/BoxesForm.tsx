@@ -130,7 +130,7 @@ const BoxForm: React.FC = () => {
         <div className="card shadow mb-4">
           <div className="card-header py-1">
             <h6 className="m-0 font-weight-bold text-white">
-              Box {isCreate ? "create" : "edit"}
+              Rack system {isCreate ? "create" : "edit"}
             </h6>
           </div>
           <div className="card-body">

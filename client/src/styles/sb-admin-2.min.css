@@ -10038,3 +10038,103 @@ body.sidebar-toggled footer.sticky-footer {
   line-height: 1.5;
   border-radius: 3px;
 }
+.react-bs-table .table{
+  margin-bottom: 0;
+  font-family: sans-serif;
+}
+.react-bs-table-container .react-bs-table-search-form .react-bs-table-search-clear-btn {
+  font-size: 12px;
+  margin-left: -1px;
+  z-index: 10;
+  height: 31px;
+  position: relative;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.react-bs-table-container .react-bs-table-search-form  .form-control  {
+  box-shadow: none;
+}
+
+.react-bs-table-container .react-bs-table-search-form .form-control::-webkit-input-placeholder {
+  font-family: 'Century Gothic', sans-serif !important;
+}
+.react-bs-table-container .react-bs-table-search-form .react-bs-table-search-clear-btn:hover, .react-bs-table-container .react-bs-table-search-form .react-bs-table-search-clear-btn:focus {
+  background-color: #007bff;
+  border-color: #007bff;
+  box-shadow: none;
+}
+.react-bs-container-body .table td, .react-bs-table .table  th {
+  padding: 0.3125rem .9375rem;
+  vertical-align: top;
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+.react-bs-table .table {
+  margin-bottom: 0;
+  border: 0px;
+}
+
+.react-bs-table .table thead th {
+  background: #82b443;
+  color:#FFF;
+}
+
+.react-bs-container-body .table td button {
+  padding: 0 .335rem;
+}
+
+.react-bs-container-body .table td button.btn-border i {
+  color:#666666;
+  font-size: 14px;
+}
+
+.react-bs-container-body .table td button.btn-border:hover i{
+  border-radius: 0;
+  color:#83b43e;
+}
+
+.react-bs-container-body .table td button.btn-border:hover  {
+  border:1px solid #83b43e;
+}
+
+.react-bs-container-body .table td button.btn-red-color:hover {
+  border:1px solid #ff3535;
+}
+
+.react-bs-container-body .table td button.btn-red-color:hover i {
+  color:#ff3535;
+  border-radius: 0;
+}
+
+.react-bs-container-body .table td:last-child {
+  text-align: center !important;
+}
+
+.react-bs-table-pagination .btn-secondary, .react-bs-table-pagination .btn-secondary:hover, .react-bs-table-pagination .btn-secondary:focus {
+  color: #333;
+  background-color: #FFF;
+  border-color: #6c757d;
+  padding: .175rem .575rem;
+  font-size: 12px;
+  font-family: sans-serif;
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+.react-bs-table-pagination .page-item.active .page-link {
+  padding: .275rem .675rem;
+  font-size: 14px;
+}
+
+.react-bs-table-pagination .react-bs-table-sizePerPage-dropdown {
+  position: static;
+}
+
+.print-section .card-body{
+  padding: 0.625rem;
+}
+
+.uniquename {
+  margin: 0 auto;
+}

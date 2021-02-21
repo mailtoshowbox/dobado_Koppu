@@ -99,7 +99,7 @@ const Products: React.FC = () => {
         <TopCard
           title="Documents COUNT"
           text={`${numberItemsCount}`}
-          icon="file-contract"
+          icon="folder-open"
           class="success"
         />
       </div>

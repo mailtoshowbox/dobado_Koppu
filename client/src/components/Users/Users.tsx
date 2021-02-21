@@ -170,7 +170,7 @@ const Users: React.FC = () => {
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">
-              <div className="table-responsive portlet custom-table-style  table-bordered table-hover">
+              <div className="portlet custom-table-style  table-bordered table-hover">
                 <table className="table user-table">
                   <thead className="thead-light">
                     <tr>
@@ -200,7 +200,7 @@ const Users: React.FC = () => {
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">
-              <div className="table-responsive portlet custom-table-style  table-bordered table-hover">
+              <div className="portlet custom-table-style  table-bordered table-hover">
                 <table className="table user-table">
                   <thead className="thead-light">
                     <tr>

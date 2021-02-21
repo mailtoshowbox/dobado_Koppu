@@ -622,7 +622,7 @@ const ProductForm: React.FC = () => {
           </div>
           <div className="card-body">
             <form onSubmit={saveUser}>
-              <div className="form-row 14">
+              <div className="form-row 14 font-14">
                 <div className="form-group col-md-6">
                   <TextInput
                     id="input_email"
@@ -666,7 +666,7 @@ const ProductForm: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className="form-row 13">
+              <div className="form-row 13 font-14">
                 <div className="form-group col-md-12">
                   <TextInput
                     id="input_description"
@@ -681,7 +681,7 @@ const ProductForm: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="form-row 12">
+              <div className="form-row 12 font-14">
                 <div className="form-group col-md-6">
                   <DateInput
                     id="manufacturedate"
@@ -706,7 +706,7 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
               {roles[0] === "Qualityuser" && (
-                <div className="form-row 12">
+                <div className="form-row 12 font-14">
                   <div className="form-group col-md-6">
                     <div className="form-row">
                       <div className="form-group col-md-12">
@@ -741,15 +741,16 @@ const ProductForm: React.FC = () => {
               )}
 
               <div className="form-row">
-                <div className="form-group col-md-8">
+                <div className="form-group col-md-12 font-14">
                   {roles[0] === "Qualityuser" && (
                     <>
                       {" "}
-                      Type of Space
+                      <div className="mb-3">Type of Space</div>
+                      
                       <div className="form-row">
                         <div
                           className="col-md-12"
-                          style={{ paddingLeft: "41px" }}
+                          style={{ paddingLeft: "10px" }}
                           key={"perceptual_space"}
                         >
                           {" "}
@@ -801,9 +802,9 @@ const ProductForm: React.FC = () => {
                   )}
                 </div>
 
-                <div className="form-group col-md-4">
+                <div className="form-group col-md-12">
                   <div className="form-row">
-                    <div className="col-xs-10" key={"non_perceptual_space"}>
+                    <div className="col-md-12" key={"non_perceptual_space"}>
                       {" "}
                       {/*  <QRCODE
                           value={formState.qr_code.value}
@@ -812,8 +813,8 @@ const ProductForm: React.FC = () => {
              "backgroundImage": URL(uniquebg : string),                                
               height: "576px"          
      }} */}{" "}
-                      <div className="card">
-                        <div className="card-body">
+                      <div className="card print-section">
+                        <div className="card-body text-center">
                           <div
                             className="uniquename"
                             style={{
@@ -832,10 +833,10 @@ const ProductForm: React.FC = () => {
                           </div>{" "}
                           <PrintCode code={formState} />
                         </div>
-                        <div className="card-footer">
+                        <div className="card-footer text-right">
                           <div>
-                            <button onClick={printOrder}>
-                              Print this out!
+                            <button onClick={printOrder} className="btn btn-primary font-14">
+                              Print
                             </button>
                           </div>
                         </div>
@@ -845,10 +846,10 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
 
-              <button className="btn btn-danger" onClick={() => cancelForm()}>
+              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
                 Cancel
               </button>
-              <button type="submit" className={`btn btn-success left-margin `}>
+              <button type="submit" className={`btn btn-success left-margin font-14`}>
                 Save
               </button>
             </form>

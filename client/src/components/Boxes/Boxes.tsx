@@ -75,11 +75,11 @@ const Boxs: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h5 mb-4 font-bold">Boxes</h1>
+      <h1 className="h5 mb-4 font-bold">Rack system</h1>
       {/* <p className="mb-4 font-14">Boxes here</p> */}
       <div className="row">
         <TopCard
-          title="Boxes"
+          title="Rack system"
           text={`${numberItemsCount}`}
           icon="box-open"
           class="success"
@@ -90,7 +90,7 @@ const Boxs: React.FC = () => {
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
             <div className="card-header py-1">
-              <h6 className="m-0 font-weight-bold text-white">Box List</h6>
+              <h6 className="m-0 font-weight-bold text-white">Rack system List</h6>
               <div className="header-buttons">
                 <button
                   className="btn btn-border"
@@ -102,7 +102,7 @@ const Boxs: React.FC = () => {
                 </button>
 
                 {/*  <button className="btn btn-border btn-red-color" onClick={() => onBoxRemove()}>
-                  <i className="fas fa fa-times"></i>
+                  <i className="fas fa fa-trash" aria-hidden="true"></i>
                 </button> */}
               </div>
             </div>

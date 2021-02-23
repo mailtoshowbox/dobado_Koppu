@@ -10068,6 +10068,7 @@ body.sidebar-toggled footer.sticky-footer {
   vertical-align: top;
   font-size: 12px;
   font-family: sans-serif;
+  outline: none;
 }
 
 .react-bs-table .table {
@@ -10137,4 +10138,16 @@ body.sidebar-toggled footer.sticky-footer {
 
 .uniquename {
   margin: 0 auto;
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+  color:#FF0000;
+  font-weight: bold;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }

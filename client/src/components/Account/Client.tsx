@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import TopMenu from "../TopMenu/TopMenu";
 import { Switch, Route } from "react-router";
 
 import Login from "../../components/Account/Login";
 import Register from "../../components/Account/Register";
+import EmailConfirmation from "../../components/Account/EmailConfirmation";
 import Notifications from "../../common/components/Notification";
 
 const Admin: React.FC = () => {
@@ -19,6 +19,9 @@ const Admin: React.FC = () => {
               </Route>
               <Route path={`/register`}>
                 <Register />
+              </Route>
+              <Route path={`/emailconfirmation/:id`}>
+                <EmailConfirmation />
               </Route>
 
               <Route path="/">

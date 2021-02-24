@@ -12,7 +12,7 @@ export class DocCategoryService {
   ) {}
 
   async findAll(): Promise<DocCategory[]> {
-    return await this.DocCategoryModel.find().exec();
+    return await this.DocCategoryModel.find({ name: { "$ne": "" } ,isActive: true}).exec();
   }
 
   async findOne(id: string): Promise<DocCategory> {
@@ -21,6 +21,7 @@ export class DocCategoryService {
 
   async create(DocCategory: DocCategory): Promise<DocCategory> {
     const newDocCategory = new this.DocCategoryModel(DocCategory);
+    newDocCategory.isActive = true;
     return await newDocCategory.save();
   }
 

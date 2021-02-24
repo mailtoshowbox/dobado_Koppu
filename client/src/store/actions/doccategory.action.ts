@@ -5,7 +5,7 @@ export const REMOVE_DOCCATEGORY: string = "REMOVE_DOCCATEGORY";
 export const CHANGE_DOCCATEGORY_AMOUNT: string = "CHANGE_DOCCATEGORY_AMOUNT";
 export const CHANGE_DOCCATEGORY_PENDING_EDIT: string = "CHANGE_DOCCATEGORY_PENDING_EDIT";
 export const CLEAR_DOCCATEGORY_PENDING_EDIT: string = "CLEAR_DOCCATEGORY_PENDING_EDIT";
-export const SET_MODIFICATION_STATE: string = "SET_MODIFICATION_STATE";
+export const SET_DOCCATEGORY_MODIFICATION_STATE: string = "SET_DOCCATEGORY_MODIFICATION_STATE";
 export const LIST_DOCCATEGORY: string = "LIST_DOCCATEGORY";
 
 
@@ -43,7 +43,7 @@ export function clearSelectedDocCategory(): IClearSelectedDocCategoryActionType 
 }
 
 export function setModificationState(value: DocCategoryModificationStatus): ISetModificationStateActionType {
-    return { type: SET_MODIFICATION_STATE, value: value };
+    return { type: SET_DOCCATEGORY_MODIFICATION_STATE, value: value };
 }
 
 interface IAddDocCategoryActionType { type: string, docCategory: IDocCategory };

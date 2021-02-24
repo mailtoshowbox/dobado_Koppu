@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   IDocCategory,
   DocCategoryModificationStatus,
+  IDocCategoryList,
 } from "../../store/models/doccategory.interface";
 import TextInput from "../../common/components/TextInput";
 import {
@@ -14,9 +15,14 @@ import {
   clearSelectedDocCategory,
   setModificationState,
   addDocCategory,
+  loadListOfDocCategory,
 } from "../../store/actions/doccategory.action";
 import { addNotification } from "../../store/actions/notifications.action";
-import { addNewDocCat, updateDocCat } from "../../services/index";
+import {
+  addNewDocCat,
+  updateDocCat,
+  getDocCategoryList,
+} from "../../services/index";
 import {
   OnChangeModel,
   IDocCategoryFormState,
@@ -80,12 +86,16 @@ const ProductForm: React.FC = () => {
               ...status,
             })
           );
+          getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
+            dispatch(loadListOfDocCategory(items));
+          });
           dispatch(
             addNotification(
               "New Box added",
               `Box ${formState.name.value} added by you`
             )
           );
+
           dispatch(clearSelectedDocCategory());
           dispatch(setModificationState(DocCategoryModificationStatus.None));
         });
@@ -108,6 +118,9 @@ const ProductForm: React.FC = () => {
               `New Box ${formState.name.value} edited by you`
             )
           );
+          getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
+            dispatch(loadListOfDocCategory(items));
+          });
           dispatch(clearSelectedDocCategory());
           dispatch(setModificationState(DocCategoryModificationStatus.None));
         });

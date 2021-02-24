@@ -47,27 +47,26 @@ const Users: React.FC = () => {
     dispatch(removeAdmin(admin));
   }
   function activateUser(admin: IUser, model: OnChangeModel): void {
-    approveUser({ user: admin, selected: model }, account.auth).then(
-      (status) => {
-        getUserList(account.auth).then((items: IUserList) => {
-          dispatch(loadListOfuser(items));
-        });
+    approveUser({ user: admin, selected: model }, account).then((status) => {
+      getUserList(account.auth).then((items: IUserList) => {
+        dispatch(loadListOfuser(items));
+      });
 
-        // dispatch(addNotification("New Box added", `User  added by you`));
-        //  dispatch(clearSelectedBox());
-        //  dispatch(setModificationState(BoxModificationStatus.None));
-      }
-    );
+      // dispatch(addNotification("New Box added", `User  added by you`));
+      //  dispatch(clearSelectedBox());
+      //  dispatch(setModificationState(BoxModificationStatus.None));
+    });
 
     // dispatch(removeAdmin(admin));
   }
 
-  const userElements: JSX.Element[] = users.map((user) => {
+  const userElements: JSX.Element[] = users.map((user, inde) => {
     const verified = user.auth.email.valid;
     const roles = user.roles[0];
     return (
-      <tr className={`table-row`} key={`user_${user.id}`}>
-        <th scope="row">{user.id}</th>
+      <tr className={`table-row`} key={`user_${user.email}`}>
+        <th scope="row">{inde + 1}</th>
+
         <td>{user.name}</td>
 
         <td>{user.email}</td>
@@ -105,12 +104,13 @@ const Users: React.FC = () => {
     );
   });
 
-  const adminElements: JSX.Element[] = admins.map((admin) => {
+  const adminElements: JSX.Element[] = admins.map((admin, inde) => {
     const roless = admin.roles[0];
 
     return (
-      <tr className={`table-row`} key={`user_${admin.id}`}>
-        <th scope="row">{admin.id}</th>
+      <tr className={`table-row`} key={`user_${admin.email}`}>
+        <th scope="row">{inde + 1}</th>
+
         <td>{admin.name}</td>
 
         <td>{admin.email}</td>

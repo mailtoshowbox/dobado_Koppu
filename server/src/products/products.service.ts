@@ -22,7 +22,7 @@ export class DocumentsService {
 
   async findAll(): Promise<Document[]> {
     return await this.productModel.aggregate([
-      { $match: { name: { "$ne": "" }   },  },
+      { $match: { name: { "$ne": "" } , isActive :{ "$ne": false   }  },  },
       { $addFields: {
         converted_rack: {
             $convert: { 
@@ -107,10 +107,9 @@ export class DocumentsService {
     return await this.productModel.findOne({ _id: id });
   }
 
-  async create(product: Document) {
-    console.log("PRODCUTI____", product);
-    const newProduct = new this.productModel(product);
-    console.log("newProduct-->>", newProduct);
+  async create(product: Document) { 
+    const newProduct = new this.productModel(product); 
+    newProduct.isActive = true;
     return await newProduct.save();
   }
 

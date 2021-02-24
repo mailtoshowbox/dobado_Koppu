@@ -1,6 +1,6 @@
 import { IDocCategoryState, IActionBase } from "../models/root.interface";
 import { ADD_DOCCATEGORY, CHANGE_DOCCATEGORY_PENDING_EDIT, EDIT_DOCCATEGORY, REMOVE_DOCCATEGORY,
-    CLEAR_DOCCATEGORY_PENDING_EDIT, SET_MODIFICATION_STATE, CHANGE_DOCCATEGORY_AMOUNT, LIST_DOCCATEGORY} from "../actions/doccategory.action";
+    CLEAR_DOCCATEGORY_PENDING_EDIT, SET_DOCCATEGORY_MODIFICATION_STATE, CHANGE_DOCCATEGORY_AMOUNT, LIST_DOCCATEGORY} from "../actions/doccategory.action";
 import { IDocCategory, DocCategoryModificationStatus } from "../models/doccategory.interface";
 
 
@@ -36,7 +36,7 @@ function docCategoriesReducer(state: IDocCategoryState = initialState, action: I
         case CLEAR_DOCCATEGORY_PENDING_EDIT: {
             return { ...state, selectedDocCategory: null };
         }
-        case SET_MODIFICATION_STATE: {
+        case SET_DOCCATEGORY_MODIFICATION_STATE: {
             return { ...state, modificationState: action.value };
         }
         case CHANGE_DOCCATEGORY_AMOUNT: {

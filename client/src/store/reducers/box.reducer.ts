@@ -1,6 +1,6 @@
 import { IBoxState, IActionBase } from "../models/root.interface";
 import { ADD_BOX, CHANGE_BOX_PENDING_EDIT, EDIT_BOX, REMOVE_BOX,
-    CLEAR_BOX_PENDING_EDIT, SET_MODIFICATION_STATE, CHANGE_BOX_AMOUNT, LIST_BOX} from "../actions/box.action";
+    CLEAR_BOX_PENDING_EDIT, SET_BOX_MODIFICATION_STATE, CHANGE_BOX_AMOUNT, LIST_BOX} from "../actions/box.action";
 import { IBox, BoxModificationStatus } from "../models/box.interface";
 
 
@@ -38,7 +38,7 @@ function boxsReducer(state: IBoxState = initialState, action: IActionBase): IBox
         case CLEAR_BOX_PENDING_EDIT: {
             return { ...state, selectedBox: null };
         }
-        case SET_MODIFICATION_STATE: {
+        case SET_BOX_MODIFICATION_STATE: {
             return { ...state, modificationState: action.value };
         }
         case CHANGE_BOX_AMOUNT: {

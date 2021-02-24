@@ -8,13 +8,18 @@ import {
   clearSelectedBox,
   setModificationState,
   addBox,
+  loadListOfBox,
 } from "../../store/actions/box.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import NumberInput from "../../common/components/NumberInput";
-import { addNewBox, updateBox } from "../../services/index";
+import { addNewBox, updateBox, getBoxList } from "../../services/index";
 
 import { OnChangeModel, IBoxFormState } from "../../common/types/Form.types";
-import { BoxModificationStatus, IBox } from "../../store/models/box.interface";
+import {
+  BoxModificationStatus,
+  IBox,
+  IBoxList,
+} from "../../store/models/box.interface";
 import { IAccount } from "../../store/models/account.interface";
 
 const BoxForm: React.FC = () => {
@@ -76,6 +81,9 @@ const BoxForm: React.FC = () => {
               ...status,
             })
           );
+          getBoxList(account.auth).then((items: IBoxList) => {
+            dispatch(loadListOfBox(items));
+          });
           dispatch(
             addNotification(
               "New Box added",
@@ -99,6 +107,9 @@ const BoxForm: React.FC = () => {
               ...status,
             })
           );
+          getBoxList(account.auth).then((items: IBoxList) => {
+            dispatch(loadListOfBox(items));
+          });
           dispatch(
             addNotification(
               "Box ",

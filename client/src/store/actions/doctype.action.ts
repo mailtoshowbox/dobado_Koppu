@@ -5,7 +5,7 @@ export const REMOVE_DOCTYPE: string = "REMOVE_DOCTYPE";
 export const CHANGE_DOCTYPE_AMOUNT: string = "CHANGE_DOCTYPE_AMOUNT";
 export const CHANGE_DOCTYPE_PENDING_EDIT: string = "CHANGE_DOCTYPE_PENDING_EDIT";
 export const CLEAR_DOCTYPE_PENDING_EDIT: string = "CLEAR_DOCTYPE_PENDING_EDIT";
-export const SET_MODIFICATION_STATE: string = "SET_MODIFICATION_STATE";
+export const SET_DOCTYPE_MODIFICATION_STATE: string = "SET_DOCTYPE_MODIFICATION_STATE";
 export const LIST_DOCTYPE: string = "LIST_DOCTYPE";
 
 
@@ -43,7 +43,7 @@ export function clearSelectedDocType(): IClearSelectedDocTypeActionType {
 }
 
 export function setModificationState(value: DocTypeModificationStatus): ISetModificationStateActionType {
-    return { type: SET_MODIFICATION_STATE, value: value };
+    return { type: SET_DOCTYPE_MODIFICATION_STATE, value: value };
 }
 
 interface IAddDocTypeActionType { type: string, docType: IDocType };

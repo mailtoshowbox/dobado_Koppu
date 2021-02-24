@@ -28,7 +28,7 @@ let DocumentsService = class DocumentsService {
     }
     async findAll() {
         return await this.productModel.aggregate([
-            { $match: { name: { "$ne": "" } }, },
+            { $match: { name: { "$ne": "" }, isActive: { "$ne": false } }, },
             { $addFields: {
                     converted_rack: {
                         $convert: {
@@ -103,9 +103,8 @@ let DocumentsService = class DocumentsService {
         return await this.productModel.findOne({ _id: id });
     }
     async create(product) {
-        console.log("PRODCUTI____", product);
         const newProduct = new this.productModel(product);
-        console.log("newProduct-->>", newProduct);
+        newProduct.isActive = true;
         return await newProduct.save();
     }
     async delete(id) {

@@ -12,7 +12,7 @@ export class DocTypeService {
   ) {}
 
   async findAll(): Promise<DocType[]> {
-    return await this.DocTypeModel.find().exec();
+    return await this.DocTypeModel.find({ name: { "$ne": "" } ,isActive: true}).exec();
   }
 
   async findOne(id: string): Promise<DocType> {
@@ -21,6 +21,7 @@ export class DocTypeService {
 
   async create(DocType: DocType): Promise<DocType> {
     const newDocType = new this.DocTypeModel(DocType);
+    newDocType.isActive = true;
     return await newDocType.save();
   }
 

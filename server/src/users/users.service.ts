@@ -35,8 +35,7 @@ export class UsersService {
         newUser.approved =false;
         var createdUser = new this.userModel(newUser);
         createdUser.approved = false; 
-        createdUser.roles = ["Deactivated"];
-        console.log("createdUser----", createdUser);
+        createdUser.roles = ["Deactivated"]; 
        // 
         return await createdUser.save();
       } else if (!userRegistered.auth.email.valid) {

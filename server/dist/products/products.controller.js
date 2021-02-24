@@ -51,6 +51,7 @@ let DocumentsController = class DocumentsController {
                 if (docType_info.length > 0) {
                     doc.document_type = docType_info[0].name;
                 }
+                doc.batch = doc.category + '/' + doc.box + '/' + doc.rack;
                 delete doc.box_info;
                 delete doc.rack_info;
                 delete doc.category_info;

@@ -24,6 +24,7 @@ import {
 } from "../../store/models/doctype.interface";
 import { getDocTypeList, updateDocType } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
+import { updateCurrentPath } from "../../store/actions/root.actions";
 
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -47,6 +48,7 @@ const Products: React.FC = () => {
     getDocTypeList(account.auth).then((items: IDocTypeList) => {
       dispatch(loadListOfDocType(items));
     });
+    dispatch(updateCurrentPath("Home", "Types"));
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IDocType): void {
@@ -151,6 +153,9 @@ const Products: React.FC = () => {
                       addNotification("Type removed", `Type  was removed`)
                     );
                     dispatch(clearSelectedDocType());
+                    getDocTypeList(account.auth).then((items: IDocTypeList) => {
+                      dispatch(loadListOfDocType(items));
+                    });
                     setPopup(false);
                   })
                   .catch((err) => {

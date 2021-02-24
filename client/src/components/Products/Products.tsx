@@ -38,6 +38,7 @@ import {
   updateDoc,
 } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
+import { updateCurrentPath } from "../../store/actions/root.actions";
 
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -71,6 +72,7 @@ const Products: React.FC = () => {
     getDocTypeList(account.auth).then((items: IBoxList) => {
       dispatch(loadListOfDocType(items));
     });
+    dispatch(updateCurrentPath("Home", "Documents"));
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IProduct): void {
@@ -169,6 +171,9 @@ const Products: React.FC = () => {
                       addNotification("Product removed", `Product  was removed`)
                     );
                     dispatch(clearSelectedProduct());
+                    getDocumentList(account).then((items: IProductList) => {
+                      dispatch(loadListOfProduct(items));
+                    });
                     setPopup(false);
                   })
                   .catch((err) => {

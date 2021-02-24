@@ -6,8 +6,12 @@ import {
   IStateType,
   IRootPageStateType,
 } from "../../store/models/root.interface";
-
-import { getDashboardList, getDocCategoryList } from "../../services/index";
+import { updateCurrentPath } from "../../store/actions/root.actions";
+import {
+  getDashboardList,
+  getDocCategoryList,
+  getDocTypeList,
+} from "../../services/index";
 const Home: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -16,12 +20,16 @@ const Home: React.FC = () => {
     (state: IStateType) => state.root.page
   );
 
+  const allowedUsers = ["Superadmin", "Developer", "Qualityuser"];
+  const roles: any = useSelector((state: IStateType) => state.account.roles);
+  let [userRole] = useState(roles[0] ? roles[0] : "Developer");
+
   const [dashboardCounter, setDashboardCounter] = useState({
     totalDocuments: 0,
     nApprovedDocuments: 0,
     approvedDocuments: 0,
     boxes: 0,
-
+    docTypes: 0,
     docCategories: 0,
     users: 0,
   });
@@ -51,11 +59,20 @@ const Home: React.FC = () => {
     });
 
     //Load Available Doc Categories
+    getDocTypeList(account.auth).then((items: any) => {
+      if (items.length > 0) {
+        counter["docTypes"] = items.length;
+      }
+      // setDashboardCounter({ ...dashboardCounter, ...counter });
+    });
+
+    //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: any) => {
       if (items.length > 0) {
         counter["docCategories"] = items.length;
       }
       setDashboardCounter({ ...dashboardCounter, ...counter });
+      dispatch(updateCurrentPath("Home", ""));
     });
   }, [path.area, dispatch]);
 
@@ -71,36 +88,50 @@ const Home: React.FC = () => {
           icon="folder-open"
           class="success"
         />
-        <TopCard
-          title="No of employees"
-          text={dashboardCounter.users?.toString() || "0"}
-          icon="users"
-          class="success"
-        />
-        <TopCard
-          title="Categories"
-          text={dashboardCounter.docCategories.toString() || "0"}
-          icon="sitemap"
-          class="success"
-        />
-        <TopCard
-          title="Rack system"
-          text={dashboardCounter.boxes.toString() || "0"}
-          icon="box-open"
-          class="success"
-        />
-        <TopCard
-          title="Archival to be done"
-          text={dashboardCounter.nApprovedDocuments.toString() || "0"}
-          icon="folder-open"
-          class="danger"
-        />
-        <TopCard
-          title="Non Pending Documents"
-          text={dashboardCounter.approvedDocuments.toString() || "0"}
-          icon="folder-open"
-          class="success"
-        />
+        {allowedUsers.includes(userRole) && (
+          <>
+            <TopCard
+              title="No of employees"
+              text={dashboardCounter.users?.toString() || "0"}
+              icon="users"
+              class="success"
+            />
+            <TopCard
+              title="Categories"
+              text={dashboardCounter.docCategories.toString() || "0"}
+              icon="sitemap"
+              class="success"
+            />
+            <TopCard
+              title="Rack system"
+              text={dashboardCounter.boxes.toString() || "0"}
+              icon="box-open"
+              class="success"
+            />
+            <TopCard
+              title="Archival to be done"
+              text={dashboardCounter.nApprovedDocuments.toString() || "0"}
+              icon="folder-open"
+              class="danger"
+            />
+            <TopCard
+              title="Non Pending Documents"
+              text={dashboardCounter.approvedDocuments.toString() || "0"}
+              icon="folder-open"
+              class="success"
+            />
+          </>
+        )}
+        {!allowedUsers.includes(userRole) && (
+          <>
+            <TopCard
+              title="Document Types"
+              text={dashboardCounter.docTypes?.toString() || "0"}
+              icon="fas fa-project-diagram"
+              class="success"
+            />
+          </>
+        )}
       </div>
     </Fragment>
   );

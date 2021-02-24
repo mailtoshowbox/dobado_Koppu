@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   IDocType,
   DocTypeModificationStatus,
+  IDocTypeList,
 } from "../../store/models/doctype.interface";
 import TextInput from "../../common/components/TextInput";
 import {
@@ -11,9 +12,14 @@ import {
   clearSelectedDocType,
   setModificationState,
   addDocType,
+  loadListOfDocType,
 } from "../../store/actions/doctype.action";
 import { addNotification } from "../../store/actions/notifications.action";
-import { addNewDocType, updateDocType } from "../../services/index";
+import {
+  addNewDocType,
+  updateDocType,
+  getDocTypeList,
+} from "../../services/index";
 import {
   OnChangeModel,
   IDocTypeFormState,
@@ -83,6 +89,9 @@ const ProductForm: React.FC = () => {
               `Box ${formState.name.value} added by you`
             )
           );
+          getDocTypeList(account.auth).then((items: IDocTypeList) => {
+            dispatch(loadListOfDocType(items));
+          });
           dispatch(clearSelectedDocType());
           dispatch(setModificationState(DocTypeModificationStatus.None));
         });
@@ -99,11 +108,11 @@ const ProductForm: React.FC = () => {
               ...status,
             })
           );
+          getDocTypeList(account.auth).then((items: IDocTypeList) => {
+            dispatch(loadListOfDocType(items));
+          });
           dispatch(
-            addNotification(
-              "Box ",
-              `New Box ${formState.name.value} edited by you`
-            )
+            addNotification("Box ", `Box ${formState.name.value} edited by you`)
           );
           dispatch(clearSelectedDocType());
           dispatch(setModificationState(DocTypeModificationStatus.None));

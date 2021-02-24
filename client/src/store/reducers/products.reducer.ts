@@ -1,6 +1,6 @@
 import { IProductState, IActionBase } from "../models/root.interface";
 import { ADD_PRODUCT, CHANGE_PRODUCT_PENDING_EDIT, EDIT_PRODUCT, REMOVE_PRODUCT,
-    CLEAR_PRODUCT_PENDING_EDIT, SET_MODIFICATION_STATE, CHANGE_PRODUCT_AMOUNT, LIST_PRODUCT, UPDATE_QR_CODE} from "../actions/products.action";
+    CLEAR_PRODUCT_PENDING_EDIT, SET_PRODUCT_MODIFICATION_STATE, CHANGE_PRODUCT_AMOUNT, LIST_PRODUCT, UPDATE_QR_CODE} from "../actions/products.action";
 import { IProduct, ProductModificationStatus } from "../models/product.interface";
 
 
@@ -42,7 +42,7 @@ function productsReducer(state: IProductState = initialState, action: IActionBas
         case CLEAR_PRODUCT_PENDING_EDIT: {
             return { ...state, selectedProduct: null };
         }
-        case SET_MODIFICATION_STATE: {
+        case SET_PRODUCT_MODIFICATION_STATE: {
             return { ...state, modificationState: action.value };
         }
         case CHANGE_PRODUCT_AMOUNT: {

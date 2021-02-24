@@ -46,7 +46,7 @@ const Boxs: React.FC = () => {
       dispatch(loadListOfBox(items));
     });
     dispatch(clearSelectedBox());
-    dispatch(updateCurrentPath("boxes", "list"));
+    dispatch(updateCurrentPath("Home", "Racks"));
   }, [path.area, dispatch]);
 
   function onBoxSelect(box: IBox): void {
@@ -90,7 +90,9 @@ const Boxs: React.FC = () => {
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
             <div className="card-header py-1">
-              <h6 className="m-0 font-weight-bold text-white">Rack system List</h6>
+              <h6 className="m-0 font-weight-bold text-white">
+                Rack system List
+              </h6>
               <div className="header-buttons">
                 <button
                   className="btn btn-border"
@@ -150,6 +152,9 @@ const Boxs: React.FC = () => {
                       addNotification("Box removed", `Box  was removed`)
                     );
                     dispatch(clearSelectedBox());
+                    getBoxList(account.auth).then((items: IBoxList) => {
+                      dispatch(loadListOfBox(items));
+                    });
                     setPopup(false);
                   })
                   .catch((err) => {

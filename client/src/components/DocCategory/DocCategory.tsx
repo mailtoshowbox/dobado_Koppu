@@ -24,6 +24,7 @@ import {
 } from "../../store/models/doccategory.interface";
 import { getDocCategoryList, updateDocCat } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
+import { updateCurrentPath } from "../../store/actions/root.actions";
 
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -48,6 +49,7 @@ const Products: React.FC = () => {
     getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
     });
+    dispatch(updateCurrentPath("Home", "Categories"));
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IDocCategory): void {
@@ -150,6 +152,11 @@ const Products: React.FC = () => {
                       )
                     );
                     dispatch(clearSelectedDocCategory());
+                    getDocCategoryList(account.auth).then(
+                      (items: IDocCategoryList) => {
+                        dispatch(loadListOfDocCategory(items));
+                      }
+                    );
                     setPopup(false);
                   })
                   .catch((err) => {

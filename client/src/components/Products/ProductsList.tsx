@@ -31,30 +31,37 @@ function ProductList(props: productListProps): JSX.Element {
     if (props.onSelectDelete) props.onSelectDelete(row);
   }
 
-  function dataFormatter(
-    documentName: string,
-    row: any) {
-      const {
-        productModificationStatus = 0,
-        currentUser: { roles = [] },
-        allowDelete = false,
-      } = props;
+  function dataFormatter(documentName: string, row: any) {
+    const {
+      productModificationStatus = 0,
+      currentUser: { roles = [] },
+      allowDelete = false,
+    } = props;
     const { status = "n-approved" } = row.document_info || {};
     const loggedInUserRole = roles[0] ? roles[0] : "Developer";
-    return  (
+    return (
       <>
-      
-      {status === "n-approved" && loggedInUserRole === "Qualityuser" ?
-      <div>
-      <span>{documentName}</span>
-      <span
-        style={{ padding: "6px 8px 6px 10px", margin: "2% 4% 2% 3%" }}
-        className="blink_me"
-      > 
-        New
-      </span></div> : <span>{documentName}</span>
-    }
-    </>)
+        {status === "n-approved" && loggedInUserRole === "Qualityuser" ? (
+          <div>
+            <span>{documentName}</span>
+            <span
+              style={{ padding: "6px 8px 6px 10px", margin: "2% 4% 2% 3%" }}
+              className="blink_me"
+            >
+              New
+            </span>
+          </div>
+        ) : (
+          <span>{documentName}</span>
+        )}
+        {row.batch.length > 2 && (
+          <span style={{ color: "dodgerblue " }}>
+            <br />
+            Batch : {row.batch}
+          </span>
+        )}
+      </>
+    );
   }
 
   function buttonFormatter(
@@ -75,7 +82,8 @@ function ProductList(props: productListProps): JSX.Element {
       return (
         <>
           <button
-            type="button" className="btn btn-border"
+            type="button"
+            className="btn btn-border"
             onClick={() => onClickProductSelected(cell, row, rowIndex)}
           >
             <i className="fas fa fa-pen"></i>
@@ -101,7 +109,12 @@ function ProductList(props: productListProps): JSX.Element {
     } else {
       return (
         <>
-          <button type="button" className="btn btn-border" disabled style={{ cursor: "not-allowed" }}>
+          <button
+            type="button"
+            className="btn btn-border"
+            disabled
+            style={{ cursor: "not-allowed" }}
+          >
             <i className="fas fa fa-pen"></i>
           </button>
           {/* {status === "n-approved" && loggedInUserRole === "Qualityuser" && (

@@ -6,7 +6,7 @@ export const REMOVE_PRODUCT: string = "REMOVE_PRODUCT";
 export const CHANGE_PRODUCT_AMOUNT: string = "CHANGE_PRODUCT_AMOUNT";
 export const CHANGE_PRODUCT_PENDING_EDIT: string = "CHANGE_PRODUCT_PENDING_EDIT";
 export const CLEAR_PRODUCT_PENDING_EDIT: string = "CLEAR_PRODUCT_PENDING_EDIT";
-export const SET_MODIFICATION_STATE: string = "SET_MODIFICATION_STATE";
+export const SET_PRODUCT_MODIFICATION_STATE: string = "SET_PRODUCT_MODIFICATION_STATE";
 export const LIST_PRODUCT: string = "LIST_PRODUCT";
 export const UPDATE_QR_CODE: string = "UPDATE_QR_CODE";
  
@@ -46,7 +46,7 @@ export function clearSelectedProduct(): IClearSelectedProductActionType {
 }
 
 export function setModificationState(value: ProductModificationStatus): ISetModificationStateActionType {
-    return { type: SET_MODIFICATION_STATE, value: value };
+    return { type: SET_PRODUCT_MODIFICATION_STATE, value: value };
 }
 
 interface IAddProductActionType { type: string, product: IProduct };

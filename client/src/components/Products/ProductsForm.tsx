@@ -607,8 +607,8 @@ const ProductForm: React.FC = () => {
 
     myWindow?.document.close();
     myWindow?.focus();
-    // myWindow?.print();
-    // myWindow?.close();
+    myWindow?.print();
+    myWindow?.close();
   }
 
   return (
@@ -746,7 +746,6 @@ const ProductForm: React.FC = () => {
                     <>
                       {" "}
                       <div className="mb-3">Type of Space</div>
-                      
                       <div className="form-row">
                         <div
                           className="col-md-12"
@@ -831,11 +830,17 @@ const ProductForm: React.FC = () => {
                               {formState.qr_code.value}
                             </span>
                           </div>{" "}
-                          <PrintCode code={formState} />
+                          <PrintCode
+                            code={formState}
+                            docCategories={doccategoriesList.docCategories}
+                          />
                         </div>
                         <div className="card-footer text-right">
                           <div>
-                            <button onClick={printOrder} className="btn btn-primary font-14">
+                            <button
+                              onClick={printOrder}
+                              className="btn btn-primary font-14"
+                            >
                               Print
                             </button>
                           </div>
@@ -846,10 +851,16 @@ const ProductForm: React.FC = () => {
                 </div>
               </div>
 
-              <button className="btn btn-danger font-14" onClick={() => cancelForm()}>
+              <button
+                className="btn btn-danger font-14"
+                onClick={() => cancelForm()}
+              >
                 Cancel
               </button>
-              <button type="submit" className={`btn btn-success left-margin font-14`}>
+              <button
+                type="submit"
+                className={`btn btn-success left-margin font-14`}
+              >
                 Save
               </button>
             </form>

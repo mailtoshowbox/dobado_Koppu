@@ -18,7 +18,7 @@ export class BoxService {
     ){}
 
   async findAll(): Promise<Box[]> {
-    return await this.boxModel.find().exec();
+    return await this.boxModel.find({ name: { "$ne": "" } ,isActive: true}).exec();
   }
 
   async findOne(id: string): Promise<Box> {
@@ -33,6 +33,8 @@ export class BoxService {
 
   async createRack(rack: Rack): Promise<Rack> {
       const newRack = new this.rackModel(rack);
+     
+
       return await newRack.save();  
   }
 
@@ -40,6 +42,7 @@ export class BoxService {
 
     const {racks = 0} = box;
     const newBox = new this.boxModel(box);
+    newBox.isActive = true;
     return await newBox.save().then((savedResult)=>{
       const {_id= ""} = savedResult;
       if(racks>0){

@@ -3,7 +3,24 @@ import { getDocCustomGetOptions, getDocCustomPostOptions, getDocCustomPutOptions
 
 const API_HOST_AT = "http://localhost:3000";
 
+export function confirmEmailToken(options) {
 
+ 
+//localhost:3000http://localhost:3001/emailconfirmation#4295787
+      return fetch(API_HOST_AT+"/auth/email/verify/4295787",)      
+            .then(response => {      
+              if (!response.ok) {      
+                handleResponseError(response);      
+              }      
+              return response.json();      
+            })      
+            .then(json => {   
+                return json;
+            })      
+            .catch(error => {      
+              handleError(error);      
+            });
+  }
 
 export function getDashboardList(options) {
 
@@ -70,17 +87,10 @@ export function getDocTypeList(options={}) {
 
 export function approveUser(newitem, options) { 
 
-  const {value=0} = newitem.selected;
-  let role = '';
-  /* if(value ==="1"){
-    role ="Documentcreater";
-  }else if(value ==="2"){
-    role ="Qualityuser";
-  }else{
-    role ="Employee";
-  } */
-  let ypdatedStaus= Object.assign({...newitem.user,roles : [value] });
+  const {value=0} = newitem.selected; 
+  let ypdatedStaus= Object.assign({...newitem.user,roles : [value] }); 
   var myOptions = getDocCustomPostOptions(options, ypdatedStaus);  
+
 
   return fetch(API_HOST_AT+'/users/profile/updateStatus', myOptions)
     .then(response => {

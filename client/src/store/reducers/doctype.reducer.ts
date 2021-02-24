@@ -1,6 +1,6 @@
 import { IDocTypeState, IActionBase } from "../models/root.interface";
 import { ADD_DOCTYPE, CHANGE_DOCTYPE_PENDING_EDIT, EDIT_DOCTYPE, REMOVE_DOCTYPE,
-    CLEAR_DOCTYPE_PENDING_EDIT, SET_MODIFICATION_STATE, CHANGE_DOCTYPE_AMOUNT, LIST_DOCTYPE} from "../actions/doctype.action";
+    CLEAR_DOCTYPE_PENDING_EDIT, SET_DOCTYPE_MODIFICATION_STATE, CHANGE_DOCTYPE_AMOUNT, LIST_DOCTYPE} from "../actions/doctype.action";
 import { IDocType, DocTypeModificationStatus } from "../models/doctype.interface";
 
 
@@ -36,7 +36,7 @@ function docTypesReducer(state: IDocTypeState = initialState, action: IActionBas
         case CLEAR_DOCTYPE_PENDING_EDIT: {
             return { ...state, selectedDocType: null };
         }
-        case SET_MODIFICATION_STATE: {
+        case SET_DOCTYPE_MODIFICATION_STATE: {
             return { ...state, modificationState: action.value };
         }
         case CHANGE_DOCTYPE_AMOUNT: {

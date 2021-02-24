@@ -5,7 +5,7 @@ export const REMOVE_BOX: string = "REMOVE_BOX";
 export const CHANGE_BOX_AMOUNT: string = "CHANGE_BOX_AMOUNT";
 export const CHANGE_BOX_PENDING_EDIT: string = "CHANGE_BOX_PENDING_EDIT";
 export const CLEAR_BOX_PENDING_EDIT: string = "CLEAR_BOX_PENDING_EDIT";
-export const SET_MODIFICATION_STATE: string = "SET_MODIFICATION_STATE";
+export const SET_BOX_MODIFICATION_STATE: string = "SET_BOX_MODIFICATION_STATE";
 export const LIST_BOX: string = "LIST_BOX";
 
 export function loadListOfBox(items : IBoxList) {   
@@ -37,7 +37,7 @@ export function clearSelectedBox(): IClearSelectedBoxActionType {
 }
 
 export function setModificationState(value: BoxModificationStatus): ISetModificationStateActionType {
-    return { type: SET_MODIFICATION_STATE, value: value };
+    return { type: SET_BOX_MODIFICATION_STATE, value: value };
 }
 
 interface IAddBoxActionType { type: string, box: IBox };

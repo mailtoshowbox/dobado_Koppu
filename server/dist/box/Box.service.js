@@ -24,7 +24,7 @@ let BoxService = class BoxService {
         this.rackModel = rackModel;
     }
     async findAll() {
-        return await this.boxModel.find().exec();
+        return await this.boxModel.find({ name: { "$ne": "" }, isActive: true }).exec();
     }
     async findOne(id) {
         return await this.boxModel.findOne({ _id: id });
@@ -39,6 +39,7 @@ let BoxService = class BoxService {
     async create(box) {
         const { racks = 0 } = box;
         const newBox = new this.boxModel(box);
+        newBox.isActive = true;
         return await newBox.save().then((savedResult) => {
             const { _id = "" } = savedResult;
             if (racks > 0) {

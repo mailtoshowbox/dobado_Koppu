@@ -46,7 +46,7 @@ export class DocumentsController {
   @Get()
   findAll(): Promise<Document[]> {
     let res = this.productsService.findAll().then((succ=[])=>{   
-     let onfo =  succ.map((doc)=>{ 
+     let onfo =  succ.map((doc : any)=>{ 
 
         const {box_info=[], rack_info=[], category_info =[], docType_info=[] } = doc;
         if(box_info.length > 0){
@@ -61,10 +61,14 @@ export class DocumentsController {
         if(docType_info.length > 0){
           doc.document_type= docType_info[0].name;
         }
+
+
+        doc.batch = doc.category+'/'+doc.box+'/'+doc.rack
         delete doc.box_info;
         delete doc.rack_info;
         delete doc.category_info;
         delete doc.docType_info; 
+        
        return doc;
       }) 
       return onfo;

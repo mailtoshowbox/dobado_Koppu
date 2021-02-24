@@ -60,8 +60,12 @@ function SelectInput(props: SelectProps): JSX.Element {
         <option value="">Choose...</option>
         {getOptions}
       </select>
-      {error ? <div className="invalid-feedback">{error}</div> : null}
-      {customError ? <div className="invalid-field">{customError}</div> : null}
+      {!customError && error ? (
+        <div className="invalid-feedback">{error}</div>
+      ) : null}
+      {!error && customError ? (
+        <div className="invalid-field">{customError}</div>
+      ) : null}
     </Fragment>
   );
 }

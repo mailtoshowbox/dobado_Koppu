@@ -1,5 +1,5 @@
 import { IProduct, ProductModificationStatus } from "../models/product.interface";
-import {  getDocumentList  } from "../../services/index"; 
+import {    } from "../../services/index"; 
 export const ADD_PRODUCT: string = "ADD_PRODUCT";
 export const EDIT_PRODUCT: string = "EDIT_PRODUCT";
 export const REMOVE_PRODUCT: string = "REMOVE_PRODUCT";

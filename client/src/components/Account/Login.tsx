@@ -82,7 +82,7 @@ const Login: React.FC = () => {
                   <div className="p-5">
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-4">
-                        <img src={logo} />
+                        <img src={logo} alt="logo" />
                       </h1>
                     </div>
                     <form className="user" onSubmit={submit}>

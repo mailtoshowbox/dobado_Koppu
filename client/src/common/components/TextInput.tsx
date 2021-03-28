@@ -10,7 +10,7 @@ function TextInput(props: TextInputProps): JSX.Element {
   function onValueChanged(event: ChangeEvent<HTMLInputElement>): void {
     let [error, validClass, elementValue] = ["", "", event.target.value];
 
-    const { field, customError } = props;
+    const { field } = props;
 
     if (field === "email") {
       var pattern = new RegExp(

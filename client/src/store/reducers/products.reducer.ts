@@ -46,7 +46,7 @@ function productsReducer(state: IProductState = initialState, action: IActionBas
             return { ...state, modificationState: action.value };
         }
         case CHANGE_PRODUCT_AMOUNT: {
-            const foundIndex: number = state.products.findIndex(pr => pr._id === action.id);
+           // const foundIndex: number = state.products.findIndex(pr => pr._id === action.id);
             let products: IProduct[] = state.products;
             return { ...state, products: products };
         }

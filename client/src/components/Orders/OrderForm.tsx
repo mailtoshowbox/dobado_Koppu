@@ -8,7 +8,6 @@ import { addOrder } from "../../store/actions/orders.actions";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
   clearSelectedProduct,
-  changeProductAmount,
 } from "../../store/actions/products.action";
 import { IStateType } from "../../store/models/root.interface";
 

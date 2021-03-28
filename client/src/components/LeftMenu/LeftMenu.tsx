@@ -37,7 +37,7 @@ const LeftMenu: React.FC = () => {
           className="sidebar-brand d-flex align-items-center justify-content-center"
           href="index.html"
         >
-          <img src={logo} />
+          <img src={logo} alt="logo"/>
         </a>
 
         <hr className="sidebar-divider my-0" />

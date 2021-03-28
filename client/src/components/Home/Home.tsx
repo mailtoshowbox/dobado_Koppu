@@ -32,6 +32,10 @@ const Home: React.FC = () => {
     docTypes: 0,
     docCategories: 0,
     users: 0,
+    non_perceptual: 0,
+    perceptual: 0,
+    docCreater: 0,
+    QtyUser: 0,
   });
 
   useEffect(() => {
@@ -55,6 +59,29 @@ const Home: React.FC = () => {
 
         counter["nApprovedDocuments"] = nApprovedDocuments.length;
         counter["approvedDocuments"] = approvedDocuments.length;
+
+        const non_perceptual = documents.data.filter(
+          (pr: any) => pr.type_of_space !== "perceptual"
+        );
+        const perceptual = documents.data.filter(
+          (pr: any) => pr.type_of_space === "perceptual"
+        );
+
+        counter["non_perceptual"] = non_perceptual.length;
+        counter["perceptual"] = perceptual.length;
+
+        const docCreater = documents.data.filter(
+          (pr: any) => pr.document_info.createdBy.role !== "Documentcreater"
+        );
+        const QtyUser = documents.data.filter(
+          (pr: any) => pr.document_info.createdBy.role === "Documentcreater"
+        );
+
+        counter["docCreater"] = docCreater.length;
+        counter["QtyUser"] = QtyUser.length;
+
+        
+
       }
     });
 
@@ -65,6 +92,7 @@ const Home: React.FC = () => {
       }
       // setDashboardCounter({ ...dashboardCounter, ...counter });
     });
+    
 
     //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: any) => {
@@ -91,8 +119,14 @@ const Home: React.FC = () => {
         {allowedUsers.includes(userRole) && (
           <>
             <TopCard
-              title="No of employees"
-              text={dashboardCounter.users?.toString() || "0"}
+              title="Entitled as Doc.Creater"
+              text={dashboardCounter.docCreater?.toString() || "0"}
+              icon="users"
+              class="success"
+            />
+            <TopCard
+              title="Entitled as Quality User"
+              text={dashboardCounter.QtyUser?.toString() || "0"}
               icon="users"
               class="success"
             />
@@ -117,6 +151,18 @@ const Home: React.FC = () => {
             <TopCard
               title="Non Pending Documents"
               text={dashboardCounter.approvedDocuments.toString() || "0"}
+              icon="folder-open"
+              class="success"
+            />
+            <TopCard
+              title="Perpetual Documents"
+              text={dashboardCounter.perceptual.toString() || "0"}
+              icon="folder-open"
+              class="success"
+            />
+            <TopCard
+              title="Non Perpetual Documents"
+              text={dashboardCounter.non_perceptual.toString() || "0"}
               icon="folder-open"
               class="success"
             />

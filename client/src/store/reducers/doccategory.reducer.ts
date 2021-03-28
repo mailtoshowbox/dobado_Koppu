@@ -40,7 +40,7 @@ function docCategoriesReducer(state: IDocCategoryState = initialState, action: I
             return { ...state, modificationState: action.value };
         }
         case CHANGE_DOCCATEGORY_AMOUNT: {
-            const foundIndex: number = state.docCategories.findIndex(pr => pr._id === action.id);
+            //const foundIndex: number = state.docCategories.findIndex(pr => pr._id === action.id);
             let docCategories: IDocCategory[] = state.docCategories;
             return { ...state, docCategories: docCategories };
         }

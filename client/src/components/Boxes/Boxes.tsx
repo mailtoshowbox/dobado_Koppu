@@ -12,7 +12,6 @@ import {
 } from "../../store/models/root.interface";
 import Popup from "reactjs-popup";
 import {
-  removeBox,
   clearSelectedBox,
   setModificationState,
   changeSelectedBox,
@@ -55,11 +54,11 @@ const Boxs: React.FC = () => {
     dispatch(setModificationState(BoxModificationStatus.Edit));
   }
 
-  function onBoxRemove() {
-    if (boxes.selectedBox) {
-      setPopup(true);
-    }
-  }
+  // function onBoxRemove() {
+  //   if (boxes.selectedBox) {
+  //     setPopup(true);
+  //   }
+  // }
 
   function onDeleteProduct(box: IBox): void {
     dispatch(changeSelectedBox(box));

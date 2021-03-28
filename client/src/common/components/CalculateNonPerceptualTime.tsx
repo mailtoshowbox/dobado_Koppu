@@ -2,8 +2,8 @@ import React, { useState, ChangeEvent } from "react";
 
 function TextInput(props: any): JSX.Element {
   const [touched, setTouch] = useState(false);
-  const [error, setError] = useState("");
-  const [htmlClass, setHtmlClass] = useState("");
+  const [, setError] = useState("");
+  const [, setHtmlClass] = useState("");
   const [, setValue] = useState(0);
 
   function onValueChanged(event: ChangeEvent<HTMLInputElement>): void {
@@ -26,16 +26,16 @@ function TextInput(props: any): JSX.Element {
     setValue(parseInt(elementValue));
   }
 
-  function add_years(n: number) {
-    return 2;
+  //function add_years(n: number) {
+   // return 2;
     //return new Date(dt.setFullYear(dt.getFullYear() + n));
-  }
+  //}
 
-  let dt = new Date();
+  //let dt = new Date();
 
   const {
-    customError,
-    value: { time = 0, defaultYear = 3, calculateNonPerceptualTime = "MM/YY" },
+    
+    value: { time = 0, calculateNonPerceptualTime = "MM/YY" },
   } = props;
 
   return (

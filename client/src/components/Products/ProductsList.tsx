@@ -33,9 +33,9 @@ function ProductList(props: productListProps): JSX.Element {
 
   function dataFormatter(documentName: string, row: any) {
     const {
-      productModificationStatus = 0,
+     // productModificationStatus = 0,
       currentUser: { roles = [] },
-      allowDelete = false,
+     // allowDelete = false,
     } = props;
     const { status = "n-approved" } = row.document_info || {};
     const loggedInUserRole = roles[0] ? roles[0] : "Developer";
@@ -70,13 +70,13 @@ function ProductList(props: productListProps): JSX.Element {
     enumObject: any,
     rowIndex: any
   ) {
-    const { status = "n-approved" } = row.document_info || {};
+    //const { status = "n-approved" } = row.document_info || {};
     const {
       productModificationStatus = 0,
-      currentUser: { roles = [] },
+      //currentUser: { roles },
       allowDelete = false,
     } = props;
-    const loggedInUserRole = roles[0] ? roles[0] : "Developer";
+    //const loggedInUserRole = roles[0] ? roles[0] : "Developer";
 
     if (productModificationStatus === 0) {
       return (
@@ -187,10 +187,17 @@ function ProductList(props: productListProps): JSX.Element {
           Type
         </TableHeaderColumn>
         <TableHeaderColumn
+          dataField="qr_code"
+          className="thead-light-1"
+          width="10%"
+        >
+          QR Code
+        </TableHeaderColumn>
+        <TableHeaderColumn
           dataField="manufacturedate"
           className="thead-light-1"
           dataFormat={convertDate}
-          width="14%"
+          width="10%"
         >
           M Date
         </TableHeaderColumn>
@@ -198,7 +205,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataField="expiredate"
           className="thead-light-1"
           dataFormat={convertDate}
-          width="14%"
+          width="10%"
         >
           E Date
         </TableHeaderColumn>
@@ -206,7 +213,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataField="button"
           dataFormat={buttonFormatter}
           className="thead-light-1"
-          width="10%"
+          width="9%"
         >
           Action
         </TableHeaderColumn>

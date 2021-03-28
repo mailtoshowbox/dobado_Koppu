@@ -1,4 +1,4 @@
-import React, { useRef, useState, FormEvent, Dispatch, Fragment } from "react";
+import React, {  useState, FormEvent, Dispatch, Fragment } from "react";
 import {
   IStateType,
   IProductState,
@@ -26,7 +26,7 @@ import {
   setModificationState,
   addProduct,
   loadListOfProduct,
-  updateQrCode,
+
 } from "../../store/actions/products.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
@@ -52,7 +52,7 @@ import uniquebg from "../../assets/images/uniquebg.png";
 
 const ProductForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
-  const componentRef = useRef();
+  //const componentRef = useRef();
 
   const products: IProductState | null = useSelector(
     (state: IStateType) => state.products
@@ -72,7 +72,7 @@ const ProductForm: React.FC = () => {
     box: "",
     rack: "",
   });
-  const [qrModified, setQrModified] = useState(false);
+  const [,setQrModified] = useState(false);
   const selectField = ["box"];
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -187,16 +187,16 @@ const ProductForm: React.FC = () => {
       });
     });
   }
-  function makeid() {
-    var text = "";
-    var possible =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  // function makeid() {
+  //   var text = "";
+  //   var possible =
+  //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    for (var i = 0; i < 5; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
+  //   for (var i = 0; i < 5; i++)
+  //     text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-    return text;
-  }
+  //   return text;
+  // }
   function add_years(n: number) {
     let dt = new Date();
     const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
@@ -301,7 +301,7 @@ const ProductForm: React.FC = () => {
   }
 
   function saveUser(event: FormEvent<HTMLFormElement>): void {
-    var target = document.activeElement;
+    //var target = document.activeElement;
 
     event.preventDefault();
     if (!isFormInvalid()) {
@@ -470,10 +470,10 @@ const ProductForm: React.FC = () => {
     dispatch(setModificationState(ProductModificationStatus.None));
   }
 
-  function getDisabledClass(): string {
-    let isError: boolean = isFormInvalid();
-    return isError ? "disabled" : "";
-  }
+  // function getDisabledClass(): string {
+  //   let isError: boolean = isFormInvalid();
+  //   return isError ? "disabled" : "";
+  // }
   function isFormInvalid(): boolean {
     let formIsValid = true;
     if (formState.name.value === "") {

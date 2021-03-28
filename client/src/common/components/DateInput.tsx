@@ -4,17 +4,17 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 function TextInput(props: TextInputProps): JSX.Element {
-  const [startDate, setStartDate] = useState(new Date());
+  //const [startDate, setStartDate] = useState(new Date());
 
   const [touched, setTouch] = useState(false);
   const [error, setError] = useState("");
-  const [htmlClass, setHtmlClass] = useState("");
-  const [, setValue] = useState("");
+  const [, setHtmlClass] = useState("");
+  //const [, ,] = useState("");
 
   function onValueChanged(dateValue: ChangeEvent<HTMLInputElement>): void {
     let [error, validClass, elementValue] = ["", "", dateValue];
 
-    const { field } = props;
+   // const { field } = props;
     // console.log("props----", props);
 
     [error, validClass] =

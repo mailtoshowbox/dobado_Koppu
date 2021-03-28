@@ -18,7 +18,7 @@ const Register: React.FC = () => {
   console.log("this", df);
   //
 
-  const [regError, setRegError] = useState({ status: false, message: "" });
+  const [] = useState({ status: false, message: "" });
   const [emailVerified, setEmailVerified] = useState(false);
   const [confirmationToken] = useState(df.id);
 
@@ -41,7 +41,7 @@ const Register: React.FC = () => {
                   <div className="p-5">
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-3">
-                        <img src={logo} />
+                        <img src={logo} alt="logo" />
                       </h1>
                       {emailVerified ? (
                         <h4 className="mb-3">

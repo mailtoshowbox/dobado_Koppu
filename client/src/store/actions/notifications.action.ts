@@ -9,7 +9,7 @@ export function removeNotification(id: number): IRemoveNotificationActionType {
     return { type: REMOVE_NOTIFICATION, id: id };
 }
 export function parseApiResult(result: any) {
-    const {status,message="", data:{ user={}}}  = result; 
+    const {message="", data:{ user={}}}  = result; 
     let titleMesage = '';
     let bodyMessage = ''; 
     const processMassage = message ? message : result.data.message;

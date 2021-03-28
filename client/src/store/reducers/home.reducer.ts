@@ -1,6 +1,6 @@
 import {  IActionBase } from "../models/root.interface";
-import { LIST_DOC, LIST_DOCTYPE, LIST_BOX,LIST_DOCCATEGORY} from "../actions/home.action";
-import { IDocCategory, DocCategoryModificationStatus } from "../models/doccategory.interface";
+import { LIST_DOCCATEGORY} from "../actions/home.action";
+import {  DocCategoryModificationStatus } from "../models/doccategory.interface";
 
 
 

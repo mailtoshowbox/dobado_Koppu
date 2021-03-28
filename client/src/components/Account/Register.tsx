@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, Dispatch } from "react";
 import { OnChangeModel } from "../../common/types/Form.types";
 import { useDispatch } from "react-redux";
-import { login } from "../../store/actions/account.actions";
+//import { login } from "../../store/actions/account.actions";
 import TextInput from "../../common/components/TextInput";
 import { registerUser } from "../../services/index";
 import "react-notifications/lib/notifications.css";
@@ -31,7 +31,7 @@ const Register: React.FC = () => {
         typeof formState.password.value !== "undefined" &&
         typeof value !== "undefined"
       ) {
-        if (formState.password.value != value) {
+        if (formState.password.value !== value) {
           newError = "Confirm Passwords don't match.";
         } else {
           newError = "";
@@ -122,7 +122,7 @@ const Register: React.FC = () => {
       typeof formState.password.value !== "undefined" &&
       typeof formState.confirmPassword.value !== "undefined"
     ) {
-      if (formState.password.value != formState.confirmPassword.value) {
+      if (formState.password.value !== formState.confirmPassword.value) {
         newObj.password.error = "Passwords don't match.";
       } else {
         newObj.password.error = "";
@@ -144,10 +144,10 @@ const Register: React.FC = () => {
     );
   }
 
-  function getDisabledClass(): string {
-    let isError: boolean = isFormInvalid() as boolean;
-    return isError ? "disabled" : "";
-  }
+  // function getDisabledClass(): string {
+  //   let isError: boolean = isFormInvalid() as boolean;
+  //   return isError ? "disabled" : "";
+  // }
 
   const loaderClass = startApi ? "regLoader" : "";
 
@@ -162,7 +162,7 @@ const Register: React.FC = () => {
                   <div className="p-5">
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-3">
-                        <img src={logo} />
+                        <img src={logo} alt="logo"/>
                       </h1>
                       <h4 className="mb-3">New User Registration!</h4>
                     </div>

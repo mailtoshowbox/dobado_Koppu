@@ -42,7 +42,7 @@ function boxsReducer(state: IBoxState = initialState, action: IActionBase): IBox
             return { ...state, modificationState: action.value };
         }
         case CHANGE_BOX_AMOUNT: {
-            const foundIndex: number = state.boxes.findIndex(pr => pr._id === action.id);
+            //const foundIndex: number = state.boxes.findIndex(pr => pr._id === action.id);
             let box: IBox[] = state.boxes;
             return { ...state, boxes: box };   
         }

@@ -39,13 +39,13 @@ const Users: React.FC = () => {
     dispatch(updateCurrentPath("users", "list"));
   }, [path.area, dispatch]);
 
-  function setUserAdmin(user: IUser): void {
-    dispatch(addAdmin(user));
-  }
+  // function setUserAdmin(user: IUser): void {
+  //   dispatch(addAdmin(user));
+  // }
 
-  function setUserNotAdmin(admin: IUser): void {
-    dispatch(removeAdmin(admin));
-  }
+  // function setUserNotAdmin(admin: IUser): void {
+  //   dispatch(removeAdmin(admin));
+  // }
   function activateUser(admin: IUser, model: OnChangeModel): void {
     approveUser({ user: admin, selected: model }, account).then((status) => {
       getUserList(account.auth).then((items: IUserList) => {

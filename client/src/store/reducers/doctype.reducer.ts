@@ -40,7 +40,7 @@ function docTypesReducer(state: IDocTypeState = initialState, action: IActionBas
             return { ...state, modificationState: action.value };
         }
         case CHANGE_DOCTYPE_AMOUNT: {
-            const foundIndex: number = state.docTypes.findIndex(pr => pr._id === action.id);
+           // const foundIndex: number = state.docTypes.findIndex(pr => pr._id === action.id);
             let docTypes: IDocType[] = state.docTypes;
             return { ...state, docTypes: docTypes };
         }

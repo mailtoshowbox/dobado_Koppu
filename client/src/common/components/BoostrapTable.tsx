@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  BootstrapTable,
-  TableHeaderColumn,
-  InsertButton,
-} from "react-bootstrap-table";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 
 function BoostrapTable(props: any): JSX.Element {
   const products: any[] = [];

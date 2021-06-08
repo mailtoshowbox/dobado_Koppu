@@ -68,10 +68,10 @@ export class UsersController {
       return new ResponseError("PROFILE.UPDATE_ERROR", error);
     }
   }
+
+
   
-  @Post('profile/update')
-  @UseGuards(RolesGuard)
-  @Roles('User')
+  @Post('profile/updateProfile')
   async updateProfile(@Body() profileDto: ProfileDto): Promise<IResponse> {
     try {
       var user =  await this.usersService.updateProfile(profileDto);

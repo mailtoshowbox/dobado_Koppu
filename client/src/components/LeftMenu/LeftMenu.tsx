@@ -37,7 +37,7 @@ const LeftMenu: React.FC = () => {
           className="sidebar-brand d-flex align-items-center justify-content-center"
           href="index.html"
         >
-          <img src={logo} alt="logo"/>
+          <img src={logo} alt="logo" />
         </a>
 
         <hr className="sidebar-divider my-0" />
@@ -59,6 +59,12 @@ const LeftMenu: React.FC = () => {
           </Link>
         </li>
         <li className="nav-item">
+          <Link className="nav-link" to={`/requestdoc`}>
+            <i className="fas fa-folder-open"></i>
+            <span>Document Request</span>
+          </Link>
+        </li>
+        <li className="nav-item">
           <Link className="nav-link" to={`/doctype`}>
             <i className="fas fa-project-diagram"></i>
             <span>Types</span>
@@ -76,6 +82,12 @@ const LeftMenu: React.FC = () => {
               <Link className="nav-link" to={`/boxes`}>
                 <i className="fas fa-box-open"></i>
                 <span>Rack system</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={`/department`}>
+                <i className="fas fa-sitemap"></i>
+                <span>Department</span>
               </Link>
             </li>
           </>

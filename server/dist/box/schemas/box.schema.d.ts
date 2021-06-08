@@ -5,4 +5,4 @@ export declare class Boxes extends Document {
     description: string;
     isActive: boolean;
 }
-export declare const BoxSchema: import("mongoose").Schema<any>;
+export declare const BoxSchema: import("mongoose").Schema<Boxes, import("mongoose").Model<any, any, any>, undefined>;

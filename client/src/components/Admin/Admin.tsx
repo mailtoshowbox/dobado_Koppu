@@ -8,6 +8,8 @@ import Orders from "../Orders/Orders";
 import Boxes from "../Boxes/Boxes";
 import Home from "../Home/Home";
 import DocCategories from "../DocCategory/DocCategory";
+import DocRequest from "../DocRequest/DocRequest";
+import DocDepartment from "../DocDepartment/DocDepartment";
 import DocTypes from "../DocType/DocType";
 import Notifications from "../../common/components/Notification";
 import { useSelector } from "react-redux";
@@ -35,6 +37,9 @@ const Admin: React.FC = () => {
               <Route path={`/products`}>
                 <Products />
               </Route>
+              <Route path={`/requestdoc`}>
+                <DocRequest />
+              </Route>
               <Route path={`/orders`}>
                 <Orders />
               </Route>
@@ -43,6 +48,9 @@ const Admin: React.FC = () => {
               </Route>
               <Route path={`/boxes`}>
                 <Boxes />
+              </Route>
+              <Route path={`/department`}>
+                <DocDepartment />
               </Route>
               <Route path={`/doctype`}>
                 <DocTypes />

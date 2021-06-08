@@ -1,0 +1,48 @@
+.header-buttons {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+.btn-green {
+    background-color: cadetblue !important;
+    border-color: cadetblue !important;
+    margin-right: 3px;
+    width: 40px;
+}
+
+.btn-blue {
+    background-color: lightblue !important;
+    border-color: lightblue !important;
+    margin-right: 3px;
+    width: 40px;
+}
+
+.btn-red {
+    background-color: indianred !important;
+    border-color: indianred !important;
+    margin-right: 3px;
+    width: 40px;
+}
+
+.table-row {
+    cursor: pointer;
+}
+
+.selected {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+.custom-table-style .table td, .custom-table-style .table th {
+    padding: 0.3125rem .9375rem;
+    vertical-align: top;
+    font-size: 12px;
+    font-family: sans-serif;
+}
+.custom-table-style .table {
+    margin-bottom: 0;
+    border: 0px;
+}
+.custom-table-style .table .thead-light th {
+    background: #82b443;
+    color:#FFF;
+}

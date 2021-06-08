@@ -33,9 +33,9 @@ function ProductList(props: productListProps): JSX.Element {
 
   function dataFormatter(documentName: string, row: any) {
     const {
-     // productModificationStatus = 0,
+      // productModificationStatus = 0,
       currentUser: { roles = [] },
-     // allowDelete = false,
+      // allowDelete = false,
     } = props;
     const { status = "n-approved" } = row.document_info || {};
     const loggedInUserRole = roles[0] ? roles[0] : "Developer";

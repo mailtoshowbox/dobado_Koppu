@@ -45,7 +45,12 @@ function Checkbox(props: CheckboxProps): JSX.Element {
         name={props.name}
         disabled={props.disabled}
       />
-      <label className="form-check-label" htmlFor={props.id.toString()}>
+      <label
+        className={`form-check-label ${
+          props.inputClass ? props.inputClass : ""
+        }  `}
+        htmlFor={props.id.toString()}
+      >
         {props.label}
       </label>
 

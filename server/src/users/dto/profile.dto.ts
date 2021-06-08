@@ -7,12 +7,16 @@ export class ProfileDto {
     this.phone = object.phone;
     this.profilepicture = object.profilepicture;
     this.roles = object.roles;
+    this.isAllowedForApproval = object.isAllowedForApproval;
+    this.emp_id = object.emp_id;
     this._id = object._id;
     
 
   };
   readonly _id: string;
   readonly roles: string;
+  readonly isAllowedForApproval: boolean;
+  readonly emp_id: string;
 
   readonly email: string;
   readonly name: string;
@@ -20,4 +24,5 @@ export class ProfileDto {
   readonly birthdaydate: Date;
   readonly phone: string;
   readonly profilepicture: string;
+  
 }

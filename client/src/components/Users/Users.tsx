@@ -1,4 +1,4 @@
-import React, { Fragment, Dispatch, useEffect } from "react";
+import React, { Fragment, Dispatch, useEffect, useState } from "react";
 import TopCard from "../../common/components/TopCard";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -12,11 +12,19 @@ import {
   loadListOfuser,
 } from "../../store/actions/users.action";
 import { updateCurrentPath } from "../../store/actions/root.actions";
-import { getUserList, approveUser } from "../../services/index";
+import {
+  getUserList,
+  approveUser,
+  updateUserProfile,
+} from "../../services/index";
 import { IUser, IUserList } from "../../store/models/user.interface";
 import SelectInput from "../../common/components/Select";
+import Checkbox from "../../common/components/Checkbox";
+import TextInput from "../../common/components/TextInput";
+
 import { OnChangeModel } from "../../common/types/Form.types";
 import { IAccount } from "../../store/models/account.interface";
+import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 
 const Users: React.FC = () => {
   //Block to get the token and set Token
@@ -32,6 +40,15 @@ const Users: React.FC = () => {
     (state: IStateType) => state.users.admins
   );
 
+  const [openModalForEditUser, updateModal] = useState(true);
+  const [inActiveUserEdit, updateInActiveUserEdit] = useState({
+    name: "",
+    email: "",
+    roles: "",
+    emp_id: "XXXXXX",
+    isAllowedForApproval: false,
+  });
+
   useEffect(() => {
     getUserList(account.auth).then((items: IUserList) => {
       dispatch(loadListOfuser(items));
@@ -39,106 +56,199 @@ const Users: React.FC = () => {
     dispatch(updateCurrentPath("users", "list"));
   }, [path.area, dispatch]);
 
-  // function setUserAdmin(user: IUser): void {
-  //   dispatch(addAdmin(user));
-  // }
-
-  // function setUserNotAdmin(admin: IUser): void {
-  //   dispatch(removeAdmin(admin));
-  // }
-  function activateUser(admin: IUser, model: OnChangeModel): void {
-    approveUser({ user: admin, selected: model }, account).then((status) => {
+  function updateUser(userMode: string): void {
+    updateUserProfile(inActiveUserEdit, account).then((status) => {
       getUserList(account.auth).then((items: IUserList) => {
         dispatch(loadListOfuser(items));
       });
-
-      // dispatch(addNotification("New Box added", `User  added by you`));
-      //  dispatch(clearSelectedBox());
-      //  dispatch(setModificationState(BoxModificationStatus.None));
     });
-
-    // dispatch(removeAdmin(admin));
   }
 
-  const userElements: JSX.Element[] = users.map((user, inde) => {
-    const verified = user.auth.email.valid;
-    const roles = user.roles[0];
+  const userRoles = [
+    { id: "Documentcreater", name: "Document Creater" },
+    { id: "Qualityuser", name: "Quality User" },
+    { id: "Deactivated", name: "Deactivate User" },
+  ];
+  function hasFormValueChanged(model: OnChangeModel): void {
+    updateInActiveUserEdit({
+      ...inActiveUserEdit,
+      [model.field]: model.value,
+    });
+  }
+  const EditUser: React.FC = (props) => {
+    const fadeIn = openModalForEditUser ? "in" : "";
+    const display = openModalForEditUser ? "block" : "none";
     return (
-      <tr className={`table-row`} key={`user_${user.email}`}>
-        <th scope="row">{inde + 1}</th>
+      <div
+        className={`modal fade ${fadeIn}`}
+        id="myModal"
+        role="dialog"
+        style={{ display }}
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-body">
+              <input
+                className={"-" + " form-control editor edit-text"}
+                style={{ display: "inline", width: "50%" }}
+                type="text"
+                value={""}
+              />
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-primary">
+                Save
+              </button>
+              <button type="button" className="btn btn-default">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+  function toggleField(userMode: string, model: OnChangeModel): void {
+    let userUpdate = inActiveUserEdit;
+    if (userMode === "inActiveUserEdit") {
+      userUpdate = Object.assign({}, inActiveUserEdit, {
+        [model.field]: model.value,
+      });
+      console.log("userUpdate", userUpdate);
+    } else if (userMode === "activeUserEdit") {
+    }
 
-        <td>{user.name}</td>
+    updateInActiveUserEdit(userUpdate);
+  }
 
-        <td>{user.email}</td>
-        {verified && (
-          <td>
-            {/*   <button
-              className="btn btn-success"
-              onClick={() => activateUser(user)}
-            >
-              Activate
-            </button> */}
+  function selectField(userMode: string, model: OnChangeModel): void {
+    console.log("selectField----", model);
+    let userUpdate = inActiveUserEdit;
+
+    if (userMode === "inActiveUserEdit") {
+      userUpdate = Object.assign({}, inActiveUserEdit, {
+        [model.field]: [model.value],
+      });
+      console.log("userUpdate", userUpdate);
+    } else if (userMode === "activeUserEdit") {
+    }
+
+    updateInActiveUserEdit(userUpdate);
+  }
+  const EditUser1: React.FC = (props: any) => {
+    const { row = {} } = props;
+
+    if (inActiveUserEdit.name === "") {
+      updateInActiveUserEdit(row);
+    }
+
+    const {
+      isAllowedForApproval = false,
+      roles = [],
+      emp_id,
+    } = inActiveUserEdit;
+    const useRoles = roles[0];
+    return (
+      <div className="form-group">
+        <div className="row">
+          <div className="mb-3">Edit User</div>
+        </div>
+        <div className="row">
+          <div className="mb-3">
+            Approval Access
+            <Checkbox
+              id="input_email"
+              field={"isAllowedForApproval"}
+              onChange={(event: any) => toggleField("inActiveUserEdit", event)}
+              label={""}
+              value={isAllowedForApproval}
+              name={"isAllowedForApproval"}
+              disabled={false}
+              customError={""}
+              inputClass=" "
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="mb-3">
             <SelectInput
               id="input_category"
-              field="Activate as"
-              label=""
-              options={[
-                { id: "Documentcreater", name: "Document Creater" },
-                { id: "Qualityuser", name: "Quality User" },
-                { id: "Deactivated", name: "Waiting for Approval" },
-              ]}
+              field="roles"
+              label="User Role"
+              options={userRoles}
               required={true}
-              onChange={(event: any) => activateUser(user, event)}
-              value={roles}
+              onChange={(event: any) => selectField("inActiveUserEdit", event)}
+              value={useRoles}
               type="select"
-              customError="dsf"
+              customError={""}
+              inputClass="form-control"
             />{" "}
-          </td>
-        )}
-        {!verified && (
-          <td>
-            <button className="btn btn-warning">Email not verified</button>{" "}
-          </td>
-        )}
-      </tr>
+          </div>
+        </div>
+        <div className="row">
+          <div className="mb-3">
+            <TextInput
+              id="input_request_no"
+              field="emp_id"
+              value={emp_id}
+              onChange={hasFormValueChanged}
+              required={false}
+              maxLength={6}
+              label="Emp Id"
+              placeholder="Request Number"
+              customError={""}
+            />{" "}
+          </div>
+        </div>
+        <div className="form-group row">
+          <button
+            className="btn btn-primary"
+            onClick={(event: any) => updateUser("inActiveUserEdit")}
+          >
+            Save
+          </button>
+        </div>
+      </div>
     );
-  });
+  };
 
-  const adminElements: JSX.Element[] = admins.map((admin, inde) => {
-    const roless = admin.roles[0];
+  const createNameEditor = (onUpdate: any, props: any) => (
+    <EditUser onUpdate={onUpdate} {...props} />
+  );
+  const userStatusFormatter = (cell: any, row: any) => {
+    const verified = row.auth.email.valid;
+    if (verified) {
+      const userStatus = userRoles.filter((role) => role.id === row.roles[0])[0]
+        .name;
 
+      //return row.roles[0] ? row.roles[0] : "No Status";
+      return <button className="btn btn-dark">{userStatus}</button>;
+    }
+    return <button className="btn btn-warning">Email not verified</button>;
+  };
+  const userApprovalFormatter = (cell: any, row: any) => {
+    return row.isAllowedForApproval ? "Allowed" : "Not Allowed";
+  };
+  const userActionEditor = (onUpdate: any, props: any) => (
+    <EditUser1 onUpdate={onUpdate} {...props} />
+  );
+
+  const actionCoumnFormatter = (cell: any, row: any) => {
+    const verified = row.auth.email.valid;
+
+    if (verified) {
+      const userStatus = userRoles.filter((role) => role.id === row.roles[0])[0]
+        .name;
+
+      //return row.roles[0] ? row.roles[0] : "No Status";
+      return <button className="btn btn-info">{"Update"}</button>;
+    }
     return (
-      <tr className={`table-row`} key={`user_${admin.email}`}>
-        <th scope="row">{inde + 1}</th>
-
-        <td>{admin.name}</td>
-
-        <td>{admin.email}</td>
-        <td>
-          {admin.roles[0] && (
-            <button className="btn btn-success">{admin.roles[0]}</button>
-          )}{" "}
-        </td>
-        <td>
-          <SelectInput
-            id="input_category"
-            field="Activate as"
-            label=""
-            options={[
-              { id: "Documentcreater", name: "Document Creater" },
-              { id: "Qualityuser", name: "Quality User" },
-              { id: "Deactivated", name: "Deactivated" },
-            ]}
-            required={true}
-            onChange={(event: any) => activateUser(admin, event)}
-            value={roless}
-            type="select"
-            customError="dsf"
-          />{" "}
-        </td>
-      </tr>
+      <button className="btn btn-light" disabled>
+        {"Update"}
+      </button>
     );
-  });
+  };
 
   return (
     <Fragment>
@@ -165,25 +275,74 @@ const Users: React.FC = () => {
           <div className="card shadow mb-4">
             <div className="card-header py-1">
               <h6 className="m-0 font-weight-bold text-white font-12">
-                Approved List
+                Approved Users
               </h6>
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">
-              <div className="portlet custom-table-style  table-bordered table-hover">
-                <table className="table user-table">
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
+              <div>
+                <BootstrapTable
+                  options={{}}
+                  data={admins}
+                  pagination={true}
+                  hover={true}
+                  cellEdit={{ mode: "click" }}
+                >
+                  <TableHeaderColumn
+                    dataField="_id"
+                    isKey
+                    searchable={false}
+                    hidden={true}
+                  >
+                    DC NO
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataField="emp_id"
+                    width="16%"
+                    className="thead-light-1"
+                  >
+                    Emp Id
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataField="name"
+                    width="16%"
+                    className="thead-light-1"
+                  >
+                    Name
+                  </TableHeaderColumn>
 
-                      <th scope="col">Email</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Revert as</th>
-                    </tr>
-                  </thead>
-                  <tbody>{adminElements}</tbody>
-                </table>
+                  <TableHeaderColumn
+                    dataField="email"
+                    className="thead-light-1"
+                    width="16%"
+                  >
+                    Email
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataField="isAllowedForApproval"
+                    className="thead-light-1"
+                    width="14%"
+                    dataFormat={userApprovalFormatter}
+                  >
+                    Approval Permission
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataField="roles"
+                    className="thead-light-1"
+                    width="14%"
+                    dataFormat={userStatusFormatter}
+                  >
+                    Status
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    className="thead-light-1"
+                    width="20%"
+                    dataFormat={actionCoumnFormatter}
+                    customEditor={{ getElement: userActionEditor }}
+                  >
+                    Action
+                  </TableHeaderColumn>
+                </BootstrapTable>
               </div>
             </div>
           </div>
@@ -200,18 +359,54 @@ const Users: React.FC = () => {
               <div className="header-buttons"></div>
             </div>
             <div className="card-body">
-              <div className="portlet custom-table-style  table-bordered table-hover">
-                <table className="table user-table">
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Email</th>
-                      <th scope="col">Activate as</th>
-                    </tr>
-                  </thead>
-                  <tbody>{userElements}</tbody>
-                </table>
+              <div>
+                <BootstrapTable
+                  options={{}}
+                  data={users}
+                  pagination={true}
+                  hover={true}
+                  cellEdit={{ mode: "click" }}
+                >
+                  <TableHeaderColumn
+                    dataField="_id"
+                    isKey
+                    searchable={false}
+                    hidden={true}
+                  >
+                    DC NO
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataField="name"
+                    width="16%"
+                    className="thead-light-1"
+                  >
+                    Name
+                  </TableHeaderColumn>
+
+                  <TableHeaderColumn
+                    dataField="email"
+                    className="thead-light-1"
+                    width="16%"
+                  >
+                    Email
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataField="roles"
+                    className="thead-light-1"
+                    width="14%"
+                    dataFormat={userStatusFormatter}
+                  >
+                    Status
+                  </TableHeaderColumn>
+                  <TableHeaderColumn
+                    className="thead-light-1"
+                    width="20%"
+                    dataFormat={actionCoumnFormatter}
+                    customEditor={{ getElement: userActionEditor }}
+                  >
+                    Action
+                  </TableHeaderColumn>
+                </BootstrapTable>
               </div>
             </div>
           </div>

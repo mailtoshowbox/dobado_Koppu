@@ -33,10 +33,18 @@ export class UsersService {
       if(!userRegistered){
         newUser.password = await bcrypt.hash(newUser.password, saltRounds);
         newUser.approved =false;
+        newUser.isAllowedForApproval = false; 
+    
+        console.log("newUser---", newUser);
         var createdUser = new this.userModel(newUser);
         createdUser.approved = false; 
-        createdUser.roles = ["Deactivated"]; 
-       // 
+        createdUser.isAllowedForApproval = false; 
+        
+        
+        console.log("createdUser---", createdUser);
+       
+
+        createdUser.roles = ["Deactivated"];  
         return await createdUser.save();
       } else if (!userRegistered.auth.email.valid) {
         return userRegistered;
@@ -71,10 +79,22 @@ export class UsersService {
     console.log("profileDtoSERVCIE--", profileDto);
     let userFromDb = await this.userModel.findOne({ _id: profileDto._id});
 
-    console.log("userFromDb---", userFromDb);
+   
+    
+    
     if(!userFromDb) throw new HttpException('COMMON.USER_NOT_FOUND', HttpStatus.NOT_FOUND);
 
+
+    userFromDb.isAllowedForApproval = profileDto.isAllowedForApproval;
+    userFromDb.emp_id = profileDto.emp_id;
     if(profileDto.roles) userFromDb.roles = [...profileDto.roles];
+
+    console.log("userFromDb----",userFromDb);
+     await userFromDb.save();
+    return userFromDb;
+
+
+ 
    // if(profileDto.surname) userFromDb.surname = profileDto.surname;
    // if(profileDto.phone) userFromDb.phone = profileDto.phone;
    // if(profileDto.birthdaydate) userFromDb.birthdaydate = profileDto.birthdaydate;
@@ -91,9 +111,7 @@ export class UsersService {
         userFromDb.photos.profilePic.url = "/public/users/" + userFromDb.email + "/profilepic.png"
       }
     } */
-    
-    await userFromDb.save();
-    return userFromDb;
+   
   }
 
   async updateGallery(galleryRequest: UpdateGalleryDto): Promise<User> {

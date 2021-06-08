@@ -10,6 +10,8 @@ export interface User extends Document{
   password: string;
   roles: string[];
   approved : boolean;
+  isAllowedForApproval : boolean,
+  emp_id : string,  
   auth: {
     email : {
       valid : boolean,
@@ -27,5 +29,6 @@ export interface User extends Document{
     profilePic: Photo;
     gallery: Photo[];
   }, 
+
   
 }

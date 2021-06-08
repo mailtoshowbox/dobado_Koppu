@@ -85,6 +85,26 @@ export function getDocTypeList(options={}) {
         });
 }
 
+export function updateUserProfile(newitem, options) { 
+
+  console.log("myOpt newitem ions---", newitem);
+    
+  var myOptions = getDocCustomPostOptions(options, newitem);  
+
+  console.log("myOptions---", myOptions);
+
+
+  return fetch(API_HOST_AT+'/users/profile/updateProfile', myOptions)
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
 export function approveUser(newitem, options) { 
 
   const {value=0} = newitem.selected; 
@@ -178,6 +198,24 @@ export function getDocCategoryList(options={}) {
           handleError(error);      
         });
 }
+
+export function getDocDepartmentList(options={}) {
+  var myOptions = getDocCustomGetOptions(options);
+  return fetch(API_HOST_AT+"/docdepartments", myOptions)      
+        .then(response => {      
+          if (!response.ok) {      
+            handleResponseError(response);      
+          }      
+          return response.json();      
+        })      
+        .then(json => {   
+            return json;
+        })      
+        .catch(error => {      
+          handleError(error);      
+        });
+}
+
 
 export function updateDoc(item,options ) { 
   var myOptions = getDocCustomPutOptions(options, item);  
@@ -334,6 +372,38 @@ export function updateDocCat(item,options) {
 export function addNewDocCat(newitem, options) {
   var myOptions = getDocCustomPostOptions(options, newitem);  
   return fetch(API_HOST_AT+'/doccategory', myOptions)
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
+
+
+export function updateDocDept(item,options) { 
+  const {id=""} = item;
+  var myOptions = getDocCustomPutOptions(options, item);  
+
+  return fetch(API_HOST_AT+'/doccategory/'+id, myOptions)
+    .then(response => {
+      if (!response.ok) {
+        handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
+export function addNewDocDept(newitem, options) {
+  var myOptions = getDocCustomPostOptions(options, newitem);  
+  return fetch(API_HOST_AT+'/docdepartments', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);

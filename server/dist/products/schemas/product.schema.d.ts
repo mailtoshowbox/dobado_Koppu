@@ -23,4 +23,4 @@ export declare class Documents extends Document {
     retension_time: Retenstion;
     isActive: boolean;
 }
-export declare const DocumentSchema: import("mongoose").Schema<any>;
+export declare const DocumentSchema: import("mongoose").Schema<Documents, import("mongoose").Model<any, any, any>, undefined>;

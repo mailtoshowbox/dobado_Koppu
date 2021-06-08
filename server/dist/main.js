@@ -7,7 +7,6 @@ async function bootstrap() {
     var whitelist = ['http://localhost:3001', 'http://localhost:3001/', 'http://localhost:3000', 'undefined'];
     app.enableCors({
         origin: function (origin, callback) {
-            console.log("origin-->>-", origin);
             if (whitelist.indexOf(origin) !== -1) {
                 callback(null, true);
             }

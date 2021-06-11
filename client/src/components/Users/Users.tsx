@@ -114,7 +114,6 @@ const Users: React.FC = () => {
       userUpdate = Object.assign({}, inActiveUserEdit, {
         [model.field]: model.value,
       });
-      console.log("userUpdate", userUpdate);
     } else if (userMode === "activeUserEdit") {
     }
 
@@ -122,14 +121,12 @@ const Users: React.FC = () => {
   }
 
   function selectField(userMode: string, model: OnChangeModel): void {
-    console.log("selectField----", model);
     let userUpdate = inActiveUserEdit;
 
     if (userMode === "inActiveUserEdit") {
       userUpdate = Object.assign({}, inActiveUserEdit, {
         [model.field]: [model.value],
       });
-      console.log("userUpdate", userUpdate);
     } else if (userMode === "activeUserEdit") {
     }
 

@@ -6,7 +6,8 @@ const initialState: IAccount = {
     name:"",
     email: "" ,
     roles:[] ,
-    auth:{}
+    auth:{},
+    emp_id : ""
 };
 
 function accountReducer(state: IAccount = initialState, action: IActionBase): IAccount { 

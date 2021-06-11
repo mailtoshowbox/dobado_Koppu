@@ -26,3 +26,8 @@ export function getDocCustomPutOptions(options,newitem) {
     //delete options.auth;
     return {mode: "cors",    method: 'PUT',    headers: myHeaders, body: JSON.stringify({...newitem})}
 }
+ 
+
+export function uniqueId(prefix='id') {
+    return prefix+'' + Date.now().toString(36).substr(2, 9).toUpperCase();
+}

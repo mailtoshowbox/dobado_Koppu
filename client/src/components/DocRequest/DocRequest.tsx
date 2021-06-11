@@ -1,30 +1,31 @@
 import React, { Fragment, Dispatch, useState, useEffect } from "react";
-import DocCategoryList from "./DocRequestList";
+import DocRequestList from "./DocRequestList";
 import ProductForm from "./DocRequestForm";
 import TopCard from "../../common/components/TopCard";
 import "./DocRequest.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  IDocCategoryState,
+  IDocRequestState,
   IStateType,
   IRootPageStateType,
 } from "../../store/models/root.interface";
 import Popup from "reactjs-popup";
 import {
-  clearSelectedDocCategory,
+  clearSelectedDocRequest,
   setModificationState,
-  loadListOfDocCategory,
-  changeSelectedDocCategory,
-} from "../../store/actions/doccategory.action";
+  loadListOfDocRequest,
+  changeSelectedDocRequest,
+} from "../../store/actions/docrequest.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
-  DocCategoryModificationStatus,
-  IDocCategory,
-  IDocCategoryList,
-} from "../../store/models/doccategory.interface";
-import { getDocCategoryList, updateDocCat } from "../../services/index";
+  DocRequestModificationStatus,
+  IDocRequest,
+  IDocRequestList,
+} from "../../store/models/docrequest.interface";
+import { getDocRequestList, updateDocCat } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 import { updateCurrentPath } from "../../store/actions/root.actions";
+import { IDocCategoryList } from "../../store/models/doccategory.interface";
 
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -32,42 +33,38 @@ const Products: React.FC = () => {
   const roles: any = useSelector((state: IStateType) => state.account.roles);
   let [userRole] = useState(roles[0] ? roles[0] : "Developer");
   const dispatch: Dispatch<any> = useDispatch();
-  const doccategories: IDocCategoryState = useSelector(
-    (state: IStateType) => state.docCategories
+  const docRequest: IDocRequestState = useSelector(
+    (state: IStateType) => state.docRequests
   );
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
 
-  const numberItemsCount: number =
-    doccategories.docCategories !== undefined
-      ? doccategories.docCategories.length
-      : 0;
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
-    getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
-      dispatch(loadListOfDocCategory(items));
+    getDocRequestList(account.auth).then((items: IDocRequestList) => {
+      dispatch(loadListOfDocRequest(items));
     });
     dispatch(updateCurrentPath("Home", "Categories"));
   }, [path.area, dispatch]);
 
-  function onProductSelect(product: IDocCategory): void {
-    dispatch(changeSelectedDocCategory(product));
-    dispatch(setModificationState(DocCategoryModificationStatus.None));
-    dispatch(setModificationState(DocCategoryModificationStatus.Edit));
+  function onProductSelect(product: IDocRequest): void {
+    //  dispatch(changeSelectedDocCategory(product));
+    // dispatch(setModificationState(DocRequestModificationStatus.None));
+    //  dispatch(setModificationState(DocRequestModificationStatus.Edit));
   }
 
-  function onDeleteProduct(product: IDocCategory): void {
-    dispatch(changeSelectedDocCategory(product));
-    dispatch(setModificationState(DocCategoryModificationStatus.None));
-    onProductRemove();
+  function onDeleteProduct(product: IDocRequest): void {
+    // dispatch(changeSelectedDocCategory(product));
+    // dispatch(setModificationState(DocRequestModificationStatus.None));
+    // onProductRemove();
   }
 
   function onProductRemove() {
-    if (doccategories.selectedDocCategory) {
+    /* if (doccategories.selectedDocCategory) {
       setPopup(true);
-    }
+    } */
   }
 
   return (
@@ -86,7 +83,7 @@ const Products: React.FC = () => {
                   className="btn btn-border"
                   onClick={() =>
                     dispatch(
-                      setModificationState(DocCategoryModificationStatus.Create)
+                      setModificationState(DocRequestModificationStatus.Create)
                     )
                   }
                 >
@@ -94,8 +91,21 @@ const Products: React.FC = () => {
                 </button>
               </div>
             </div>
-
-            <ProductForm />
+            {docRequest.modificationState ===
+              DocRequestModificationStatus.Create ||
+            (docRequest.modificationState ===
+              DocRequestModificationStatus.Edit &&
+              docRequest.selectedDocRequest) ? (
+              <ProductForm />
+            ) : null}
+            <div className="card-body">
+              <DocRequestList
+                onSelect={onProductSelect}
+                onSelectDelete={onDeleteProduct}
+                docRequestModificationStatus={docRequest.modificationState}
+                allowDelete={allowedUsers.includes(userRole)}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -113,12 +123,12 @@ const Products: React.FC = () => {
               type="button"
               className="btn btn-danger"
               onClick={() => {
-                if (!doccategories.selectedDocCategory) {
+                if (!docRequest.selectedDocRequest) {
                   return;
                 }
 
                 let boxInfoUpt = {
-                  id: doccategories.selectedDocCategory._id,
+                  id: docRequest.selectedDocRequest._id,
                   isActive: false,
                 };
                 updateDocCat(boxInfoUpt, account)
@@ -129,10 +139,10 @@ const Products: React.FC = () => {
                         `Category  was removed`
                       )
                     );
-                    dispatch(clearSelectedDocCategory());
-                    getDocCategoryList(account.auth).then(
+                    //  dispatch(clearSelectedDocCategory());
+                    getDocRequestList(account.auth).then(
                       (items: IDocCategoryList) => {
-                        dispatch(loadListOfDocCategory(items));
+                        //  dispatch(loadListOfDocCategory(items));
                       }
                     );
                     setPopup(false);

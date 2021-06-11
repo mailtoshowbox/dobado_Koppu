@@ -15,6 +15,7 @@ export function parseApiResult(result: any) {
     const processMassage = message ? message : result.data.message;
     switch (processMassage){
         case "LOGIN.ERROR":
+            console.log("result.data.message---", result.data.message);
             if(result.data.message && result.data.message === "LOGIN.LOGIN_NOT_ACTIVATED"){
                 bodyMessage = "account not activated";
                 titleMesage = "Contact Administrator";

@@ -15,8 +15,6 @@ function BoostrapTable(props: any): JSX.Element {
     (header: any, io: any) => {
       // let cate = products.rack;
 
-      console.log("-0-0-", { ...header });
-
       const { isKey = false, ...others } = header;
 
       if (header.customNewFormat !== undefined) {

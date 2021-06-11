@@ -2,6 +2,9 @@ import { IProduct, ProductModificationStatus } from "./product.interface";
 import { IBox, BoxModificationStatus } from "./box.interface";
 import { IDocCategory, DocCategoryModificationStatus } from "./doccategory.interface";
 import { IDocType, DocTypeModificationStatus } from "./doctype.interface";
+import { IDocRequest, DocRequestModificationStatus } from "./docrequest.interface";
+import { IDocDepartment, DocDepartmentModificationStatus } from "./docdepartment.interface";
+import { IDocApproval, DocApprovalModificationStatus } from "./docapproval.interface";
 
 import { INotification } from "./notification.interface";
 import { IUser } from "./user.interface";
@@ -29,10 +32,17 @@ export interface IStateType {
     account: IAccount;
     boxes: IBoxState;
     docCategories: IDocCategoryState;
+    docDepartments: IDocDepartmentState;
     docTypes: IDocTypeState;
+    docRequests: IDocRequestState;
+    docApprovals: IDocApprovalState;
     home: any;
 }
-
+export interface IDocApprovalState {
+    docApprovals: IDocApproval[];
+    selectedDocApproval: IDocApproval | null;
+    modificationState: DocApprovalModificationStatus;
+}
 export interface IProductState {
     products: IProduct[];
     selectedProduct: IProduct | null;
@@ -73,4 +83,15 @@ export interface IDocTypeState {
     docTypes: IDocType[];
     selectedDocType: IDocType | null;
     modificationState: DocTypeModificationStatus;
+}
+
+export interface IDocRequestState {
+    docRequests: IDocRequest[];
+    selectedDocRequest: IDocRequest | null;
+    modificationState: DocRequestModificationStatus;
+}
+export interface IDocDepartmentState {
+    docDepartments: IDocDepartment[];
+    selectedDocDepartment: IDocDepartment | null;
+    modificationState: DocDepartmentModificationStatus;
 }

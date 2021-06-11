@@ -1,13 +1,12 @@
 
 import { getDocCustomGetOptions, getDocCustomPostOptions, getDocCustomPutOptions } from "../common/utils";
-
-const API_HOST_AT = "http://localhost:3000";
-
+ 
+import APP_CONST from "../common/contant";
 export function confirmEmailToken(options) {
 
  
 //localhost:3000http://localhost:3001/emailconfirmation#4295787
-      return fetch(API_HOST_AT+"/auth/email/verify/4295787",)      
+      return fetch(APP_CONST.API_HOST_AT+"/auth/email/verify/4295787",)      
             .then(response => {      
               if (!response.ok) {      
                 handleResponseError(response);      
@@ -26,7 +25,7 @@ export function getDashboardList(options) {
 
   var myOptions = getDocCustomGetOptions(options);
 
-      return fetch(API_HOST_AT+"/products/dashboard/602eb4222e3f11162ccdb0da", myOptions)      
+      return fetch(APP_CONST.API_HOST_AT+"/products/dashboard/602eb4222e3f11162ccdb0da", myOptions)      
             .then(response => {      
               if (!response.ok) {      
                 handleResponseError(response);      
@@ -44,7 +43,7 @@ export function updateDocType(item,options) {
   const {id=""} = item;
   var myOptions = getDocCustomPutOptions(options, item);  
 
-  return fetch(API_HOST_AT+'/doctype/'+id, myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/doctype/'+id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -57,7 +56,7 @@ export function updateDocType(item,options) {
 }
 export function addNewDocType(newitem, options) {
   var myOptions = getDocCustomPostOptions(options, newitem);  
-  return fetch(API_HOST_AT+'/doctype', myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/doctype', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -70,7 +69,7 @@ export function addNewDocType(newitem, options) {
 }
 export function getDocTypeList(options={}) {
   var myOptions = getDocCustomGetOptions(options);
-  return fetch(API_HOST_AT+"/doctype", myOptions)      
+  return fetch(APP_CONST.API_HOST_AT+"/doctype", myOptions)      
         .then(response => {      
           if (!response.ok) {      
             handleResponseError(response);      
@@ -94,7 +93,7 @@ export function updateUserProfile(newitem, options) {
   console.log("myOptions---", myOptions);
 
 
-  return fetch(API_HOST_AT+'/users/profile/updateProfile', myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/users/profile/updateProfile', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -112,7 +111,7 @@ export function approveUser(newitem, options) {
   var myOptions = getDocCustomPostOptions(options, ypdatedStaus);  
 
 
-  return fetch(API_HOST_AT+'/users/profile/updateStatus', myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/users/profile/updateStatus', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -125,7 +124,7 @@ export function approveUser(newitem, options) {
 }
 
 export function getUserList(options) { 
-  var url = API_HOST_AT+"/users/list";
+  var url = APP_CONST.API_HOST_AT+"/users/list";
    var myOptions = getDocCustomGetOptions(options);
    return fetch(url, myOptions).then(response => {      
     if (!response.ok) {      
@@ -142,7 +141,7 @@ export function getUserList(options) {
 }
 export function loginUser(newitem) {
   
-  return fetch(API_HOST_AT+'/auth/email/login', {
+  return fetch(APP_CONST.API_HOST_AT+'/auth/email/login', {
     method: "POST",
     mode: "cors",
     headers: {
@@ -163,7 +162,7 @@ export function loginUser(newitem) {
 
 export function registerUser(newitem) {
   
-  return fetch(API_HOST_AT+'/auth/email/register', {
+  return fetch(APP_CONST.API_HOST_AT+'/auth/email/register', {
     method: "POST",
     mode: "cors",
     headers: {
@@ -184,7 +183,7 @@ export function registerUser(newitem) {
 
 export function getDocCategoryList(options={}) {
   var myOptions = getDocCustomGetOptions(options);
-  return fetch(API_HOST_AT+"/doccategory", myOptions)      
+  return fetch(APP_CONST.API_HOST_AT+"/doccategory", myOptions)      
         .then(response => {      
           if (!response.ok) {      
             handleResponseError(response);      
@@ -198,10 +197,63 @@ export function getDocCategoryList(options={}) {
           handleError(error);      
         });
 }
+export function getDocRequestList(options={}) {
+  var myOptions = getDocCustomGetOptions(options);
+  return fetch(APP_CONST.API_HOST_AT+"/docrequests/request", myOptions)      
+        .then(response => {   
+          if (!response.ok) {      
+            handleResponseError(response);      
+          }      
+          return response.json();      
+        })      
+        .then(json => {   
+            return json;
+        })      
+        .catch(error => {      
+          handleError(error);      
+        });
+}
+export function getDocRequestApprovalList(options={}) {
+  var myOptions = getDocCustomGetOptions(options);
+  return fetch(APP_CONST.API_HOST_AT+"/docrequests/approval", myOptions)      
+        .then(response => {   
+          if (!response.ok) {      
+            handleResponseError(response);      
+          }      
+          return response.json();      
+        })      
+        .then(json => {   
+            return json;
+        })      
+        .catch(error => {      
+          handleError(error);      
+        });
+}
+
+export function loadApproavalAccessUserInfo(item,options={}) {
+  const {access, emp_id} = item;
+  var myOptions = getDocCustomGetOptions(options.auth); 
+  return fetch(APP_CONST.API_HOST_AT+"/users/checkApproval/"+emp_id.toString(), myOptions)      
+        .then(response => {   
+          if (!response.ok) {      
+            handleResponseError(response);      
+          }      
+          return response.json();      
+        })      
+        .then(json => {   
+            return json;
+        })      
+        .catch(error => {      
+          handleError(error);      
+        });
+}
+
+
+
 
 export function getDocDepartmentList(options={}) {
   var myOptions = getDocCustomGetOptions(options);
-  return fetch(API_HOST_AT+"/docdepartments", myOptions)      
+  return fetch(APP_CONST.API_HOST_AT+"/docdepartments", myOptions)      
         .then(response => {      
           if (!response.ok) {      
             handleResponseError(response);      
@@ -221,7 +273,7 @@ export function updateDoc(item,options ) {
   var myOptions = getDocCustomPutOptions(options, item);  
 
   const {id=""} = item;
-  return fetch(API_HOST_AT+'/products/'+id, myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/products/'+id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -235,7 +287,7 @@ export function updateDoc(item,options ) {
 
 export function addNewDoc(newitem,options ) {
   var myOptions = getDocCustomPostOptions(options, newitem);  
-  return fetch(API_HOST_AT+'/products', myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/products', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -248,7 +300,7 @@ export function addNewDoc(newitem,options ) {
 }
 
 export function getNewQrCode(newitem) {
-  return fetch(API_HOST_AT+'/products/getRandomCode', {
+  return fetch(APP_CONST.API_HOST_AT+'/products/getRandomCode', {
     method: "POST",    
     headers: {
           "Content-Type": "application/json"
@@ -274,7 +326,7 @@ export function getDocumentList(options) {
 
   var myOptions = getDocCustomGetOptions(options);
 
-      return fetch(API_HOST_AT+"/products", myOptions)      
+      return fetch(APP_CONST.API_HOST_AT+"/products", myOptions)      
             .then(response => {      
               if (!response.ok) {      
                 handleResponseError(response);      
@@ -292,7 +344,7 @@ export function getDocumentList(options) {
   export function getBoxList(options) {
     var myOptions = getDocCustomGetOptions(options);
 
-    return fetch(API_HOST_AT+"/box", myOptions)      
+    return fetch(APP_CONST.API_HOST_AT+"/box", myOptions)      
           .then(response => {      
             if (!response.ok) {      
               handleResponseError(response);      
@@ -309,7 +361,7 @@ export function getDocumentList(options) {
 
 export function getRacks(id) {  
    
-  return fetch(API_HOST_AT+'/box/racks/'+id)
+  return fetch(APP_CONST.API_HOST_AT+'/box/racks/'+id)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -324,7 +376,7 @@ export function getRacks(id) {
 export function updateBox(item,options) { 
   var myOptions = getDocCustomPutOptions(options, item); 
   const {id=""} = item;
-  return fetch(API_HOST_AT+'/box/'+id, myOptions )
+  return fetch(APP_CONST.API_HOST_AT+'/box/'+id, myOptions )
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -339,7 +391,7 @@ export function updateBox(item,options) {
 export function addNewBox(newitem, options) {
   var myOptions = getDocCustomPostOptions(options, newitem);  
 
-  return fetch(API_HOST_AT+'/box',  myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/box',  myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -357,7 +409,7 @@ export function updateDocCat(item,options) {
   const {id=""} = item;
   var myOptions = getDocCustomPutOptions(options, item);  
 
-  return fetch(API_HOST_AT+'/doccategory/'+id, myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/doccategory/'+id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -371,7 +423,7 @@ export function updateDocCat(item,options) {
 
 export function addNewDocCat(newitem, options) {
   var myOptions = getDocCustomPostOptions(options, newitem);  
-  return fetch(API_HOST_AT+'/doccategory', myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/doccategory', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -389,7 +441,7 @@ export function updateDocDept(item,options) {
   const {id=""} = item;
   var myOptions = getDocCustomPutOptions(options, item);  
 
-  return fetch(API_HOST_AT+'/doccategory/'+id, myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/doccategory/'+id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -403,7 +455,7 @@ export function updateDocDept(item,options) {
 
 export function addNewDocDept(newitem, options) {
   var myOptions = getDocCustomPostOptions(options, newitem);  
-  return fetch(API_HOST_AT+'/docdepartments', myOptions)
+  return fetch(APP_CONST.API_HOST_AT+'/docdepartments', myOptions)
     .then(response => {
       if (!response.ok) {
           handleResponseError(response);
@@ -414,6 +466,23 @@ export function addNewDocDept(newitem, options) {
       handleError(error);
     });
 }
+
+
+
+export function addNewDocumentRequest(newitem, options) {
+  var myOptions = getDocCustomPostOptions(options, newitem);  
+  return fetch(APP_CONST.API_HOST_AT+'/docrequests', myOptions)
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
   function handleResponseError(response) {
     throw new Error("HTTP error, status = " + response.status);
 }

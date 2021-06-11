@@ -9,6 +9,7 @@ import Boxes from "../Boxes/Boxes";
 import Home from "../Home/Home";
 import DocCategories from "../DocCategory/DocCategory";
 import DocRequest from "../DocRequest/DocRequest";
+import DocRequestApproval from "../DocApproval/DocApproval";
 import DocDepartment from "../DocDepartment/DocDepartment";
 import DocTypes from "../DocType/DocType";
 import Notifications from "../../common/components/Notification";
@@ -54,6 +55,9 @@ const Admin: React.FC = () => {
               </Route>
               <Route path={`/doctype`}>
                 <DocTypes />
+              </Route>
+              <Route path={`/docrequestapproval`}>
+                <DocRequestApproval />
               </Route>
               <Route path="/">
                 <Home />

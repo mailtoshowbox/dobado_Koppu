@@ -1,24 +1,25 @@
-import React, {  } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
   IStateType,
-  IDocCategoryState,
+  IDocRequestState,
 } from "../../store/models/root.interface";
-import { IDocCategory } from "../../store/models/doccategory.interface";
+import { IDocRequest } from "../../store/models/docrequest.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 
 export type productListProps = {
-  onSelect?: (product: IDocCategory) => void;
-  onSelectDelete?: (product: IDocCategory) => void;
+  onSelect?: (product: IDocRequest) => void;
+  onSelectDelete?: (product: IDocRequest) => void;
   children?: React.ReactNode;
-  docCategoryModificationStatus: any;
+  docRequestModificationStatus: any;
   allowDelete: boolean;
 };
 
-function DocCategoryList(props: productListProps): JSX.Element {
-  const docCategories: IDocCategoryState = useSelector(
-    (state: IStateType) => state.docCategories
+function DocRequestList(props: productListProps): JSX.Element {
+  const docRequests: IDocRequestState = useSelector(
+    (state: IStateType) => state.docRequests
   );
+
   function onClickProductSelected(cell: any, row: any, rowIndex: any) {
     if (props.onSelect) props.onSelect(row);
   }
@@ -32,12 +33,13 @@ function DocCategoryList(props: productListProps): JSX.Element {
     enumObject: any,
     rowIndex: any
   ) {
-    const { docCategoryModificationStatus = 0, allowDelete } = props;
-    if (docCategoryModificationStatus === 0) {
+    const { docRequestModificationStatus = 0, allowDelete } = props;
+    if (docRequestModificationStatus === 0) {
       return (
         <>
           <button
-            type="button" className="btn btn-border"
+            type="button"
+            className="btn btn-border"
             onClick={() => onClickProductSelected(cell, row, rowIndex)}
           >
             <i className="fas fa fa-pen"></i>
@@ -55,7 +57,12 @@ function DocCategoryList(props: productListProps): JSX.Element {
     } else {
       return (
         <>
-          <button type="button" className="btn btn-border" disabled style={{ cursor: "not-allowed" }}>
+          <button
+            type="button"
+            className="btn btn-border"
+            disabled
+            style={{ cursor: "not-allowed" }}
+          >
             <i className="fas fa fa-pen"></i>
           </button>
           <button
@@ -69,6 +76,31 @@ function DocCategoryList(props: productListProps): JSX.Element {
     }
   }
 
+  const docApprovalFormatter = (cell: any, row: any) => {
+    const { approval = [] } = row;
+
+    let stsus = "";
+    if (approval.length > 0) {
+      approval.forEach((appr: any) => {
+        if (appr.status === "pending") {
+          stsus +=
+            "<br><i class='fal fa-hourglass-half'></i>&nbsp;&nbsp;<span class=' btn-info'>" +
+            appr.approve_access_level +
+            " approval is " +
+            "Pending</span>&nbsp;";
+        } else if (appr.status === "approved") {
+          stsus +=
+            "<br><span class=' btn-info'>" +
+            appr.approve_access_level +
+            " approval is " +
+            "Approved</span>";
+        }
+      });
+    }
+
+    return stsus;
+  };
+
   const options = {
     clearSearch: true,
   };
@@ -76,7 +108,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
     <div className="portlet">
       <BootstrapTable
         options={options}
-        data={docCategories.docCategories}
+        data={docRequests.docRequests}
         pagination={true}
         hover={true}
         search={true}
@@ -90,50 +122,37 @@ function DocCategoryList(props: productListProps): JSX.Element {
           ID
         </TableHeaderColumn>
         <TableHeaderColumn
-          dataField="name"
+          dataField="request_no"
           width="16%"
           className="thead-light-1"
         >
-          Name
+          Request No
         </TableHeaderColumn>
         <TableHeaderColumn
-          dataField="description"
+          dataField="doc_type"
           className="thead-light-1"
           width="16%"
         >
-          Description
+          Doc Type
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="empl_id"
+          className="thead-light-1"
+          width="16%"
+        >
+          Emp Id
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="button"
-          dataFormat={buttonFormatter}
           className="thead-light-1"
           width="10%"
+          dataFormat={docApprovalFormatter}
         >
-          Action
+          Status
         </TableHeaderColumn>
       </BootstrapTable>
-      {/*  <Table
-        columns={columns}
-        data={products.products}
-        formatFunction={convertDate}
-        onCustomSelect={props.onSelect}
-      /> */}
-      {/*  <table className="table">
-        <thead className="thead-light">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Box</th>
-            <th scope="col">Rack</th>
-            <th scope="col">M Date</th>
-            <th scope="col">E Date</th>
-          </tr>
-        </thead>
-        <tbody>{productElements}</tbody>
-      </table> */}
     </div>
   );
 }
 
-export default DocCategoryList;
+export default DocRequestList;

@@ -69,7 +69,15 @@ export class UsersController {
     }
   }
 
-
+  @Get('checkApproval/:empId') 
+  async findByEmpId(@Param() params): Promise<IResponse>{ 
+    try {
+      var user =  await this.usersService.checkApprovalUser(params.empId);
+      return new ResponseSuccess("COMMON.SUCCESS", new UserDto(user));
+    } catch(error){
+      return new ResponseError("COMMON.ERROR.GENERIC_ERROR", error);
+    }
+  }
   
   @Post('profile/updateProfile')
   async updateProfile(@Body() profileDto: ProfileDto): Promise<IResponse> {

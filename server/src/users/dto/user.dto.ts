@@ -20,6 +20,8 @@ export class UserDto {
       });
     };
     this.approved = object.approved;
+    this.isAllowedForApproval = object.isAllowedForApproval;
+    this.emp_id = object.emp_id;
   };
   readonly name: string;
   readonly surname: string;
@@ -28,6 +30,8 @@ export class UserDto {
   readonly phone: string;
   readonly birthdaydate: Date;
   readonly approved: boolean;
+  readonly isAllowedForApproval: boolean;
+  readonly emp_id: string;
   settings: SettingsDto
   photos: {
     profilePic: PhotoDto;

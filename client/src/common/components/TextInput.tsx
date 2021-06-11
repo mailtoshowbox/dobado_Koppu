@@ -50,6 +50,7 @@ function TextInput(props: TextInputProps): JSX.Element {
   }
 
   const { customError } = props;
+  const diasableField = props.disabled ? true : false;
   return (
     <div>
       <label htmlFor={props.id.toString()}>{props.label}</label>
@@ -60,6 +61,7 @@ function TextInput(props: TextInputProps): JSX.Element {
         className={`form-control ${props.inputClass} ${htmlClass}`}
         id={`id_${props.label}`}
         placeholder={props.placeholder}
+        disabled={diasableField}
       />
       {!customError && error ? (
         <div className="invalid-feedback">{error}</div>

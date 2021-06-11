@@ -52,3 +52,44 @@ export interface IDocTypeFormState {
     description: IFormStateField<string>;
     
 }
+export interface IDocDepartmentFormState {
+    _id: IFormStateField<string>;
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+}
+ 
+
+
+export interface IDocRequestFormState {
+    _id: IFormStateField<string>;
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+    empl_id: IFormStateField<string>;
+    doc_type: IFormStateField<number>;
+    request_no: IFormStateField<string>;
+    requested_doc : IFormStateField<RequestDocuments>;
+}
+
+export interface IDocApprovalFormState
+{
+    _id: IFormStateField<string>;
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+    empl_id: IFormStateField<string>;
+    doc_type: IFormStateField<number>;
+    request_no: IFormStateField<string>;
+    requested_doc : IFormStateField<RequestDocuments>;
+}
+
+export interface RequestDocuments {
+    RequestDocuments:  Array<RequestDocument>;
+}
+export interface RequestDocument {
+    _id: string;
+    doc_no: string;
+    doc_name: string;
+    no_of_copy: string;
+    empl_id: string;
+    doc_type: number;
+    request_no: string;
+}

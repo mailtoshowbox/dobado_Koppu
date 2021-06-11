@@ -8,6 +8,8 @@ export type TextInputProps = {
     type?: string,
     maxLength: number,
     inputClass?: string,
-    field: string
-    customError :string
+    field: string,
+    customError :string ,
+    disabled?: boolean,
+
 };

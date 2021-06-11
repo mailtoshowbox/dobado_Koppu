@@ -3,4 +3,6 @@ export class CreateUserDto {
   readonly email: string;
   password: string;
   approved : boolean;
+  isAllowedForApproval : boolean;
+  emp_id : string;
 }

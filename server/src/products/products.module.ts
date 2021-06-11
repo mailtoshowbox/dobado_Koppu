@@ -5,9 +5,6 @@ import { DocumentsService } from './products.service';
 import { Documents, DocumentSchema } from './schemas/product.schema';
 import { BoxModule } from '../box/box.module';
 import { DocTypeModule } from '../docType/docType.module';
-import { Racks, RackSchema } from './schemas/rack.schema';
-
-
 @Module({
   imports: [
     MongooseModule.forFeature([

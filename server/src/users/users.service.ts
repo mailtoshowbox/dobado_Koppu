@@ -113,7 +113,9 @@ export class UsersService {
     } */
    
   }
-
+  async checkApprovalUser(id: string): Promise<User> {
+    return await this.userModel.findOne({emp_id: id}).exec();
+  }
   async updateGallery(galleryRequest: UpdateGalleryDto): Promise<User> {
     let userFromDb = await this.userModel.findOne({ email: galleryRequest.email});
     if(!userFromDb) throw new HttpException('COMMON.USER_NOT_FOUND', HttpStatus.NOT_FOUND);

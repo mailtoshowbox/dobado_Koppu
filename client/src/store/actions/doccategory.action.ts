@@ -11,7 +11,7 @@ export const LIST_DOCCATEGORY: string = "LIST_DOCCATEGORY";
 
 
 
-    export function loadListOfDocCategory(items : IDocCategoryList) {  
+    export function loadListOfDocCategory(items : IDocCategoryList) { 
   
             return { type: LIST_DOCCATEGORY , docCategories:  items  };
         

@@ -10,6 +10,9 @@ import boxReducer from "./box.reducer";
 import categoryReducer from "./doccategory.reducer";
 import typeReducer from "./doctype.reducer";
 import homeReducer from "./home.reducer";
+import departmentReducer from "./docdepartment.reducer";
+import requestReducer from "./docrequest.reducer";
+import requestApprovalReducer from "./docapproval.reducer";
 
 
 const initialState: IRootStateType = {
@@ -38,6 +41,9 @@ const rootReducers: Reducer<IStateType> = combineReducers({root: rootReducer,
     docCategories: categoryReducer,
     docTypes: typeReducer,
     home: homeReducer,
+    docDepartments: departmentReducer,
+    docRequests: requestReducer,
+    docApprovals : requestApprovalReducer
 });
 
 

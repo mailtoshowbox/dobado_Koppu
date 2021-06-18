@@ -8,7 +8,9 @@ import {
   Param,UseGuards
 } from '@nestjs/common';
 import { CreateDocRequestDto } from './dto/create-docRequest.dto';
+import { CreateDocApprovalHistoryDto } from './dto/create-docApprovalHistoryi.dto';
 import { DocRequest } from './interfaces/docRequest.interface';
+import { DocApprovalHistory } from './interfaces/docApprovalHistoryinterface ';
 import { DocRequestService } from './docRequest.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -17,22 +19,12 @@ import { AuthGuard } from '@nestjs/passport';
 export class DocRequestsController {
   constructor(private readonly DocRequestsService: DocRequestService,) {}
 
-  @Get(':mode')
-  findAll(@Param('mode') mode: string): Promise<DocRequest[]> {
-    if(mode === 'request'){
-      return this.DocRequestsService.findAll();
-    }else{
-      return this.DocRequestsService.findAll();
-    }
+  @Get(':mode/:empl_id')
+  findAll(@Param('mode') mode: string, @Param('empl_id') empl_id: string): Promise<DocRequest[]> {
+      return this.DocRequestsService.findAll(mode, empl_id); 
    
   }
-
-  
-  @Get()
-  findAllAprove(): Promise<DocRequest[]> {
-    console.log("fsdfsdf");
-    return this.DocRequestsService.findAll();
-  }
+ 
 
 
   @Get(':id')
@@ -45,16 +37,38 @@ export class DocRequestsController {
 
   @Post()
   create(@Body() createDocRequestsDto: CreateDocRequestDto): Promise<DocRequest> {
-
-    console.log("createDocRequestsDto--", createDocRequestsDto);
+ 
     const d=  this.DocRequestsService.create(createDocRequestsDto);
     d.then((res)=>{
-      const {} = res;
-      console.log("res---------", res);
+      const {} = res; 
 
     })
     
     return d;
+  }
+
+
+  @Post(':history')
+  initiateApprovalHistory(@Body() createDocRequestsDto: CreateDocApprovalHistoryDto): void {
+ 
+    const d=  this.DocRequestsService.checkInitialHistory(createDocRequestsDto).then((rest)=>{
+      if(!rest){ 
+        this.DocRequestsService.createInitialHistory(createDocRequestsDto)
+      } else{
+        this.DocRequestsService.checkRecentHistory(createDocRequestsDto).then((rec)=>{
+
+          if(!rec){
+            this.DocRequestsService.createRecentHistory(createDocRequestsDto)
+          }else{ 
+            this.DocRequestsService.updateRecentHistory(createDocRequestsDto, rec._id)
+          }
+
+        });
+      }
+      return rest;
+    }); 
+    
+   
   }
 
   @Delete(':id')

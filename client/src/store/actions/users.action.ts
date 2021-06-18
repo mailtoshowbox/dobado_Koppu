@@ -1,12 +1,18 @@
 import { IUser,IUserList } from "../models/user.interface";
+import { IDocCategoryList } from "../models/doccategory.interface";
 
 export const ADD_ADMIN: string = "ADD_ADMIN";
 export const REMOVE_ADMIN: string = "REMOVE_ADMIN";
 export const LIST_USER: string = "LIST_USER";
+export const LIST_DOC_DEPARTMENT: string = "LIST_DOC_DEPARTMENT";
 
 
 export function loadListOfuser(items : IUserList) {   
     return { type: LIST_USER , users:  items  };      
+}
+
+export function loadListOfDocDepartment(items : IDocCategoryList) {   
+    return { type: LIST_DOC_DEPARTMENT , docDepartments:  items  };           
 }
 
 

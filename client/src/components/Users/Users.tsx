@@ -10,13 +10,20 @@ import {
   addAdmin,
   removeAdmin,
   loadListOfuser,
+  loadListOfDocDepartment,
 } from "../../store/actions/users.action";
 import { updateCurrentPath } from "../../store/actions/root.actions";
 import {
   getUserList,
   approveUser,
   updateUserProfile,
+  getDocDepartmentList,
 } from "../../services/index";
+import {
+  DocDepartmentModificationStatus,
+  IDocDepartment,
+  IDocDepartmentList,
+} from "../../store/models/docdepartment.interface";
 import { IUser, IUserList } from "../../store/models/user.interface";
 import SelectInput from "../../common/components/Select";
 import Checkbox from "../../common/components/Checkbox";
@@ -39,6 +46,9 @@ const Users: React.FC = () => {
   const admins: IUser[] = useSelector(
     (state: IStateType) => state.users.admins
   );
+  const departmentList: IDocDepartment[] = useSelector(
+    (state: IStateType) => state.users.docDepartments
+  );
 
   const [openModalForEditUser, updateModal] = useState(true);
   const [inActiveUserEdit, updateInActiveUserEdit] = useState({
@@ -53,8 +63,21 @@ const Users: React.FC = () => {
     getUserList(account.auth).then((items: IUserList) => {
       dispatch(loadListOfuser(items));
     });
+
+    getUserList(account.auth).then((items: IUserList) => {
+      dispatch(loadListOfuser(items));
+    });
+    getDocDepartmentList(account.auth).then((items: IDocDepartmentList) => {
+      dispatch(loadListOfDocDepartment(items));
+    });
     dispatch(updateCurrentPath("users", "list"));
   }, [path.area, dispatch]);
+
+  let listOfDept: { id: string; name: string }[] = [];
+  departmentList.forEach((doc) => {
+    let me = { id: doc._id, name: doc.name };
+    listOfDept.push(me);
+  });
 
   function updateUser(userMode: string): void {
     updateUserProfile(inActiveUserEdit, account).then((status) => {
@@ -132,6 +155,7 @@ const Users: React.FC = () => {
 
     updateInActiveUserEdit(userUpdate);
   }
+  console.log("departmentList----", departmentList);
   const EditUser1: React.FC = (props: any) => {
     const { row = {} } = props;
 
@@ -173,6 +197,22 @@ const Users: React.FC = () => {
               field="roles"
               label="User Role"
               options={userRoles}
+              required={true}
+              onChange={(event: any) => selectField("inActiveUserEdit", event)}
+              value={useRoles}
+              type="select"
+              customError={""}
+              inputClass="form-control"
+            />{" "}
+          </div>
+        </div>
+        <div className="row">
+          <div className="mb-3">
+            <SelectInput
+              id="input_department"
+              field="department"
+              label="Department"
+              options={listOfDept}
               required={true}
               onChange={(event: any) => selectField("inActiveUserEdit", event)}
               value={useRoles}

@@ -44,7 +44,7 @@ function SelectInput(props: SelectProps): JSX.Element {
       </option>
     );
   });
-  const { customError } = props;
+  const { customError, disabled = false } = props;
 
   return (
     <Fragment>
@@ -56,6 +56,7 @@ function SelectInput(props: SelectProps): JSX.Element {
           props.inputClass ? props.inputClass : ""
         } ${htmlClass}`}
         onChange={onValueChanged}
+        disabled={disabled}
       >
         <option value="">Choose...</option>
         {getOptions}

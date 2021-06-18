@@ -1,6 +1,7 @@
 import { IProduct, ProductModificationStatus } from "./product.interface";
 import { IBox, BoxModificationStatus } from "./box.interface";
 import { IDocCategory, DocCategoryModificationStatus } from "./doccategory.interface";
+import { IDocIssuance, DocIssuanceModificationStatus } from "./docIssuance.interface";
 import { IDocType, DocTypeModificationStatus } from "./doctype.interface";
 import { IDocRequest, DocRequestModificationStatus } from "./docrequest.interface";
 import { IDocDepartment, DocDepartmentModificationStatus } from "./docdepartment.interface";
@@ -36,7 +37,13 @@ export interface IStateType {
     docTypes: IDocTypeState;
     docRequests: IDocRequestState;
     docApprovals: IDocApprovalState;
+    docIssuances: IDocIssuanceState;
     home: any;
+}
+export interface IDocIssuanceState {
+    docIssuances: IDocIssuance[];
+    selectedDocIssuance: IDocIssuance | null;
+    modificationState: DocIssuanceModificationStatus;
 }
 export interface IDocApprovalState {
     docApprovals: IDocApproval[];
@@ -65,6 +72,7 @@ export interface INotificationState {
 export interface IUserState {
     users: IUser[];
     admins: IUser[];
+    docDepartments: IDocDepartment[];
 }
 
 export interface IBoxState {

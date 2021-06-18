@@ -6,6 +6,7 @@ export interface DocRequest {
   request_no: string;  
   isActive: boolean; 
   
+  
 } 
 
  interface RequestedDoc {

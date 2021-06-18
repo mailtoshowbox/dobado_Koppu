@@ -11,12 +11,8 @@ export const LIST_DOCDEPARTMENT: string = "LIST_DOCDEPARTMENT";
 
 
 
-    export function loadListOfDocDepartment(items : IDocDepartmentList) { 
-  
-            return { type: LIST_DOCDEPARTMENT , docDepartments:  items  };
-        
-       
-    
+    export function loadListOfDocDepartment(items : IDocDepartmentList) {   
+            return { type: LIST_DOCDEPARTMENT , docDepartments:  items  };           
         }
 export function addDocDepartment(docDepartment: IDocDepartment): IAddDocDepartmentActionType {
     return { type: ADD_DOCDEPARTMENT, docDepartment: docDepartment };

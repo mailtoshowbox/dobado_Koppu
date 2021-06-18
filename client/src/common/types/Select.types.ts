@@ -13,5 +13,6 @@ export type SelectProps = {
     options: IRootOption[],
     field: string,
     type: string,
-    customError :string
+    customError :string,
+    disabled?: boolean
 };

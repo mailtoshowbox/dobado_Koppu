@@ -51,10 +51,12 @@ const Home: React.FC = () => {
       if (documents.data.length > 0) {
         counter["totalDocuments"] = documents.data.length;
         const nApprovedDocuments = documents.data.filter(
-          (pr: any) => pr.document_info.status !== "approved"
+          (pr: any) =>
+            pr.document_info && pr.document_info.status !== "approved"
         );
         const approvedDocuments = documents.data.filter(
-          (pr: any) => pr.document_info.status === "approved"
+          (pr: any) =>
+            pr.document_info && pr.document_info.status === "approved"
         );
 
         counter["nApprovedDocuments"] = nApprovedDocuments.length;
@@ -71,17 +73,18 @@ const Home: React.FC = () => {
         counter["perceptual"] = perceptual.length;
 
         const docCreater = documents.data.filter(
-          (pr: any) => pr.document_info.createdBy.role !== "Documentcreater"
+          (pr: any) =>
+            pr.document_info &&
+            pr.document_info.createdBy.role !== "Documentcreater"
         );
         const QtyUser = documents.data.filter(
-          (pr: any) => pr.document_info.createdBy.role === "Documentcreater"
+          (pr: any) =>
+            pr.document_info &&
+            pr.document_info.createdBy.role === "Documentcreater"
         );
 
         counter["docCreater"] = docCreater.length;
         counter["QtyUser"] = QtyUser.length;
-
-        
-
       }
     });
 
@@ -92,7 +95,6 @@ const Home: React.FC = () => {
       }
       // setDashboardCounter({ ...dashboardCounter, ...counter });
     });
-    
 
     //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: any) => {

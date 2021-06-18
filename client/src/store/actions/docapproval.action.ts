@@ -20,9 +20,11 @@ export const LOAD_APPROVED_USER: string = "LOAD_APPROVED_USER";
        
     
         }
-export function addDocApproval(docApproval: IDocApproval): IAddDocApprovalActionType {
+export function updateDocRequestApproval(docApproval: IDocApproval): IAddDocApprovalActionType {
     return { type: ADD_DOCAPPROVAL, docApproval: docApproval };
 }
+
+
 
 export function editDocApproval(docApproval: IDocApproval): IEditDocApprovalActionType {
     return { type: EDIT_DOCAPPROVAL, docApproval: docApproval };

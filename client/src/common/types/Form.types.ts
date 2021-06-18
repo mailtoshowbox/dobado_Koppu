@@ -80,7 +80,16 @@ export interface IDocApprovalFormState
     request_no: IFormStateField<string>;
     requested_doc : IFormStateField<RequestDocuments>;
 }
-
+export interface IDocIssuanceFormState
+{
+    _id: IFormStateField<string>;
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+    empl_id: IFormStateField<string>;
+    doc_type: IFormStateField<number>;
+    request_no: IFormStateField<string>;
+    requested_doc : IFormStateField<RequestDocuments>;
+}
 export interface RequestDocuments {
     RequestDocuments:  Array<RequestDocument>;
 }

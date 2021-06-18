@@ -199,7 +199,7 @@ export function getDocCategoryList(options={}) {
 }
 export function getDocRequestList(options={}) {
   var myOptions = getDocCustomGetOptions(options);
-  return fetch(APP_CONST.API_HOST_AT+"/docrequests/request", myOptions)      
+  return fetch(APP_CONST.API_HOST_AT+"/docrequests/request/0", myOptions)      
         .then(response => {   
           if (!response.ok) {      
             handleResponseError(response);      
@@ -213,9 +213,10 @@ export function getDocRequestList(options={}) {
           handleError(error);      
         });
 }
-export function getDocRequestApprovalList(options={}) {
+export function getDocRequestApprovalList(options={}, id) {
+  console.log("options--", options);
   var myOptions = getDocCustomGetOptions(options);
-  return fetch(APP_CONST.API_HOST_AT+"/docrequests/approval", myOptions)      
+  return fetch(APP_CONST.API_HOST_AT+"/docrequests/approval/"+id, myOptions)      
         .then(response => {   
           if (!response.ok) {      
             handleResponseError(response);      
@@ -228,6 +229,39 @@ export function getDocRequestApprovalList(options={}) {
         .catch(error => {      
           handleError(error);      
         });
+}
+export function getDocIssuanceList(options={}, id) {
+  console.log("options--", options);
+  var myOptions = getDocCustomGetOptions(options);
+  return fetch(APP_CONST.API_HOST_AT+"/docrequests/issuance/"+id, myOptions)      
+        .then(response => {   
+          if (!response.ok) {      
+            handleResponseError(response);      
+          }      
+          return response.json();      
+        })      
+        .then(json => {   
+            return json;
+        })      
+        .catch(error => {      
+          handleError(error);      
+        });
+}
+export function initiateApprovalHistory(options, newitem) {
+ 
+
+  let newReq = {history : JSON.stringify(newitem), updated_by : newitem.empl_id, updated_on :new Date(), mode_of_access :"initial",request_no :newitem.request_no };
+  var myOptions = getDocCustomPostOptions(options, newReq);  
+  return fetch(APP_CONST.API_HOST_AT+'/docrequests/initiateApprovalHistory', myOptions)
+    .then(response => {
+      if (!response.ok) {
+          handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
 }
 
 export function loadApproavalAccessUserInfo(item,options={}) {
@@ -482,6 +516,26 @@ export function addNewDocumentRequest(newitem, options) {
       handleError(error);
     });
 }
+
+export function updateDocumentRequest(item,options) { 
+
+
+  const {id=""} = item;
+  var myOptions = getDocCustomPutOptions(options, item);  
+  console.log("item----", item);
+  return fetch(APP_CONST.API_HOST_AT+'/docrequests/'+id, myOptions)
+    .then(response => {
+      if (!response.ok) {
+        handleResponseError(response);
+      }
+      return response.json();
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
+
 
   function handleResponseError(response) {
     throw new Error("HTTP error, status = " + response.status);

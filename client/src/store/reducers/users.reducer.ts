@@ -1,5 +1,7 @@
 import { IUserState, IActionBase } from "../models/root.interface";
-import { ADD_ADMIN, REMOVE_ADMIN,LIST_USER } from "../actions/users.action";
+import { ADD_ADMIN, REMOVE_ADMIN,LIST_USER, LIST_DOC_DEPARTMENT } from "../actions/users.action";
+ 
+ 
 
 const initialState: IUserState = {
     users: [        
@@ -7,7 +9,8 @@ const initialState: IUserState = {
     ],
     admins: [
          
-    ]
+    ],
+    docDepartments : []
 };
 
 function userReducer(state: IUserState = initialState, action: IActionBase): IUserState {
@@ -24,6 +27,10 @@ function userReducer(state: IUserState = initialState, action: IActionBase): IUs
         }
         case REMOVE_ADMIN: {
             return { ...state, admins: state.admins.filter(x=>x.id !== action.user.id), users: [...state.users, action.user]};
+        }
+        case LIST_DOC_DEPARTMENT: { 
+            console.log("action------>>>>",action);
+            return { ...state, docDepartments:  action.docDepartments};
         }
         default:
             return state;

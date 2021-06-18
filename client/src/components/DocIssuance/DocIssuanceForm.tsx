@@ -1,24 +1,17 @@
 import React, { useState, FormEvent, Dispatch, Fragment } from "react";
 import {
   IStateType,
-  IDocApprovalState,
+  IDocIssuanceState,
 } from "../../store/models/root.interface";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  IDocRequest,
-  DocRequestModificationStatus,
-  IDocRequestList,
-} from "../../store/models/docrequest.interface";
-import {
-  IDocApproval,
-  DocApprovalModificationStatus,
-  IDocApprovalList,
-} from "../../store/models/docapproval.interface";
+  IDocIssuance,
+  DocIssuanceModificationStatus,
+  IDocIssuanceList,
+} from "../../store/models/docIssuance.interface";
+
 import TextInput from "../../common/components/TextInput";
-import {
-  setModificationState,
-  updateDocRequestApproval,
-} from "../../store/actions/docapproval.action";
+import { setModificationState } from "../../store/actions/docissuance.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
   addNewDocumentRequest,
@@ -28,7 +21,7 @@ import {
 } from "../../services/index";
 import {
   OnChangeModel,
-  IDocRequestFormState,
+  IDocIssuanceFormState,
 } from "../../common/types/Form.types";
 import { updateDocumentRequest } from "../../services/index";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
@@ -37,20 +30,22 @@ import { IAccount } from "../../store/models/account.interface";
 import { uniqueId } from "../../common/utils";
 import APP_CONST from "../../common/contant";
 import Popup from "reactjs-popup";
+import DocIssuanceYesForm from "./DocIssuanceYesForm";
 
 const ProductForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
 
   const dispatch: Dispatch<any> = useDispatch();
-  const docrequests: IDocApprovalState | null = useSelector(
-    (state: IStateType) => state.docApprovals
+  const docIssuances: IDocIssuanceState | null = useSelector(
+    (state: IStateType) => state.docIssuances
   );
-  let docrequest: IDocApproval | null = docrequests.selectedDocApproval;
+
+  let docIssuance: IDocIssuance | null = docIssuances.selectedDocIssuance;
   const isCreate: boolean =
-    docrequests.modificationState === DocApprovalModificationStatus.Create;
+    docIssuances.modificationState === DocIssuanceModificationStatus.Create;
   const [loginPopup, setLoginPopup] = useState(false);
-  if (!docrequest || isCreate) {
-    docrequest = {
+  if (!docIssuance || isCreate) {
+    docIssuance = {
       _id: "",
       name: "",
       description: "",
@@ -63,7 +58,7 @@ const ProductForm: React.FC = () => {
       emp_code_approval_2: "12",
     };
   }
-
+  const [showYes, setShowYes] = useState(false);
   const dcat1 = [
     { id: "1", name: "Executed Copy" },
     { id: "2", name: "Controlled Copy" },
@@ -75,24 +70,17 @@ const ProductForm: React.FC = () => {
   ];
   const dcat3 = [{ id: "6", name: "Take Out" }];
 
-  //const [recentSelectedCategory, setRecentSelectedCategory] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState("1");
-  if (!isCreate) {
-    const { approval = [] } = docrequest;
-    docrequest.emp_code_approval_1 = approval[0] ? approval[0].empl_id : "XXXX";
-    docrequest.emp_code_approval_2 = approval[1] ? approval[1].empl_id : "XXXX";
-  }
   const intialFormState = {
-    _id: { error: "", value: docrequest._id },
-    name: { error: "", value: docrequest.name },
-    description: { error: "", value: docrequest.description },
-    empl_id: { error: "", value: docrequest.empl_id },
-    doc_type: { error: "", value: docrequest.doc_type },
-    request_no: { error: "", value: docrequest.request_no },
-    requested_doc: { value: docrequest.requested_doc },
-    emp_code_approval_1: { value: docrequest.emp_code_approval_1 },
-    emp_code_approval_2: { value: docrequest.emp_code_approval_2 },
-    approval: { value: docrequest.approval },
+    _id: { error: "", value: docIssuance._id },
+    name: { error: "", value: docIssuance.name },
+    description: { error: "", value: docIssuance.description },
+    empl_id: { error: "", value: docIssuance.empl_id },
+    doc_type: { error: "", value: docIssuance.doc_type },
+    request_no: { error: "", value: docIssuance.request_no },
+    requested_doc: { value: docIssuance.requested_doc },
+    emp_code_approval_1: { value: docIssuance.emp_code_approval_1 },
+    emp_code_approval_2: { value: docIssuance.emp_code_approval_2 },
+    approval: { value: docIssuance.approval },
   };
   const [formState, setFormState] = useState(intialFormState);
 
@@ -102,9 +90,6 @@ const ProductForm: React.FC = () => {
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
-    if (model.field === "document_type") {
-      setSelectedCategory(model.value.toString());
-    }
     setFormState({
       ...formState,
       [model.field]: { error: model.error, value: model.value },
@@ -133,7 +118,11 @@ const ProductForm: React.FC = () => {
 
   function cancelForm(): void {
     console.log();
-    dispatch(setModificationState(DocApprovalModificationStatus.None));
+    dispatch(setModificationState(DocIssuanceModificationStatus.None));
+  }
+  function handleYes(): void {
+    console.log("");
+    setShowYes(true);
   }
 
   function getDisabledClass(): string {
@@ -172,7 +161,7 @@ const ProductForm: React.FC = () => {
       return;
     }
 
-    saveForm(formState, updateDocRequestApproval, "EDIT");
+    // saveForm(formState, updateDocRequestApproval, "EDIT");
   }
 
   function saveUser(e: FormEvent<HTMLFormElement>): void {
@@ -183,7 +172,7 @@ const ProductForm: React.FC = () => {
   }
 
   function saveForm(formState: any, saveFn: Function, mode: String): void {
-    if (docrequest) {
+    if (docIssuance) {
       const currentApproval = formState.approval.value.filter(
         (approval: any) => approval.empl_id === account.emp_id
       );
@@ -220,7 +209,7 @@ const ProductForm: React.FC = () => {
           cancelForm();
           dispatch(
             saveFn({
-              ...docrequest,
+              ...docIssuance,
               ...status,
             })
           );
@@ -264,7 +253,7 @@ const ProductForm: React.FC = () => {
   }
 
   function saveRequest(formState: any, saveFn: Function, mode: String): void {
-    if (docrequest) {
+    if (docIssuance) {
       if (mode === "ADD") {
         let boxInfo = {
           name: formState.name.value,
@@ -280,7 +269,7 @@ const ProductForm: React.FC = () => {
           cancelForm();
           dispatch(
             saveFn({
-              ...docrequest,
+              ...docIssuance,
               ...status,
             })
           );
@@ -352,36 +341,6 @@ const ProductForm: React.FC = () => {
     const { value = [] } = formState.approval;
 
     const currentApproval = value.filter;
-
-    //   setRequestAuthenticated(true);
-
-    //saveRequest(formState, saveUserFn, modeOfAction);
-
-    /* loginUser({
-      email: formState.email.value,
-      password: formState.password.value,
-    })
-      .then((status) => {
-        const { titleMesage = "", bodyMessage = "" } = parseApiResult(status);
-        const { success = false } = status;
-        if (success) {
-          dispatch(addNotification(titleMesage, bodyMessage));
-
-          dispatch(login(status.data));
-        } else {
-          dispatch(
-            addNotification(
-              titleMesage,
-              bodyMessage ? bodyMessage : "Unable to login"
-            )
-          );
-        }
-      })
-      .catch((err) => {
-        //console.log(err);
-      }); */
-
-    // dispatch(login(formState.email.value));
   }
 
   return (
@@ -392,7 +351,21 @@ const ProductForm: React.FC = () => {
             <form onSubmit={saveDocumentRequest}>
               <div className="form-group font-14">
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-2">
+                    <TextInput
+                      id="input_request_no"
+                      field="request_no"
+                      value={formState.request_no.value}
+                      onChange={hasFormValueChanged}
+                      required={false}
+                      maxLength={100}
+                      label="Request No"
+                      placeholder="Request Number"
+                      customError={formState.description.error}
+                      disabled={true}
+                    />
+                  </div>
+                  <div className="col-md-2">
                     <TextInput
                       id="input_email"
                       value={formState.empl_id.value}
@@ -407,66 +380,68 @@ const ProductForm: React.FC = () => {
                     />
                   </div>
                   <div className="col-md-4">
-                    <TextInput
-                      id="input_request_no"
-                      field="request_no"
-                      value={formState.request_no.value}
-                      onChange={hasFormValueChanged}
-                      required={false}
-                      maxLength={100}
-                      label="Request No"
-                      placeholder="Request Number"
-                      customError={formState.description.error}
-                      disabled={true}
-                    />
+                    <label>Approved By:</label>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <label>A1 : {approval1?.empl_id}</label>
+                        <br />
+                        <label>A2 : {approval2?.empl_id}</label>
+                      </div>
+                    </div>
                   </div>
+                  ss
                 </div>
                 <div className="row">
-                  <div className="col-md-2">
-                    <label style={{ margin: "26px 21px 19px 5px" }}>
-                      Doc Type:
-                    </label>
-                  </div>
-                  <div className="col-md-3">
-                    <SelectInput
-                      id="input_document_type"
-                      field="doc_type"
-                      label={pickOne.length > 0 ? "Selected" : ""}
-                      options={dcat1}
-                      required={true}
-                      onChange={hasFormValueChanged}
-                      value={formState.doc_type.value.toString()}
-                      type="select"
-                      customError={""}
-                    />
-                  </div>
-                  <div className="col-md-3">
-                    <SelectInput
-                      id="input_document_type"
-                      field="doc_type"
-                      label={pickTwo.length > 0 ? "Selected" : ""}
-                      options={dcat2}
-                      required={true}
-                      onChange={hasFormValueChanged}
-                      value={formState.doc_type.value.toString()}
-                      type="select"
-                      customError={""}
-                    />
-                  </div>
-                  <div className="col-md-3">
-                    <SelectInput
-                      id="input_document_type"
-                      field="doc_type"
-                      label={pickThreee.length > 0 ? "Selected" : ""}
-                      options={dcat3}
-                      required={true}
-                      onChange={hasFormValueChanged}
-                      value={formState.doc_type.value.toString()}
-                      type="select"
-                      customError={""}
-                    />
-                  </div>
+                  {pickOne.length > 0 && (
+                    <div className="col-md-3">
+                      <SelectInput
+                        id="input_document_type"
+                        field="doc_type"
+                        label={"Category"}
+                        options={dcat1}
+                        required={true}
+                        onChange={hasFormValueChanged}
+                        value={formState.doc_type.value.toString()}
+                        type="select"
+                        customError={""}
+                        disabled={true}
+                      />
+                    </div>
+                  )}
+                  {pickTwo.length > 0 && (
+                    <div className="col-md-3">
+                      <SelectInput
+                        id="input_document_type"
+                        field="doc_type"
+                        label={"Category"}
+                        options={dcat2}
+                        required={true}
+                        onChange={hasFormValueChanged}
+                        value={formState.doc_type.value.toString()}
+                        type="select"
+                        customError={""}
+                        disabled={true}
+                      />
+                    </div>
+                  )}
+                  {pickThreee.length > 0 && (
+                    <div className="col-md-3">
+                      <SelectInput
+                        id="input_document_type"
+                        field="doc_type"
+                        label={"Category"}
+                        options={dcat3}
+                        required={true}
+                        onChange={hasFormValueChanged}
+                        value={formState.doc_type.value.toString()}
+                        type="select"
+                        customError={""}
+                        disabled={true}
+                      />
+                    </div>
+                  )}
                 </div>
+                <br></br>
                 {formState.doc_type.value < 6 && (
                   <div>
                     <BootstrapTable
@@ -474,11 +449,12 @@ const ProductForm: React.FC = () => {
                       data={formState.requested_doc.value}
                       pagination={true}
                       hover={true}
-                      insertRow={true}
+                      insertRow={false}
                       keyField="document_no"
                     >
                       <TableHeaderColumn
                         dataField="document_no"
+                        width="8%"
                         editable={{
                           defaultValue: uniqueId("DOC"),
                         }}
@@ -497,7 +473,7 @@ const ProductForm: React.FC = () => {
                       <TableHeaderColumn
                         dataField="no_of_copy"
                         className="thead-light-1"
-                        width="16%"
+                        width="6%"
                         editable={{ validator: numberValidator }}
                       >
                         No of Copy
@@ -505,7 +481,7 @@ const ProductForm: React.FC = () => {
                       <TableHeaderColumn
                         dataField="no_of_page"
                         className="thead-light-1"
-                        width="14%"
+                        width="6%"
                       >
                         No of Pages
                       </TableHeaderColumn>
@@ -598,118 +574,37 @@ const ProductForm: React.FC = () => {
                     </div>
                   </div>
                 )}
-                {formState.emp_code_approval_1.value.toString() ===
-                  account.emp_id && (
-                  <div className="row">
-                    <div className="col-md-2">
-                      <label style={{ margin: "26px 21px 19px 5px" }}>
-                        Approval 1
-                      </label>
-                    </div>
-                    <div className="col-md-3">
-                      <TextInput
-                        id="input_request_no"
-                        field="emp_code_approval_1"
-                        value={formState.emp_code_approval_1.value.toString()}
-                        onChange={hasFormValueChanged}
-                        required={false}
-                        maxLength={100}
-                        label="Emp Code"
-                        placeholder="Emp Code"
-                        customError={""}
-                        disabled={true}
-                      />
-                    </div>
-                    <div className="col-md-3" style={{ textAlign: "center" }}>
-                      <div
-                        className="btn"
-                        onClick={() => loadApproavalAccessUserMail("manager")}
-                      >
-                        {" "}
-                        <i className="fas fa-angle-double-right"></i>{" "}
-                      </div>
-                    </div>
-                    <div className="col-md-3">
-                      <TextInput
-                        id="input_request_no"
-                        field="mail_id_0"
-                        value={approval1 ? approval1.empl_email_id : ""}
-                        onChange={hasFormValueChanged}
-                        required={false}
-                        maxLength={100}
-                        label="Mail Id"
-                        placeholder="Mail Id"
-                        customError={""}
-                        disabled={true}
-                      />
-                    </div>
-                  </div>
-                )}
-                {formState.doc_type.value > 3 &&
-                  formState.emp_code_approval_2.value.toString() ===
-                    account.emp_id && (
-                    <div className="row">
-                      <div className="col-md-2">
-                        <label style={{ margin: "26px 21px 19px 5px" }}>
-                          Quality Approval
-                        </label>
-                      </div>
-                      <div className="col-md-3">
-                        <TextInput
-                          id="input_request_no"
-                          field="emp_code_approval_2"
-                          value={formState.emp_code_approval_2.value.toString()}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label="Emp Code"
-                          placeholder="Emp Code"
-                          customError={""}
-                          disabled={true}
-                        />
-                      </div>
-                      <div className="col-md-3" style={{ textAlign: "center" }}>
-                        <div
-                          className="btn"
-                          onClick={() => loadApproavalAccessUserMail("manager")}
-                        >
-                          {" "}
-                          <i className="fas fa-angle-double-right"></i>{" "}
-                        </div>
-                      </div>
-                      <div className="col-md-3">
-                        <TextInput
-                          id="input_request_no"
-                          field="mail_id_1"
-                          value={approval2 ? approval2.empl_email_id : ""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label="Mail Id"
-                          placeholder="Mail Id"
-                          customError={""}
-                          disabled={true}
-                        />
-                      </div>
-                    </div>
-                  )}
               </div>
-
               <button
-                className="btn btn-danger font-14"
+                className="btn btn-danger font-14 left-margin font-14x`"
                 onClick={() => cancelForm()}
               >
-                Cancel
+                CLOSE
               </button>
               <button
-                type="submit"
+                onClick={() => handleYes()}
                 className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
               >
-                APPROVE
+                YES
+              </button>
+              <button
+                className="btn btn-danger font-14 left-margin font-14"
+                onClick={() => cancelForm()}
+              >
+                NO
               </button>
             </form>
           </div>
         </div>
+
+        <Popup
+          className="popup-modal default-modal-size-digidesk"
+          open={showYes}
+        >
+          <div>
+            <DocIssuanceYesForm />
+          </div>
+        </Popup>
 
         <Popup className="popup-modal" open={loginPopup}>
           <div>

@@ -14,9 +14,6 @@ function TextInput(props: TextInputProps): JSX.Element {
   function onValueChanged(dateValue: ChangeEvent<HTMLInputElement>): void {
     let [error, validClass, elementValue] = ["", "", dateValue];
 
-   // const { field } = props;
-    // console.log("props----", props);
-
     [error, validClass] =
       !elementValue && props.required
         ? ["Value cannot be empty", "is-invalid"]

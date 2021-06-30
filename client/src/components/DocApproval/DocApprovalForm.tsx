@@ -30,7 +30,7 @@ import {
   OnChangeModel,
   IDocRequestFormState,
 } from "../../common/types/Form.types";
-import { updateDocumentRequest } from "../../services/index";
+import { approveDocumentRequest } from "../../services/index";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import SelectInput from "../../common/components/Select";
 import { IAccount } from "../../store/models/account.interface";
@@ -61,6 +61,15 @@ const ProductForm: React.FC = () => {
       approval: [],
       emp_code_approval_1: "222",
       emp_code_approval_2: "12",
+      page_from: "approval",
+      rejectDocumentRequest: {
+        is_rejected: false,
+        rejected_by: "",
+        rejected_on: new Date(),
+        rejected_reason: "",
+        rejected_from_page: "",
+      },
+      comments: "",
     };
   }
 
@@ -77,6 +86,7 @@ const ProductForm: React.FC = () => {
 
   //const [recentSelectedCategory, setRecentSelectedCategory] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("1");
+  const [openRejectReasonModal, setOpenRejectReasonModal] = useState(false);
   if (!isCreate) {
     const { approval = [] } = docrequest;
     docrequest.emp_code_approval_1 = approval[0] ? approval[0].empl_id : "XXXX";
@@ -93,12 +103,25 @@ const ProductForm: React.FC = () => {
     emp_code_approval_1: { value: docrequest.emp_code_approval_1 },
     emp_code_approval_2: { value: docrequest.emp_code_approval_2 },
     approval: { value: docrequest.approval },
+    comments: { error: "", value: docrequest.comments },
+    rejectDocumentRequest: {
+      error: "",
+      value: docrequest.rejectDocumentRequest,
+    },
   };
   const [formState, setFormState] = useState(intialFormState);
 
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
+  });
+
+  const [rejectDocumentRequestForm, setRejectDocumentRequestForm] = useState({
+    is_rejected: false,
+    rejected_by: account.emp_id,
+    rejected_on: new Date(),
+    rejected_reason: "",
+    rejected_from_page: "approval",
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -115,6 +138,14 @@ const ProductForm: React.FC = () => {
     setLoginForm({
       ...loginForm,
       [model.field]: model.value,
+    });
+  }
+
+  function hasRejectReasonValueChanged(model: OnChangeModel): void {
+    console.log("-----model---", model);
+    setRejectDocumentRequestForm({
+      ...rejectDocumentRequestForm,
+      ["rejected_reason"]: model.value.toString(),
     });
   }
 
@@ -175,11 +206,15 @@ const ProductForm: React.FC = () => {
     saveForm(formState, updateDocRequestApproval, "EDIT");
   }
 
-  function saveUser(e: FormEvent<HTMLFormElement>): void {
+  function rejectDocumentRequest(e: any): void {
+    //setLoginPopup(true);
     e.preventDefault();
     if (!isFormInvalid()) {
       return;
     }
+    console.log("rejectDocumentRequest---", rejectDocumentRequestForm);
+
+    saveForm(formState, updateDocRequestApproval, "EDIT");
   }
 
   function saveForm(formState: any, saveFn: Function, mode: String): void {
@@ -187,7 +222,7 @@ const ProductForm: React.FC = () => {
       const currentApproval = formState.approval.value.filter(
         (approval: any) => approval.empl_id === account.emp_id
       );
-      if (currentApproval.length > 0) {
+      if (currentApproval.length > 0 && !openRejectReasonModal) {
         if (formState.approval.value.length) {
           formState.approval.value.map((apprv: any) => {
             if (apprv.empl_id === account.emp_id) {
@@ -195,10 +230,18 @@ const ProductForm: React.FC = () => {
             }
           });
         }
+      } else if (currentApproval.length > 0 && openRejectReasonModal) {
+        if (formState.approval.value.length) {
+          formState.approval.value.map((apprv: any) => {
+            if (apprv.empl_id === account.emp_id) {
+              apprv.status = "rejected";
+            }
+          });
+        }
       }
 
       if (mode === "EDIT") {
-        let boxInfo = {
+        let approvalInfo = {
           name: formState.name.value,
           empl_id: formState.empl_id.value,
           doc_type: formState.doc_type.value,
@@ -206,32 +249,38 @@ const ProductForm: React.FC = () => {
           requested_doc: formState.requested_doc.value,
           approval: formState.approval.value,
           id: formState._id.value,
+          comments: formState.comments.value,
         };
-        updateDocumentRequest(boxInfo, account).then((status) => {
-          cancelForm();
-          dispatch(
-            addNotification(
-              "Document Approved",
-              `Document Request ${formState.request_no.value} Approved by you`
-            )
+        if (openRejectReasonModal) {
+          approvalInfo = Object.assign(
+            { ...approvalInfo },
+            {
+              rejectDocumentRequest: {
+                ...rejectDocumentRequestForm,
+                ...{ is_rejected: true },
+              },
+            }
           );
-          /*   setLoginPopup(false);
-          setFormState(intialFormState);
-          cancelForm();
-          dispatch(
-            saveFn({
-              ...docrequest,
-              ...status,
-            })
-          );
-
-          dispatch(
-            addNotification(
-              "New Document Requested",
-              `Document Request ${formState.request_no.value} added by you`
-            )
-          ); */
-        });
+          approveDocumentRequest(approvalInfo, account).then((status) => {
+            cancelForm();
+            dispatch(
+              addNotification(
+                "Document Rejected",
+                `Document Request ${formState.request_no.value} Rejected by you`
+              )
+            );
+          });
+        } else {
+          approveDocumentRequest(approvalInfo, account).then((status) => {
+            cancelForm();
+            dispatch(
+              addNotification(
+                "Document Approved",
+                `Document Request ${formState.request_no.value} Approved by you`
+              )
+            );
+          });
+        }
       } else if (mode === "ADD") {
       }
     }
@@ -382,6 +431,13 @@ const ProductForm: React.FC = () => {
       }); */
 
     // dispatch(login(formState.email.value));
+  }
+  function rejectDocRequest(eve: any): void {
+    //openRejectReasonModal
+    eve.preventDefault();
+    console.log("docrequest--", docrequest);
+    console.log("formState--", formState);
+    setOpenRejectReasonModal(true);
   }
 
   return (
@@ -598,101 +654,32 @@ const ProductForm: React.FC = () => {
                     </div>
                   </div>
                 )}
-                {formState.emp_code_approval_1.value.toString() ===
-                  account.emp_id && (
-                  <div className="row">
-                    <div className="col-md-2">
-                      <label style={{ margin: "26px 21px 19px 5px" }}>
-                        Approval 1
-                      </label>
-                    </div>
-                    <div className="col-md-3">
-                      <TextInput
-                        id="input_request_no"
-                        field="emp_code_approval_1"
-                        value={formState.emp_code_approval_1.value.toString()}
-                        onChange={hasFormValueChanged}
-                        required={false}
-                        maxLength={100}
-                        label="Emp Code"
-                        placeholder="Emp Code"
-                        customError={""}
-                        disabled={true}
-                      />
-                    </div>
-                    <div className="col-md-3" style={{ textAlign: "center" }}>
-                      <div
-                        className="btn"
-                        onClick={() => loadApproavalAccessUserMail("manager")}
-                      >
-                        {" "}
-                        <i className="fas fa-angle-double-right"></i>{" "}
-                      </div>
-                    </div>
-                    <div className="col-md-3">
-                      <TextInput
-                        id="input_request_no"
-                        field="mail_id_0"
-                        value={approval1 ? approval1.empl_email_id : ""}
-                        onChange={hasFormValueChanged}
-                        required={false}
-                        maxLength={100}
-                        label="Mail Id"
-                        placeholder="Mail Id"
-                        customError={""}
-                        disabled={true}
-                      />
-                    </div>
+
+                <div className="row">
+                  <div className="col-md-3">
+                    <TextInput
+                      id="input_request_no"
+                      field="comments"
+                      value={formState.comments.value}
+                      onChange={hasFormValueChanged}
+                      required={false}
+                      maxLength={100}
+                      label="Comments"
+                      placeholder="Comments"
+                      customError={""}
+                    />
                   </div>
-                )}
-                {formState.doc_type.value > 3 &&
-                  formState.emp_code_approval_2.value.toString() ===
-                    account.emp_id && (
-                    <div className="row">
-                      <div className="col-md-2">
-                        <label style={{ margin: "26px 21px 19px 5px" }}>
-                          Quality Approval
-                        </label>
-                      </div>
-                      <div className="col-md-3">
-                        <TextInput
-                          id="input_request_no"
-                          field="emp_code_approval_2"
-                          value={formState.emp_code_approval_2.value.toString()}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label="Emp Code"
-                          placeholder="Emp Code"
-                          customError={""}
-                          disabled={true}
-                        />
-                      </div>
-                      <div className="col-md-3" style={{ textAlign: "center" }}>
-                        <div
-                          className="btn"
-                          onClick={() => loadApproavalAccessUserMail("manager")}
-                        >
-                          {" "}
-                          <i className="fas fa-angle-double-right"></i>{" "}
-                        </div>
-                      </div>
-                      <div className="col-md-3">
-                        <TextInput
-                          id="input_request_no"
-                          field="mail_id_1"
-                          value={approval2 ? approval2.empl_email_id : ""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label="Mail Id"
-                          placeholder="Mail Id"
-                          customError={""}
-                          disabled={true}
-                        />
-                      </div>
-                    </div>
-                  )}
+                </div>
+
+                <div className="row">
+                  <div className="col-md-2">
+                    <label>
+                      <span className="blink_me" style={{}}>
+                        Waiting for Your Approval
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <button
@@ -706,6 +693,12 @@ const ProductForm: React.FC = () => {
                 className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
               >
                 APPROVE
+              </button>
+              <button
+                className="btn btn-warning font-14"
+                onClick={(eve) => rejectDocRequest(eve)}
+              >
+                Reject
               </button>
             </form>
           </div>
@@ -749,6 +742,39 @@ const ProductForm: React.FC = () => {
                 Authenticate
               </button>
             </form>
+          </div>
+        </Popup>
+
+        <Popup
+          className="reject-reason-popup-modal"
+          open={openRejectReasonModal}
+        >
+          <div>
+            <div className="form-group font-14">
+              <TextInput
+                id="input_email"
+                field="rejected_reason"
+                value={rejectDocumentRequestForm.rejected_reason}
+                onChange={hasRejectReasonValueChanged}
+                required={true}
+                maxLength={200}
+                label="Reason for Reject"
+                customError={""}
+                placeholder="Reason"
+              />
+            </div>
+            <button
+              onClick={(eve) => rejectDocumentRequest(eve)}
+              className={`btn btn-warning left-margin font-14 ${getDisabledClass()}`}
+            >
+              Reject
+            </button>
+            <button
+              className="btn btn-danger font-14"
+              onClick={(eve) => setOpenRejectReasonModal(false)}
+            >
+              Cancel
+            </button>
           </div>
         </Popup>
       </div>

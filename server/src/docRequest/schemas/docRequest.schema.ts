@@ -37,7 +37,38 @@ export class RequestedDocumentsApproval extends Document {
  
 }
 
+export class rejectDocumentRequest extends Document {
+  @Prop()
+  is_rejected: boolean;
 
+  @Prop()
+  rejected_by: string;
+
+  @Prop()
+  rejected_on: Date;
+
+  @Prop()
+  rejected_reason: string;
+
+  @Prop()
+  rejected_from_page: string;
+ 
+}
+
+export class RequestDocumentIssuance extends Document {
+  @Prop()
+  empl_id: string;
+
+  @Prop()
+  empl_email_id: string;
+
+  @Prop()
+  status: string;
+
+  @Prop()
+  approve_access_level: string;
+ 
+}
 
 @Schema()
 export class DocRequests extends Document {
@@ -58,6 +89,22 @@ export class DocRequests extends Document {
   
   @Prop()
   approval: RequestedDocumentsApproval;
+    
+  @Prop()
+  rejectDocumentRequest: rejectDocumentRequest;
+
+  @Prop()
+  comments: string;
+
+  @Prop()
+  issuance: RequestDocumentIssuance;
+
+  @Prop()
+  no_of_copy: number;
+
+  @Prop()
+  no_of_page: number;
+  
 }
 
 export const DocRequestsSchema = SchemaFactory.createForClass(DocRequests);

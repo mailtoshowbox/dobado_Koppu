@@ -23,8 +23,7 @@ export class RequestedDocumentService {
     return await this.DocRequestModel.findOne({ _id: id });
   }
 
-  async create(DocRequest: RequestedDocuments): Promise<RequestedDocuments> {
-console.log("DocRequest------", DocRequest);
+  async create(DocRequest: RequestedDocuments): Promise<RequestedDocuments> { 
 
     const newDocRequest = new this.DocRequestModel(DocRequest);
 

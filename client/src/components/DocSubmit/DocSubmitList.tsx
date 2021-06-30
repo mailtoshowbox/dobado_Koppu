@@ -17,6 +17,7 @@ function ProductList(props: productListProps): JSX.Element {
     (state: IStateType) => state.products
   );
   function convertDate(str: Date) {
+    if (!str) return "-";
     var date = new Date(str),
       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
       day = ("0" + date.getDate()).slice(-2);
@@ -32,7 +33,6 @@ function ProductList(props: productListProps): JSX.Element {
   }
 
   function dataFormatter(documentName: string, row: any) {
-    console.log("row----", row);
     const {
       // productModificationStatus = 0,
       currentUser: { roles = [] },
@@ -54,12 +54,6 @@ function ProductList(props: productListProps): JSX.Element {
           </div>
         ) : (
           <span>{documentName}</span>
-        )}
-        {row.batch && row.batch.length > 2 && (
-          <span style={{ color: "dodgerblue " }}>
-            <br />
-            Batch : {row.batch}
-          </span>
         )}
       </>
     );
@@ -163,36 +157,36 @@ function ProductList(props: productListProps): JSX.Element {
           className="thead-light-1"
           dataFormat={dataFormatter}
         >
-          Name
+          Request NO
         </TableHeaderColumn>
 
         <TableHeaderColumn
-          dataField="category"
+          dataField="document_no"
           className="thead-light-1"
           width="16%"
         >
-          Compactor
-        </TableHeaderColumn>
-        <TableHeaderColumn
-          dataField="box"
-          className="thead-light-1"
-          width="14%"
-        >
-          Rack system
+          DC NO
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="document_type"
           className="thead-light-1"
           width="14%"
         >
-          Type
+          Doc Type
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="category"
+          className="thead-light-1"
+          width="14%"
+        >
+          Category
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="qr_code"
           className="thead-light-1"
           width="10%"
         >
-          QR Code
+          Department
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="manufacturedate"
@@ -200,7 +194,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataFormat={convertDate}
           width="10%"
         >
-          M Date
+          MFG Date
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="expiredate"
@@ -208,7 +202,21 @@ function ProductList(props: productListProps): JSX.Element {
           dataFormat={convertDate}
           width="10%"
         >
-          E Date
+          EXP Date
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="no_of_copy"
+          className="thead-light-1"
+          width="10%"
+        >
+          No of Copies
+        </TableHeaderColumn>
+        <TableHeaderColumn
+          dataField="no_of_page"
+          className="thead-light-1"
+          width="10%"
+        >
+          No of Pages
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="button"

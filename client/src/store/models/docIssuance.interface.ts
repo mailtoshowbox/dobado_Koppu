@@ -1,3 +1,4 @@
+import { RequestDocument } from "./docrequest.interface";
 export interface IDocIssuance {
     _id: string;
     name: string;
@@ -17,15 +18,17 @@ export interface RequestDocumentApproval {
     status: string; 
     approve_access_level: string; //Manager/Quality user
 }
-export interface RequestDocument {
-    _id: string;
-    doc_no: string;
-    doc_name: string;
+/* export interface RequestDocument {
+    _id: string;  
     no_of_copy: string;
     empl_id: string;
     doc_type: number;
     request_no: string;
-}
+    is_doc_approved : boolean
+    document_name: string;
+    document_no: string;  
+    no_of_page: number; 
+} */
  
 export enum DocIssuanceModificationStatus {
     None = 0,

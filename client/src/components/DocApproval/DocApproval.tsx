@@ -52,13 +52,12 @@ const Products: React.FC = () => {
         dispatch(loadListOfDocApproval(items));
       }
     );
-    dispatch(updateCurrentPath("Home", "Categories"));
+    dispatch(updateCurrentPath("Home", "Document Approval"));
   }, [path.area, dispatch]);
 
   function onApprovalSelect(approvalDoc: IDocApproval): void {
-    console.log("approvalDoc-----", approvalDoc);
     dispatch(changeSelectedDocApproval(approvalDoc));
-
+    approvalDoc.page_from = "approval";
     initiateApprovalHistory(account, approvalDoc).then((result: any) => {
       // dispatch(loadListOfDocApproval(items));
     });

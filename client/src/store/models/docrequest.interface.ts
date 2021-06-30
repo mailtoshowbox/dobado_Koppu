@@ -9,8 +9,15 @@ export interface IDocRequest {
     approval : Array<RequestDocumentApproval> 
     emp_code_approval_1: string;
     emp_code_approval_2: string;
+    comments : string;
+    issuance : Array<RequestDocumentIssuance> 
 }
-
+export interface RequestDocumentIssuance {
+    empl_id: string;
+    empl_email_id: string;
+    status: string; 
+    approve_access_level: string; //Manager/Quality user
+}
 export interface RequestDocumentApproval {
     empl_id: string;
     empl_email_id: string;
@@ -18,13 +25,30 @@ export interface RequestDocumentApproval {
     approve_access_level: string; //Manager/Quality user
 }
 export interface RequestDocument {
-    _id: string;
-    doc_no: string;
-    doc_name: string;
+    _id: string;  
     no_of_copy: string;
     empl_id: string;
     doc_type: number;
     request_no: string;
+    is_doc_approved : boolean
+    document_name: string;
+    document_no: string;  
+    no_of_page: number; 
+    doc_issuance: ApproveDocument; 
+}
+export interface RejectDocument {
+    is_rejected: boolean,
+    rejected_by: string;
+    rejected_on: Date,
+    rejected_reason: string
+    rejected_from_page: string
+}
+export interface ApproveDocument {
+    is_rejected: boolean,
+    rejected_by: string;
+    rejected_on: Date,
+    rejected_reason: string
+    rejected_from_page: string
 }
 
 export enum DocRequestModificationStatus {

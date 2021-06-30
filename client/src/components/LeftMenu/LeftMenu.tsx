@@ -103,6 +103,12 @@ const LeftMenu: React.FC = () => {
                 <span>Generate Issuance”.</span>
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={`/documentsubmit`}>
+                <i className="fas fa-sitemap"></i>
+                <span>Doc Submit.</span>
+              </Link>
+            </li>
           </>
         )}
         {["Superadmin", "Developer"].includes(userRole) && (

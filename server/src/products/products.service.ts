@@ -20,77 +20,85 @@ export class DocumentsService {
     @InjectModel(Boxes.name) private readonly boxModel: Model<Boxes>,
     @InjectModel(Racks.name) private readonly rackModel: Model<Racks>) { }
 
-  async findAll(): Promise<Document[]> {
-    return await this.productModel.aggregate([
-      { $match: { name: { "$ne": "" } , isActive :{ "$ne": false   }  },  },
-      { $addFields: {
-        converted_rack: {
+  async findAll(mode): Promise<Document[]> {
+
+    if(mode === 'issued'){
+      return await  this.productModel.find({ isActive: false, isRequestedDocument : true }).then((res:any)=>{   
+         return res;
+      });
+    }else{
+      return await this.productModel.aggregate([
+        { $match: { name: { "$ne": "" } , isActive :{ "$ne": false   }  },  },
+        { $addFields: {
+          converted_rack: {
+              $convert: { 
+                  input: "$rack",
+                  to: "objectId",
+                  onError: 0
+              }
+          },
+          converted_category: {
             $convert: { 
-                input: "$rack",
+                input: "$category",
                 to: "objectId",
                 onError: 0
             }
         },
-        converted_category: {
+        converted_box: {
           $convert: { 
-              input: "$category",
+              input: "$box",
               to: "objectId",
               onError: 0
           }
       },
-      converted_box: {
+      converted_doctype: {
         $convert: { 
-            input: "$box",
+            input: "$document_type",
             to: "objectId",
             onError: 0
         }
-    },
-    converted_doctype: {
-      $convert: { 
-          input: "$document_type",
-          to: "objectId",
-          onError: 0
-      }
-  }
-    }},
-   
-    {
-      $lookup:
-      {
-        from: "racks",
-        localField: "converted_rack",
-        foreignField: "_id",
-        as: "rack_info"
-      }
-    },
-    {
-      $lookup:
-      {
-        from: "doccategories",
-        localField: "converted_category",
-        foreignField: "_id",
-        as: "category_info"
-      }
-    },
-    {
-      $lookup:
-      {
-        from: "boxes",
-        localField: "converted_box",
-        foreignField: "_id",
-        as: "box_info"
-      }
-    },
-    {
-      $lookup:
-      {
-        from: "doctypes",
-        localField: "converted_doctype",
-        foreignField: "_id",
-        as: "docType_info"
-      }
     }
-    ])
+      }},
+     
+      {
+        $lookup:
+        {
+          from: "racks",
+          localField: "converted_rack",
+          foreignField: "_id",
+          as: "rack_info"
+        }
+      },
+      {
+        $lookup:
+        {
+          from: "doccategories",
+          localField: "converted_category",
+          foreignField: "_id",
+          as: "category_info"
+        }
+      },
+      {
+        $lookup:
+        {
+          from: "boxes",
+          localField: "converted_box",
+          foreignField: "_id",
+          as: "box_info"
+        }
+      },
+      {
+        $lookup:
+        {
+          from: "doctypes",
+          localField: "converted_doctype",
+          foreignField: "_id",
+          as: "docType_info"
+        }
+      }
+      ])
+    }
+    
   } 
 
   async findAllDocuments()  {
@@ -110,6 +118,7 @@ export class DocumentsService {
   async create(product: Document) { 
     const newProduct = new this.productModel(product); 
     newProduct.isActive = true;
+    newProduct.isRequestedDocument = false;    
     return await newProduct.save();
   }
 

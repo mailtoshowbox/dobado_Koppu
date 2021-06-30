@@ -43,37 +43,74 @@ export class DocumentsController {
   }
 
 
-  @Get()
-  findAll(): Promise<Document[]> {
-    let res = this.productsService.findAll().then((succ=[])=>{   
-     let onfo =  succ.map((doc : any)=>{ 
+  @Get(':modes')
+  findAll(  @Param('modes') modes: string,): Promise<Document[]> {
+    console.log("---------modes------", modes);
+   
+    if(modes && modes === "issued" ){
+      console.log("modes------", modes);
+      let res = this.productsService.findAll(modes).then((succ=[])=>{   
+        let onfo =  succ.map((doc : any)=>{ 
+   
+           const {box_info=[], rack_info=[], category_info =[], docType_info=[] } = doc;
+           if(box_info.length > 0){
+             doc.box= box_info[0].name;
+           }
+           if(box_info.length > 0){
+             doc.rack= rack_info[0].name;
+           }
+           if(box_info.length > 0){
+             doc.category= category_info[0].name;
+           }
+           if(docType_info.length > 0){
+             doc.document_type= docType_info[0].name;
+           }
+   
+   
+           doc.batch = doc.category+'/'+doc.box+'/'+doc.rack
+           delete doc.box_info;
+           delete doc.rack_info;
+           delete doc.category_info;
+           delete doc.docType_info; 
+           
+          return doc;
+         }) 
+         return onfo;
+       });
+       return res;
 
-        const {box_info=[], rack_info=[], category_info =[], docType_info=[] } = doc;
-        if(box_info.length > 0){
-          doc.box= box_info[0].name;
-        }
-        if(box_info.length > 0){
-          doc.rack= rack_info[0].name;
-        }
-        if(box_info.length > 0){
-          doc.category= category_info[0].name;
-        }
-        if(docType_info.length > 0){
-          doc.document_type= docType_info[0].name;
-        }
-
-
-        doc.batch = doc.category+'/'+doc.box+'/'+doc.rack
-        delete doc.box_info;
-        delete doc.rack_info;
-        delete doc.category_info;
-        delete doc.docType_info; 
-        
-       return doc;
-      }) 
-      return onfo;
-    });
-    return res;
+    }else{
+      let res = this.productsService.findAll(modes).then((succ=[])=>{   
+        let onfo =  succ.map((doc : any)=>{ 
+   
+           const {box_info=[], rack_info=[], category_info =[], docType_info=[] } = doc;
+           if(box_info.length > 0){
+             doc.box= box_info[0].name;
+           }
+           if(box_info.length > 0){
+             doc.rack= rack_info[0].name;
+           }
+           if(box_info.length > 0){
+             doc.category= category_info[0].name;
+           }
+           if(docType_info.length > 0){
+             doc.document_type= docType_info[0].name;
+           }
+   
+   
+           doc.batch = doc.category+'/'+doc.box+'/'+doc.rack
+           delete doc.box_info;
+           delete doc.rack_info;
+           delete doc.category_info;
+           delete doc.docType_info; 
+           
+          return doc;
+         }) 
+         return onfo;
+       });
+       return res;
+    }
+    
   }
 
   @Get(':id')

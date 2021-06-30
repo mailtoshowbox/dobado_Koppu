@@ -11,13 +11,13 @@ import {
 } from "../../store/models/docIssuance.interface";
 
 import TextInput from "../../common/components/TextInput";
+import NumberInput from "../../common/components/NumberInput";
+
 import { setModificationState } from "../../store/actions/docissuance.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
-  addNewDocumentRequest,
-  updateDocCat,
-  getDocCategoryList,
-  loadApproavalAccessUserInfo,
+  approveDocumentRequest,
+  issueGenaralIssuance,
 } from "../../services/index";
 import {
   OnChangeModel,
@@ -30,6 +30,7 @@ import { IAccount } from "../../store/models/account.interface";
 import { uniqueId } from "../../common/utils";
 import APP_CONST from "../../common/contant";
 import Popup from "reactjs-popup";
+import { UL } from "@blueprintjs/core";
 
 const DocIssuanceYesForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -43,6 +44,16 @@ const DocIssuanceYesForm: React.FC = () => {
   const isCreate: boolean =
     docIssuances.modificationState === DocIssuanceModificationStatus.Create;
   const [loginPopup, setLoginPopup] = useState(false);
+  const [printYesDoc, setPrintYesDoc] = useState(false);
+  const [selectedDocForPrint, setSelectedDocForPrint] = useState({
+    document_name: "",
+    document_no: "",
+    no_of_copy: "",
+    no_of_page: "",
+    reason_for_request: "",
+    no_of_label: 0,
+  });
+
   if (!docIssuance || isCreate) {
     docIssuance = {
       _id: "",
@@ -58,16 +69,8 @@ const DocIssuanceYesForm: React.FC = () => {
     };
   }
   const [showYes, setShowYes] = useState(false);
-  const dcat1 = [
-    { id: "1", name: "Executed Copy" },
-    { id: "2", name: "Controlled Copy" },
-    { id: "3", name: "Add Docs" },
-  ];
-  const dcat2 = [
-    { id: "4", name: "UC Copy" },
-    { id: "5", name: "Add Docs" },
-  ];
-  const dcat3 = [{ id: "6", name: "Take Out" }];
+  const [generateNumYes, setGenerateNumYes] = useState(false);
+  const [generateNumNo, setGenerateNumNo] = useState(true);
 
   const intialFormState = {
     _id: { error: "", value: docIssuance._id },
@@ -102,19 +105,6 @@ const DocIssuanceYesForm: React.FC = () => {
     });
   }
 
-  function hasApprovalValueChanged(model: OnChangeModel): void {
-    const { field = "" } = model;
-    const approvalPos = field.split("_");
-    let approvalPosition = formState.approval.value || [];
-    let slectedData: any = [];
-    if (approvalPos[2]) {
-      if (approvalPos[1] === "code") {
-      } else if (approvalPos[1] === "mail") {
-      }
-    }
-    slectedData[approvalPos[2]] = { emp_id: 1 };
-  }
-
   function cancelForm(): void {
     console.log();
     dispatch(setModificationState(DocIssuanceModificationStatus.None));
@@ -133,26 +123,6 @@ const DocIssuanceYesForm: React.FC = () => {
     return true;
   }
 
-  const pickOne = dcat1.filter(
-    (cat1) => cat1.id.toString() === formState.doc_type.value.toString()
-  );
-  const pickTwo = dcat2.filter(
-    (cat1) => cat1.id === formState.doc_type.value.toString()
-  );
-  const pickThreee = dcat3.filter(
-    (cat1) => cat1.id === formState.doc_type.value.toString()
-  );
-
-  function saveDocument(row: any) {
-    let requested_doc = formState.requested_doc.value || [];
-    requested_doc.push(row);
-
-    setFormState({
-      ...formState,
-      ["requested_doc"]: { value: requested_doc },
-    });
-  }
-
   function saveDocumentRequest(e: FormEvent<HTMLFormElement>): void {
     //setLoginPopup(true);
     e.preventDefault();
@@ -163,142 +133,169 @@ const DocIssuanceYesForm: React.FC = () => {
     // saveForm(formState, updateDocRequestApproval, "EDIT");
   }
 
-  function saveUser(e: FormEvent<HTMLFormElement>): void {
-    e.preventDefault();
-    if (!isFormInvalid()) {
-      return;
-    }
-  }
-
-  function saveForm(formState: any, saveFn: Function, mode: String): void {
-    if (docIssuance) {
-      const currentApproval = formState.approval.value.filter(
-        (approval: any) => approval.empl_id === account.emp_id
-      );
-      if (currentApproval.length > 0) {
-        if (formState.approval.value.length) {
-          formState.approval.value.map((apprv: any) => {
-            if (apprv.empl_id === account.emp_id) {
-              apprv.status = "approved";
-            }
-          });
-        }
-      }
-
-      if (mode === "EDIT") {
-        let boxInfo = {
-          name: formState.name.value,
-          empl_id: formState.empl_id.value,
-          doc_type: formState.doc_type.value,
-          request_no: formState.request_no.value,
-          requested_doc: formState.requested_doc.value,
-          approval: formState.approval.value,
-          id: formState._id.value,
-        };
-        updateDocumentRequest(boxInfo, account).then((status) => {
-          cancelForm();
-          dispatch(
-            addNotification(
-              "Document Approved",
-              `Document Request ${formState.request_no.value} Approved by you`
-            )
-          );
-        });
-      } else if (mode === "ADD") {
-      }
-    }
-  }
-
-  function saveRequest(formState: any, saveFn: Function, mode: String): void {
-    if (docIssuance) {
-      if (mode === "ADD") {
-        let boxInfo = {
-          name: formState.name.value,
-          empl_id: formState.empl_id.value,
-          doc_type: formState.doc_type.value,
-          request_no: formState.request_no.value,
-          requested_doc: formState.requested_doc.value,
-          approval: formState.approval.value,
-        };
-        addNewDocumentRequest(boxInfo, account).then((status) => {
-          setLoginPopup(false);
-          setFormState(intialFormState);
-          cancelForm();
-          dispatch(
-            saveFn({
-              ...docIssuance,
-              ...status,
-            })
-          );
-
-          dispatch(
-            addNotification(
-              "New Document Requested",
-              `Document Request ${formState.request_no.value} added by you`
-            )
-          );
-        });
-      } else if (mode === "EDIT") {
-      }
-    }
-  }
-  function numberValidator(fieldValue: any) {
-    const nan = isNaN(parseInt(fieldValue, 10));
-    if (nan) {
-      return "must be a integer!";
-    }
-    return true;
-  }
-  function loadApproavalAccessUserMail(accessLevel: string) {
-    let data = {};
-    if (accessLevel === "manager") {
-      data = {
-        access: accessLevel,
-        emp_id: formState.emp_code_approval_1.value.toString(),
-      };
-    }
-
-    loadApproavalAccessUserInfo(data, account).then((status) => {
-      if (status.data) {
-        console.log("formState----", formState);
-        const { email = "" } = status.data.data;
-        const approvedUsers = [];
-        if (email) {
-          approvedUsers.push({
-            empl_id: formState.emp_code_approval_1.value.toString(),
-            empl_email_id: email,
-            status: "pending",
-            approve_access_level: accessLevel, //Manager/Quality user
-          });
-        }
-
-        setFormState({
-          ...formState,
-          ["approval"]: { value: approvedUsers },
-        });
-        /// dispatch(loadedApprovedUser(status.data));
-      }
-    });
-  }
-
-  const options = { afterInsertRow: saveDocument, ignoreEditable: false };
-
-  //console.log("formState----", formState);
-
-  const approval1 = formState.approval.value[0]
-    ? formState.approval.value[0]
-    : null;
-  const approval2 = formState.approval.value[1]
-    ? formState.approval.value[1]
-    : null;
-
   function validateLogin(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-
     const { value = [] } = formState.approval;
-
     const currentApproval = value.filter;
   }
+
+  function hasGenarateNumberChanged(model: any): void {
+    console.log("OnChangeModel---", model.target.value);
+    setGenerateNumYes(!generateNumYes);
+    setGenerateNumNo(!generateNumNo);
+    if (model.target.value === "yes") {
+      // setGenerateNumYes(!!generateNumYes);
+    } else {
+      //no
+      // setGenerateNumNo(!!generateNumNo);
+    }
+  }
+  function hasGenarateNumberPrint(model: any, docNum: string): void {
+    console.log("formState.requested_doc---", formState.requested_doc);
+    const selectedDocu: any = formState.requested_doc.value.filter(
+      (doc: any) => {
+        return doc.document_no === docNum;
+      }
+    )[0];
+    setSelectedDocForPrint(selectedDocu);
+    setPrintYesDoc(true);
+  }
+  const printOptionFormatter = (cell: any, row: any) => {
+    console.log("row------", row);
+    if (generateNumYes) {
+      const { is_doc_approved = false } = row;
+      if (is_doc_approved) {
+        return (
+          <span>
+            <i className="fa fa-thumbs-up" aria-hidden="true"></i>
+          </span>
+        );
+      } else {
+        return (
+          <span>
+            <i
+              onClick={(even) => hasGenarateNumberPrint(even, row.document_no)}
+              className="fa fa-print"
+              aria-hidden="true"
+            ></i>
+          </span>
+        );
+      }
+    } else {
+      return (
+        <span onClick={() => hasGenarateNumberPrint}>
+          <i className="fa fa-podcast" aria-hidden="true"></i>
+        </span>
+      );
+    }
+  };
+
+  const printLabel = (event: any) => {
+    event.preventDefault();
+    var divContents = document.getElementById("printme")?.innerHTML;
+    var a = window.open("", "", "height=500, width=500");
+    a?.document.write("<html>");
+    a?.document.write("<body >");
+    a?.document.write(divContents ? divContents : "nothing to display");
+    a?.document.write("</body></html>");
+    a?.document.close();
+    a?.print();
+
+    const requestedDoc = formState.requested_doc.value;
+    const apprvedDoc = requestedDoc.map((doc) => {
+      if (doc.document_no === selectedDocForPrint.document_no) {
+        doc.is_doc_approved = true;
+      } else {
+        doc.is_doc_approved = false;
+      }
+      return doc;
+    });
+    let approvalInfo = {
+      name: formState.name.value,
+      empl_id: formState.empl_id.value,
+      doc_type: formState.doc_type.value,
+      request_no: formState.request_no.value,
+      requested_doc: apprvedDoc,
+      approval: formState.approval.value,
+      id: formState._id.value,
+    };
+    issueGenaralIssuance(approvalInfo, account).then((status) => {
+      console.log("issueGenaralIssuance--", status);
+    });
+  };
+  function hasNoOfLabelValueChanged(model: OnChangeModel): void {
+    setSelectedDocForPrint({
+      ...selectedDocForPrint,
+      [model.field]: model.value,
+    });
+  }
+  const printLabels = () => {
+    let menuItems = [];
+    for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
+      const printO = (
+        <div key={i}>
+          <div>Logo</div>
+          <div>Reference Number : {selectedDocForPrint.document_no} </div>
+          <div>Categoy : ? </div>
+          <div>Name of Doc : {selectedDocForPrint.document_name} </div>
+          <div>Type of Doc : {formState.doc_type.value} </div>
+          <div></div>
+          <br></br>
+        </div>
+      );
+      menuItems.push(<span>{printO}</span>);
+    }
+
+    return (
+      <div>
+        Print Label<br></br>
+        {menuItems}
+      </div>
+    );
+  };
+
+  function rowClassNameFormat(row: any, rowIdx: any) {
+    if (row.is_doc_approved !== undefined && row.is_doc_approved) {
+      return "class-doc-approved-already";
+    } else {
+      return "class-doc-not-approved-already";
+    }
+  }
+
+  const issueGenaralIssuanceAll = (event: any) => {
+    event.preventDefault();
+
+    console.log("issuanceDocissuanceDocissuanceDoc-");
+
+    const requestedDoc = formState.requested_doc.value;
+    const apprvedDoc = requestedDoc.map((doc) => {
+      doc.is_doc_approved = true;
+      return doc;
+    });
+
+    if (!generateNumYes && generateNumNo) {
+      const issuanceDoc = {
+        empl_id: account.emp_id,
+        empl_email_id: account.email,
+        status: "issued",
+        approve_access_level: account.roles[0],
+      };
+
+      let approvalInfo = {
+        name: formState.name.value,
+        empl_id: formState.empl_id.value,
+        doc_type: formState.doc_type.value,
+        request_no: formState.request_no.value,
+        requested_doc: apprvedDoc,
+        approval: formState.approval.value,
+        id: formState._id.value,
+        issuance: issuanceDoc,
+      };
+      issueGenaralIssuance(approvalInfo, account).then((status) => {
+        console.log("issueGenaralIssuance--", status);
+      });
+    }
+  };
 
   return (
     <Fragment>
@@ -309,7 +306,10 @@ const DocIssuanceYesForm: React.FC = () => {
               <div className="form-group font-14">
                 <br></br>
 
-                <BootstrapTable data={formState.requested_doc.value}>
+                <BootstrapTable
+                  data={formState.requested_doc.value}
+                  trClassName={rowClassNameFormat}
+                >
                   <TableHeaderColumn
                     dataField="id"
                     isKey
@@ -335,6 +335,7 @@ const DocIssuanceYesForm: React.FC = () => {
                     csvHeader="order"
                     dataField="document_no"
                     dataSort
+                    width="16%"
                   >
                     DOc No
                   </TableHeaderColumn>
@@ -363,6 +364,7 @@ const DocIssuanceYesForm: React.FC = () => {
                     csvHeader="order"
                     dataField="document_name"
                     dataSort
+                    width="16%"
                   >
                     DOc Name
                   </TableHeaderColumn>
@@ -410,6 +412,7 @@ const DocIssuanceYesForm: React.FC = () => {
                     csvHeader="order"
                     dataField="no_of_copy"
                     dataSort
+                    width="16%"
                   >
                     no of Copy
                   </TableHeaderColumn>
@@ -428,13 +431,29 @@ const DocIssuanceYesForm: React.FC = () => {
                     dataField="order"
                     dataSort
                   >
-                    YES NO
+                    <input
+                      type="checkbox"
+                      name="active"
+                      value="yes"
+                      checked={generateNumYes}
+                      onChange={(eve) => hasGenarateNumberChanged(eve)}
+                    />
+                    Yes
+                    <input
+                      type="checkbox"
+                      name="qtype"
+                      value="no"
+                      checked={generateNumNo}
+                      onChange={(eve) => hasGenarateNumberChanged(eve)}
+                    />
+                    No
                   </TableHeaderColumn>
                   <TableHeaderColumn
                     row={2}
                     csvHeader="order"
                     dataField="no_of_page"
                     dataSort
+                    width="16%"
                   >
                     no of Pages
                   </TableHeaderColumn>
@@ -443,11 +462,16 @@ const DocIssuanceYesForm: React.FC = () => {
                     csvHeader="order"
                     dataField="reason_for_request"
                     dataSort
+                    width="16%"
                   >
                     Reason for Request
                   </TableHeaderColumn>
 
-                  <TableHeaderColumn row={0} rowSpan={3} dataField="status">
+                  <TableHeaderColumn
+                    row={0}
+                    rowSpan={3}
+                    dataFormat={printOptionFormatter}
+                  >
                     Print LEABELS
                   </TableHeaderColumn>
                 </BootstrapTable>
@@ -528,13 +552,14 @@ const DocIssuanceYesForm: React.FC = () => {
                   </div>
                 )}
               </div>
-
-              <button
-                onClick={() => handleYes()}
-                className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
-              >
-                APPROVE
-              </button>
+              {generateNumNo && (
+                <button
+                  onClick={(e) => issueGenaralIssuanceAll(e)}
+                  className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
+                >
+                  APPROVE1
+                </button>
+              )}
               <button
                 className="btn btn-danger font-14 left-margin font-14"
                 onClick={() => cancelForm()}
@@ -545,42 +570,38 @@ const DocIssuanceYesForm: React.FC = () => {
           </div>
         </div>
 
-        <Popup className="popup-modal" open={showYes}>
+        <Popup className="popup-modal" open={printYesDoc}>
           <div>
-            <form className="user" onSubmit={validateLogin}>
+            <form className="user">
               <div className="form-group font-14">
                 <TextInput
-                  id="input_email"
-                  field="email"
-                  value={loginForm.email}
-                  onChange={hasLoginFormValueChanged}
+                  id="input_doc_num"
+                  field="document_number"
+                  value={selectedDocForPrint.document_no}
+                  onChange={() => {}}
                   required={true}
                   maxLength={100}
-                  label=""
+                  label="Document Number"
                   customError={""}
                   placeholder="Email"
                 />
               </div>
               <div className="form-group font-14">
-                <TextInput
+                <NumberInput
                   id="input_password"
-                  field="password"
-                  value={loginForm.password}
-                  onChange={hasLoginFormValueChanged}
-                  required={true}
-                  maxLength={100}
-                  type="password"
-                  label=""
+                  field="no_of_label"
+                  value={selectedDocForPrint.no_of_label}
+                  onChange={hasNoOfLabelValueChanged}
+                  label="No of Labels"
                   customError={""}
-                  placeholder="Password"
                 />
               </div>
 
               <button
                 className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
-                type="submit"
+                onClick={(event) => printLabel(event)}
               >
-                Authenticate
+                Approve/Print
               </button>
             </form>
           </div>
@@ -626,6 +647,10 @@ const DocIssuanceYesForm: React.FC = () => {
             </form>
           </div>
         </Popup>
+
+        <div id="printme" style={{ display: "none" }}>
+          <div id={"printableIdyu"}>{printLabels()}</div>
+        </div>
       </div>
     </Fragment>
   );

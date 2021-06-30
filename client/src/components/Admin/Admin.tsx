@@ -11,6 +11,7 @@ import DocCategories from "../DocCategory/DocCategory";
 import DocRequest from "../DocRequest/DocRequest";
 import DocRequestApproval from "../DocApproval/DocApproval";
 import DocIssuance from "../DocIssuance/DocIssuance";
+import DocSubmit from "../DocSubmit/DocSubmit";
 import DocDepartment from "../DocDepartment/DocDepartment";
 import DocTypes from "../DocType/DocType";
 import Notifications from "../../common/components/Notification";
@@ -62,6 +63,9 @@ const Admin: React.FC = () => {
               </Route>
               <Route path={`/genarateissuance`}>
                 <DocIssuance />
+              </Route>
+              <Route path={`/documentsubmit`}>
+                <DocSubmit />
               </Route>
 
               <Route path="/">

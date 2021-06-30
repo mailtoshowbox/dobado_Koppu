@@ -5,4 +5,7 @@ export class CreateDocRequestDto {
   readonly isActive: boolean; 
   readonly requested_doc: []; 
   readonly approval: []; 
+  readonly rejectDocumentRequest: {}; 
+  readonly comments: string;   
+  readonly issuance: {};   
 } 

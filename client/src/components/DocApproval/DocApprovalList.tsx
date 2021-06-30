@@ -6,6 +6,7 @@ import {
 } from "../../store/models/root.interface";
 import { IDocApproval } from "../../store/models/docapproval.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import { docRequestDocumentType } from "../../common/utils";
 
 export type productListProps = {
   onSelect?: (product: IDocApproval) => void;
@@ -93,6 +94,9 @@ function DocApprovalList(props: productListProps): JSX.Element {
     return stsus;
   };
 
+  const docRequestDocumentTypeFormatter = (cell: any, row: any) => {
+    return docRequestDocumentType(cell);
+  };
   const options = {
     clearSearch: true,
   };
@@ -125,6 +129,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
           dataField="doc_type"
           className="thead-light-1"
           width="16%"
+          dataFormat={docRequestDocumentTypeFormatter}
         >
           Doc Type
         </TableHeaderColumn>

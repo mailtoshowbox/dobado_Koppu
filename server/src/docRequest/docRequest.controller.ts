@@ -21,8 +21,7 @@ export class DocRequestsController {
 
   @Get(':mode/:empl_id')
   findAll(@Param('mode') mode: string, @Param('empl_id') empl_id: string): Promise<DocRequest[]> {
-      return this.DocRequestsService.findAll(mode, empl_id); 
-   
+      return this.DocRequestsService.findAll(mode, empl_id);    
   }
  
 
@@ -36,20 +35,19 @@ export class DocRequestsController {
   
 
   @Post()
-  create(@Body() createDocRequestsDto: CreateDocRequestDto): Promise<DocRequest> {
- 
+  create(@Body() createDocRequestsDto: CreateDocRequestDto): Promise<DocRequest> { 
+
+    console.log("createDocRequestsDto---", createDocRequestsDto);
     const d=  this.DocRequestsService.create(createDocRequestsDto);
     d.then((res)=>{
       const {} = res; 
-
     })
-    
     return d;
   }
 
 
   @Post(':history')
-  initiateApprovalHistory(@Body() createDocRequestsDto: CreateDocApprovalHistoryDto): void {
+  initiateApprovalHistory(@Body() createDocRequestsDto: CreateDocApprovalHistoryDto): void { 
  
     const d=  this.DocRequestsService.checkInitialHistory(createDocRequestsDto).then((rest)=>{
       if(!rest){ 
@@ -76,12 +74,76 @@ export class DocRequestsController {
     return this.DocRequestsService.delete(id);
   }
 
-  @Put(':id')
+  @Put(':page_from/:id')
   update(
+    @Param('page_from') page_from: string,
     @Param('id') id: string,
     @Body() updateDocRequestsDto: CreateDocRequestDto,
   ): Promise<DocRequest> { 
-    console.log("updateDocRequestsDto---", updateDocRequestsDto);
-    return this.DocRequestsService.update(id, updateDocRequestsDto);
+
+    if(page_from){
+      let createDocRequestsDto : CreateDocApprovalHistoryDto = { 
+       history: JSON.stringify(updateDocRequestsDto),
+       updated_by: updateDocRequestsDto.empl_id,
+       updated_on: new Date(),
+       mode_of_access: "history",
+       request_no: updateDocRequestsDto.request_no,
+       page_from: "approve"
+      }
+      this.DocRequestsService.checkInitialHistory(createDocRequestsDto).then((rest)=>{       
+        if(!rest){ 
+          this.DocRequestsService.createInitialHistory(createDocRequestsDto)
+        } else{
+          this.DocRequestsService.checkRecentHistory(createDocRequestsDto).then((rec)=>{
+          //  console.log("-----rec----",  createDocRequestsDto);           
+          
+              this.DocRequestsService.createDocRequestApprovalHistory(createDocRequestsDto).then((res)=>{
+              //  console.log("createDocRequestApprovalHistory- res--", res);
+              })
+             });
+        }        
+      }); 
+    }
+    
+    console.log("---page_from---", page_from);
+    return this.DocRequestsService.update(id, updateDocRequestsDto, page_from);
+  }
+  @Put(':id')
+  issueGenaralIssuance(
+    @Param('id') id: string,
+    @Body() issueGenaralIssuanceDto: CreateDocRequestDto,
+  ): Promise<DocRequest> { 
+
+    console.log("updateDocRequestsDto----", issueGenaralIssuanceDto);
+
+    if(id){
+
+      
+
+      /* 
+      let createDocRequestsDto : CreateDocApprovalHistoryDto = { 
+       history: JSON.stringify(updateDocRequestsDto),
+       updated_by: updateDocRequestsDto.empl_id,
+       updated_on: new Date(),
+       mode_of_access: "history",
+       request_no: updateDocRequestsDto.request_no,
+       page_from: "approve"
+      }
+      this.DocRequestsService.checkInitialHistory(createDocRequestsDto).then((rest)=>{       
+        if(!rest){ 
+          this.DocRequestsService.createInitialHistory(createDocRequestsDto)
+        } else{
+          this.DocRequestsService.checkRecentHistory(createDocRequestsDto).then((rec)=>{
+            console.log("-----rec----",  createDocRequestsDto);           
+          
+              this.DocRequestsService.createDocRequestApprovalHistory(createDocRequestsDto).then((res)=>{
+                console.log("createDocRequestApprovalHistory- res--", res);
+              })
+             });
+        }        
+      }); */ 
+    } 
+    console.log("---page_from---", id);
+    return this.DocRequestsService.update(id, issueGenaralIssuanceDto, 'test');
   }
 }

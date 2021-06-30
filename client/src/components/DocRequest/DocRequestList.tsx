@@ -6,6 +6,7 @@ import {
 } from "../../store/models/root.interface";
 import { IDocRequest } from "../../store/models/docrequest.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import { docRequestDocumentType } from "../../common/utils";
 
 export type productListProps = {
   onSelect?: (product: IDocRequest) => void;
@@ -94,11 +95,20 @@ function DocRequestList(props: productListProps): JSX.Element {
             appr.approve_access_level +
             " approval is " +
             "Approved</span>";
+        } else if (appr.status === "rejected") {
+          stsus +=
+            "<br><span class=' btn-info'>" +
+            appr.approve_access_level +
+            " approval is " +
+            "Rejected</span>";
         }
       });
     }
 
     return stsus;
+  };
+  const docRequestDocumentTypeFormatter = (cell: any, row: any) => {
+    return docRequestDocumentType(cell);
   };
 
   const options = {
@@ -132,6 +142,7 @@ function DocRequestList(props: productListProps): JSX.Element {
           dataField="doc_type"
           className="thead-light-1"
           width="16%"
+          dataFormat={docRequestDocumentTypeFormatter}
         >
           Doc Type
         </TableHeaderColumn>

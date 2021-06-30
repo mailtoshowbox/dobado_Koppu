@@ -6,6 +6,7 @@ import { DocApprovalHistory } from './interfaces/docApprovalHistoryinterface ';
 
 import { DocRequests } from './schemas/docRequest.schema';   
 import { DocApprovalHistories } from './schemas/docApprovalHistory.schema';
+import { Documents } from '../products/schemas/product.schema';
 
  
 @Injectable()
@@ -13,7 +14,8 @@ export class DocRequestService {
   constructor(
     @InjectModel(DocRequests.name)
     private DocRequestModel: Model<DocRequests>, 
-    @InjectModel(DocApprovalHistories.name) private readonly docApprovalHistModel:Model<DocApprovalHistories>
+    @InjectModel(DocApprovalHistories.name) private readonly docApprovalHistModel:Model<DocApprovalHistories>,
+    @InjectModel(Documents.name) private readonly documentModal:Model<Documents>
    // @InjectModel(RequestedDocuments.name) private readonly requestedDocModal: Model<RequestedDocuments>,
   ) {}
 
@@ -26,9 +28,10 @@ export class DocRequestService {
           resultNew.forEach((req)=>{
             let checkAppor : any    = [];
             let approvalList : any    = req.approval;
+            console.log("approvalList.length---", approvalList.length);
              if(approvalList.length ){ 
                 checkAppor     =  approvalList.filter(approv => { 
-                return approv.empl_id === empl_id && approv.status === 'pending';
+                return approv.empl_id === empl_id ;
               }) || [];             
               if(checkAppor.length > 0){               
                 approval_list_for_epl.push(req);
@@ -42,7 +45,7 @@ export class DocRequestService {
       
       });
     }else if(mode === 'issuance'){
-      return await   this.DocRequestModel.find({}).exec().then((resultNew)=>{
+      return await   this.DocRequestModel.find({"issuance.status" : { $ne: 'issued' }}).exec().then((resultNew)=>{
         let approval_list_for_epl : any = [];    
         if(resultNew.length > 0){         
           resultNew.forEach((req)=>{
@@ -74,9 +77,9 @@ export class DocRequestService {
             let approvalList : any    = req.approval;
              if(approvalList.length > 0){ 
                 checkAppor     =  approvalList.filter(approv => { 
-                return  approv.status !== 'pending';
+                return  approv.status === 'pending' || approv.status === 'rejected' || approv.status === 'approved';
               }) || [];             
-              if(checkAppor.length === 0){               
+              if(checkAppor.length > 0){               
                 approval_list_for_epl.push(req);
               } 
             }
@@ -101,10 +104,8 @@ export class DocRequestService {
 
   
 
-  async create(docRequest: DocRequest) { 
-    console.log("docRequest----", docRequest);
+  async create(docRequest: DocRequest) {  
     const newDocRequest = new this.DocRequestModel(docRequest);
-
     return await newDocRequest.save(); 
  
     }
@@ -120,6 +121,12 @@ export class DocRequestService {
     }
     async createRecentHistory(docApprovalHistory: DocApprovalHistory) { 
       docApprovalHistory.mode_of_access = 'recent';
+      const newDocapprovalHistory = new this.docApprovalHistModel(docApprovalHistory);
+          return  newDocapprovalHistory.save();
+    }
+
+
+    async createDocRequestApprovalHistory(docApprovalHistory: DocApprovalHistory) {      
       const newDocapprovalHistory = new this.docApprovalHistModel(docApprovalHistory);
           return  newDocapprovalHistory.save();
     }
@@ -174,9 +181,85 @@ export class DocRequestService {
     return await this.DocRequestModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, DocRequest: DocRequest): Promise<DocRequest> { 
-    return await this.DocRequestModel.findByIdAndUpdate(id, DocRequest, {
+  async update(id: string, DocRequest: DocRequest, page:string): Promise<DocRequest> {  
+
+    if(page === "issueGenaralIssuance"){
+
+
+      const {requested_doc=[]} =DocRequest; 
+      const issuanceList = requested_doc.filter((doc : any)=>{
+        return doc.is_doc_approved;
+      });
+      if(issuanceList.length === requested_doc.length){
+          console.log("All doc Approved");
+          issuanceList.forEach((doc)=>{
+
+            const newDcoument = {  
+              name: doc.document_name,
+              description: doc.document_name,
+              no_of_copy : doc.no_of_copy,
+              no_of_page : doc.no_of_page,
+              document_no : doc.document_no,
+              box: '',
+              rack:  '',
+              category :  "",
+              box_info: [],
+              rack_info: [],
+              category_info: [],
+              document_type : "",
+              docType_info: "",
+              retension_time : "" };
+              console.log("Partially newDcoument>>>", newDcoument);
+            const newProduct = new this.documentModal(newDcoument); 
+            newProduct.isActive = false;
+            newProduct.isRequestedDocument = true;
+            
+            newProduct.save().then((res)=>{
+              console.log("THENEN=", res);
+            });
+  
+          })
+      }else{
+        console.log("Partially Requested");
+        issuanceList.forEach((doc)=>{
+          console.log("Partially doc", doc);
+          const newDcoument = {  
+            name: doc.document_name,
+            description: doc.document_name,
+            no_of_copy : doc.no_of_copy,
+            no_of_page : doc.no_of_page,
+            document_no : doc.document_no,
+            box: '',
+            rack:  '',
+            category :  "",
+            box_info: [  ],
+            rack_info: [  ],
+            category_info: [],
+            document_type : "",
+            docType_info: "",
+            retension_time : "" };
+            console.log("Partially newDcoument ><<<<>>>>IN>>>", newDcoument);
+          const newProduct = new this.documentModal(newDcoument); 
+          newProduct.isActive = false;
+          newProduct.isRequestedDocument = true;
+          newProduct.save().then((res)=>{
+            console.log("THENEN=", res);
+          });
+
+        })
+      }
+
+      
+
+
+
+    
+
+ 
+
+    }
+     return await this.DocRequestModel.findByIdAndUpdate(id, DocRequest, {
       new: true,
-    });
+    }); 
   }
 }

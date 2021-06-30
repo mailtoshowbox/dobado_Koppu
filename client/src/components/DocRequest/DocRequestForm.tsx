@@ -31,7 +31,7 @@ import {
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import SelectInput from "../../common/components/Select";
 import { IAccount } from "../../store/models/account.interface";
-import { uniqueId } from "../../common/utils";
+import { uniqueId, diableFIeldForEdit } from "../../common/utils";
 import APP_CONST from "../../common/contant";
 import Popup from "reactjs-popup";
 
@@ -59,19 +59,14 @@ const ProductForm: React.FC = () => {
       approval: [],
       emp_code_approval_1: "",
       emp_code_approval_2: "",
+      comments: "",
+      issuance: [],
     };
   }
 
-  const dcat1 = [
-    { id: "1", name: "Executed Copy" },
-    { id: "2", name: "Controlled Copy" },
-    { id: "3", name: "Add Docs" },
-  ];
-  const dcat2 = [
-    { id: "4", name: "UC Copy" },
-    { id: "5", name: "Add Docs" },
-  ];
-  const dcat3 = [{ id: "6", name: "Take Out" }];
+  const dcat1 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_ONE;
+  const dcat2 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_TWO;
+  const dcat3 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_THREE;
 
   //const [recentSelectedCategory, setRecentSelectedCategory] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("1");
@@ -86,6 +81,7 @@ const ProductForm: React.FC = () => {
     emp_code_approval_1: { value: docrequest.emp_code_approval_1 },
     emp_code_approval_2: { value: docrequest.emp_code_approval_2 },
     approval: { value: docrequest.approval },
+    comments: { value: docrequest.comments },
   };
   const [formState, setFormState] = useState(intialFormState);
 
@@ -179,6 +175,14 @@ const ProductForm: React.FC = () => {
           request_no: formState.request_no.value,
           requested_doc: formState.requested_doc.value,
           approval: formState.approval.value,
+          rejectDocumentRequest: {
+            is_rejected: false,
+            rejected_by: "",
+            rejected_on: "",
+            rejected_reason: "",
+            rejected_from_page: "",
+          },
+          comments: formState.comments.value,
         };
         addNewDocumentRequest(boxInfo, account).then((status) => {
           setLoginPopup(false);
@@ -209,6 +213,13 @@ const ProductForm: React.FC = () => {
     }
     return true;
   }
+  function requiredField(fieldValue: any) {
+    if (!fieldValue) {
+      return "field is mandatory";
+    }
+    return true;
+  }
+
   function loadApproavalAccessUserMail(accessLevel: string) {
     let data = {};
 
@@ -248,8 +259,6 @@ const ProductForm: React.FC = () => {
       }
     });
   }
-
-  const options = { afterInsertRow: saveDocument, ignoreEditable: false };
 
   //console.log("formState----", formState);
 
@@ -304,7 +313,68 @@ const ProductForm: React.FC = () => {
     // dispatch(login(formState.email.value));
   }
 
-  //console.log("loginForm----", loginForm);
+  function setFieldDisabled(cell: any, row: any) {
+    return diableFIeldForEdit();
+  }
+
+  function uniqueFieldinModal(
+    column: any,
+    attr: any,
+    editorClass: any,
+    ignoreEditable: any
+  ) {
+    const {
+      editable: { defaultValue = "" },
+    } = column;
+    console.log("column===", column);
+    console.log("attr===", attr);
+    console.log("editorClass===", editorClass);
+    console.log("ignoreEditable===", ignoreEditable);
+    return (
+      /*  <input
+        type="text"
+        className=" form-control editor edit-text"
+        value={defaultValue}
+        readonly
+      /> */
+      <TextInput
+        id="document_no"
+        value={defaultValue}
+        field="document_no"
+        onChange={hasFormValueChanged}
+        required={true}
+        maxLength={100}
+        label=""
+        placeholder="Employee Id"
+        customError={formState.name.error}
+        disabled={true}
+      />
+    );
+  }
+
+  function createCustomModalHeader(onClose: any, onSave: any) {
+    return (
+      <div
+        className="modal-header"
+        style={{
+          fontWeight: "bold",
+          fontSize: "large",
+          textAlign: "center",
+          backgroundColor: "#eeeeee",
+        }}
+      >
+        <h3>Add New Document</h3>
+        <button className="btn btn-info" onClick={onClose}>
+          Close
+        </button>
+      </div>
+    );
+  }
+  const options = {
+    afterInsertRow: saveDocument,
+    ignoreEditable: false,
+    insertModalHeader: createCustomModalHeader,
+  };
   return (
     <Fragment>
       <div className="col-xl-12 col-lg-12">
@@ -348,11 +418,17 @@ const ProductForm: React.FC = () => {
                       Doc Type:
                     </label>
                   </div>
-                  <div className="col-md-3">
+                  <div
+                    className={
+                      pickOne.length > 0
+                        ? "col-md-3 input_document_type_selected"
+                        : "col-md-3 "
+                    }
+                  >
                     <SelectInput
                       id="input_document_type"
                       field="doc_type"
-                      label={pickOne.length > 0 ? "Selected" : ""}
+                      label={""}
                       options={dcat1}
                       required={true}
                       onChange={hasFormValueChanged}
@@ -361,11 +437,17 @@ const ProductForm: React.FC = () => {
                       customError={""}
                     />
                   </div>
-                  <div className="col-md-3">
+                  <div
+                    className={
+                      pickTwo.length > 0
+                        ? "col-md-3 input_document_type_selected"
+                        : "col-md-3 "
+                    }
+                  >
                     <SelectInput
                       id="input_document_type"
                       field="doc_type"
-                      label={pickTwo.length > 0 ? "Selected" : ""}
+                      label={""}
                       options={dcat2}
                       required={true}
                       onChange={hasFormValueChanged}
@@ -374,11 +456,17 @@ const ProductForm: React.FC = () => {
                       customError={""}
                     />
                   </div>
-                  <div className="col-md-3">
+                  <div
+                    className={
+                      pickThreee.length > 0
+                        ? "col-md-3 input_document_type_selected"
+                        : "col-md-3 "
+                    }
+                  >
                     <SelectInput
                       id="input_document_type"
                       field="doc_type"
-                      label={pickThreee.length > 0 ? "Selected" : ""}
+                      label={""}
                       options={dcat3}
                       required={true}
                       onChange={hasFormValueChanged}
@@ -402,6 +490,7 @@ const ProductForm: React.FC = () => {
                         dataField="document_no"
                         editable={{
                           defaultValue: uniqueId("DOC"),
+                          validator: requiredField,
                         }}
                       >
                         DC NO
@@ -411,6 +500,7 @@ const ProductForm: React.FC = () => {
                         dataField="document_name"
                         width="16%"
                         className="thead-light-1"
+                        editable={{ validator: requiredField }}
                       >
                         DC Name
                       </TableHeaderColumn>
@@ -427,6 +517,7 @@ const ProductForm: React.FC = () => {
                         dataField="no_of_page"
                         className="thead-light-1"
                         width="14%"
+                        editable={{ validator: numberValidator }}
                       >
                         No of Pages
                       </TableHeaderColumn>
@@ -609,6 +700,21 @@ const ProductForm: React.FC = () => {
                     </div>
                   </div>
                 )}
+                <div className="row">
+                  <div className="col-md-3">
+                    <TextInput
+                      id="input_request_no"
+                      field="comments"
+                      value={formState.comments.value.toString()}
+                      onChange={hasFormValueChanged}
+                      required={false}
+                      maxLength={100}
+                      label="Comments"
+                      placeholder="Comments"
+                      customError={""}
+                    />
+                  </div>
+                </div>
               </div>
 
               <button

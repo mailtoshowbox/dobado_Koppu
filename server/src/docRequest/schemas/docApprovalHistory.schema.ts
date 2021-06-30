@@ -23,6 +23,9 @@ export class DocApprovalHistories extends Document {
   @Prop()
   mode_of_access: string;
 
+  @Prop()
+  page_from: string;
+ 
  
 }
 

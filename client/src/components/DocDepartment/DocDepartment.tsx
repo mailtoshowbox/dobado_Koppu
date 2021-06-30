@@ -49,7 +49,7 @@ const Products: React.FC = () => {
     getDocDepartmentList(account.auth).then((items: IDocDepartmentList) => {
       dispatch(loadListOfDocDepartment(items));
     });
-    dispatch(updateCurrentPath("Home", "Categories"));
+    dispatch(updateCurrentPath("Home", "Departments"));
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IDocDepartment): void {

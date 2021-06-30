@@ -46,7 +46,7 @@ const Products: React.FC = () => {
     getDocRequestList(account.auth).then((items: IDocRequestList) => {
       dispatch(loadListOfDocRequest(items));
     });
-    dispatch(updateCurrentPath("Home", "Categories"));
+    dispatch(updateCurrentPath("Home", "Document Request"));
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IDocRequest): void {

@@ -6,6 +6,7 @@ export interface DocApprovalHistory {
    mode_of_access: string; 
    history: string; 
    request_no: string; 
+   page_from: string; 
   
   
 } 

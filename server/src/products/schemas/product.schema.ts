@@ -56,6 +56,18 @@ export class Documents extends Document {
 
   @Prop()
   isActive: boolean;
+
+  @Prop()
+  isRequestedDocument: boolean;
+
+  @Prop()
+  document_no: string;
+
+  @Prop()
+  no_of_copy: number;
+
+  @Prop()
+  no_of_page: number;
   
 }
 

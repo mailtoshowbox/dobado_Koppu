@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStateType } from "../../store/models/root.interface";
 
-import logo from "../../assets/images/login-logo.png";
+import logo from "../../assets/images/login-logo.jpeg";
 const LeftMenu: React.FC = () => {
   let [leftMenuVisibility, setLeftMenuVisibility] = useState(false);
 
@@ -37,7 +37,7 @@ const LeftMenu: React.FC = () => {
           className="sidebar-brand d-flex align-items-center justify-content-center"
           href="index.html"
         >
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" width="150" height="70"  />
         </a>
 
         <hr className="sidebar-divider my-0" />
@@ -100,7 +100,7 @@ const LeftMenu: React.FC = () => {
             <li className="nav-item">
               <Link className="nav-link" to={`/genarateissuance`}>
                 <i className="fas fa-sitemap"></i>
-                <span>Generate Issuance”.</span>
+                <span>Generate Issuance</span>
               </Link>
             </li>
             <li className="nav-item">

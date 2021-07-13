@@ -9,7 +9,7 @@ import {
   addNotification,
   parseApiResult,
 } from "../../store/actions/notifications.action";
-import logo from "../../assets/images/login-logo.png";
+import logo from "../../assets/images/login-logo.jpeg";
 
 const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
                   <div className="p-5">
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-4">
-                        <img src={logo} alt="logo" />
+                        <img src={logo} alt="logo" width="250" height="100" />
                       </h1>
                     </div>
                     <form className="user" onSubmit={submit}>

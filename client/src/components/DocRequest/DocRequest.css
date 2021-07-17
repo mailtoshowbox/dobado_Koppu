@@ -47,5 +47,36 @@
     color:#FFF;
 }
 .input_document_type_selected{
-    border: 1px dotted darkblue;
+    box-shadow: 0 0px 5px #82b443;
+    border-radius: 5px;
+}
+.paddingTB15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+#input_document_type {
+    margin-bottom: 20px;
+}
+.dynamic-request-form {
+    padding: 24px 0;
+}
+#input_document_type.form-control.is-valid, .was-validated #input_document_type.form-control:valid {
+    background-image: none;
+}
+.ReactModal__Content .modal-header {
+    padding: 0.625rem 0.625rem;
+}
+.ReactModal__Overlay {
+    z-index:100;
+}
+.approval-status {
+    white-space: nowrap;
+    padding: 6px 8px;
+    margin-top: 5px;
+    display: inline-block;
+    border-radius: 4px;
+    text-transform: capitalize;
+}
+.react-bs-container-body .table td:last-child {
+     text-align: left !important;
 }

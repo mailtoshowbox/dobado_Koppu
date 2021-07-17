@@ -510,7 +510,12 @@ const ProductForm: React.FC = () => {
             <form onSubmit={saveDocumentRequest}>
               <div className="form-group font-14">
                 <div className="row">
-                  <div className="col-md-2">
+                <div className="col-md-2">
+                    <label style={{ margin: "26px 21px 19px 5px" }}>
+                    Request No
+                    </label>
+                  </div>
+                  <div className="col-md-4">
                     <TextInput
                       id="input_request_no"
                       field="request_no"
@@ -518,13 +523,18 @@ const ProductForm: React.FC = () => {
                       onChange={hasFormValueChanged}
                       required={false}
                       maxLength={100}
-                      label="Request No"
+                      label=""
                       placeholder="Request Number"
                       customError={formState.description.error}
                       disabled={true}
                     />
                   </div>
                   <div className="col-md-2">
+                    <label style={{ margin: "26px 21px 19px 5px" }}>
+                    Emp Id
+                    </label>
+                  </div>
+                  <div className="col-md-4">
                     <TextInput
                       id="input_email"
                       value={formState.empl_id.value}
@@ -532,31 +542,39 @@ const ProductForm: React.FC = () => {
                       onChange={hasFormValueChanged}
                       required={true}
                       maxLength={100}
-                      label="Emp Id"
+                      label=""
                       placeholder="Employee Id"
                       customError={formState.name.error}
                       disabled={true}
                     />
                   </div>
+                  </div>
+                  <div className="row">
+                  <div className="col-md-2">
+                    <label style={{ margin: "26px 21px 19px 5px" }}>
+                    Approved By
+                    </label>
+                  </div>
                   <div className="col-md-4">
-                    <label>Approved By:</label>
                     <div className="row">
-                      <div className="col-md-6">
-                        <label>A1 : {approval1?.empl_id}</label>
-                        <br />
-                        <label>A2 : {approval2?.empl_id}</label>
+                      <div className="col-md-12">
+                        <p><label>A1 : {approval1?.empl_id}</label></p>
+                        <p><label>A2 : {approval2?.empl_id}</label></p>
                       </div>
                     </div>
                   </div>
-                  ss
-                </div>
-                <div className="row">
+                
+                <div className="col-md-2">
+                    <label style={{ margin: "26px 21px 19px 5px" }}>
+                    Category
+                    </label>
+                  </div>
                   {pickOne.length > 0 && (
-                    <div className="col-md-3">
+                    <div className="col-md-4">
                       <SelectInput
                         id="input_document_type"
                         field="doc_type"
-                        label={"Category"}
+                        label=""
                         options={dcat1}
                         required={true}
                         onChange={hasFormValueChanged}
@@ -802,7 +820,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             width="16%"
                           >
-                            DOc No
+                            Doc No
                           </TableHeaderColumn>
 
                           <TableHeaderColumn
@@ -822,7 +840,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             className="label-field-column"
                           >
-                            MAIN DEPT
+                            Main Dept
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             row={2}
@@ -840,7 +858,7 @@ const ProductForm: React.FC = () => {
                             csvHeader="Customer"
                             className="label-field-column-black"
                           >
-                            REQUESTED BY
+                            Requested By
                           </TableHeaderColumn>
 
                           <TableHeaderColumn
@@ -850,7 +868,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             className="label-field-column-black"
                           >
-                            CATEGORY
+                            Category
                           </TableHeaderColumn>
 
                           <TableHeaderColumn
@@ -886,16 +904,20 @@ const ProductForm: React.FC = () => {
                             row={0}
                             colSpan={3}
                             csvHeader="Customer"
+                            className="label-field-column-black"
                             filter={{ type: "TextFilter", delay: 1000 }}
                           >
-                            REFERENCE NUMBER GENERATION
+                            Reference Number Generation
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             row={1}
+                            colSpan={2}
                             csvHeader="order"
                             dataField="order"
                             dataSort
+                            className="label-field-column-black"
                           >
+                            <label className="col-md-6 table-check">
                             <input
                               type="checkbox"
                               name="active"
@@ -904,6 +926,8 @@ const ProductForm: React.FC = () => {
                               onChange={(eve) => hasGenarateNumberChanged(eve)}
                             />
                             Yes
+                            </label>
+                            <label  className="col-md-6 table-check">
                             <input
                               type="checkbox"
                               name="qtype"
@@ -912,6 +936,7 @@ const ProductForm: React.FC = () => {
                               onChange={(eve) => hasGenarateNumberChanged(eve)}
                             />
                             No
+                            </label>
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             row={2}
@@ -933,8 +958,7 @@ const ProductForm: React.FC = () => {
                           </TableHeaderColumn>
 
                           <TableHeaderColumn
-                            row={0}
-                            rowSpan={3}
+                            row={2}
                             dataFormat={printOptionFormatter}
                           >
                             Print LEABELS

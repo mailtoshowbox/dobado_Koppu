@@ -77,16 +77,15 @@ function DocApprovalList(props: productListProps): JSX.Element {
       approval.forEach((appr: any) => {
         if (appr.status === "pending") {
           stsus +=
-            "<br>&nbsp; >> &nbsp;&nbsp;<span class=' btn-info'>" +
+            "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
-            " approval is " +
-            "Pending</span>&nbsp;";
+            " approval  " +
+            "Pending</span>";
         } else if (appr.status === "approved") {
           stsus +=
-            "<br><span class=' btn-info'>" +
+            "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
-            " approval is " +
-            "Approved</span>";
+            " is Approved</span>";
         }
       });
     }
@@ -143,7 +142,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="button"
           className="thead-light-1"
-          width="10%"
+          width="20%"
           dataFormat={docApprovalFormatter}
         >
           Status

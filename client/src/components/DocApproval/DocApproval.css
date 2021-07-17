@@ -46,3 +46,45 @@
     background: #82b443;
     color:#FFF;
 }
+.input_document_type_selected{
+    box-shadow: 0 0px 5px #82b443;
+    border-radius: 5px;
+}
+.paddingTB15 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+#input_document_type {
+    margin-bottom: 20px;
+}
+.dynamic-request-form {
+    padding: 24px 0;
+}
+#input_document_type.form-control.is-valid, .was-validated #input_document_type.form-control:valid {
+    background-image: none;
+}
+.modal-header span {
+    display: block;
+    width: 100%;
+}
+.ReactModal__Content .modal-header .modal-title {
+    font-size: 1rem;
+    font-weight: bold;
+}
+.modal-body label {
+    font-size: 14px;
+    font-weight: bold;
+}
+.modal-body input {
+    font-size: 12px;
+}
+.modal-footer .btn {
+    font-size: 12px;
+}
+.ReactModal__Content .modal-header {
+    padding: 0.625rem 0.625rem;
+    background: #eeeeee;
+}
+.ReactModal__Overlay {
+    z-index:100;
+}

@@ -17,8 +17,12 @@ body {
 }
 
 .popup-modal-content {
-    width     : 300px !important;
+    width     : 500px !important;
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+}
+
+.popup-modal-content form {
+    padding: 40px;
 }
 
 .popup-title {

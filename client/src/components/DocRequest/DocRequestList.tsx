@@ -85,21 +85,20 @@ function DocRequestList(props: productListProps): JSX.Element {
       approval.forEach((appr: any) => {
         if (appr.status === "pending") {
           stsus +=
-            "<br><i class='fal fa-hourglass-half'></i>&nbsp;&nbsp;<span class=' btn-info'>" +
+            "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
             " approval is " +
-            "Pending</span>&nbsp;";
+            "Pending</span>";
         } else if (appr.status === "approved") {
           stsus +=
-            "<br><span class=' btn-info'>" +
+            "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
-            " approval is " +
-            "Approved</span>";
+            " is Approved</span>";
         } else if (appr.status === "rejected") {
           stsus +=
-            "<br><span class=' btn-info'>" +
+            "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
-            " approval is " +
+            " approval" +
             "Rejected</span>";
         }
       });
@@ -115,7 +114,7 @@ function DocRequestList(props: productListProps): JSX.Element {
     clearSearch: true,
   };
   return (
-    <div className="portlet">
+    <div>
       <BootstrapTable
         options={options}
         data={docRequests.docRequests}
@@ -124,6 +123,7 @@ function DocRequestList(props: productListProps): JSX.Element {
         search={true}
       >
         <TableHeaderColumn
+           width="15%"
           dataField="_id"
           isKey
           searchable={false}
@@ -156,7 +156,7 @@ function DocRequestList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="button"
           className="thead-light-1"
-          width="10%"
+          width="20%"
           dataFormat={docApprovalFormatter}
         >
           Status

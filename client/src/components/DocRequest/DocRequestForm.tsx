@@ -358,15 +358,13 @@ const ProductForm: React.FC = () => {
         className="modal-header"
         style={{
           fontWeight: "bold",
-          fontSize: "large",
           textAlign: "center",
           backgroundColor: "#eeeeee",
         }}
       >
-        <h3>Add New Document</h3>
-        <button className="btn btn-info" onClick={onClose}>
-          Close
-        </button>
+        <h3 className="modal-title">Add New Document</h3>
+        {/* <i className="fa fa-close" onClick={onClose}>
+        </i> */}
       </div>
     );
   }
@@ -382,7 +380,12 @@ const ProductForm: React.FC = () => {
           <div className="card-body">
             <form onSubmit={saveDocumentRequest}>
               <div className="form-group font-14">
-                <div className="row">
+                <div className="row paddingTB15">
+                <div className="col-md-2">
+                    <label style={{ margin: "26px 21px 19px 5px" }}>
+                    Emp Id
+                    </label>
+                  </div>
                   <div className="col-md-4">
                     <TextInput
                       id="input_email"
@@ -391,11 +394,16 @@ const ProductForm: React.FC = () => {
                       onChange={hasFormValueChanged}
                       required={true}
                       maxLength={100}
-                      label="Emp Id"
+                      label=""
                       placeholder="Employee Id"
                       customError={formState.name.error}
                       disabled={true}
                     />
+                  </div>
+                <div className="col-md-2">
+                    <label style={{ margin: "26px 21px 19px 5px" }}>
+                    Request No
+                    </label>
                   </div>
                   <div className="col-md-4">
                     <TextInput
@@ -405,7 +413,7 @@ const ProductForm: React.FC = () => {
                       onChange={hasFormValueChanged}
                       required={false}
                       maxLength={100}
-                      label="Request No"
+                      label=""
                       placeholder="Request Number"
                       customError={formState.description.error}
                       disabled={true}
@@ -487,6 +495,7 @@ const ProductForm: React.FC = () => {
                       keyField="document_no"
                     >
                       <TableHeaderColumn
+                        width="15%"
                         dataField="document_no"
                         editable={{
                           defaultValue: uniqueId("DOC"),
@@ -525,7 +534,7 @@ const ProductForm: React.FC = () => {
                       <TableHeaderColumn
                         dataField="reason_for_request"
                         className="thead-light-1"
-                        width="10%"
+                        width="20%"
                         editable={{
                           type: "textarea",
                         }}
@@ -536,9 +545,9 @@ const ProductForm: React.FC = () => {
                   </div>
                 )}
                 {formState.doc_type.value > 5 && (
-                  <div>
+                  <div className="dynamic-request-form">
                     <div className="row">
-                      <div className="col-md-3">
+                      <div className="col-md-4">
                         <TextInput
                           id="input_request_no"
                           field="emp_code"
@@ -546,14 +555,12 @@ const ProductForm: React.FC = () => {
                           onChange={hasFormValueChanged}
                           required={false}
                           maxLength={100}
-                          label="Emp Code"
+                          label=""
                           placeholder="Emp Code"
                           customError={""}
                         />
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-3">
+                      <div className="col-md-4">
                         <TextInput
                           id="input_request_no"
                           field="ref_no"
@@ -561,12 +568,12 @@ const ProductForm: React.FC = () => {
                           onChange={hasFormValueChanged}
                           required={false}
                           maxLength={100}
-                          label="Reference No"
+                          label=""
                           placeholder="Reference No"
                           customError={""}
                         />
                       </div>
-                      <div className="col-md-3">
+                      <div className="col-md-4">
                         <TextInput
                           id="input_request_no"
                           field="description"
@@ -574,14 +581,14 @@ const ProductForm: React.FC = () => {
                           onChange={hasFormValueChanged}
                           required={false}
                           maxLength={100}
-                          label="Description"
+                          label=""
                           placeholder="Description"
                           customError={""}
                         />
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-md-3">
+                      <div className="col-md-4">
                         <TextInput
                           id="input_request_no"
                           field="title"
@@ -589,12 +596,12 @@ const ProductForm: React.FC = () => {
                           onChange={hasFormValueChanged}
                           required={false}
                           maxLength={100}
-                          label="title "
+                          label=" "
                           placeholder="title "
                           customError={""}
                         />
                       </div>
-                      <div className="col-md-3">
+                      <div className="col-md-4">
                         <TextInput
                           id="input_request_no"
                           field="category"
@@ -602,7 +609,7 @@ const ProductForm: React.FC = () => {
                           onChange={hasFormValueChanged}
                           required={false}
                           maxLength={100}
-                          label="category"
+                          label=""
                           placeholder="category"
                           customError={""}
                         />
@@ -624,12 +631,12 @@ const ProductForm: React.FC = () => {
                       onChange={hasFormValueChanged}
                       required={false}
                       maxLength={100}
-                      label="Emp Code"
+                      label=""
                       placeholder="Emp Code"
                       customError={""}
                     />
                   </div>
-                  <div className="col-md-3" style={{ textAlign: "center" }}>
+                  <div className="col-md-3" style={{ textAlign: "center" ,  marginTop: "2%"}}>
                     <div
                       className="btn"
                       onClick={() => loadApproavalAccessUserMail("manager")}
@@ -646,7 +653,7 @@ const ProductForm: React.FC = () => {
                       onChange={hasFormValueChanged}
                       required={false}
                       maxLength={100}
-                      label="Mail Id"
+                      label=""
                       placeholder="Mail Id"
                       customError={""}
                       disabled={true}
@@ -668,12 +675,12 @@ const ProductForm: React.FC = () => {
                         onChange={hasFormValueChanged}
                         required={false}
                         maxLength={100}
-                        label="Emp Code"
+                        label=""
                         placeholder="Emp Code"
                         customError={""}
                       />
                     </div>
-                    <div className="col-md-3" style={{ textAlign: "center" }}>
+                    <div className="col-md-3" style={{ textAlign: "center" , marginTop: "2%"}}>
                       <div
                         className="btn"
                         onClick={() =>
@@ -692,7 +699,7 @@ const ProductForm: React.FC = () => {
                         onChange={hasFormValueChanged}
                         required={false}
                         maxLength={100}
-                        label="Mail Id"
+                        label=""
                         placeholder="Mail Id"
                         customError={""}
                         disabled={true}
@@ -701,7 +708,12 @@ const ProductForm: React.FC = () => {
                   </div>
                 )}
                 <div className="row">
-                  <div className="col-md-3">
+                <div className="col-md-2">
+                    <label style={{ margin: "26px 21px 19px 5px" }}>
+                    Comments
+                    </label>
+                  </div>
+                  <div className="col-md-9">
                     <TextInput
                       id="input_request_no"
                       field="comments"
@@ -709,7 +721,7 @@ const ProductForm: React.FC = () => {
                       onChange={hasFormValueChanged}
                       required={false}
                       maxLength={100}
-                      label="Comments"
+                      label=""
                       placeholder="Comments"
                       customError={""}
                     />

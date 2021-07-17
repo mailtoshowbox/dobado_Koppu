@@ -67,3 +67,22 @@ th.label-field-column-black {
 .class-doc-approved-already{
     background: rgb(118, 117, 117) !important;
 }
+
+.popup-modal-content .user{
+    text-align: left;
+}
+.table-check {
+    margin-bottom: 0;
+}
+.table-check input {
+    margin-right: 10px;
+    margin-top: 5px;
+}
+.approval-status {
+    white-space: nowrap;
+    padding: 6px 8px;
+    margin-top: 5px;
+    display: inline-block;
+    border-radius: 4px;
+    text-transform: capitalize;
+}

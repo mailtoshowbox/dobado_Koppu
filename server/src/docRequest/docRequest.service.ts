@@ -20,7 +20,7 @@ export class DocRequestService {
   ) {}
 
   async findAll(mode : string, empl_id: string): Promise<DocRequest[]> {
-    console.log("string----",mode);    
+    
     if(mode === 'approval'){       
       return await   this.DocRequestModel.find({}).exec().then((resultNew)=>{
         let approval_list_for_epl : any = [];    
@@ -28,17 +28,17 @@ export class DocRequestService {
           resultNew.forEach((req)=>{
             let checkAppor : any    = [];
             let approvalList : any    = req.approval;
-            console.log("approvalList.length---", approvalList.length);
              if(approvalList.length ){ 
                 checkAppor     =  approvalList.filter(approv => { 
-                return approv.empl_id === empl_id ;
+                return approv.empl_id === empl_id && approv.status !== 'approved';
               }) || [];             
               if(checkAppor.length > 0){               
                 approval_list_for_epl.push(req);
               } 
             }
-          })          
-          return approval_list_for_epl;
+          }); 
+                   
+         return approval_list_for_epl;
         }else{
           return [];
         }
@@ -185,13 +185,15 @@ export class DocRequestService {
 
     if(page === "issueGenaralIssuance"){
 
+      
+
 
       const {requested_doc=[]} =DocRequest; 
       const issuanceList = requested_doc.filter((doc : any)=>{
-        return doc.is_doc_approved;
+        
+        return doc.is_doc_approved && !doc.is_doc_issued;
       });
       if(issuanceList.length === requested_doc.length){
-          console.log("All doc Approved");
           issuanceList.forEach((doc)=>{
 
             const newDcoument = {  
@@ -220,33 +222,50 @@ export class DocRequestService {
   
           })
       }else{
-        console.log("Partially Requested");
-        issuanceList.forEach((doc)=>{
-          console.log("Partially doc", doc);
+
+      const  {doc_issuance = [], document_no=''} =issuanceList[0] ? issuanceList[0] :[];
+      if(document_no !== ""){
+        requested_doc.map((doc : any)=>{   
+          if(doc.document_no === document_no){
+            doc.is_doc_issued = true;
+          }          
+          return doc 
+        });  
+        doc_issuance.forEach((doc)=>{
+          console.log("Partially doc-------", doc.document_no);
           const newDcoument = {  
             name: doc.document_name,
             description: doc.document_name,
             no_of_copy : doc.no_of_copy,
             no_of_page : doc.no_of_page,
             document_no : doc.document_no,
+            qr_code : doc.document_no,
             box: '',
             rack:  '',
             category :  "",
-            box_info: [  ],
-            rack_info: [  ],
+            box_info: [],
+            rack_info: [],
             category_info: [],
             document_type : "",
             docType_info: "",
-            retension_time : "" };
-            console.log("Partially newDcoument ><<<<>>>>IN>>>", newDcoument);
+            is_Active: true,
+            retension_time : "" }; 
           const newProduct = new this.documentModal(newDcoument); 
           newProduct.isActive = false;
           newProduct.isRequestedDocument = true;
           newProduct.save().then((res)=>{
-            console.log("THENEN=", res);
+          //  console.log("THENEN=", res);
           });
 
         })
+      }
+        
+
+        //console.log("issuanceList--", issuanceList);
+
+        
+    
+        
       }
 
       

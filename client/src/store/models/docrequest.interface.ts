@@ -34,7 +34,7 @@ export interface RequestDocument {
     document_name: string;
     document_no: string;  
     no_of_page: number; 
-    doc_issuance: ApproveDocument; 
+    doc_issuance: DocIssuance; 
 }
 export interface RejectDocument {
     is_rejected: boolean,
@@ -42,6 +42,20 @@ export interface RejectDocument {
     rejected_on: Date,
     rejected_reason: string
     rejected_from_page: string
+}
+export interface DocIssuance {
+    is_rejected: Array<IssuedDocument>    
+}
+export interface IssuedDocument {
+    _id: string;  
+    no_of_copy: string;
+    empl_id: string;
+    doc_type: number;
+    request_no: string;
+    is_doc_approved : boolean
+    document_name: string;
+    document_no: string;  
+    no_of_page: number;  
 }
 export interface ApproveDocument {
     is_rejected: boolean,

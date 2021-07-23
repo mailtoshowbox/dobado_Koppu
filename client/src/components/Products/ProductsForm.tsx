@@ -1,4 +1,4 @@
-import React, {  useState, FormEvent, Dispatch, Fragment } from "react";
+import React, { useState, FormEvent, Dispatch, Fragment } from "react";
 import {
   IStateType,
   IProductState,
@@ -26,7 +26,6 @@ import {
   setModificationState,
   addProduct,
   loadListOfProduct,
-
 } from "../../store/actions/products.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
@@ -72,7 +71,7 @@ const ProductForm: React.FC = () => {
     box: "",
     rack: "",
   });
-  const [,setQrModified] = useState(false);
+  const [, setQrModified] = useState(false);
   const selectField = ["box"];
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -686,7 +685,11 @@ const ProductForm: React.FC = () => {
                   <DateInput
                     id="manufacturedate"
                     field="manufacturedate"
-                    value={formState.manufacturedate.value}
+                    value={
+                      formState.manufacturedate.value
+                        ? formState.manufacturedate.value
+                        : new Date()
+                    }
                     required={false}
                     label="Manufacture date"
                     placeholder="Manufacture date"
@@ -697,7 +700,11 @@ const ProductForm: React.FC = () => {
                   <DateInput
                     id="expiredate"
                     field="expiredate"
-                    value={new Date(formState.expiredate.value)}
+                    value={
+                      formState.expiredate.value
+                        ? new Date(formState.expiredate.value)
+                        : new Date()
+                    }
                     required={false}
                     label="Expire date   "
                     placeholder="Expire date"
@@ -822,7 +829,7 @@ const ProductForm: React.FC = () => {
                               backgroundSize: "cover",
                               backgroundRepeat: "no-repeat",
                               height: "58px",
-                              width: "160px",
+                              width: "300px",
                               textAlign: "center",
                             }}
                           >

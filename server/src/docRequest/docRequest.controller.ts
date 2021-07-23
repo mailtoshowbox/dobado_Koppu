@@ -81,6 +81,8 @@ export class DocRequestsController {
     @Body() updateDocRequestsDto: CreateDocRequestDto,
   ): Promise<DocRequest> { 
 
+   console.log("updateDocRequestsDto--", updateDocRequestsDto);
+
     if(page_from){
       let createDocRequestsDto : CreateDocApprovalHistoryDto = { 
        history: JSON.stringify(updateDocRequestsDto),
@@ -105,16 +107,16 @@ export class DocRequestsController {
       }); 
     }
     
-    console.log("---page_from---", page_from);
     return this.DocRequestsService.update(id, updateDocRequestsDto, page_from);
   }
-  @Put(':id')
+  @Put(':id/:uniquenum')
   issueGenaralIssuance(
     @Param('id') id: string,
+    @Param('uniquenum') uniquenum: string,
     @Body() issueGenaralIssuanceDto: CreateDocRequestDto,
   ): Promise<DocRequest> { 
 
-    console.log("updateDocRequestsDto----", issueGenaralIssuanceDto);
+
 
     if(id){
 
@@ -143,7 +145,6 @@ export class DocRequestsController {
         }        
       }); */ 
     } 
-    console.log("---page_from---", id);
     return this.DocRequestsService.update(id, issueGenaralIssuanceDto, 'test');
   }
 }

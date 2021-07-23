@@ -45,10 +45,9 @@ export class DocumentsController {
 
   @Get(':modes')
   findAll(  @Param('modes') modes: string,): Promise<Document[]> {
-    console.log("---------modes------", modes);
+ 
    
     if(modes && modes === "issued" ){
-      console.log("modes------", modes);
       let res = this.productsService.findAll(modes).then((succ=[])=>{   
         let onfo =  succ.map((doc : any)=>{ 
    
@@ -130,14 +129,14 @@ export class DocumentsController {
 
   @Post(':getQRCode')
   getQRCode(@Body() generateQrCode)  {
-    console.log("getRandomCode---",);
+    
     return this.productsService.getRandomCode(generateQrCode);
   }
 
   
   @Post(':getRandomCode')
   getRandomCode(@Body() generateQrCode)  {
-    console.log("getRandomCode---",);
+ 
     return this.productsService.getRandomCode(generateQrCode);
   }
 

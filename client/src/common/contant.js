@@ -1,6 +1,7 @@
 const APP_CONST = {
     API_HOST_AT: "http://localhost:3000",
     "REQUEST_DOCUMENT_PREFIX": "RQ",
+    "REQUEST_DOCUMENT_PREFIX_RECU": "RQ",
     "DOC_REQUEST_DOC_TYPE": {
         CATEGORY_ONE: [{
                 id: "1",

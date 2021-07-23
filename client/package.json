@@ -62,6 +62,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
+    "@types/lodash": "^4.14.171",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.2",
     "datatables.net": "^1.10.23",

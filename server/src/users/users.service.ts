@@ -35,13 +35,11 @@ export class UsersService {
         newUser.approved =false;
         newUser.isAllowedForApproval = false; 
     
-        console.log("newUser---", newUser);
         var createdUser = new this.userModel(newUser);
         createdUser.approved = false; 
         createdUser.isAllowedForApproval = false; 
         
         
-        console.log("createdUser---", createdUser);
        
 
         createdUser.roles = ["Deactivated"];  
@@ -76,7 +74,6 @@ export class UsersService {
 
   async updateProfile(profileDto: ProfileDto): Promise<User> {
 
-    console.log("profileDtoSERVCIE--", profileDto);
     let userFromDb = await this.userModel.findOne({ _id: profileDto._id});
 
    
@@ -89,7 +86,6 @@ export class UsersService {
     userFromDb.emp_id = profileDto.emp_id;
     if(profileDto.roles) userFromDb.roles = [...profileDto.roles];
 
-    console.log("userFromDb----",userFromDb);
      await userFromDb.save();
     return userFromDb;
 

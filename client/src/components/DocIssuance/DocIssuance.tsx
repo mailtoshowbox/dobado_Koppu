@@ -156,7 +156,7 @@ const Products: React.FC = () => {
                   .catch((err) => {
                     dispatch(
                       addNotification(
-                        "Category not removed",
+                        "Category not removedf",
                         `Category  not removed`
                       )
                     );

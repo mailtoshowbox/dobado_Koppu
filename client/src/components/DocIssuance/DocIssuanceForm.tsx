@@ -11,7 +11,8 @@ import {
 
 import TextInput from "../../common/components/TextInput";
 import NumberInput from "../../common/components/NumberInput";
-
+import CheckboxInput from "../../common/components/Checkbox";
+import _uniqueId from "lodash/uniqueId";
 import { setModificationState } from "../../store/actions/docissuance.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
@@ -81,14 +82,18 @@ const ProductForm: React.FC = () => {
   const [generateNumYes, setGenerateNumYes] = useState(false);
   const [generateNumNo, setGenerateNumNo] = useState(true);
   const [printYesDoc, setPrintYesDoc] = useState(false);
-  const [selectedDocForPrint, setSelectedDocForPrint] = useState({
+  const initialSelectedDocForPrint = {
     document_name: "",
     document_no: "",
     no_of_copy: "",
     no_of_page: "",
     reason_for_request: "",
     no_of_label: 0,
-  });
+    generate_unique_num: true,
+  };
+  const [selectedDocForPrint, setSelectedDocForPrint] = useState(
+    initialSelectedDocForPrint
+  );
 
   const [loginForm, setLoginForm] = useState({
     email: "",
@@ -327,6 +332,12 @@ const ProductForm: React.FC = () => {
     });
   }
 
+  function checkUniqueId(fieldValue: any = [], currentId: any = "") {
+    const isExists = fieldValue.some((it: any) => it.document_no === currentId);
+
+    return { isExists, currentId };
+  }
+
   const printLabel = (event: any) => {
     event.preventDefault();
     var divContents = document.getElementById("printme")?.innerHTML;
@@ -339,14 +350,35 @@ const ProductForm: React.FC = () => {
     a?.print();
 
     const requestedDoc = formState.requested_doc.value;
-    const apprvedDoc = requestedDoc.map((doc) => {
+
+    let processedDocForApproval: any = [];
+    const apprvedDoc = requestedDoc.map((doc: any) => {
       if (doc.document_no === selectedDocForPrint.document_no) {
+        if (selectedDocForPrint.no_of_label > 1) {
+          for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
+            console.log("doc----", doc);
+            const processedApproval = Object.assign(
+              { ...doc },
+              {
+                is_doc_approved: true,
+                document_no: selectedDocForPrint.generate_unique_num
+                  ? _uniqueId(doc.document_no)
+                  : doc.document_no,
+                request_no: formState.request_no.value,
+              }
+            );
+            processedDocForApproval.push(processedApproval);
+          }
+        }
+        console.log("ISSUED", processedDocForApproval);
+        doc.doc_issuance = processedDocForApproval;
         doc.is_doc_approved = true;
       } else {
-        doc.is_doc_approved = false;
+        doc.is_doc_approved = doc.is_doc_approved ? doc.is_doc_approved : false;
       }
       return doc;
     });
+
     let approvalInfo = {
       name: formState.name.value,
       empl_id: formState.empl_id.value,
@@ -356,7 +388,11 @@ const ProductForm: React.FC = () => {
       approval: formState.approval.value,
       id: formState._id.value,
     };
+    console.log("approvalInfo----", approvalInfo);
+
     issueGenaralIssuance(approvalInfo, account).then((status) => {
+      setPrintYesDoc(false);
+      setSelectedDocForPrint(initialSelectedDocForPrint);
       setShowYes(false);
       dispatch(
         addNotification("Document issued", `Part of document request issued`)
@@ -403,7 +439,6 @@ const ProductForm: React.FC = () => {
   }
 
   function hasGenarateNumberPrint(model: any, docNum: string): void {
-    console.log("formState.requested_doc---", formState.requested_doc);
     const selectedDocu: any = formState.requested_doc.value.filter(
       (doc: any) => {
         return doc.document_no === docNum;
@@ -413,7 +448,6 @@ const ProductForm: React.FC = () => {
     setPrintYesDoc(true);
   }
   const printOptionFormatter = (cell: any, row: any) => {
-    console.log("row------", row);
     if (generateNumYes) {
       const { is_doc_approved = false } = row;
       if (is_doc_approved) {
@@ -444,8 +478,6 @@ const ProductForm: React.FC = () => {
 
   const issueGenaralIssuanceAll = (event: any) => {
     event.preventDefault();
-
-    console.log("issuanceDocissuanceDocissuanceDoc-");
 
     const requestedDoc = formState.requested_doc.value;
     const apprvedDoc = requestedDoc.map((doc) => {
@@ -510,9 +542,9 @@ const ProductForm: React.FC = () => {
             <form onSubmit={saveDocumentRequest}>
               <div className="form-group font-14">
                 <div className="row">
-                <div className="col-md-2">
+                  <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Request No
+                      Request No
                     </label>
                   </div>
                   <div className="col-md-4">
@@ -531,7 +563,7 @@ const ProductForm: React.FC = () => {
                   </div>
                   <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Emp Id
+                      Emp Id
                     </label>
                   </div>
                   <div className="col-md-4">
@@ -548,25 +580,29 @@ const ProductForm: React.FC = () => {
                       disabled={true}
                     />
                   </div>
-                  </div>
-                  <div className="row">
+                </div>
+                <div className="row">
                   <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Approved By
+                      Approved By
                     </label>
                   </div>
                   <div className="col-md-4">
                     <div className="row">
                       <div className="col-md-12">
-                        <p><label>A1 : {approval1?.empl_id}</label></p>
-                        <p><label>A2 : {approval2?.empl_id}</label></p>
+                        <p>
+                          <label>A1 : {approval1?.empl_id}</label>
+                        </p>
+                        <p>
+                          <label>A2 : {approval2?.empl_id}</label>
+                        </p>
                       </div>
                     </div>
                   </div>
-                
-                <div className="col-md-2">
+
+                  <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Category
+                      Category
                     </label>
                   </div>
                   {pickOne.length > 0 && (
@@ -918,24 +954,28 @@ const ProductForm: React.FC = () => {
                             className="label-field-column-black"
                           >
                             <label className="col-md-6 table-check">
-                            <input
-                              type="checkbox"
-                              name="active"
-                              value="yes"
-                              checked={generateNumYes}
-                              onChange={(eve) => hasGenarateNumberChanged(eve)}
-                            />
-                            Yes
+                              <input
+                                type="checkbox"
+                                name="active"
+                                value="yes"
+                                checked={generateNumYes}
+                                onChange={(eve) =>
+                                  hasGenarateNumberChanged(eve)
+                                }
+                              />
+                              Yes
                             </label>
-                            <label  className="col-md-6 table-check">
-                            <input
-                              type="checkbox"
-                              name="qtype"
-                              value="no"
-                              checked={generateNumNo}
-                              onChange={(eve) => hasGenarateNumberChanged(eve)}
-                            />
-                            No
+                            <label className="col-md-6 table-check">
+                              <input
+                                type="checkbox"
+                                name="qtype"
+                                value="no"
+                                checked={generateNumNo}
+                                onChange={(eve) =>
+                                  hasGenarateNumberChanged(eve)
+                                }
+                              />
+                              No
                             </label>
                           </TableHeaderColumn>
                           <TableHeaderColumn
@@ -1070,7 +1110,7 @@ const ProductForm: React.FC = () => {
                           onChange={() => {}}
                           required={true}
                           maxLength={100}
-                          label="Document Number"
+                          label="Document Numbers"
                           customError={""}
                           placeholder="Email"
                         />
@@ -1083,6 +1123,20 @@ const ProductForm: React.FC = () => {
                           onChange={hasNoOfLabelValueChanged}
                           label="No of Labels"
                           customError={""}
+                        />
+                        <CheckboxInput
+                          id="input_email"
+                          field={"generate_unique_num"}
+                          onChange={hasNoOfLabelValueChanged}
+                          label={"Unique number"}
+                          value={
+                            selectedDocForPrint.generate_unique_num
+                              ? true
+                              : false
+                          }
+                          name={"generate_unique_num"}
+                          customError={""}
+                          disabled={false}
                         />
                       </div>
 

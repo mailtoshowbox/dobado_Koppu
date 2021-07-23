@@ -69,6 +69,7 @@ export function docRequestDocumentType(cell, row)
 
 
 export function uniqueId(prefix = 'id') {
+    console.log("Date.now().toString(36)----", Date.now().toString(35));
     return prefix + '' + Date.now().toString(36).substr(2, 9).toUpperCase();
 }
 export function diableFIeldForEdit(prefix = 'id') {

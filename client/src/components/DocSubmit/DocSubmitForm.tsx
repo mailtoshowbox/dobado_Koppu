@@ -32,7 +32,7 @@ import {
   addNewDoc,
   updateDoc,
   getRacks,
-  getDocumentList,
+  getIssuedDocumentList,
   getNewQrCode,
 } from "../../services/index";
 import {
@@ -48,6 +48,7 @@ import { IAccount } from "../../store/models/account.interface";
   Day,
 } from "react-modern-calendar-datepicker"; */
 import uniquebg from "../../assets/images/uniquebg.png";
+import { trimStart } from "lodash";
 
 const ProductForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -62,6 +63,8 @@ const ProductForm: React.FC = () => {
     products.modificationState === ProductModificationStatus.Create;
 
   const { roles = [], name, email } = account;
+
+  console.log("product----", product);
 
   const [boxRacks, setBoxRacks] = useState([]);
   const [formWithError, setFormWithError] = useState(false);
@@ -169,10 +172,13 @@ const ProductForm: React.FC = () => {
     retension_time: {
       error: "",
       value: {
-        time: product.retension_time.time,
-        defaultYear: product.retension_time.defaultYear,
-        calculateNonPerceptualTime:
-          product.retension_time.calculateNonPerceptualTime,
+        time: product.retension_time ? product.retension_time.time : 0,
+        defaultYear: product.retension_time
+          ? product.retension_time.defaultYear
+          : 0,
+        calculateNonPerceptualTime: product.retension_time
+          ? product.retension_time.calculateNonPerceptualTime
+          : 0,
       },
     },
   });
@@ -186,16 +192,7 @@ const ProductForm: React.FC = () => {
       });
     });
   }
-  // function makeid() {
-  //   var text = "";
-  //   var possible =
-  //     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-  //   for (var i = 0; i < 5; i++)
-  //     text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-  //   return text;
-  // }
   function add_years(n: number) {
     let dt = new Date();
     const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
@@ -344,11 +341,12 @@ const ProductForm: React.FC = () => {
             createdBy: { ...currentUser },
             createdOn: new Date(),
           },
+          isActive: true,
           retension_time: formState.retension_time.value,
         };
 
         addNewDoc(boxInfo, account).then((status) => {
-          getDocumentList(account).then((items: IProductList) => {
+          getIssuedDocumentList(account).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(
@@ -374,6 +372,7 @@ const ProductForm: React.FC = () => {
           qr_code: formState.qr_code.value,
           document_type: formState.document_type.value,
           retension_time: formState.retension_time.value,
+          isActive: true,
         };
         let seltdPro = products?.products.filter(
           (pro) => pro._id === formState._id.value
@@ -449,7 +448,7 @@ const ProductForm: React.FC = () => {
             })
           );
 
-          getDocumentList(account).then((items: IProductList) => {
+          getIssuedDocumentList(account).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(
@@ -469,10 +468,6 @@ const ProductForm: React.FC = () => {
     dispatch(setModificationState(ProductModificationStatus.None));
   }
 
-  // function getDisabledClass(): string {
-  //   let isError: boolean = isFormInvalid();
-  //   return isError ? "disabled" : "";
-  // }
   function isFormInvalid(): boolean {
     let formIsValid = true;
     if (formState.name.value === "") {
@@ -553,40 +548,6 @@ const ProductForm: React.FC = () => {
       });
     }
   }
-  function checkPossibleToGenerateQR(dataToProcess: any) {
-    let availableToMakeQrRequest = false;
-
-    if (dataToProcess.name.value !== "") {
-      availableToMakeQrRequest = true;
-    } else {
-      availableToMakeQrRequest = false;
-    }
-    if (availableToMakeQrRequest && dataToProcess.rack.value !== "") {
-      availableToMakeQrRequest = true;
-    } else {
-      availableToMakeQrRequest = false;
-    }
-    if (availableToMakeQrRequest && dataToProcess.box.value !== "") {
-      availableToMakeQrRequest = true;
-    } else {
-      availableToMakeQrRequest = false;
-    }
-
-    if (availableToMakeQrRequest) {
-      getNewQrCode(dataToProcess).then((status) => {
-        let newObject = Object.assign(
-          {},
-          { ...dataToProcess },
-          { ["qr_code"]: { error: "", value: status.qrImage } }
-        );
-
-        setQrModified(false);
-        setFormState(newObject);
-      });
-    } else {
-      setFormState(dataToProcess);
-    }
-  }
 
   function generateCode() {
     return getNewQrCode(formState).then((status) => {
@@ -609,7 +570,7 @@ const ProductForm: React.FC = () => {
     myWindow?.print();
     myWindow?.close();
   }
-
+  console.log("formState-----", formState);
   return (
     <Fragment>
       <div className="col-xl-7 col-lg-7">
@@ -685,7 +646,11 @@ const ProductForm: React.FC = () => {
                   <DateInput
                     id="manufacturedate"
                     field="manufacturedate"
-                    value={formState.manufacturedate.value}
+                    value={
+                      formState.manufacturedate.value
+                        ? formState.manufacturedate.value
+                        : new Date()
+                    }
                     required={false}
                     label="Manufacture date"
                     placeholder="Manufacture date"
@@ -696,7 +661,11 @@ const ProductForm: React.FC = () => {
                   <DateInput
                     id="expiredate"
                     field="expiredate"
-                    value={new Date(formState.expiredate.value)}
+                    value={
+                      formState.expiredate.value
+                        ? new Date(formState.expiredate.value)
+                        : new Date()
+                    }
                     required={false}
                     label="Expire date   "
                     placeholder="Expire date"
@@ -804,13 +773,6 @@ const ProductForm: React.FC = () => {
                   <div className="form-row">
                     <div className="col-md-12" key={"non_perceptual_space"}>
                       {" "}
-                      {/*  <QRCODE
-                          value={formState.qr_code.value}
-                          modified={qrModified}
-                        />  style={{                
-             "backgroundImage": URL(uniquebg : string),                                
-              height: "576px"          
-     }} */}{" "}
                       <div className="card print-section">
                         <div className="card-body text-center">
                           <div
@@ -821,7 +783,7 @@ const ProductForm: React.FC = () => {
                               backgroundSize: "cover",
                               backgroundRepeat: "no-repeat",
                               height: "58px",
-                              width: "160px",
+                              width: "300px",
                               textAlign: "center",
                             }}
                           >

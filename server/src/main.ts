@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-
+import { urlencoded, json } from 'express';
 async function bootstrap() {
   //console.log("ENTRY");
   const app = await NestFactory.create(AppModule); 
@@ -23,6 +23,9 @@ async function bootstrap() {
   methods: "GET,PUT,POST,DELETE,UPDATE,OPTIONS",
   credentials: true,
   });
+   
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
   await app.listen(3000);
 
   console.log(`Application is running on: ${await app.getUrl()}`);

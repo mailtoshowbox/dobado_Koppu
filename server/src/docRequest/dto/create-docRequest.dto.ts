@@ -3,7 +3,7 @@ export class CreateDocRequestDto {
   readonly doc_type: string; 
   readonly request_no: string; 
   readonly isActive: boolean; 
-  readonly requested_doc: []; 
+  readonly requested_doc: any; 
   readonly approval: []; 
   readonly rejectDocumentRequest: {}; 
   readonly comments: string;   

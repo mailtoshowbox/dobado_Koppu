@@ -32,7 +32,6 @@ function ProductList(props: productListProps): JSX.Element {
   }
 
   function dataFormatter(documentName: string, row: any) {
-    console.log("row----", row);
     const {
       // productModificationStatus = 0,
       currentUser: { roles = [] },

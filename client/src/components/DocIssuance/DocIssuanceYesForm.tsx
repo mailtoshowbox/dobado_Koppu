@@ -12,13 +12,10 @@ import {
 
 import TextInput from "../../common/components/TextInput";
 import NumberInput from "../../common/components/NumberInput";
+import CheckboxInput from "../../common/components/Checkbox";
 
 import { setModificationState } from "../../store/actions/docissuance.action";
-import { addNotification } from "../../store/actions/notifications.action";
-import {
-  approveDocumentRequest,
-  issueGenaralIssuance,
-} from "../../services/index";
+import { issueGenaralIssuance } from "../../services/index";
 import {
   OnChangeModel,
   IDocIssuanceFormState,
@@ -52,6 +49,7 @@ const DocIssuanceYesForm: React.FC = () => {
     no_of_page: "",
     reason_for_request: "",
     no_of_label: 0,
+    generate_unique_num: 0,
   });
 
   if (!docIssuance || isCreate) {
@@ -161,7 +159,6 @@ const DocIssuanceYesForm: React.FC = () => {
     setPrintYesDoc(true);
   }
   const printOptionFormatter = (cell: any, row: any) => {
-    console.log("row------", row);
     if (generateNumYes) {
       const { is_doc_approved = false } = row;
       if (is_doc_approved) {
@@ -581,7 +578,7 @@ const DocIssuanceYesForm: React.FC = () => {
                   onChange={() => {}}
                   required={true}
                   maxLength={100}
-                  label="Document Number"
+                  label="Document Numbesr"
                   customError={""}
                   placeholder="Email"
                 />
@@ -595,7 +592,18 @@ const DocIssuanceYesForm: React.FC = () => {
                   label="No of Labels"
                   customError={""}
                 />
+                <CheckboxInput
+                  id="input_email"
+                  field={"generate_unique_num"}
+                  onChange={hasNoOfLabelValueChanged}
+                  label={"Unique number"}
+                  value={true}
+                  name={"generate_unique_num"}
+                  customError={""}
+                  disabled={false}
+                />
               </div>
+              <div className="form-group font-14"></div>
 
               <button
                 className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}

@@ -64,8 +64,6 @@ const ProductForm: React.FC = () => {
 
   const { roles = [], name, email } = account;
 
-  console.log("product----", product);
-
   const [boxRacks, setBoxRacks] = useState([]);
   const [formWithError, setFormWithError] = useState(false);
   const [pickRack, setPickedRack] = useState(false);
@@ -570,7 +568,6 @@ const ProductForm: React.FC = () => {
     myWindow?.print();
     myWindow?.close();
   }
-  console.log("formState-----", formState);
   return (
     <Fragment>
       <div className="col-xl-7 col-lg-7">

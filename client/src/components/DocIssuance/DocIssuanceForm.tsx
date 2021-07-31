@@ -12,6 +12,8 @@ import {
 import TextInput from "../../common/components/TextInput";
 import NumberInput from "../../common/components/NumberInput";
 import CheckboxInput from "../../common/components/Checkbox";
+import TextAreaInput from "../../common/components/TextAreaInput";
+
 import _uniqueId from "lodash/uniqueId";
 import { setModificationState } from "../../store/actions/docissuance.action";
 import { addNotification } from "../../store/actions/notifications.action";
@@ -90,6 +92,7 @@ const ProductForm: React.FC = () => {
     reason_for_request: "",
     no_of_label: 0,
     generate_unique_num: true,
+    doc_issuance: [],
   };
   const [selectedDocForPrint, setSelectedDocForPrint] = useState(
     initialSelectedDocForPrint
@@ -98,6 +101,22 @@ const ProductForm: React.FC = () => {
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
+  });
+
+  const [openIssuanceDocumentEditorModal, updateIssuanceDocumentEditorModal] =
+    useState(false);
+
+  const [issuanceDocumentforEdit, updateIssuanceDocumentforEdit] = useState({
+    reason_for_request: "",
+    edited: false,
+    empl_id: "",
+    doc_type: "",
+    request_no: "",
+    is_doc_approved: false,
+    document_name: "",
+    document_no: "",
+    no_of_page: 0,
+    no_of_copy: 0,
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -114,7 +133,6 @@ const ProductForm: React.FC = () => {
     });
   }
   function hasGenarateNumberChanged(model: any): void {
-    console.log("OnChangeModel---", model.target.value);
     setGenerateNumYes(!generateNumYes);
     setGenerateNumNo(!generateNumNo);
     if (model.target.value === "yes") {
@@ -311,7 +329,6 @@ const ProductForm: React.FC = () => {
 
     loadApproavalAccessUserInfo(data, account).then((status) => {
       if (status.data) {
-        console.log("formState----", formState);
         const { email = "" } = status.data.data;
         const approvedUsers = [];
         if (email) {
@@ -356,7 +373,6 @@ const ProductForm: React.FC = () => {
       if (doc.document_no === selectedDocForPrint.document_no) {
         if (selectedDocForPrint.no_of_label > 1) {
           for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
-            console.log("doc----", doc);
             const processedApproval = Object.assign(
               { ...doc },
               {
@@ -370,9 +386,12 @@ const ProductForm: React.FC = () => {
             processedDocForApproval.push(processedApproval);
           }
         }
-        console.log("ISSUED", processedDocForApproval);
         doc.doc_issuance = processedDocForApproval;
         doc.is_doc_approved = true;
+
+        console.log("doc----", doc);
+
+        setSelectedDocForPrint(doc);
       } else {
         doc.is_doc_approved = doc.is_doc_approved ? doc.is_doc_approved : false;
       }
@@ -388,7 +407,6 @@ const ProductForm: React.FC = () => {
       approval: formState.approval.value,
       id: formState._id.value,
     };
-    console.log("approvalInfo----", approvalInfo);
 
     issueGenaralIssuance(approvalInfo, account).then((status) => {
       setPrintYesDoc(false);
@@ -504,7 +522,7 @@ const ProductForm: React.FC = () => {
         issuance: issuanceDoc,
       };
       issueGenaralIssuance(approvalInfo, account).then((status) => {
-        console.log("issueGenaralIssuance--", status);
+        //
       });
     }
   };
@@ -533,6 +551,54 @@ const ProductForm: React.FC = () => {
     } else {
       return "class-doc-not-approved-already doc-issuance-page";
     }
+  }
+  function onClickIssuanceDocumentEdit(cell: any, row: any, rowIndex: any) {
+    updateIssuanceDocumentEditorModal(true);
+    updateIssuanceDocumentforEdit({ ...issuanceDocumentforEdit, ...row });
+  }
+  function buttonFormatter(cell: any, row: any, rowIndex: any) {
+    return (
+      <>
+        <button
+          type="button"
+          className="btn btn-border"
+          onClick={() => onClickIssuanceDocumentEdit(cell, row, rowIndex)}
+        >
+          <i className="fas fa fa-pen"></i>
+        </button>
+      </>
+    );
+  }
+  function closeDocUpdate(): void {
+    updateIssuanceDocumentEditorModal(false);
+    console.log("Close Popup");
+  }
+  function hasEditIssuanceDocument(model: OnChangeModel): void {
+    updateIssuanceDocumentforEdit({
+      ...issuanceDocumentforEdit,
+      [model.field]: model.value,
+      ["edited"]: true,
+    });
+  }
+  function updateIssuanceDocument(): void {
+    let docList = docIssuance?.requested_doc ? docIssuance?.requested_doc : [];
+    let newDocList: any = [];
+
+    docList.map((cat1: any) => {
+      if (
+        cat1.document_no.toString() ===
+        issuanceDocumentforEdit.document_no.toString()
+      ) {
+        newDocList.push(issuanceDocumentforEdit);
+      } else {
+        newDocList.push(cat1);
+      }
+    });
+    setFormState({
+      ...formState,
+      ["requested_doc"]: { value: newDocList },
+    });
+    updateIssuanceDocumentEditorModal(false);
   }
   return (
     <Fragment>
@@ -709,6 +775,14 @@ const ProductForm: React.FC = () => {
                         }}
                       >
                         Reason for Request
+                      </TableHeaderColumn>
+                      <TableHeaderColumn
+                        dataField="button"
+                        className="thead-light-1"
+                        width="10%"
+                        dataFormat={buttonFormatter}
+                      >
+                        Action
                       </TableHeaderColumn>
                     </BootstrapTable>
                   </div>
@@ -1237,6 +1311,135 @@ const ProductForm: React.FC = () => {
                 Authenticate
               </button>
             </form>
+          </div>
+        </Popup>
+
+        <Popup
+          className="popup-modal"
+          open={openIssuanceDocumentEditorModal}
+          onClose={() => closeDocUpdate()}
+        >
+          <div>
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    <b>
+                      {" "}
+                      Edit Document {issuanceDocumentforEdit.document_name}
+                    </b>
+                  </h5>
+                </div>
+                <div className="modal-body">
+                  <div className="form-group">
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <TextInput
+                          id="input_request_no"
+                          field="document_no"
+                          value={issuanceDocumentforEdit.document_no}
+                          onChange={hasEditIssuanceDocument}
+                          required={false}
+                          maxLength={6}
+                          label="Document Number"
+                          placeholder="Document Number"
+                          customError={""}
+                          disabled={true}
+                        />{" "}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <TextInput
+                          id="input_request_no"
+                          field="document_name"
+                          value={issuanceDocumentforEdit.document_name}
+                          onChange={hasEditIssuanceDocument}
+                          required={false}
+                          maxLength={6}
+                          label="Document Name"
+                          placeholder="Document Name"
+                          customError={""}
+                        />{" "}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <NumberInput
+                          id="input_request_no"
+                          field="no_of_copy"
+                          value={issuanceDocumentforEdit.no_of_copy}
+                          onChange={hasEditIssuanceDocument}
+                          label="No of Copy"
+                          customError={""}
+                        />{" "}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <NumberInput
+                          id="input_request_no"
+                          field="no_of_page"
+                          value={issuanceDocumentforEdit.no_of_page}
+                          onChange={hasEditIssuanceDocument}
+                          label="No of page"
+                          customError={""}
+                        />{" "}
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <div>
+                          <TextAreaInput
+                            id="input_request_no"
+                            field="reason_for_request"
+                            value={issuanceDocumentforEdit.reason_for_request}
+                            onChange={hasEditIssuanceDocument}
+                            required={false}
+                            maxLength={100}
+                            label="Reason for Request"
+                            placeholder="Reason for Request"
+                            customError={""}
+                          />{" "}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    onClick={() => closeDocUpdate()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => updateIssuanceDocument()}
+                  >
+                    Update Document
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </Popup>
       </div>

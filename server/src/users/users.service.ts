@@ -85,6 +85,10 @@ export class UsersService {
     userFromDb.isAllowedForApproval = profileDto.isAllowedForApproval;
     userFromDb.emp_id = profileDto.emp_id;
     if(profileDto.roles) userFromDb.roles = [...profileDto.roles];
+    if(profileDto.departments) userFromDb.departments = [...profileDto.departments];
+
+    console.log("profileDto----", profileDto.departments);
+    console.log("userFromDb----", userFromDb);
 
      await userFromDb.save();
     return userFromDb;

@@ -138,7 +138,6 @@ const DocIssuanceYesForm: React.FC = () => {
   }
 
   function hasGenarateNumberChanged(model: any): void {
-    console.log("OnChangeModel---", model.target.value);
     setGenerateNumYes(!generateNumYes);
     setGenerateNumNo(!generateNumNo);
     if (model.target.value === "yes") {
@@ -149,7 +148,6 @@ const DocIssuanceYesForm: React.FC = () => {
     }
   }
   function hasGenarateNumberPrint(model: any, docNum: string): void {
-    console.log("formState.requested_doc---", formState.requested_doc);
     const selectedDocu: any = formState.requested_doc.value.filter(
       (doc: any) => {
         return doc.document_no === docNum;

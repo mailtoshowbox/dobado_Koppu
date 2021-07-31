@@ -80,3 +80,7 @@
 .react-bs-container-body .table td:last-child {
      text-align: left !important;
 }
+
+.doc-request-rejected{
+    font-weight: bold;
+ }

@@ -90,14 +90,7 @@ export function getDocTypeList(options = {}) {
 }
 
 export function updateUserProfile(newitem, options) {
-
-  console.log("myOpt newitem ions---", newitem);
-
   var myOptions = getDocCustomPostOptions(options, newitem);
-
-  console.log("myOptions---", myOptions);
-
-
   return fetch(APP_CONST.API_HOST_AT + '/users/profile/updateProfile', myOptions)
     .then(response => {
       if (!response.ok) {
@@ -207,9 +200,10 @@ export function getDocCategoryList(options = {}) {
       handleError(error);
     });
 }
-export function getDocRequestList(options = {}) {
+export function getDocRequestList(options = {}, id) {
+
   var myOptions = getDocCustomGetOptions(options);
-  return fetch(APP_CONST.API_HOST_AT + "/docrequests/request/0", myOptions)
+  return fetch(APP_CONST.API_HOST_AT + "/docrequests/request/" + id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -224,7 +218,6 @@ export function getDocRequestList(options = {}) {
     });
 }
 export function getDocRequestApprovalList(options = {}, id) {
-  console.log("options--", options);
   var myOptions = getDocCustomGetOptions(options);
   return fetch(APP_CONST.API_HOST_AT + "/docrequests/approval/" + id, myOptions)
     .then(response => {
@@ -241,7 +234,6 @@ export function getDocRequestApprovalList(options = {}, id) {
     });
 }
 export function getDocIssuanceList(options = {}, id) {
-  console.log("options--", options);
   var myOptions = getDocCustomGetOptions(options);
   return fetch(APP_CONST.API_HOST_AT + "/docrequests/issuance/" + id, myOptions)
     .then(response => {
@@ -569,7 +561,6 @@ export function updateDocumentRequest(item, options) {
     id = ""
   } = item;
   var myOptions = getDocCustomPutOptions(options, item);
-  console.log("item----", item);
   return fetch(APP_CONST.API_HOST_AT + '/docrequests/' + id, myOptions)
     .then(response => {
       if (!response.ok) {
@@ -589,7 +580,6 @@ export function approveDocumentRequest(item, options) {
     id = ""
   } = item;
   var myOptions = getDocCustomPutOptions(options, item);
-  console.log("item----", item);
   return fetch(APP_CONST.API_HOST_AT + '/docrequests/approve/' + id, myOptions)
     .then(response => {
       if (!response.ok) {
@@ -610,7 +600,6 @@ export function issueGenaralIssuance(item, options) {
     id = ""
   } = item;
   var myOptions = getDocCustomPutOptions(options, item);
-  console.log("item----", item);
   return fetch(APP_CONST.API_HOST_AT + '/docrequests/issueGenaralIssuance/' + id, myOptions)
     .then(response => {
       if (!response.ok) {

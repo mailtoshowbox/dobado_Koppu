@@ -75,11 +75,15 @@ const Home: React.FC = () => {
         const docCreater = documents.data.filter(
           (pr: any) =>
             pr.document_info &&
+            pr.document_info.createdBy &&
+            pr.document_info.createdBy.role &&
             pr.document_info.createdBy.role !== "Documentcreater"
         );
         const QtyUser = documents.data.filter(
           (pr: any) =>
             pr.document_info &&
+            pr.document_info.createdBy &&
+            pr.document_info.createdBy.role &&
             pr.document_info.createdBy.role === "Documentcreater"
         );
 

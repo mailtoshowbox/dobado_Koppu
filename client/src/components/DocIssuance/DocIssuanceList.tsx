@@ -57,12 +57,6 @@ function DocApprovalList(props: productListProps): JSX.Element {
           >
             <i className="fas fa fa-pen"></i>
           </button>
-          <button
-            className="btn btn-border  btn-red-color"
-            onClick={() => onClickProductDelete(cell, row, rowIndex)}
-          >
-            <i className="fas fa fa-trash" aria-hidden="true"></i>
-          </button>
         </>
       );
     }

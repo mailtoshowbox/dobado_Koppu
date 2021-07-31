@@ -9,6 +9,7 @@ export interface User extends Document{
   birthdaydate: Date;
   password: string;
   roles: string[];
+  departments: string[]; 
   approved : boolean;
   isAllowedForApproval : boolean,
   emp_id : string,  

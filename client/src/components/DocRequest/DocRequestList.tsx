@@ -6,7 +6,8 @@ import {
 } from "../../store/models/root.interface";
 import { IDocRequest } from "../../store/models/docrequest.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import { docRequestDocumentType } from "../../common/utils";
+import { docRequestDocumentType, setRequestStatus } from "../../common/utils";
+import { couldStartTrivia } from "typescript";
 
 export type productListProps = {
   onSelect?: (product: IDocRequest) => void;
@@ -96,10 +97,10 @@ function DocRequestList(props: productListProps): JSX.Element {
             " is Approved</span>";
         } else if (appr.status === "rejected") {
           stsus +=
-            "<span class=' approval-status btn-info'>" +
+            "<span class=' approval-status btn-info text-danger'>" +
             appr.approve_access_level +
             " approval" +
-            "Rejected</span>";
+            " Rejected</span>";
         }
       });
     }
@@ -113,6 +114,7 @@ function DocRequestList(props: productListProps): JSX.Element {
   const options = {
     clearSearch: true,
   };
+
   return (
     <div>
       <BootstrapTable
@@ -121,9 +123,10 @@ function DocRequestList(props: productListProps): JSX.Element {
         pagination={true}
         hover={true}
         search={true}
+        trClassName={setRequestStatus}
       >
         <TableHeaderColumn
-           width="15%"
+          width="15%"
           dataField="_id"
           isKey
           searchable={false}

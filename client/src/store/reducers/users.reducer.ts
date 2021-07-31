@@ -29,7 +29,6 @@ function userReducer(state: IUserState = initialState, action: IActionBase): IUs
             return { ...state, admins: state.admins.filter(x=>x.id !== action.user.id), users: [...state.users, action.user]};
         }
         case LIST_DOC_DEPARTMENT: { 
-            console.log("action------>>>>",action);
             return { ...state, docDepartments:  action.docDepartments};
         }
         default:

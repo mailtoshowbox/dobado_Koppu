@@ -91,7 +91,6 @@ const ProductForm: React.FC = () => {
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
-    //console.log("requestDoc----", model);
     if (model.field === "document_type") {
       setSelectedCategory(model.value.toString());
     }
@@ -119,8 +118,6 @@ const ProductForm: React.FC = () => {
       }
     }
     slectedData[approvalPos[2]] = { emp_id: 1 };
-
-    //console.log("approvalPos---", approvalPos);
   }
 
   function cancelForm(): void {
@@ -165,7 +162,6 @@ const ProductForm: React.FC = () => {
   }
 
   function saveRequest(formState: any, saveFn: Function, mode: String): void {
-    //console.log("DOC REQUEST---", formState, mode);
     if (docrequest) {
       if (mode === "ADD") {
         let boxInfo = {
@@ -270,21 +266,13 @@ const ProductForm: React.FC = () => {
     : null;
 
   function validateLogin(e: FormEvent<HTMLFormElement>): void {
-    //console.log("f");
     e.preventDefault();
 
-    //console.log("2");
-
-    //   setRequestAuthenticated(true);
-
     let saveUserFn: Function = isCreate ? addDocRequest : editDocRequest;
-    //console.log("3");
 
     let modeOfAction: String = isCreate ? "ADD" : "EDIT";
-    //console.log("4");
 
     saveRequest(formState, saveUserFn, modeOfAction);
-    //console.log("5");
 
     /* loginUser({
       email: formState.email.value,
@@ -326,10 +314,6 @@ const ProductForm: React.FC = () => {
     const {
       editable: { defaultValue = "" },
     } = column;
-    console.log("column===", column);
-    console.log("attr===", attr);
-    console.log("editorClass===", editorClass);
-    console.log("ignoreEditable===", ignoreEditable);
     return (
       /*  <input
         type="text"
@@ -381,9 +365,9 @@ const ProductForm: React.FC = () => {
             <form onSubmit={saveDocumentRequest}>
               <div className="form-group font-14">
                 <div className="row paddingTB15">
-                <div className="col-md-2">
+                  <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Emp Id
+                      Emp Id
                     </label>
                   </div>
                   <div className="col-md-4">
@@ -400,9 +384,9 @@ const ProductForm: React.FC = () => {
                       disabled={true}
                     />
                   </div>
-                <div className="col-md-2">
+                  <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Request No
+                      Request No
                     </label>
                   </div>
                   <div className="col-md-4">
@@ -636,7 +620,10 @@ const ProductForm: React.FC = () => {
                       customError={""}
                     />
                   </div>
-                  <div className="col-md-3" style={{ textAlign: "center" ,  marginTop: "2%"}}>
+                  <div
+                    className="col-md-3"
+                    style={{ textAlign: "center", marginTop: "2%" }}
+                  >
                     <div
                       className="btn"
                       onClick={() => loadApproavalAccessUserMail("manager")}
@@ -680,7 +667,10 @@ const ProductForm: React.FC = () => {
                         customError={""}
                       />
                     </div>
-                    <div className="col-md-3" style={{ textAlign: "center" , marginTop: "2%"}}>
+                    <div
+                      className="col-md-3"
+                      style={{ textAlign: "center", marginTop: "2%" }}
+                    >
                       <div
                         className="btn"
                         onClick={() =>
@@ -708,9 +698,9 @@ const ProductForm: React.FC = () => {
                   </div>
                 )}
                 <div className="row">
-                <div className="col-md-2">
+                  <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Comments
+                      Comments
                     </label>
                   </div>
                   <div className="col-md-9">

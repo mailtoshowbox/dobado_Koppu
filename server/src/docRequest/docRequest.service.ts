@@ -20,6 +20,7 @@ export class DocRequestService {
   ) {}
 
   async findAll(mode : string, empl_id: string): Promise<DocRequest[]> {
+     
     
     if(mode === 'approval'){       
       return await   this.DocRequestModel.find({}).exec().then((resultNew)=>{
@@ -69,7 +70,8 @@ export class DocRequestService {
       });
     
     }else{
-      return await   this.DocRequestModel.find({}).exec().then((resultNew)=>{
+      const wr = empl_id !== '0' ? { empl_id } : {};
+      return await   this.DocRequestModel.find(wr).exec().then((resultNew)=>{
         let approval_list_for_epl : any = [];    
         if(resultNew.length > 0){         
           resultNew.forEach((req)=>{
@@ -94,8 +96,7 @@ export class DocRequestService {
     }
   }
 
-  async findAllAprove(): Promise<DocRequest[]> {
-    console.log("sdfsdf");
+  async findAllAprove(): Promise<DocRequest[]> { 
     return await this.DocRequestModel.find({}).exec();
   }
   async findOne(id: string): Promise<DocRequest> {

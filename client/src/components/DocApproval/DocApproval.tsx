@@ -56,6 +56,7 @@ const Products: React.FC = () => {
   }, [path.area, dispatch]);
 
   function onApprovalSelect(approvalDoc: IDocApproval): void {
+    console.log("approvalDoc----", approvalDoc);
     dispatch(changeSelectedDocApproval(approvalDoc));
     approvalDoc.page_from = "approval";
     initiateApprovalHistory(account, approvalDoc).then((result: any) => {
@@ -85,30 +86,37 @@ const Products: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-1">
-              <h6 className="m-0 font-weight-bold text-white font-12">
-                New Document Request
-              </h6>
-              <div className="header-buttons">
-                <button
-                  className="btn btn-border"
-                  onClick={() =>
-                    dispatch(
-                      setModificationState(DocApprovalModificationStatus.Create)
-                    )
-                  }
-                >
-                  <i className="fas fa fa-plus"></i>
-                </button>
+            {docApprovals.modificationState !==
+              DocApprovalModificationStatus.Edit && (
+              <div className="card-header py-1">
+                <h6 className="m-0 font-weight-bold text-white font-12">
+                  Document Approval List
+                </h6>
               </div>
-            </div>
+            )}
+            {docApprovals.modificationState ===
+              DocApprovalModificationStatus.Edit && (
+              <div className="card-header py-1">
+                <h6 className="m-0 font-weight-bold text-white font-12">
+                  Update Document Approval
+                </h6>
+              </div>
+            )}
             {docApprovals.modificationState ===
               DocApprovalModificationStatus.Create ||
             (docApprovals.modificationState ===
               DocApprovalModificationStatus.Edit &&
               docApprovals.selectedDocApproval) ? (
-              <ProductForm />
+              <ProductForm onUpdateDocument={onApprovalSelect} />
             ) : null}
+            {docApprovals.modificationState ===
+              DocApprovalModificationStatus.Edit && (
+              <div className="card-header py-1">
+                <h6 className="m-0 font-weight-bold text-white font-12">
+                  Document Approval List
+                </h6>
+              </div>
+            )}
             <div className="card-body">
               <DocRequestList
                 onSelect={onApprovalSelect}

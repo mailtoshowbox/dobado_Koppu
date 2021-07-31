@@ -26,7 +26,7 @@ export interface RequestDocumentApproval {
 }
 export interface RequestDocument {
     _id: string;  
-    no_of_copy: string;
+    no_of_copy: number;
     empl_id: string;
     doc_type: number;
     request_no: string;
@@ -34,6 +34,7 @@ export interface RequestDocument {
     document_name: string;
     document_no: string;  
     no_of_page: number; 
+    reason_for_request : string;
     doc_issuance: DocIssuance; 
 }
 export interface RejectDocument {

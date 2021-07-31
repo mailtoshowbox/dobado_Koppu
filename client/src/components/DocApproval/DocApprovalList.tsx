@@ -6,7 +6,11 @@ import {
 } from "../../store/models/root.interface";
 import { IDocApproval } from "../../store/models/docapproval.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-import { docRequestDocumentType } from "../../common/utils";
+import {
+  docRequestDocumentType,
+  setRequestStatus,
+  getDocRequestStatus,
+} from "../../common/utils";
 
 export type productListProps = {
   onSelect?: (product: IDocApproval) => void;
@@ -35,18 +39,35 @@ function DocApprovalList(props: productListProps): JSX.Element {
     rowIndex: any
   ) {
     const { docApprovalModificationStatus = 0, allowDelete } = props;
+
+    const status = getDocRequestStatus(row);
     if (docApprovalModificationStatus === 0) {
-      return (
-        <>
-          <button
-            type="button"
-            className="btn btn-border"
-            onClick={() => onClickProductSelected(cell, row, rowIndex)}
-          >
-            <i className="fas fa fa-pen"></i>
-          </button>
-        </>
-      );
+      if (status === 3) {
+        //Rejected
+        return (
+          <>
+            <button
+              type="button"
+              className="btn btn-border"
+              onClick={() => onClickProductSelected(cell, row, rowIndex)}
+            >
+              <i className="fas fa fa-eye"></i>
+            </button>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <button
+              type="button"
+              className="btn btn-border"
+              onClick={() => onClickProductSelected(cell, row, rowIndex)}
+            >
+              <i className="fas fa fa-pen"></i>
+            </button>
+          </>
+        );
+      }
     } else {
       return (
         <>
@@ -57,12 +78,6 @@ function DocApprovalList(props: productListProps): JSX.Element {
             style={{ cursor: "not-allowed" }}
           >
             <i className="fas fa fa-pen"></i>
-          </button>
-          <button
-            className="btn btn-border  btn-red-color"
-            onClick={() => onClickProductDelete(cell, row, rowIndex)}
-          >
-            <i className="fas fa fa-trash" aria-hidden="true"></i>
           </button>
         </>
       );
@@ -83,9 +98,15 @@ function DocApprovalList(props: productListProps): JSX.Element {
             "Pending</span>";
         } else if (appr.status === "approved") {
           stsus +=
-            "<span class=' approval-status btn-info'>" +
+            "<span class=' approval-status btn-info '>" +
             appr.approve_access_level +
             " is Approved</span>";
+        } else if (appr.status === "rejected") {
+          stsus +=
+            "<span class=' approval-status btn-info text-danger '>" +
+            appr.approve_access_level +
+            " approval" +
+            " Rejected</span>";
         }
       });
     }
@@ -108,6 +129,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
         pagination={true}
         hover={true}
         search={true}
+        trClassName={setRequestStatus}
       >
         <TableHeaderColumn
           dataField="_id"

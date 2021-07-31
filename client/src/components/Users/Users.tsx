@@ -32,6 +32,7 @@ import TextInput from "../../common/components/TextInput";
 import { OnChangeModel } from "../../common/types/Form.types";
 import { IAccount } from "../../store/models/account.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import Popup from "reactjs-popup";
 
 const Users: React.FC = () => {
   //Block to get the token and set Token
@@ -50,6 +51,8 @@ const Users: React.FC = () => {
     (state: IStateType) => state.users.docDepartments
   );
 
+  const [openModalForEditActiveUser, updateModalForEditActiveUser] =
+    useState(false);
   const [openModalForEditUser, updateModal] = useState(true);
   const [inActiveUserEdit, updateInActiveUserEdit] = useState({
     name: "",
@@ -57,6 +60,7 @@ const Users: React.FC = () => {
     roles: "",
     emp_id: "XXXXXX",
     isAllowedForApproval: false,
+    departments: "",
   });
 
   useEffect(() => {
@@ -73,6 +77,8 @@ const Users: React.FC = () => {
     dispatch(updateCurrentPath("users", "list"));
   }, [path.area, dispatch]);
 
+  console.log("departmentList---", departmentList);
+
   let listOfDept: { id: string; name: string }[] = [];
   departmentList.forEach((doc) => {
     let me = { id: doc._id, name: doc.name };
@@ -83,6 +89,7 @@ const Users: React.FC = () => {
     updateUserProfile(inActiveUserEdit, account).then((status) => {
       getUserList(account.auth).then((items: IUserList) => {
         dispatch(loadListOfuser(items));
+        updateModalForEditActiveUser(!openModalForEditActiveUser);
       });
     });
   }
@@ -155,10 +162,11 @@ const Users: React.FC = () => {
 
     updateInActiveUserEdit(userUpdate);
   }
-  console.log("departmentList----", departmentList);
   const EditUser1: React.FC = (props: any) => {
+    console.log("props----", props);
     const { row = {} } = props;
 
+    console.log("inActiveUserEdit----", inActiveUserEdit);
     if (inActiveUserEdit.name === "") {
       updateInActiveUserEdit(row);
     }
@@ -167,8 +175,11 @@ const Users: React.FC = () => {
       isAllowedForApproval = false,
       roles = [],
       emp_id,
+      departments = [],
     } = inActiveUserEdit;
     const useRoles = roles[0];
+    const userDepartment = departments[0] ? departments[0] : "";
+
     return (
       <div className="form-group">
         <div className="row">
@@ -210,12 +221,12 @@ const Users: React.FC = () => {
           <div className="mb-3">
             <SelectInput
               id="input_department"
-              field="department"
+              field="departments"
               label="Department"
               options={listOfDept}
               required={true}
               onChange={(event: any) => selectField("inActiveUserEdit", event)}
-              value={useRoles}
+              value={userDepartment}
               type="select"
               customError={""}
               inputClass="form-control"
@@ -263,6 +274,17 @@ const Users: React.FC = () => {
     }
     return <button className="btn btn-warning">Email not verified</button>;
   };
+  const userDepartmentFormatter = (cell: any, row: any) => { 
+    const verified = row.departments.length > 0;
+    if (verified && listOfDept.length > 0) {
+      const userStatus = listOfDept.filter(
+        (role) => role.id === row.departments[0]
+      )[0].name;
+      return <button className="btn btn-dark">{userStatus}</button>;
+    }
+    return <button className="btn btn-warning">-</button>;
+  };
+
   const userApprovalFormatter = (cell: any, row: any) => {
     return row.isAllowedForApproval ? "Allowed" : "Not Allowed";
   };
@@ -270,15 +292,28 @@ const Users: React.FC = () => {
     <EditUser1 onUpdate={onUpdate} {...props} />
   );
 
+  const openModalToEditActiveUser = (props: any) => {
+    // if (inActiveUserEdit.name === "") {
+    updateInActiveUserEdit(props);
+    //  }
+    updateModalForEditActiveUser(!openModalForEditActiveUser);
+  };
   const actionCoumnFormatter = (cell: any, row: any) => {
     const verified = row.auth.email.valid;
+    // updateInActiveUserEdit({ name: "" });
 
     if (verified) {
-      const userStatus = userRoles.filter((role) => role.id === row.roles[0])[0]
-        .name;
-
       //return row.roles[0] ? row.roles[0] : "No Status";
-      return <button className="btn btn-info">{"Update"}</button>;
+      return (
+        <button
+          className="btn btn-info"
+          onClick={() => {
+            openModalToEditActiveUser(row);
+          }}
+        >
+          {"Update"}
+        </button>
+      );
     }
     return (
       <button className="btn btn-light" disabled>
@@ -286,6 +321,15 @@ const Users: React.FC = () => {
       </button>
     );
   };
+
+  const {
+    isAllowedForApproval = false,
+    roles = [],
+    emp_id,
+    departments = [],
+  } = inActiveUserEdit;
+  const useRoles = roles[0];
+  const userDepartment = departments[0] ? departments[0] : "";
 
   return (
     <Fragment>
@@ -323,7 +367,6 @@ const Users: React.FC = () => {
                   data={admins}
                   pagination={true}
                   hover={true}
-                  cellEdit={{ mode: "click" }}
                 >
                   <TableHeaderColumn
                     dataField="_id"
@@ -347,6 +390,14 @@ const Users: React.FC = () => {
                   >
                     Name
                   </TableHeaderColumn>
+                  <TableHeaderColumn
+                    dataField="name"
+                    width="16%"
+                    className="thead-light-1"
+                    dataFormat={userDepartmentFormatter}
+                  >
+                    Department
+                  </TableHeaderColumn>
 
                   <TableHeaderColumn
                     dataField="email"
@@ -369,13 +420,13 @@ const Users: React.FC = () => {
                     width="14%"
                     dataFormat={userStatusFormatter}
                   >
-                    Status
+                    Role
                   </TableHeaderColumn>
+
                   <TableHeaderColumn
                     className="thead-light-1"
                     width="20%"
                     dataFormat={actionCoumnFormatter}
-                    customEditor={{ getElement: userActionEditor }}
                   >
                     Action
                   </TableHeaderColumn>
@@ -449,6 +500,93 @@ const Users: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <Popup className="popup-modal" open={openModalForEditActiveUser}>
+        <div>
+          <div className="form-group">
+            <div className="row">
+              <div className="mb-3">Edit User</div>
+            </div>
+            <div className="row">
+              <div className="mb-3">
+                Approval Access
+                <Checkbox
+                  id="input_email"
+                  field={"isAllowedForApproval"}
+                  onChange={(event: any) =>
+                    toggleField("inActiveUserEdit", event)
+                  }
+                  label={""}
+                  value={isAllowedForApproval}
+                  name={"isAllowedForApproval"}
+                  disabled={false}
+                  customError={""}
+                  inputClass=" "
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="mb-3">
+                <SelectInput
+                  id="input_category"
+                  field="roles"
+                  label="User Role"
+                  options={userRoles}
+                  required={true}
+                  onChange={(event: any) =>
+                    selectField("inActiveUserEdit", event)
+                  }
+                  value={useRoles}
+                  type="select"
+                  customError={""}
+                  inputClass="form-control"
+                />{" "}
+              </div>
+            </div>
+            <div className="row">
+              <div className="mb-3">
+                <SelectInput
+                  id="input_department"
+                  field="departments"
+                  label="Department"
+                  options={listOfDept}
+                  required={true}
+                  onChange={(event: any) =>
+                    selectField("inActiveUserEdit", event)
+                  }
+                  value={userDepartment}
+                  type="select"
+                  customError={""}
+                  inputClass="form-control"
+                />{" "}
+              </div>
+            </div>
+            <div className="row">
+              <div className="mb-3">
+                <TextInput
+                  id="input_request_no"
+                  field="emp_id"
+                  value={emp_id}
+                  onChange={hasFormValueChanged}
+                  required={false}
+                  maxLength={6}
+                  label="Emp Id"
+                  placeholder="Request Number"
+                  customError={""}
+                />{" "}
+              </div>
+            </div>
+            <div className="form-group row">
+              <button
+                className="btn btn-primary"
+                onClick={(event: any) => updateUser("inActiveUserEdit")}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </Popup>
     </Fragment>
   );
 };

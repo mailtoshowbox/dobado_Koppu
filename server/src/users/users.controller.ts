@@ -81,7 +81,7 @@ export class UsersController {
   
   @Post('profile/updateProfile')
   async updateProfile(@Body() profileDto: ProfileDto): Promise<IResponse> {
-    try {
+    try {  
       var user =  await this.usersService.updateProfile(profileDto);
       return new ResponseSuccess("PROFILE.UPDATE_SUCCESS", new UserDto(user));
     } catch(error){

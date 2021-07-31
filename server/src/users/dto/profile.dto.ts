@@ -10,11 +10,11 @@ export class ProfileDto {
     this.isAllowedForApproval = object.isAllowedForApproval;
     this.emp_id = object.emp_id;
     this._id = object._id;
-    
-
+    this.departments = object.departments;
   };
   readonly _id: string;
   readonly roles: string;
+  readonly departments: string;
   readonly isAllowedForApproval: boolean;
   readonly emp_id: string;
 

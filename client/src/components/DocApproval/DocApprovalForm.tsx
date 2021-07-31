@@ -4,17 +4,15 @@ import {
   IDocApprovalState,
 } from "../../store/models/root.interface";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  IDocRequest,
-  DocRequestModificationStatus,
-  IDocRequestList,
-} from "../../store/models/docrequest.interface";
+
 import {
   IDocApproval,
   DocApprovalModificationStatus,
-  IDocApprovalList,
 } from "../../store/models/docapproval.interface";
 import TextInput from "../../common/components/TextInput";
+import NumberInput from "../../common/components/NumberInput";
+import TextAreaInput from "../../common/components/TextAreaInput";
+
 import {
   setModificationState,
   updateDocRequestApproval,
@@ -22,23 +20,22 @@ import {
 import { addNotification } from "../../store/actions/notifications.action";
 import {
   addNewDocumentRequest,
-  updateDocCat,
-  getDocCategoryList,
   loadApproavalAccessUserInfo,
 } from "../../services/index";
-import {
-  OnChangeModel,
-  IDocRequestFormState,
-} from "../../common/types/Form.types";
+import { OnChangeModel } from "../../common/types/Form.types";
 import { approveDocumentRequest } from "../../services/index";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import SelectInput from "../../common/components/Select";
 import { IAccount } from "../../store/models/account.interface";
-import { uniqueId } from "../../common/utils";
+import { uniqueId, getDocRequestStatus } from "../../common/utils";
 import APP_CONST from "../../common/contant";
 import Popup from "reactjs-popup";
 
-const ProductForm: React.FC = () => {
+export type productFormProps = {
+  onUpdateDocument?: (product: IDocApproval) => void;
+};
+//const ProductForm: React.FC = () => {
+function ProductForm(props: productFormProps): JSX.Element {
   const account: IAccount = useSelector((state: IStateType) => state.account);
 
   const dispatch: Dispatch<any> = useDispatch();
@@ -123,6 +120,20 @@ const ProductForm: React.FC = () => {
     rejected_reason: "",
     rejected_from_page: "approval",
   });
+  const [openDocumentEditorModal, updateDocumentEditorModal] = useState(false);
+
+  const [documentforEdit, updateDocumentforEdit] = useState({
+    reason_for_request: "",
+    edited: false,
+    empl_id: "",
+    doc_type: "",
+    request_no: "",
+    is_doc_approved: false,
+    document_name: "",
+    document_no: "",
+    no_of_page: 0,
+    no_of_copy: 0,
+  });
 
   function hasFormValueChanged(model: OnChangeModel): void {
     if (model.field === "document_type") {
@@ -142,24 +153,10 @@ const ProductForm: React.FC = () => {
   }
 
   function hasRejectReasonValueChanged(model: OnChangeModel): void {
-    console.log("-----model---", model);
     setRejectDocumentRequestForm({
       ...rejectDocumentRequestForm,
       ["rejected_reason"]: model.value.toString(),
     });
-  }
-
-  function hasApprovalValueChanged(model: OnChangeModel): void {
-    const { field = "" } = model;
-    const approvalPos = field.split("_");
-    let approvalPosition = formState.approval.value || [];
-    let slectedData: any = [];
-    if (approvalPos[2]) {
-      if (approvalPos[1] === "code") {
-      } else if (approvalPos[1] === "mail") {
-      }
-    }
-    slectedData[approvalPos[2]] = { emp_id: 1 };
   }
 
   function cancelForm(): void {
@@ -212,7 +209,6 @@ const ProductForm: React.FC = () => {
     if (!isFormInvalid()) {
       return;
     }
-    console.log("rejectDocumentRequest---", rejectDocumentRequestForm);
 
     saveForm(formState, updateDocRequestApproval, "EDIT");
   }
@@ -363,7 +359,6 @@ const ProductForm: React.FC = () => {
 
     loadApproavalAccessUserInfo(data, account).then((status) => {
       if (status.data) {
-        console.log("formState----", formState);
         const { email = "" } = status.data.data;
         const approvedUsers = [];
         if (email) {
@@ -385,15 +380,6 @@ const ProductForm: React.FC = () => {
   }
 
   const options = { afterInsertRow: saveDocument, ignoreEditable: false };
-
-  //console.log("formState----", formState);
-
-  const approval1 = formState.approval.value[0]
-    ? formState.approval.value[0]
-    : null;
-  const approval2 = formState.approval.value[1]
-    ? formState.approval.value[1]
-    : null;
 
   function validateLogin(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
@@ -435,10 +421,67 @@ const ProductForm: React.FC = () => {
   function rejectDocRequest(eve: any): void {
     //openRejectReasonModal
     eve.preventDefault();
-    console.log("docrequest--", docrequest);
-    console.log("formState--", formState);
     setOpenRejectReasonModal(true);
   }
+  const currentDocRequestStatus = getDocRequestStatus({
+    approval: formState.approval.value,
+  });
+  function onClickDocumentEdit(cell: any, row: any, rowIndex: any) {
+    updateDocumentEditorModal(true);
+    updateDocumentforEdit({ ...documentforEdit, ...row });
+  }
+  function buttonFormatter(cell: any, row: any, rowIndex: any) {
+    return (
+      <>
+        <button
+          type="button"
+          className="btn btn-border"
+          onClick={() => onClickDocumentEdit(cell, row, rowIndex)}
+        >
+          <i className="fas fa fa-pen"></i>
+        </button>
+      </>
+    );
+  }
+  function hasEditDocument(model: OnChangeModel): void {
+    updateDocumentforEdit({
+      ...documentforEdit,
+      [model.field]: model.value,
+      ["edited"]: true,
+    });
+  }
+  function closeDocUpdate(): void {
+    updateDocumentEditorModal(false);
+    console.log("Close Popup");
+  }
+  function updateDocument(): void {
+    let docList = docrequest?.requested_doc ? docrequest?.requested_doc : [];
+    let newDocList: any = [];
+
+    docList.map((cat1) => {
+      if (
+        cat1.document_no.toString() === documentforEdit.document_no.toString()
+      ) {
+        newDocList.push(documentforEdit);
+      } else {
+        newDocList.push(cat1);
+      }
+    });
+    setFormState({
+      ...formState,
+      ["requested_doc"]: { value: newDocList },
+    });
+    updateDocumentEditorModal(false);
+  }
+
+  console.log("docrequestsFINAL", docrequests);
+
+  function checkUpdatedRow(row: any) {
+    const { edited = false } = row;
+    return edited ? "updated_row" : "";
+  }
+
+  console.log("formState", formState);
 
   return (
     <Fragment>
@@ -447,10 +490,10 @@ const ProductForm: React.FC = () => {
           <div className="card-body">
             <form onSubmit={saveDocumentRequest}>
               <div className="form-group font-14">
-              <div className="row paddingTB15">
-                <div className="col-md-2">
+                <div className="row paddingTB15">
+                  <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Emp Id
+                      Emp Id
                     </label>
                   </div>
                   <div className="col-md-4">
@@ -469,7 +512,7 @@ const ProductForm: React.FC = () => {
                   </div>
                   <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>
-                    Request No
+                      Request No
                     </label>
                   </div>
                   <div className="col-md-4">
@@ -493,12 +536,13 @@ const ProductForm: React.FC = () => {
                       Doc Type:
                     </label>
                   </div>
-                  <div                  
-                  className={
-                    pickOne.length > 0
-                      ? "col-md-3 input_document_type_selected"
-                      : "col-md-3 "
-                  }>
+                  <div
+                    className={
+                      pickOne.length > 0
+                        ? "col-md-3 input_document_type_selected"
+                        : "col-md-3 "
+                    }
+                  >
                     <SelectInput
                       id="input_document_type"
                       field="doc_type"
@@ -511,11 +555,13 @@ const ProductForm: React.FC = () => {
                       customError={""}
                     />
                   </div>
-                  <div  className={
-                    pickTwo.length > 0
-                      ? "col-md-3 input_document_type_selected"
-                      : "col-md-3 "
-                  }>
+                  <div
+                    className={
+                      pickTwo.length > 0
+                        ? "col-md-3 input_document_type_selected"
+                        : "col-md-3 "
+                    }
+                  >
                     <SelectInput
                       id="input_document_type"
                       field="doc_type"
@@ -528,11 +574,13 @@ const ProductForm: React.FC = () => {
                       customError={""}
                     />
                   </div>
-                  <div  className={
+                  <div
+                    className={
                       pickThreee.length > 0
                         ? "col-md-3 input_document_type_selected"
                         : "col-md-3 "
-                    }>
+                    }
+                  >
                     <SelectInput
                       id="input_document_type"
                       field="doc_type"
@@ -555,6 +603,7 @@ const ProductForm: React.FC = () => {
                       hover={true}
                       insertRow={true}
                       keyField="document_no"
+                      trClassName={checkUpdatedRow}
                     >
                       <TableHeaderColumn
                         dataField="document_no"
@@ -600,6 +649,14 @@ const ProductForm: React.FC = () => {
                       >
                         Reason for Request
                       </TableHeaderColumn>
+                      <TableHeaderColumn
+                        dataField="button"
+                        className="thead-light-1"
+                        width="10%"
+                        dataFormat={buttonFormatter}
+                      >
+                        Action
+                      </TableHeaderColumn>
                     </BootstrapTable>
                   </div>
                 )}
@@ -619,7 +676,7 @@ const ProductForm: React.FC = () => {
                           customError={""}
                         />
                       </div>
-                  
+
                       <div className="col-md-4">
                         <TextInput
                           id="input_request_no"
@@ -680,9 +737,7 @@ const ProductForm: React.FC = () => {
 
                 <div className="row">
                   <div className="col-md-2">
-                  <label style={{ margin: "26px 0 0 5px" }}>
-                    Comments
-                    </label>
+                    <label style={{ margin: "26px 0 0 5px" }}>Comments</label>
                   </div>
                   <div className="col-md-9">
                     <TextInput
@@ -709,25 +764,38 @@ const ProductForm: React.FC = () => {
                   </div>
                 </div>
               </div>
-
-              <button
-                className="btn btn-danger font-14"
-                onClick={() => cancelForm()}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
-              >
-                APPROVE
-              </button>
-              <button
-                className="btn left-margin btn-warning font-14"
-                onClick={(eve) => rejectDocRequest(eve)}
-              >
-                Reject
-              </button>
+              {currentDocRequestStatus !== 3 && ( //pending//success
+                <div>
+                  <button
+                    className="btn btn-danger font-14"
+                    onClick={() => cancelForm()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
+                  >
+                    APPROVE
+                  </button>
+                  <button
+                    className="btn left-margin btn-warning font-14"
+                    onClick={(eve) => rejectDocRequest(eve)}
+                  >
+                    Reject
+                  </button>
+                </div>
+              )}
+              {currentDocRequestStatus === 3 && ( //Rejected
+                <div>
+                  <button
+                    className="btn btn-danger font-14"
+                    onClick={() => cancelForm()}
+                  >
+                    Close
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         </div>
@@ -805,9 +873,135 @@ const ProductForm: React.FC = () => {
             </button>
           </div>
         </Popup>
+
+        <Popup
+          className="popup-modal"
+          open={openDocumentEditorModal}
+          onClose={() => closeDocUpdate()}
+        >
+          <div>
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    <b> Edit Document {documentforEdit.document_name}</b>
+                  </h5>
+                </div>
+                <div className="modal-body">
+                  <div className="form-group">
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <TextInput
+                          id="input_request_no"
+                          field="document_no"
+                          value={documentforEdit.document_no}
+                          onChange={hasEditDocument}
+                          required={false}
+                          maxLength={6}
+                          label="Document Number"
+                          placeholder="Document Number"
+                          customError={""}
+                          disabled={true}
+                        />{" "}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <TextInput
+                          id="input_request_no"
+                          field="document_name"
+                          value={documentforEdit.document_name}
+                          onChange={hasEditDocument}
+                          required={false}
+                          maxLength={6}
+                          label="Document Name"
+                          placeholder="Document Name"
+                          customError={""}
+                        />{" "}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <NumberInput
+                          id="input_request_no"
+                          field="no_of_copy"
+                          value={documentforEdit.no_of_copy}
+                          onChange={hasEditDocument}
+                          label="No of Copy"
+                          customError={""}
+                        />{" "}
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <NumberInput
+                          id="input_request_no"
+                          field="no_of_page"
+                          value={documentforEdit.no_of_page}
+                          onChange={hasEditDocument}
+                          label="No of page"
+                          customError={""}
+                        />{" "}
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div
+                        className="mb-3 col-md-8"
+                        style={{ textAlign: "left" }}
+                      >
+                        <div>
+                          <TextAreaInput
+                            id="input_request_no"
+                            field="reason_for_request"
+                            value={documentforEdit.reason_for_request}
+                            onChange={hasEditDocument}
+                            required={false}
+                            maxLength={100}
+                            label="Reason for Request"
+                            placeholder="Reason for Request"
+                            customError={""}
+                          />{" "}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                    onClick={() => closeDocUpdate()}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => updateDocument()}
+                  >
+                    Update Document
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Popup>
       </div>
     </Fragment>
   );
-};
+}
 
 export default ProductForm;

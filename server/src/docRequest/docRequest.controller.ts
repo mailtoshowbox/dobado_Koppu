@@ -36,8 +36,6 @@ export class DocRequestsController {
 
   @Post()
   create(@Body() createDocRequestsDto: CreateDocRequestDto): Promise<DocRequest> { 
-
-    console.log("createDocRequestsDto---", createDocRequestsDto);
     const d=  this.DocRequestsService.create(createDocRequestsDto);
     d.then((res)=>{
       const {} = res; 

@@ -32,7 +32,6 @@ function docApprovalReducer(state: IDocApprovalState = initialState, action: IAc
             return { ...state, docApprovals: state.docApprovals.filter(pr => pr._id !== action.id) };
         }
         case CHANGE_DOCAPPROVAL_PENDING_EDIT: {
-            console.log("action---", action);
             return { ...state, selectedDocApproval: action.docApproval };
         }
         case CLEAR_DOCAPPROVAL_PENDING_EDIT: {

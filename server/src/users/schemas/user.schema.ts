@@ -10,6 +10,7 @@ export const UserSchema = new mongoose.Schema({
   password: String,
   birthdaydate: Date,
   roles: [],
+  departments: [],
   approved: { type: Boolean, default: false },
   isAllowedForApproval: { type: Boolean, default: false },
   emp_id :{ type: String, default: "XXXXXX" },

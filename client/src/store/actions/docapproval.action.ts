@@ -50,7 +50,6 @@ export function setModificationState(value: DocApprovalModificationStatus): ISet
     return { type: SET_DOCAPPROVAL_MODIFICATION_STATE, value: value };
 }
 export function loadedApprovedUser(value: any) {
-    console.log("value------", value);
     return { type: LOAD_APPROVED_USER, value: value };
 }
 

@@ -80,23 +80,22 @@ const Products: React.FC = () => {
       <div className="row">
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
-            <div className="card-header py-1">
-              <h6 className="m-0 font-weight-bold text-white font-12">
-                New Genarate Issuance
-              </h6>
-              <div className="header-buttons">
-                {/*  <button
-                  className="btn btn-border"
-                  onClick={() =>
-                    dispatch(
-                      setModificationState(DocIssuanceModificationStatus.Create)
-                    )
-                  }
-                >
-                  <i className="fas fa fa-plus"></i>
-                </button> */}
+            {docIssuance.modificationState !==
+              DocIssuanceModificationStatus.Edit && (
+              <div className="card-header py-1">
+                <h6 className="m-0 font-weight-bold text-white font-12">
+                  Document Issuance List
+                </h6>
               </div>
-            </div>
+            )}
+            {docIssuance.modificationState ===
+              DocIssuanceModificationStatus.Edit && (
+              <div className="card-header py-1">
+                <h6 className="m-0 font-weight-bold text-white font-12">
+                  Document Issuance
+                </h6>
+              </div>
+            )}
             {docIssuance.modificationState ===
               DocIssuanceModificationStatus.Create ||
             (docIssuance.modificationState ===
@@ -104,6 +103,14 @@ const Products: React.FC = () => {
               docIssuance.selectedDocIssuance) ? (
               <ProductForm />
             ) : null}
+            {docIssuance.modificationState ===
+              DocIssuanceModificationStatus.Edit && (
+              <div className="card-header py-1">
+                <h6 className="m-0 font-weight-bold text-white font-12">
+                  Document Issuance List
+                </h6>
+              </div>
+            )}
             <div className="card-body">
               <DocRequestList
                 onSelect={onApprovalSelect}

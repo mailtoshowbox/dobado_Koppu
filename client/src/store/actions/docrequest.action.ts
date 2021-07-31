@@ -47,7 +47,6 @@ export function setModificationState(value: DocRequestModificationStatus): ISetM
     return { type: SET_DOCREQUEST_MODIFICATION_STATE, value: value };
 }
 export function loadedApprovedUser(value: any) {
-    console.log("value------", value);
     return { type: LOAD_APPROVED_USER, value: value };
 }
 

@@ -43,9 +43,11 @@ const Products: React.FC = () => {
   const [popup, setPopup] = useState(false);
 
   useEffect(() => {
-    getDocRequestList(account.auth).then((items: IDocRequestList) => {
-      dispatch(loadListOfDocRequest(items));
-    });
+    getDocRequestList(account.auth, account.emp_id).then(
+      (items: IDocRequestList) => {
+        dispatch(loadListOfDocRequest(items));
+      }
+    );
     dispatch(updateCurrentPath("Home", "Document Request"));
   }, [path.area, dispatch]);
 
@@ -59,12 +61,6 @@ const Products: React.FC = () => {
     // dispatch(changeSelectedDocCategory(product));
     // dispatch(setModificationState(DocRequestModificationStatus.None));
     // onProductRemove();
-  }
-
-  function onProductRemove() {
-    /* if (doccategories.selectedDocCategory) {
-      setPopup(true);
-    } */
   }
 
   return (

@@ -30,6 +30,7 @@ import { IAccount } from "../../store/models/account.interface";
 import { uniqueId } from "../../common/utils";
 import APP_CONST from "../../common/contant";
 import Popup from "reactjs-popup";
+import { findLastIndex } from "lodash";
 
 const ProductForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -53,8 +54,14 @@ const ProductForm: React.FC = () => {
       approval: [],
       emp_code_approval_1: "222",
       emp_code_approval_2: "12",
+      doc_issuance_status: {
+        is_issued: false,
+        issued_on: new Date(),
+        doc_issued_by: [],
+      },
     };
   }
+
   const [showYes, setShowYes] = useState(false);
   const dcat1 = [
     { id: "1", name: "Executed Copy" },
@@ -93,6 +100,11 @@ const ProductForm: React.FC = () => {
     no_of_label: 0,
     generate_unique_num: true,
     doc_issuance: [],
+    doc_issuances_status: {
+      is_issued: false,
+      issued_on: new Date(),
+      doc_issued_by: [],
+    },
   };
   const [selectedDocForPrint, setSelectedDocForPrint] = useState(
     initialSelectedDocForPrint
@@ -144,7 +156,6 @@ const ProductForm: React.FC = () => {
   }
 
   function cancelForm(): void {
-    console.log();
     dispatch(setModificationState(DocIssuanceModificationStatus.None));
   }
   function handleYes(status: boolean): void {
@@ -197,120 +208,6 @@ const ProductForm: React.FC = () => {
     }
   }
 
-  function saveForm(formState: any, saveFn: Function, mode: String): void {
-    if (docIssuance) {
-      const currentApproval = formState.approval.value.filter(
-        (approval: any) => approval.empl_id === account.emp_id
-      );
-      if (currentApproval.length > 0) {
-        if (formState.approval.value.length) {
-          formState.approval.value.map((apprv: any) => {
-            if (apprv.empl_id === account.emp_id) {
-              apprv.status = "approved";
-            }
-          });
-        }
-      }
-
-      if (mode === "EDIT") {
-        let boxInfo = {
-          name: formState.name.value,
-          empl_id: formState.empl_id.value,
-          doc_type: formState.doc_type.value,
-          request_no: formState.request_no.value,
-          requested_doc: formState.requested_doc.value,
-          approval: formState.approval.value,
-          id: formState._id.value,
-        };
-        updateDocumentRequest(boxInfo, account).then((status) => {
-          cancelForm();
-          dispatch(
-            addNotification(
-              "Document Approved",
-              `Document Request ${formState.request_no.value} Approved by you`
-            )
-          );
-          /*   setLoginPopup(false);
-          setFormState(intialFormState);
-          cancelForm();
-          dispatch(
-            saveFn({
-              ...docIssuance,
-              ...status,
-            })
-          );
-
-          dispatch(
-            addNotification(
-              "New Document Requested",
-              `Document Request ${formState.request_no.value} added by you`
-            )
-          ); */
-        });
-      } else if (mode === "ADD") {
-      }
-    }
-
-    /*  let boxInfoUpt = {
-          id: formState._id.value,
-          name: formState.name.value,
-          description: formState.description.value,
-          racks: formState.racks.value,
-        };
-        updateBox(boxInfoUpt, account).then((status) => {
-          dispatch(
-            saveFn({
-              ...box,
-              ...status,
-            })
-          );
-          getBoxList(account.auth).then((items: IBoxList) => {
-            dispatch(loadListOfBox(items));
-          });
-          dispatch(
-            addNotification(
-              "Box ",
-              `New Box ${formState.name.value} edited by you`
-            )
-          );
-          dispatch(clearSelectedBox());
-          dispatch(setModificationState(BoxModificationStatus.None));
-        }); */
-  }
-
-  function saveRequest(formState: any, saveFn: Function, mode: String): void {
-    if (docIssuance) {
-      if (mode === "ADD") {
-        let boxInfo = {
-          name: formState.name.value,
-          empl_id: formState.empl_id.value,
-          doc_type: formState.doc_type.value,
-          request_no: formState.request_no.value,
-          requested_doc: formState.requested_doc.value,
-          approval: formState.approval.value,
-        };
-        addNewDocumentRequest(boxInfo, account).then((status) => {
-          setLoginPopup(false);
-          setFormState(intialFormState);
-          cancelForm();
-          dispatch(
-            saveFn({
-              ...docIssuance,
-              ...status,
-            })
-          );
-
-          dispatch(
-            addNotification(
-              "New Document Requested",
-              `Document Request ${formState.request_no.value} added by you`
-            )
-          );
-        });
-      } else if (mode === "EDIT") {
-      }
-    }
-  }
   function numberValidator(fieldValue: any) {
     const nan = isNaN(parseInt(fieldValue, 10));
     if (nan) {
@@ -318,58 +215,20 @@ const ProductForm: React.FC = () => {
     }
     return true;
   }
-  function loadApproavalAccessUserMail(accessLevel: string) {
-    let data = {};
-    if (accessLevel === "manager") {
-      data = {
-        access: accessLevel,
-        emp_id: formState.emp_code_approval_1.value.toString(),
-      };
-    }
-
-    loadApproavalAccessUserInfo(data, account).then((status) => {
-      if (status.data) {
-        const { email = "" } = status.data.data;
-        const approvedUsers = [];
-        if (email) {
-          approvedUsers.push({
-            empl_id: formState.emp_code_approval_1.value.toString(),
-            empl_email_id: email,
-            status: "pending",
-            approve_access_level: accessLevel, //Manager/Quality user
-          });
-        }
-
-        setFormState({
-          ...formState,
-          ["approval"]: { value: approvedUsers },
-        });
-        /// dispatch(loadedApprovedUser(status.data));
-      }
-    });
-  }
-
-  function checkUniqueId(fieldValue: any = [], currentId: any = "") {
-    const isExists = fieldValue.some((it: any) => it.document_no === currentId);
-
-    return { isExists, currentId };
-  }
 
   const printLabel = (event: any) => {
     event.preventDefault();
-    var divContents = document.getElementById("printme")?.innerHTML;
-    var a = window.open("", "", "height=500, width=500");
-    a?.document.write("<html>");
-    a?.document.write("<body >");
-    a?.document.write(divContents ? divContents : "nothing to display");
-    a?.document.write("</body></html>");
-    a?.document.close();
-    a?.print();
-
     const requestedDoc = formState.requested_doc.value;
-
+    let approved_doc_issuance: any = {};
     let processedDocForApproval: any = [];
-    const apprvedDoc = requestedDoc.map((doc: any) => {
+    let approvedDocCount = 0;
+
+    let doc_issuances_status_info = {
+      is_issued: false,
+      issued_on: new Date(),
+      doc_issued_by: [],
+    };
+    requestedDoc.map((doc: any) => {
       if (doc.document_no === selectedDocForPrint.document_no) {
         if (selectedDocForPrint.no_of_label > 1) {
           for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
@@ -388,12 +247,55 @@ const ProductForm: React.FC = () => {
         }
         doc.doc_issuance = processedDocForApproval;
         doc.is_doc_approved = true;
-
-        console.log("doc----", doc);
-
         setSelectedDocForPrint(doc);
+        approved_doc_issuance = doc;
       } else {
         doc.is_doc_approved = doc.is_doc_approved ? doc.is_doc_approved : false;
+      }
+
+      if (doc.is_doc_approved) {
+        approvedDocCount++;
+      }
+
+      //Doc Issuances
+      const doc_issued = {
+        empl_id: account.emp_id,
+        empl_email_id: account.emp_id,
+        document_id: selectedDocForPrint.document_no,
+        document_issued_on: new Date(),
+      };
+      const initial_doc_issuance_status = {
+        is_issued: false,
+        issued_on: new Date(),
+        doc_issued_by: [],
+      };
+
+      if (approvedDocCount && approvedDocCount === requestedDoc.length) {
+        const doc_issuances_status = docIssuance?.doc_issuance_status;
+        const doc_issued_by = doc_issuances_status?.doc_issued_by || [];
+        // doc_issuances_status_info = docIssuance?.doc_issuances_status;
+        // const { doc_issued_by } = doc_issuances_status;
+        const doc_issued_by_list: any = [...doc_issued_by, { ...doc_issued }];
+        //  doc_issued_by_list.push(doc_issued);
+        doc_issuances_status_info = {
+          is_issued: true,
+          issued_on: new Date(),
+          doc_issued_by: doc_issued_by_list,
+        };
+      } else {
+        if (doc.document_no === selectedDocForPrint.document_no) {
+          const doc_issuances_status = docIssuance?.doc_issuance_status;
+          const doc_issued_by = doc_issuances_status?.doc_issued_by || [];
+          // doc_issuances_status_info = docIssuance?.doc_issuances_status;
+          // const { doc_issued_by } = doc_issuances_status;
+          const doc_issued_by_list: any = [...doc_issued_by, { ...doc_issued }];
+
+          doc_issuances_status_info = {
+            is_issued: false,
+            issued_on: new Date(),
+            doc_issued_by: doc_issued_by_list,
+          };
+        }
       }
       return doc;
     });
@@ -403,19 +305,59 @@ const ProductForm: React.FC = () => {
       empl_id: formState.empl_id.value,
       doc_type: formState.doc_type.value,
       request_no: formState.request_no.value,
-      requested_doc: apprvedDoc,
+      requested_doc: requestedDoc,
       approval: formState.approval.value,
       id: formState._id.value,
+      doc_issuance_status: doc_issuances_status_info,
     };
 
     issueGenaralIssuance(approvalInfo, account).then((status) => {
+      formState.requested_doc.value = status.requested_doc
+        ? status.requested_doc
+        : [];
+      // docIssuance = status;
+      cancelForm();
       setPrintYesDoc(false);
-      setSelectedDocForPrint(initialSelectedDocForPrint);
+      //  setSelectedDocForPrint(initialSelectedDocForPrint);
       setShowYes(false);
       dispatch(
         addNotification("Document issued", `Part of document request issued`)
       );
     });
+    const approved_doc_issuances: any = approved_doc_issuance.doc_issuance
+      ? approved_doc_issuance.doc_issuance
+      : [];
+
+    let divContents: any = "<div>nothing to display</div>";
+    var a = window.open("", "", "height=500, width=500");
+    a?.document.write("<html>");
+    a?.document.write("<body >");
+    if (approved_doc_issuances.length > 0) {
+      approved_doc_issuances.forEach((element: any, i: any): any => {
+        divContents = (
+          <div key={i}>
+            <div>Logo</div>
+            <div>Reference Number : {element.document_no} </div>
+            <div>Categoy : ? </div>
+            <div>Name of Doc : {element.document_name} </div>
+            <div>Type of Doc : ?</div>
+            <div></div>
+            <br></br>
+          </div>
+        );
+        a?.document.write(
+          "<div><div>Logo</div><div>Reference Number : " +
+            element.document_no +
+            " </div><div>Categoy : ? </div><div>Name of Doc :" +
+            element.document_name +
+            "</div><div>Type of Doc : ?</div><div></div><br></br></div>"
+        );
+      });
+
+      a?.document.write("</body></html>");
+      a?.document.close();
+      a?.print();
+    }
   };
   function hasNoOfLabelValueChanged(model: OnChangeModel): void {
     setSelectedDocForPrint({
@@ -423,30 +365,6 @@ const ProductForm: React.FC = () => {
       [model.field]: model.value,
     });
   }
-  const printLabels = () => {
-    let menuItems = [];
-    for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
-      const printO = (
-        <div key={i}>
-          <div>Logo</div>
-          <div>Reference Number : {selectedDocForPrint.document_no} </div>
-          <div>Categoy : ? </div>
-          <div>Name of Doc : {selectedDocForPrint.document_name} </div>
-          <div>Type of Doc : {formState.doc_type.value} </div>
-          <div></div>
-          <br></br>
-        </div>
-      );
-      menuItems.push(<span>{printO}</span>);
-    }
-
-    return (
-      <div>
-        Print Label<br></br>
-        {menuItems}
-      </div>
-    );
-  };
 
   function rowClassNameFormate(row: any, rowIdx: any) {
     if (row.is_doc_approved !== undefined && row.is_doc_approved) {
@@ -496,8 +414,43 @@ const ProductForm: React.FC = () => {
 
   const issueGenaralIssuanceAll = (event: any) => {
     event.preventDefault();
-
     const requestedDoc = formState.requested_doc.value;
+
+    const apprvedDoc = requestedDoc.map((doc: any) => {
+      let processedDocForApproval: any = [];
+      const no_of_label = 1;
+      for (var i = 0; i < no_of_label; i++) {
+        const processedApproval = Object.assign(
+          { ...doc },
+          {
+            is_doc_approved: true,
+          }
+        );
+        processedDocForApproval.push(processedApproval);
+      }
+      doc.doc_issuance = processedDocForApproval;
+      doc.is_doc_approved = true;
+      return doc;
+    });
+
+    let approvalInfo = {
+      name: formState.name.value,
+      empl_id: formState.empl_id.value,
+      doc_type: formState.doc_type.value,
+      request_no: formState.request_no.value,
+      requested_doc: apprvedDoc,
+      approval: formState.approval.value,
+      id: formState._id.value,
+    };
+
+    issueGenaralIssuance(approvalInfo, account).then((status) => {
+      setPrintYesDoc(false);
+      //  setSelectedDocForPrint(initialSelectedDocForPrint);
+      setShowYes(false);
+      dispatch(addNotification("Document issued", `Document request issued`));
+    });
+
+    /*  const requestedDoc = formState.requested_doc.value;
     const apprvedDoc = requestedDoc.map((doc) => {
       doc.is_doc_approved = true;
       return doc;
@@ -524,12 +477,10 @@ const ProductForm: React.FC = () => {
       issueGenaralIssuance(approvalInfo, account).then((status) => {
         //
       });
-    }
+    } */
   };
 
   const options = { afterInsertRow: saveDocument, ignoreEditable: false };
-
-  //console.log("formState----", formState);
 
   const approval1 = formState.approval.value[0]
     ? formState.approval.value[0]
@@ -557,21 +508,27 @@ const ProductForm: React.FC = () => {
     updateIssuanceDocumentforEdit({ ...issuanceDocumentforEdit, ...row });
   }
   function buttonFormatter(cell: any, row: any, rowIndex: any) {
-    return (
-      <>
-        <button
-          type="button"
-          className="btn btn-border"
-          onClick={() => onClickIssuanceDocumentEdit(cell, row, rowIndex)}
-        >
-          <i className="fas fa fa-pen"></i>
-        </button>
-      </>
-    );
+    const { doc_issuance_status = {} } = row;
+    const { is_issued = false } = doc_issuance_status;
+
+    if (!is_issued) {
+      return (
+        <>
+          <button
+            type="button"
+            className="btn btn-border"
+            onClick={() => onClickIssuanceDocumentEdit(cell, row, rowIndex)}
+          >
+            <i className="fas fa fa-pen"></i>
+          </button>
+        </>
+      );
+    } else {
+      return <i className="fa fa-thumbs-up" aria-hidden="true"></i>;
+    }
   }
   function closeDocUpdate(): void {
     updateIssuanceDocumentEditorModal(false);
-    console.log("Close Popup");
   }
   function hasEditIssuanceDocument(model: OnChangeModel): void {
     updateIssuanceDocumentforEdit({
@@ -600,6 +557,11 @@ const ProductForm: React.FC = () => {
     });
     updateIssuanceDocumentEditorModal(false);
   }
+
+  const approved_doc_issuance: any = selectedDocForPrint.doc_issuance
+    ? selectedDocForPrint.doc_issuance
+    : [];
+
   return (
     <Fragment>
       <div className="col-xl-12 col-lg-12">
@@ -869,18 +831,33 @@ const ProductForm: React.FC = () => {
               >
                 CLOSE
               </button>
-              <button
-                onClick={() => handleYes(true)}
-                className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
-              >
-                YES
-              </button>
-              <button
-                className="btn btn-warning font-14 left-margin font-14"
-                onClick={() => cancelForm()}
-              >
-                NO
-              </button>
+              {((docIssuance.doc_issuance_status &&
+                !docIssuance.doc_issuance_status.is_issued) ||
+                !docIssuance.doc_issuance_status) && (
+                <span>
+                  <button
+                    onClick={() => handleYes(true)}
+                    className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
+                  >
+                    YES
+                  </button>
+                  <button
+                    className="btn btn-warning font-14 left-margin font-14"
+                    onClick={() => cancelForm()}
+                  >
+                    NO
+                  </button>
+                </span>
+              )}
+
+              {docIssuance.doc_issuance_status &&
+                docIssuance.doc_issuance_status.is_issued && (
+                  <label>
+                    <span className="blink_me" style={{}}>
+                      All Documents are issued
+                    </span>
+                  </label>
+                )}
             </form>
           </div>
         </div>
@@ -1265,8 +1242,28 @@ const ProductForm: React.FC = () => {
                   </div>
                 </Popup>
 
-                <div id="printme" style={{ display: "none" }}>
-                  <div id={"printableIdyu"}>{printLabels()}</div>
+                <div id="printme">
+                  <div id={"printableIdyu"}>
+                    {" "}
+                    ------------
+                    {approved_doc_issuance.map(function (object: any, i: any) {
+                      return (
+                        <div key={i}>
+                          <div>Logo</div>
+                          <div>
+                            Reference Number : {selectedDocForPrint.document_no}{" "}
+                          </div>
+                          <div>Categoy : ? </div>
+                          <div>
+                            Name of Doc : {selectedDocForPrint.document_name}{" "}
+                          </div>
+                          <div>Type of Doc : {formState.doc_type.value} </div>
+                          <div></div>
+                          <br></br>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </Fragment>

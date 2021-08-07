@@ -160,7 +160,6 @@ function ProductForm(props: productFormProps): JSX.Element {
   }
 
   function cancelForm(): void {
-    console.log();
     dispatch(setModificationState(DocApprovalModificationStatus.None));
   }
 
@@ -452,7 +451,6 @@ function ProductForm(props: productFormProps): JSX.Element {
   }
   function closeDocUpdate(): void {
     updateDocumentEditorModal(false);
-    console.log("Close Popup");
   }
   function updateDocument(): void {
     let docList = docrequest?.requested_doc ? docrequest?.requested_doc : [];
@@ -474,14 +472,10 @@ function ProductForm(props: productFormProps): JSX.Element {
     updateDocumentEditorModal(false);
   }
 
-  console.log("docrequestsFINAL", docrequests);
-
   function checkUpdatedRow(row: any) {
     const { edited = false } = row;
     return edited ? "updated_row" : "";
   }
-
-  console.log("formState", formState);
 
   return (
     <Fragment>
@@ -654,8 +648,9 @@ function ProductForm(props: productFormProps): JSX.Element {
                         className="thead-light-1"
                         width="10%"
                         dataFormat={buttonFormatter}
+                        hiddenOnInsert={true}
                       >
-                        Action
+                        Action-1
                       </TableHeaderColumn>
                     </BootstrapTable>
                   </div>

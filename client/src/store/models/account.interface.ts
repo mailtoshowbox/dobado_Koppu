@@ -4,4 +4,5 @@ export interface IAccount {
     emp_id: string; 
     roles:Array<string> ;
     auth:any;
+    isAllowedForApproval: boolean
 } 

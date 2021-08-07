@@ -143,6 +143,9 @@ export class DocRequestsController {
         }        
       }); */ 
     } 
+
+   // console.log("issueGenaralIssuanceDto----", issueGenaralIssuanceDto);
+   // return issueGenaralIssuanceDto;
     return this.DocRequestsService.update(id, issueGenaralIssuanceDto, 'test');
   }
 }

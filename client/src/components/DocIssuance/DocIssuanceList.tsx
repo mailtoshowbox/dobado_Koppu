@@ -4,12 +4,12 @@ import {
   IStateType,
   IDocIssuanceState,
 } from "../../store/models/root.interface";
-import { IDocApproval } from "../../store/models/docapproval.interface";
+import { IDocIssuance } from "../../store/models/docIssuance.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 
 export type productListProps = {
-  onSelect?: (product: IDocApproval) => void;
-  onSelectDelete?: (product: IDocApproval) => void;
+  onSelect?: (product: IDocIssuance) => void;
+  onSelectDelete?: (product: IDocIssuance) => void;
   children?: React.ReactNode;
   docIssuanceModificationStatus: any;
   allowDelete: boolean;
@@ -63,10 +63,11 @@ function DocApprovalList(props: productListProps): JSX.Element {
   }
 
   const docApprovalFormatter = (cell: any, row: any) => {
-    const { approval = [] } = row;
+    const { approval = [], doc_issuance_status = {} } = row;
 
     let stsus = "";
     if (approval.length > 0) {
+      let issued = false;
       approval.forEach((appr: any) => {
         if (appr.status === "pending") {
           stsus +=
@@ -75,10 +76,19 @@ function DocApprovalList(props: productListProps): JSX.Element {
             " approval " +
             "Pending</span>&nbsp;";
         } else if (appr.status === "approved") {
-          stsus +=
-            "<span class=' approval-status btn-info'>" +
-            appr.approve_access_level +
-            " is Approved</span>";
+          const { doc_issued_by = [], is_issued = false } = doc_issuance_status;
+          if (doc_issued_by.length > 0 && !is_issued) {
+            stsus +=
+              "<span class=' approval-status btn-info'>Part of Request has been issued</span>";
+          } else if (is_issued) {
+            stsus +=
+              "<span class=' approval-status btn-info'>Request has been issued</span>";
+          } else {
+            stsus +=
+              "<span class=' approval-status btn-info'>" +
+              appr.approve_access_level +
+              " is Approved</span>";
+          }
         }
       });
     }

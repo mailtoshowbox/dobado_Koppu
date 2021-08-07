@@ -70,6 +70,30 @@ export class RequestDocumentIssuance extends Document {
  
 }
 
+export class DocumentRequestIssuedBy extends Document {
+  @Prop()
+  empl_id: string;
+
+  @Prop()
+  empl_email_id: string;
+
+  @Prop()
+  document_id: string;
+
+  @Prop()
+  document_issued_on: Date;
+ 
+}
+export class DocumentRequestIssuanceStatus extends Document {
+  @Prop()
+  is_issued: Boolean;
+
+  @Prop()
+  issued_on: Date;
+
+  @Prop()
+  doc_issued_by: DocumentRequestIssuedBy;
+}
 @Schema()
 export class DocRequests extends Document {
   @Prop()
@@ -104,6 +128,9 @@ export class DocRequests extends Document {
 
   @Prop()
   no_of_page: number;
+
+  @Prop()
+  doc_issuance_status : DocumentRequestIssuanceStatus
   
 }
 

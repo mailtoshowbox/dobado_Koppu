@@ -163,10 +163,8 @@ const Users: React.FC = () => {
     updateInActiveUserEdit(userUpdate);
   }
   const EditUser1: React.FC = (props: any) => {
-    console.log("props----", props);
     const { row = {} } = props;
 
-    console.log("inActiveUserEdit----", inActiveUserEdit);
     if (inActiveUserEdit.name === "") {
       updateInActiveUserEdit(row);
     }
@@ -274,7 +272,7 @@ const Users: React.FC = () => {
     }
     return <button className="btn btn-warning">Email not verified</button>;
   };
-  const userDepartmentFormatter = (cell: any, row: any) => { 
+  const userDepartmentFormatter = (cell: any, row: any) => {
     const verified = row.departments.length > 0;
     if (verified && listOfDept.length > 0) {
       const userStatus = listOfDept.filter(

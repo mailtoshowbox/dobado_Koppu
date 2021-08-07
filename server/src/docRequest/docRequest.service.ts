@@ -46,7 +46,7 @@ export class DocRequestService {
       
       });
     }else if(mode === 'issuance'){
-      return await   this.DocRequestModel.find({"issuance.status" : { $ne: 'issued' }}).exec().then((resultNew)=>{
+      return await   this.DocRequestModel.find({"doc_issuance_status.is_issued" : { $ne: true }}).exec().then((resultNew)=>{
         let approval_list_for_epl : any = [];    
         if(resultNew.length > 0){         
           resultNew.forEach((req)=>{
@@ -185,16 +185,91 @@ export class DocRequestService {
   async update(id: string, DocRequest: DocRequest, page:string): Promise<DocRequest> {  
 
     if(page === "issueGenaralIssuance"){
+      const {requested_doc=[]} =DocRequest; 
+     // let selectedDocument:any = [];
+      requested_doc.map((doc : any)=>{   
+        if(doc.is_doc_approved && !doc.is_doc_issued){
+          console.log("REQUESTED");
+          doc.is_doc_issued = true;
+          const documentList  = doc.doc_issuance ? doc.doc_issuance : [];
+          console.log("documentList----", documentList);
+          if(documentList.length > 0){
+            documentList.forEach((doc)=>{
+              const newDcoument = {  
+                name: doc.document_name,
+                description: doc.document_name,
+                no_of_copy : doc.no_of_copy,
+                no_of_page : doc.no_of_page,
+                document_no : doc.document_no,
+                qr_code : doc.document_no,
+                box: '',
+                rack:  '',
+                category :  "",
+                box_info: [],
+                rack_info: [],
+                category_info: [],
+                document_type : "",
+                docType_info: "",
+                is_Active: true,
+                retension_time : "" }; 
+              const newProduct = new this.documentModal(newDcoument); 
+              newProduct.isActive = false;
+              newProduct.isRequestedDocument = true;
+              console.log("Insert");
+              newProduct.save().then((res)=>{
+                console.log("+++++++++INsert DONE=");
+              });
+            }) 
+          }
+        }     
+        console.log("doc----", doc);     
+        return doc 
+      });
+     /*  let documentList = [];
+      if(selectedDocument.length === 1){
+         documentList  = selectedDocument[0].doc_issuance ? selectedDocument[0].doc_issuance : [];
+      }else if(selectedDocument.length > 1) {
+         documentList  = selectedDocument.doc_issuance ? selectedDocument.doc_issuance : [];
+      }
+    
+
+     console.log("documentList---", documentList);
+      if(documentList.length > 0){
+        documentList.forEach((doc)=>{
+          const newDcoument = {  
+            name: doc.document_name,
+            description: doc.document_name,
+            no_of_copy : doc.no_of_copy,
+            no_of_page : doc.no_of_page,
+            document_no : doc.document_no,
+            qr_code : doc.document_no,
+            box: '',
+            rack:  '',
+            category :  "",
+            box_info: [],
+            rack_info: [],
+            category_info: [],
+            document_type : "",
+            docType_info: "",
+            is_Active: true,
+            retension_time : "" }; 
+          const newProduct = new this.documentModal(newDcoument); 
+          newProduct.isActive = false;
+          newProduct.isRequestedDocument = true;
+          console.log("Insert");
+          newProduct.save().then((res)=>{
+            console.log("+++++++++INsert DONE=");
+          });
+        }) 
+      }else{
+         console.log("ALPHA");
+      } */
+
 
       
 
 
-      const {requested_doc=[]} =DocRequest; 
-      const issuanceList = requested_doc.filter((doc : any)=>{
-        
-        return doc.is_doc_approved && !doc.is_doc_issued;
-      });
-      if(issuanceList.length === requested_doc.length){
+     /*  if(issuanceList.length === requested_doc.length){
           issuanceList.forEach((doc)=>{
 
             const newDcoument = {  
@@ -223,6 +298,8 @@ export class DocRequestService {
   
           })
       }else{
+
+        console.log("issuanceList[0]-----", issuanceList[0]);
 
       const  {doc_issuance = [], document_no=''} =issuanceList[0] ? issuanceList[0] :[];
       if(document_no !== ""){
@@ -260,24 +337,10 @@ export class DocRequestService {
 
         })
       }
-        
-
-        //console.log("issuanceList--", issuanceList);
-
-        
-    
-        
-      }
-
-      
-
-
-
-    
-
- 
-
+      } */
     }
+
+    console.log("ISS---", DocRequest);
      return await this.DocRequestModel.findByIdAndUpdate(id, DocRequest, {
       new: true,
     }); 

@@ -2,10 +2,13 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IStateType } from "../../store/models/root.interface";
+import { IAccount } from "../../store/models/account.interface";
 
 import logo from "../../assets/images/login-logo.jpeg";
 const LeftMenu: React.FC = () => {
   let [leftMenuVisibility, setLeftMenuVisibility] = useState(false);
+  const account: IAccount = useSelector((state: IStateType) => state.account);
+  const { isAllowedForApproval = false } = account;
 
   const roles: any = useSelector((state: IStateType) => state.account.roles);
   let [userRole] = useState(roles[0] ? roles[0] : "Developer");
@@ -37,7 +40,7 @@ const LeftMenu: React.FC = () => {
           className="sidebar-brand d-flex align-items-center justify-content-center"
           href="index.html"
         >
-          <img src={logo} alt="logo" width="150" height="70"  />
+          <img src={logo} alt="logo" width="150" height="70" />
         </a>
 
         <hr className="sidebar-divider my-0" />
@@ -111,6 +114,19 @@ const LeftMenu: React.FC = () => {
             </li>
           </>
         )}
+
+        {["Documentcreater"].includes(userRole) && isAllowedForApproval && (
+          <>
+            {" "}
+            <li className="nav-item">
+              <Link className="nav-link" to={`/docrequestapproval`}>
+                <i className="fas fa-sitemap"></i>
+                <span>Approve Document</span>
+              </Link>
+            </li>
+          </>
+        )}
+
         {["Superadmin", "Developer"].includes(userRole) && (
           <div>
             <hr className="sidebar-divider" />

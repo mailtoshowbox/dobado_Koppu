@@ -219,6 +219,8 @@ const ProductForm: React.FC = () => {
   function loadApproavalAccessUserMail(accessLevel: string) {
     let data = {};
 
+    console.log(accessLevel);
+
     if (accessLevel === "manager") {
       data = {
         access: accessLevel,
@@ -233,14 +235,14 @@ const ProductForm: React.FC = () => {
 
     loadApproavalAccessUserInfo(data, account).then((status) => {
       if (status.data) {
-        const { email = "" } = status.data.data;
+        const { email = "", emp_id } = status.data.data;
         const approvedUsers = formState.approval
           ? formState.approval.value
           : [];
         const accessLevelPos = accessLevel === "manager" ? 0 : 1;
         if (email) {
           approvedUsers[accessLevelPos] = {
-            empl_id: formState.emp_code_approval_1.value.toString(),
+            empl_id: emp_id,
             empl_email_id: email,
             status: "pending",
             approve_access_level: accessLevel, //Manager/Quality user

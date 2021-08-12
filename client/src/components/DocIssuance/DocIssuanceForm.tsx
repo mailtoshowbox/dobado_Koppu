@@ -927,7 +927,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             className="label-field-column"
                           >
-                            Main Dept
+                            Nil
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             row={2}
@@ -936,7 +936,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             width="16%"
                           >
-                            DOc Name
+                            Doc Name
                           </TableHeaderColumn>
 
                           <TableHeaderColumn
@@ -975,7 +975,8 @@ const ProductForm: React.FC = () => {
                             dataSort
                             className="label-field-column"
                           >
-                            {formState.doc_type.value}
+                            Nil
+                            {/* {formState.doc_type.value} */}
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             row={2}
@@ -984,7 +985,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             width="16%"
                           >
-                            no of Copy
+                            No of Copy
                           </TableHeaderColumn>
 
                           <TableHeaderColumn
@@ -1036,7 +1037,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             width="16%"
                           >
-                            no of Pages
+                            No of Pages
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             row={2}
@@ -1052,7 +1053,7 @@ const ProductForm: React.FC = () => {
                             row={2}
                             dataFormat={printOptionFormatter}
                           >
-                            Print LEABELS
+                            Print Label
                           </TableHeaderColumn>
                         </BootstrapTable>
 
@@ -1137,7 +1138,7 @@ const ProductForm: React.FC = () => {
                           onClick={(e) => issueGenaralIssuanceAll(e)}
                           className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
                         >
-                          APPROVE1
+                          APPROVE
                         </button>
                       )}
                       <button

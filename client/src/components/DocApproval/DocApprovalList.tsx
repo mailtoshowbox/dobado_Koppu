@@ -176,7 +176,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
           dataFormat={buttonFormatter}
           hiddenOnInsert={true}
         >
-          Action1
+          Action
         </TableHeaderColumn>
       </BootstrapTable>
     </div>

@@ -296,6 +296,10 @@ html, #root, #wrapper {
 .user-table label, .user-table .invalid-field {
     display: none;
  }
+ .usrpopup{
+     padding-left: 30px;
+     text-align: left;
+ }
 @media (max-width: 380px) {
     .collapsed {
         display:none !important;

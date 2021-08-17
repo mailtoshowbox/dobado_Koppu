@@ -179,7 +179,7 @@ const Users: React.FC = () => {
     const userDepartment = departments[0] ? departments[0] : "";
 
     return (
-      <div className="form-group">
+      <div className="form-group usrpopup">
         <div className="row">
           <div className="mb-3">Edit User</div>
         </div>
@@ -268,7 +268,7 @@ const Users: React.FC = () => {
         .name;
 
       //return row.roles[0] ? row.roles[0] : "No Status";
-      return <button className="btn btn-dark">{userStatus}</button>;
+      return <span className="">{userStatus}</span>;
     }
     return <button className="btn btn-warning">Email not verified</button>;
   };
@@ -278,9 +278,9 @@ const Users: React.FC = () => {
       const userStatus = listOfDept.filter(
         (role) => role.id === row.departments[0]
       )[0].name;
-      return <button className="btn btn-dark">{userStatus}</button>;
+      return <span className="">{userStatus}</span>;
     }
-    return <button className="btn btn-warning">-</button>;
+    return <span className="btn btn-warning">-</span>;
   };
 
   const userApprovalFormatter = (cell: any, row: any) => {
@@ -501,7 +501,7 @@ const Users: React.FC = () => {
 
       <Popup className="popup-modal" open={openModalForEditActiveUser}>
         <div>
-          <div className="form-group">
+          <div className="form-group usrpopup">
             <div className="row">
               <div className="mb-3">Edit User</div>
             </div>

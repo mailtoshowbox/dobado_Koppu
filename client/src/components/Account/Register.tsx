@@ -6,7 +6,7 @@ import TextInput from "../../common/components/TextInput";
 import { registerUser } from "../../services/index";
 import "react-notifications/lib/notifications.css";
 import { addNotification } from "../../store/actions/notifications.action";
-import logo from "../../assets/images/login-logo.png";
+import logo from "../../assets/images/login-logo-new.jpg";
 
 const Register: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -162,7 +162,7 @@ const Register: React.FC = () => {
                   <div className="p-5">
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-3">
-                        <img src={logo} alt="logo"/>
+                      <img src={logo} alt="logo" width="200" height="120" />
                       </h1>
                       <h4 className="mb-3">New User Registration!</h4>
                     </div>

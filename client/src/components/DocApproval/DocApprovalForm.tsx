@@ -650,7 +650,7 @@ function ProductForm(props: productFormProps): JSX.Element {
                         dataFormat={buttonFormatter}
                         hiddenOnInsert={true}
                       >
-                        Action-1
+                        Action
                       </TableHeaderColumn>
                     </BootstrapTable>
                   </div>

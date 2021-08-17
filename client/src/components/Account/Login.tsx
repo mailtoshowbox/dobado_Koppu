@@ -9,13 +9,13 @@ import {
   addNotification,
   parseApiResult,
 } from "../../store/actions/notifications.action";
-import logo from "../../assets/images/login-logo.jpeg";
+import logo from "../../assets/images/login-logo-new.jpg";
 
 const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const [formState, setFormState] = useState({
-    email: { error: "", value: "yusuff007@gmail.com" },
-    password: { error: "", value: "yusuff007" },
+    email: { error: "", value: "arunonsite@gmail.com" },
+    password: { error: "", value: "Zaaro@123" },
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
                   <div className="p-5">
                     <div className="text-center">
                       <h1 className="h4 text-gray-900 mb-4">
-                        <img src={logo} alt="logo" width="250" height="100" />
+                        <img src={logo} alt="logo" width="200" height="120" />
                       </h1>
                     </div>
                     <form className="user" onSubmit={submit}>

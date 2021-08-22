@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { IStateType } from "../../store/models/root.interface";
 import { IAccount } from "../../store/models/account.interface";
 
-import logo from "../../assets/images/login-logo.jpeg";
+import logo from "../../assets/images/login-logo-new.png";
 const LeftMenu: React.FC = () => {
   let [leftMenuVisibility, setLeftMenuVisibility] = useState(false);
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -37,10 +37,10 @@ const LeftMenu: React.FC = () => {
         id="collapseMenu"
       >
         <a
-          className="sidebar-brand d-flex align-items-center justify-content-center"
+          className="sidebar-brand logo-bg d-flex align-items-center justify-content-center"
           href="index.html"
         >
-          <img src={logo} alt="logo" width="150" height="70" />
+          <img src={logo} alt="logo" width="130" height="70" />
         </a>
 
         <hr className="sidebar-divider my-0" />
@@ -53,7 +53,7 @@ const LeftMenu: React.FC = () => {
         </li>
 
         <hr className="sidebar-divider" />
-        <div className="sidebar-heading">Warehouse</div>
+        {/* <div className="sidebar-heading">Warehouse</div> */}
 
         <li className="nav-item">
           <Link className="nav-link" to={`/products`}>
@@ -128,7 +128,7 @@ const LeftMenu: React.FC = () => {
         )}
 
         {["Superadmin", "Developer"].includes(userRole) && (
-          <div>
+          <div className="admin_cls">
             <hr className="sidebar-divider" />
             <div className="sidebar-heading">Admin</div>
             <li className="nav-item">

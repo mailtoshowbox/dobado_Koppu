@@ -696,7 +696,7 @@ const ProductForm: React.FC = () => {
                     >
                       <TableHeaderColumn
                         dataField="document_no"
-                        width="8%"
+                        width="10%"
                         editable={{
                           defaultValue: uniqueId("DOC"),
                         }}
@@ -715,7 +715,7 @@ const ProductForm: React.FC = () => {
                       <TableHeaderColumn
                         dataField="no_of_copy"
                         className="thead-light-1"
-                        width="6%"
+                        width="10%"
                         editable={{ validator: numberValidator }}
                       >
                         No of Copy
@@ -723,7 +723,7 @@ const ProductForm: React.FC = () => {
                       <TableHeaderColumn
                         dataField="no_of_page"
                         className="thead-light-1"
-                        width="6%"
+                        width="10%"
                       >
                         No of Pages
                       </TableHeaderColumn>
@@ -731,7 +731,7 @@ const ProductForm: React.FC = () => {
                       <TableHeaderColumn
                         dataField="reason_for_request"
                         className="thead-light-1"
-                        width="10%"
+                        width="16%"
                         editable={{
                           type: "textarea",
                         }}

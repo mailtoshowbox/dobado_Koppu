@@ -163,7 +163,7 @@ function ProductList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="document_no"
           className="thead-light-1"
-          width="16%"
+          width="12%"
         >
           DC NO
         </TableHeaderColumn>
@@ -177,7 +177,7 @@ function ProductList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="category"
           className="thead-light-1"
-          width="14%"
+          width="8%"
         >
           Category
         </TableHeaderColumn>
@@ -207,14 +207,14 @@ function ProductList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="no_of_copy"
           className="thead-light-1"
-          width="10%"
+          width="5%"
         >
           No of Copies
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="no_of_page"
           className="thead-light-1"
-          width="10%"
+          width="5%"
         >
           No of Pages
         </TableHeaderColumn>
@@ -222,7 +222,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataField="button"
           dataFormat={buttonFormatter}
           className="thead-light-1"
-          width="9%"
+          width="10%"
         >
           Action
         </TableHeaderColumn>

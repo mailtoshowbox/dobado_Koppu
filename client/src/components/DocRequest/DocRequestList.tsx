@@ -135,7 +135,7 @@ function DocRequestList(props: productListProps): JSX.Element {
         trClassName={setRequestStatus}
       >
         <TableHeaderColumn
-          width="15%"
+          width="10%"
           dataField="_id"
           isKey
           searchable={false}
@@ -145,7 +145,7 @@ function DocRequestList(props: productListProps): JSX.Element {
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="request_no"
-          width="16%"
+          width="10%"
           className="thead-light-1"
         >
           Request No
@@ -161,14 +161,14 @@ function DocRequestList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="empl_id"
           className="thead-light-1"
-          width="16%"
+          width="10%"
         >
           Emp Id
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="button"
           className="thead-light-1"
-          width="20%"
+          width="26%"
           dataFormat={docApprovalFormatter}
         >
           Status

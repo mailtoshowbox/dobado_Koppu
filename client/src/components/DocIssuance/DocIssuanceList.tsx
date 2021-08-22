@@ -119,7 +119,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="request_no"
-          width="16%"
+          width="10%"
           className="thead-light-1"
         >
           Request No
@@ -127,21 +127,21 @@ function DocApprovalList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="doc_type"
           className="thead-light-1"
-          width="16%"
+          width="10%"
         >
           Doc Type
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="empl_id"
           className="thead-light-1"
-          width="16%"
+          width="10%"
         >
           Emp Id
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="button"
           className="thead-light-1"
-          width="20%"
+          width="35%"
           dataFormat={docApprovalFormatter}
         >
           Status

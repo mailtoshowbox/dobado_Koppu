@@ -258,11 +258,10 @@ const ProductForm: React.FC = () => {
       }
 
       //Doc Issuances
-      const doc_issued = {
-        empl_id: account.emp_id,
-        empl_email_id: account.emp_id,
+      const doc_issued = { 
         document_id: selectedDocForPrint.document_no,
         document_issued_on: new Date(),
+        document_issued_by: account.emp_id,
       };
       const initial_doc_issuance_status = {
         is_issued: false,
@@ -308,7 +307,7 @@ const ProductForm: React.FC = () => {
       requested_doc: requestedDoc,
       approval: formState.approval.value,
       id: formState._id.value,
-      doc_issuance_status: doc_issuances_status_info,
+      issuance: doc_issuances_status_info,
     };
 
     issueGenaralIssuance(approvalInfo, account).then((status) => {

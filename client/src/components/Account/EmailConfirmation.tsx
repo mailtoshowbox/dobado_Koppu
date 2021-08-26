@@ -14,8 +14,7 @@ const Register: React.FC = () => {
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
-  let df: any = useParams();
-  console.log("this", df);
+  let df: any = useParams(); 
   //
 
   const [] = useState({ status: false, message: "" });

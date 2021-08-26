@@ -6,6 +6,7 @@ export type OnChangeModel = {
     touched: boolean,
     field: string,
     name: string,
+    label: string,
 };
 
 export interface IFormStateField<T> {error: string, value: T};

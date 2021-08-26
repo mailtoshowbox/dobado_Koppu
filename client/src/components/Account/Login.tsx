@@ -14,8 +14,8 @@ import logo from "../../assets/images/login-logo-new.jpg";
 const Login: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const [formState, setFormState] = useState({
-    email: { error: "", value: "arunonsite@gmail.com" },
-    password: { error: "", value: "Zaaro@123" },
+    email: { error: "", value: "developer@gmail.com" },
+    password: { error: "", value: "developer" },
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {

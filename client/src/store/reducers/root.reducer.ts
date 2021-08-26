@@ -14,6 +14,7 @@ import departmentReducer from "./docdepartment.reducer";
 import requestReducer from "./docrequest.reducer";
 import requestApprovalReducer from "./docapproval.reducer";
 import requestIssuanceReducer from "./docissuance.reducer";
+import docLogSheetReducer from "./doclogsheet.reducer";
 
 
 const initialState: IRootStateType = {
@@ -45,7 +46,8 @@ const rootReducers: Reducer<IStateType> = combineReducers({root: rootReducer,
     docDepartments: departmentReducer,
     docRequests: requestReducer,
     docApprovals : requestApprovalReducer,
-    docIssuances : requestIssuanceReducer
+    docIssuances : requestIssuanceReducer,
+    docLogSheetData : docLogSheetReducer
 });
 
 

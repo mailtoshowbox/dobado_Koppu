@@ -39,6 +39,7 @@ export interface IStateType {
     docApprovals: IDocApprovalState;
     docIssuances: IDocIssuanceState;
     home: any;
+    docLogSheetData: IDocLogSheetState;
 }
 export interface IDocIssuanceState {
     docIssuances: IDocIssuance[];
@@ -55,6 +56,10 @@ export interface IProductState {
     selectedProduct: IProduct | null;
     modificationState: ProductModificationStatus;
 }
+export interface IDocLogSheetState {
+    docLogSheetList: IProduct[];
+ }
+
 
 export interface IActionBase {
     type: string;

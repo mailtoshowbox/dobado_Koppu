@@ -89,7 +89,7 @@ export class DocumentRequestIssuanceStatus extends Document {
   is_issued: Boolean;
 
   @Prop()
-  issued_on: Date;
+  doc_issued_on: Date;
 
   @Prop()
   doc_issued_by: DocumentRequestIssuedBy;
@@ -120,8 +120,8 @@ export class DocRequests extends Document {
   @Prop()
   comments: string;
 
-  @Prop()
-  issuance: RequestDocumentIssuance;
+  //@Prop()
+  //issuance: RequestDocumentIssuance;
 
   @Prop()
   no_of_copy: number;
@@ -130,7 +130,7 @@ export class DocRequests extends Document {
   no_of_page: number;
 
   @Prop()
-  doc_issuance_status : DocumentRequestIssuanceStatus
+  issuance : DocumentRequestIssuanceStatus
   
 }
 

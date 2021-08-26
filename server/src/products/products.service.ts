@@ -8,21 +8,26 @@ import { Boxes } from './schemas/box.schema';
 import { Racks } from './schemas/rack.schema';
 import { DocType } from './schemas/docType.schema';
  
+import  moment  from 'moment';
 
 var QRCode = require('qrcode')
 
-
+ 
 @Injectable()
 export class DocumentsService {
   constructor(
     @InjectModel(Documents.name)
     private productModel: Model<Documents>,
-    @InjectModel(Boxes.name) private readonly boxModel: Model<Boxes>,
+    @InjectModel(Boxes.name) private readonly boxModel: Model<Boxes>, 
     @InjectModel(Racks.name) private readonly rackModel: Model<Racks>) { }
 
   async findAll(mode): Promise<Document[]> {
 
     if(mode === 'issued'){
+      return await  this.productModel.find({ isActive: false, isRequestedDocument : true }).then((res:any)=>{   
+         return res;
+      });
+    }else if(mode === 'log-sheet'){
       return await  this.productModel.find({ isActive: false, isRequestedDocument : true }).then((res:any)=>{   
          return res;
       });
@@ -201,4 +206,26 @@ export class DocumentsService {
       return resiluSet;
     })
   }
+
+
+
+  
+  async getLogSheet({startDate=new Date(), endDate=new Date()}): Promise<Document[]> {  
+  //  var today = moment(startDate).format('YYYY-MM-DD[T00:00:00.000Z]');    
+   // var tomorrow = moment(endDate).format('YYYY-MM-DD[T00:00:00.000Z]');
+   // console.log("startDate----", new Date(startDate));
+   // const m = moment(startDate).startOf('day').toDate();// moment(date).format('YYYY-MM-DD');   
+   // console.log("m----", m);
+
+   let date1 = new Date(new Date(startDate).setHours(0, 0, 0));
+   let date2 = new Date(new Date(endDate).setHours(23, 59, 59));
+   
+      return await  this.productModel.find(
+        {"document_request_info.document_issued_on": {
+        $gte:date1,$lt: date2    } }).then((res:any)=>{   
+         return res;
+      });
+    
+    
+  } 
 }

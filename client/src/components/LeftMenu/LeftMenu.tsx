@@ -112,6 +112,12 @@ const LeftMenu: React.FC = () => {
                 <span>Doc Submit.</span>
               </Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={`/documentlogsheet`}>
+                <i className="fas fa-sitemap"></i>
+                <span>Doc LogSheet.</span>
+              </Link>
+            </li>
           </>
         )}
 

@@ -23,6 +23,7 @@ function Checkbox(props: CheckboxProps): JSX.Element {
       touched: touched,
       field: props.field,
       name: props.name,
+      label: props.label,
     });
 
     setTouch(true);

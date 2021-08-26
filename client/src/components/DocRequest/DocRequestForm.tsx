@@ -219,7 +219,7 @@ const ProductForm: React.FC = () => {
   function loadApproavalAccessUserMail(accessLevel: string) {
     let data = {};
 
-    console.log(accessLevel);
+   
 
     if (accessLevel === "manager") {
       data = {
@@ -359,6 +359,8 @@ const ProductForm: React.FC = () => {
     ignoreEditable: false,
     insertModalHeader: createCustomModalHeader,
   };
+
+  console.log("Form STATE--", formState);
   return (
     <Fragment>
       <div className="col-xl-12 col-lg-12">
@@ -532,20 +534,7 @@ const ProductForm: React.FC = () => {
                 )}
                 {formState.doc_type.value > 5 && (
                   <div className="dynamic-request-form">
-                    <div className="row">
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="emp_code"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="Emp Code"
-                          customError={""}
-                        />
-                      </div>
+                    <div className="row"> 
                       <div className="col-md-4">
                         <TextInput
                           id="input_request_no"

@@ -62,7 +62,10 @@ const Users: React.FC = () => {
     isAllowedForApproval: false,
     departments: "",
   });
-
+  function closeDocUpdate(): void {
+    console.log("CALLED FOR CLOSE");
+    updateModalForEditActiveUser(false);
+  }
   useEffect(() => {
     getUserList(account.auth).then((items: IUserList) => {
       dispatch(loadListOfuser(items));
@@ -75,9 +78,7 @@ const Users: React.FC = () => {
       dispatch(loadListOfDocDepartment(items));
     });
     dispatch(updateCurrentPath("users", "list"));
-  }, [path.area, dispatch]);
-
-  console.log("departmentList---", departmentList);
+  }, [path.area, dispatch]); 
 
   let listOfDept: { id: string; name: string }[] = [];
   departmentList.forEach((doc) => {
@@ -499,7 +500,7 @@ const Users: React.FC = () => {
         </div>
       </div>
 
-      <Popup className="popup-modal" open={openModalForEditActiveUser}>
+      <Popup className="popup-modal" open={openModalForEditActiveUser}  onClose={() => closeDocUpdate()}>
         <div>
           <div className="form-group usrpopup">
             <div className="row">

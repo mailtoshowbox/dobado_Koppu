@@ -406,6 +406,25 @@ export function getIssuedDocumentList(options) {
     });
 }
 
+export function getLogSheet(options, params) {  
+  
+  var myOptions = getDocCustomPostOptions(options, params);
+
+  return fetch(APP_CONST.API_HOST_AT + "/products/logSheets", myOptions)
+    .then(response => {
+      if (!response.ok) {
+        handleResponseError(response);
+      }
+      return response.json();
+    })
+    .then(json => {
+      return json;
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
 export function getBoxList(options) {
   var myOptions = getDocCustomGetOptions(options);
 

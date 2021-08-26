@@ -13,6 +13,25 @@ export class Retenstion extends Document {
   @Prop()
   calculateNonPerceptualTime: String; 
 }
+export class DocumentRequestInfo extends Document { 
+  @Prop()
+  document_request_no: string;
+
+  @Prop()
+  document_issued_on: Date;
+  
+  @Prop()
+  document_issued_by: string;
+
+  @Prop()
+  document_issued_to: string;
+/* 
+  @Prop()
+  document_submitted_on: Date;
+
+  @Prop()
+  document_submitted_by: string; */
+}
 @Schema()
 export class Documents extends Document {
   @Prop()
@@ -68,6 +87,10 @@ export class Documents extends Document {
 
   @Prop()
   no_of_page: number;
+
+  @Prop()
+  document_request_info:  DocumentRequestInfo
+  
   
 }
 

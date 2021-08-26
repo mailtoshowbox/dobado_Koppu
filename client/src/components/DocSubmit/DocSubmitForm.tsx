@@ -132,6 +132,7 @@ const ProductForm: React.FC = () => {
         defaultYear: 4,
         calculateNonPerceptualTime: "",
       },
+      document_request_info:{}
     };
   } else {
     const { box = "", rack = "" } = product;
@@ -179,6 +180,7 @@ const ProductForm: React.FC = () => {
           : 0,
       },
     },
+    document_request_info :  { error: "", value: product.document_request_info },
   });
 
   if (formState.qr_code.value === "") {
@@ -344,7 +346,7 @@ const ProductForm: React.FC = () => {
         };
 
         addNewDoc(boxInfo, account).then((status) => {
-          getIssuedDocumentList(account).then((items: IProductList) => {
+          getIssuedDocumentList(account ,{"userId" : account.emp_id }).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(
@@ -357,6 +359,7 @@ const ProductForm: React.FC = () => {
           dispatch(setModificationState(ProductModificationStatus.None));
         });
       } else if (mode === "EDIT") {
+        const sumittedDocInfo = {document_submitted_on : new Date(),document_submitted_by : account.emp_id};
         let boxInfoUpt = {
           id: formState._id.value,
           name: formState.name.value,
@@ -371,6 +374,7 @@ const ProductForm: React.FC = () => {
           document_type: formState.document_type.value,
           retension_time: formState.retension_time.value,
           isActive: true,
+          document_request_info : formState.document_request_info.value,
         };
         let seltdPro = products?.products.filter(
           (pro) => pro._id === formState._id.value
@@ -400,7 +404,8 @@ const ProductForm: React.FC = () => {
             approvedBy: currentUser,
           };
         }
-        boxInfoUpt = { ...boxInfoUpt, ...{ document_info: updatedDoc_Info } };
+        boxInfoUpt = { ...boxInfoUpt, ...{ document_info: updatedDoc_Info , 
+          document_request_info : {...boxInfoUpt.document_request_info, ...sumittedDocInfo } } };
 
         const {
           box = "",
@@ -446,7 +451,7 @@ const ProductForm: React.FC = () => {
             })
           );
 
-          getIssuedDocumentList(account).then((items: IProductList) => {
+          getIssuedDocumentList(account,  {"userId" : account.emp_id }).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(

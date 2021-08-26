@@ -1,6 +1,9 @@
 import { SettingsDto } from "./settings.dto";
 import { PhotoDto } from "../../common/dto/photo.dto";
-
+interface department  extends Document{
+  id: string;
+  name: string;
+} 
 export class UserDto {
   constructor(object: any) {
     this.name = object.name;
@@ -22,6 +25,8 @@ export class UserDto {
     this.approved = object.approved;
     this.isAllowedForApproval = object.isAllowedForApproval;
     this.emp_id = object.emp_id;
+    this.departments = object.departments;
+    
   };
   readonly name: string;
   readonly surname: string;
@@ -37,5 +42,6 @@ export class UserDto {
     profilePic: PhotoDto;
     gallery: PhotoDto[];
   };
+  readonly departments: any;
   
 }

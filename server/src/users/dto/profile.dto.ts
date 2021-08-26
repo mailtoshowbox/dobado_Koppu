@@ -14,7 +14,7 @@ export class ProfileDto {
   };
   readonly _id: string;
   readonly roles: string;
-  readonly departments: string;
+  readonly departments: any;
   readonly isAllowedForApproval: boolean;
   readonly emp_id: string;
 

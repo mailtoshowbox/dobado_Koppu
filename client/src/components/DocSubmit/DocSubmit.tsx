@@ -56,14 +56,14 @@ const Products: React.FC = () => {
   const [popup, setPopup] = useState(false);
   useEffect(() => {
     //Load Documents
-    getIssuedDocumentList(account.auth).then((items: IProductList) => {
+    getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
       dispatch(loadListOfProduct(items));
     });
     //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
     });
-    //Load Available Boxes
+    //Load Available Boxes"
     getBoxList(account.auth).then((items: IBoxList) => {
       dispatch(loadListOfBox(items));
     });

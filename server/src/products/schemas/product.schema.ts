@@ -24,7 +24,9 @@ export class DocumentRequestInfo extends Document {
   document_issued_by: string;
 
   @Prop()
-  document_issued_to: string;
+  document_requested_by: string;
+
+  
 /* 
   @Prop()
   document_submitted_on: Date;

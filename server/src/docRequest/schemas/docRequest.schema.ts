@@ -94,6 +94,14 @@ export class DocumentRequestIssuanceStatus extends Document {
   @Prop()
   doc_issued_by: DocumentRequestIssuedBy;
 }
+export class MasterRowFormat extends Document {
+  @Prop()
+  id: string;
+
+  @Prop()
+  name: string;
+}
+
 @Schema()
 export class DocRequests extends Document {
   @Prop()
@@ -131,6 +139,10 @@ export class DocRequests extends Document {
 
   @Prop()
   issuance : DocumentRequestIssuanceStatus
+
+  
+  @Prop()
+  doc_requested_department : MasterRowFormat
   
 }
 

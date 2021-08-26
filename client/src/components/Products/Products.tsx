@@ -52,7 +52,7 @@ const Products: React.FC = () => {
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
-  const numberItemsCount: number = products.products.length;
+  const numberItemsCount: number = products.products ? products.products.length : 0;
   const [popup, setPopup] = useState(false);
   useEffect(() => {
     //Load Documents

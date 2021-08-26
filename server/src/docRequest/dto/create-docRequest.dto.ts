@@ -8,4 +8,6 @@ export class CreateDocRequestDto {
   readonly rejectDocumentRequest: {}; 
   readonly comments: string;   
   readonly issuance: {};   
+  readonly doc_requested_department: {};   
+  
 } 

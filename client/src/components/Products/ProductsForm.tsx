@@ -131,6 +131,7 @@ const ProductForm: React.FC = () => {
         defaultYear: 4,
         calculateNonPerceptualTime: "",
       },
+      document_request_info:{}
     };
   } else {
     const { box = "", rack = "" } = product;
@@ -175,6 +176,7 @@ const ProductForm: React.FC = () => {
           product.retension_time.calculateNonPerceptualTime,
       },
     },
+    document_request_info :{}
   });
 
   if (formState.qr_code.value === "") {

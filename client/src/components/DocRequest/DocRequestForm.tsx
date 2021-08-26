@@ -37,6 +37,7 @@ import Popup from "reactjs-popup";
 
 const ProductForm: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
+ 
 
   const dispatch: Dispatch<any> = useDispatch();
   const docrequests: IDocRequestState | null = useSelector(
@@ -61,6 +62,8 @@ const ProductForm: React.FC = () => {
       emp_code_approval_2: "",
       comments: "",
       issuance: [],
+      doc_requested_department : account.departments[0]
+
     };
   }
 
@@ -82,6 +85,7 @@ const ProductForm: React.FC = () => {
     emp_code_approval_2: { value: docrequest.emp_code_approval_2 },
     approval: { value: docrequest.approval },
     comments: { value: docrequest.comments },
+    doc_requested_department: { error: "", value: docrequest.doc_requested_department },
   };
   const [formState, setFormState] = useState(intialFormState);
 
@@ -163,7 +167,7 @@ const ProductForm: React.FC = () => {
 
   function saveRequest(formState: any, saveFn: Function, mode: String): void {
     if (docrequest) {
-      if (mode === "ADD") {
+      if (mode === "ADD") { 
         let boxInfo = {
           name: formState.name.value,
           empl_id: formState.empl_id.value,
@@ -179,6 +183,7 @@ const ProductForm: React.FC = () => {
             rejected_from_page: "",
           },
           comments: formState.comments.value,
+          doc_requested_department : formState.doc_requested_department.value,
         };
         addNewDocumentRequest(boxInfo, account).then((status) => {
           setLoginPopup(false);

@@ -43,12 +43,12 @@ export class DocumentsController {
   }
 
 
-  @Get(':modes')
-  findAll(  @Param('modes') modes: string,): Promise<Document[]> {
+  @Get(':modes/:id')
+  findAll(  @Param('modes') modes: string, @Param('id') id: string ): Promise<Document[]> {
  
    console.log("--modes--",modes);
     if(modes && modes === "issued" ){
-      let res = this.productsService.findAll(modes).then((succ=[])=>{   
+      let res = this.productsService.findAll(modes, id).then((succ=[])=>{   
         let onfo =  succ.map((doc : any)=>{ 
    
            const {box_info=[], rack_info=[], category_info =[], docType_info=[] } = doc;

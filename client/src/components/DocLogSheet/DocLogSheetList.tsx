@@ -93,19 +93,19 @@ function DocCategoryList(props: productListProps): JSX.Element {
 
       if( column.FIELD_NAME === 'document_request_info.document_request_no'){
         return (
-          <TableHeaderColumn dataFormat={document_request_no_format} formatExtraData ={"document_request_no"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+          <TableHeaderColumn csvHeader={column.FIELD_LABEL} dataFormat={document_request_no_format} formatExtraData ={"document_request_no"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
       );
       }else if( column.FIELD_NAME === 'document_request_info.document_issued_to'){
         return (
-          <TableHeaderColumn dataFormat={document_request_no_format} formatExtraData ={"document_issued_to"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+          <TableHeaderColumn csvHeader={column.FIELD_LABEL} dataFormat={document_request_no_format} formatExtraData ={"document_issued_to"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
       );
         }else if( column.FIELD_NAME === 'document_request_info.document_issued_on'){
           return (
-            <TableHeaderColumn dataFormat={document_request_no_format} formatExtraData ={"document_issued_on"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+            <TableHeaderColumn csvHeader={column.FIELD_LABEL} dataFormat={document_request_no_format} formatExtraData ={"document_issued_on"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
         );
           }else if( column.FIELD_NAME === 'document_request_info.document_issued_by'){
             return (
-              <TableHeaderColumn dataFormat={document_request_no_format} formatExtraData ={"document_issued_by"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+              <TableHeaderColumn csvHeader={column.FIELD_LABEL} dataFormat={document_request_no_format} formatExtraData ={"document_issued_by"} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
           );
             }
       else{
@@ -113,7 +113,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
       
         return (
           
-            <TableHeaderColumn dataFormat={common_format} formatExtraData ={column.FIELD_NAME } dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+            <TableHeaderColumn csvHeader={column.FIELD_LABEL} dataFormat={common_format} formatExtraData ={column.FIELD_NAME } dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
         );
       }
    // }

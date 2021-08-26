@@ -1,6 +1,9 @@
 import { Document } from 'mongoose';
 import { Photo } from '../../common/interfaces/photo.interface';
-
+interface department  extends Document{
+  id: string;
+  name: string;
+} 
 export interface User extends Document{
   name: string;
   surname: string;
@@ -9,7 +12,7 @@ export interface User extends Document{
   birthdaydate: Date;
   password: string;
   roles: string[];
-  departments: string[]; 
+  ttgF: string[]; 
   approved : boolean;
   isAllowedForApproval : boolean,
   emp_id : string,  
@@ -30,6 +33,7 @@ export interface User extends Document{
     profilePic: Photo;
     gallery: Photo[];
   }, 
+  departments : department[]
 
   
 }

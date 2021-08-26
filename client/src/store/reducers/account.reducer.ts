@@ -8,7 +8,8 @@ const initialState: IAccount = {
     roles:[] ,
     auth:{},
     emp_id : "",
-    isAllowedForApproval:false
+    isAllowedForApproval:false,
+    departments : []
 };
 
 function accountReducer(state: IAccount = initialState, action: IActionBase): IAccount { 

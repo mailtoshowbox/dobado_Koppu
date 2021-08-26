@@ -11,6 +11,7 @@ export interface IDocIssuance {
     emp_code_approval_1: string;
     emp_code_approval_2: string;
     doc_issuance_status:  DocRequestIssuanceStatus,
+    doc_requested_department : any
  
 }
 export interface DocRequestIssuanceStatus {

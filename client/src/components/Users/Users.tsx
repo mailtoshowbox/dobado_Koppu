@@ -60,7 +60,7 @@ const Users: React.FC = () => {
     roles: "",
     emp_id: "XXXXXX",
     isAllowedForApproval: false,
-    departments: "",
+    departments: [],
   });
   function closeDocUpdate(): void {
     console.log("CALLED FOR CLOSE");
@@ -87,6 +87,15 @@ const Users: React.FC = () => {
   });
 
   function updateUser(userMode: string): void {
+
+console.log("listOfDeptlistOfDept---", listOfDept);
+console.log("inActiveUserEdit---", inActiveUserEdit);
+ 
+ 
+
+//inActiveUserEdit.departments.push(selected_department_details[0]); 
+//inActiveUserEdit.departments = selected_department_details.length > 0 ? selected_department_details : [selected_department];
+
     updateUserProfile(inActiveUserEdit, account).then((status) => {
       getUserList(account.auth).then((items: IUserList) => {
         dispatch(loadListOfuser(items));
@@ -154,10 +163,22 @@ const Users: React.FC = () => {
   function selectField(userMode: string, model: OnChangeModel): void {
     let userUpdate = inActiveUserEdit;
 
+    console.log("userMode---", userMode, model.value, model.field);
+
     if (userMode === "inActiveUserEdit") {
+      if(model.field === 'departments'){
+ 
+const selected_department_details= listOfDept.find((dept)=> dept.id === model.value);
+        userUpdate = Object.assign({}, inActiveUserEdit, {
+          [model.field]:selected_department_details,
+        });
+      }else{
+        
+      
       userUpdate = Object.assign({}, inActiveUserEdit, {
         [model.field]: [model.value],
       });
+    }
     } else if (userMode === "activeUserEdit") {
     }
 
@@ -275,10 +296,9 @@ const Users: React.FC = () => {
   };
   const userDepartmentFormatter = (cell: any, row: any) => {
     const verified = row.departments.length > 0;
-    if (verified && listOfDept.length > 0) {
-      const userStatus = listOfDept.filter(
-        (role) => role.id === row.departments[0]
-      )[0].name;
+    if (verified) {
+      const userStatus =   row.departments[0].name;
+       
       return <span className="">{userStatus}</span>;
     }
     return <span className="btn btn-warning">-</span>;
@@ -328,7 +348,7 @@ const Users: React.FC = () => {
     departments = [],
   } = inActiveUserEdit;
   const useRoles = roles[0];
-  const userDepartment = departments[0] ? departments[0] : "";
+  const userDepartment = departments[0] ? departments[0]['id']: "";
 
   return (
     <Fragment>

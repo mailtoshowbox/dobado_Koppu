@@ -130,7 +130,30 @@ function ProductList(props: productListProps): JSX.Element {
       );
     }
   }
-
+  function document_request_format(cell: any, row: any, field: any) {
+ 
+   
+     
+      return (
+        <>
+        { row.document_request_info[field]}
+        </>
+      );
+    
+    
+  }
+  function document_request_format_dpet_name(cell: any, row: any, field: any) {
+ 
+   
+     
+    return (
+      <>
+      { row.document_request_info.document_request_department[field]}
+      </>
+    );
+  
+  
+}
   const options = {
     clearSearch: true,
   };
@@ -155,7 +178,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataField="name"
           width="16%"
           className="thead-light-1"
-          dataFormat={dataFormatter}
+          dataFormat={document_request_format} formatExtraData ={"document_request_no"}
         >
           Request NO
         </TableHeaderColumn>
@@ -185,6 +208,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataField="qr_code"
           className="thead-light-1"
           width="10%"
+          dataFormat={document_request_format_dpet_name} formatExtraData ={"name"}
         >
           Department
         </TableHeaderColumn>

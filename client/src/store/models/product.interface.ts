@@ -12,7 +12,7 @@ export interface IProduct {
     expiredate: Date;  
     document_info : any; 
     retension_time: { time: Number, defaultYear: Number,calculateNonPerceptualTime : String },
-
+    document_request_info : any;
    /*  box_info:  Array<IProduct>;
     rack_info:   Array<Info>;
     category_info :   Array<Info>; */

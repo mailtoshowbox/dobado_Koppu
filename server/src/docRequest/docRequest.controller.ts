@@ -79,7 +79,7 @@ export class DocRequestsController {
     @Body() updateDocRequestsDto: CreateDocRequestDto,
   ): Promise<DocRequest> { 
 
- //  console.log("updateDocRequestsDto--", updateDocRequestsDto);
+   console.log("updateDocRequestsDto--", updateDocRequestsDto);
 
     if(page_from){
       let createDocRequestsDto : CreateDocApprovalHistoryDto = { 

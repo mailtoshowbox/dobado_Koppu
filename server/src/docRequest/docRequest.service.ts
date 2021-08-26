@@ -45,8 +45,7 @@ export class DocRequestService {
         }
       
       });
-    }else if(mode === 'issuance'){
-      console.log("empl_id---", empl_id);
+    }else if(mode === 'issuance'){ 
       return await   this.DocRequestModel.find({"doc_issuance_status.is_issued" : { $ne: true } , empl_id: empl_id }).exec().then((resultNew)=>{
         let approval_list_for_epl : any = [];    
         if(resultNew.length > 0){         
@@ -188,20 +187,19 @@ export class DocRequestService {
   async update(id: string, DocRequest: DocRequest, page:string): Promise<DocRequest> {  
 
     if(page === "issueGenaralIssuance"){ 
-      const {requested_doc=[], issuance:{doc_issued_by=[]}} =DocRequest; 
+      const {requested_doc=[], issuance:{doc_issued_by=[]}, doc_requested_department={}} =DocRequest; 
       
      // let selectedDocument:any = [];
       requested_doc.map((doc : any)=>{   
         if(doc.is_doc_approved && !doc.is_doc_issued){  
           
-          console.log("doc.document_no---", doc.document_no);
+          console.log("doc.doc_requested_department---", doc_requested_department);
 
         const doc_issuer =   doc_issued_by.find((element) =>  element.document_id === doc.document_no) ;
 
           doc.is_doc_issued = true;
          const documentList  = doc.doc_issuance ? doc.doc_issuance : [];
-         // console.log("documentList----", documentList);
-          console.log("doc_issuer----", doc_issuer);
+        
           if(documentList.length > 0){
             documentList.forEach((doc)=>{
               const newDcoument = {  
@@ -225,7 +223,9 @@ export class DocRequestService {
                   document_request_no: DocRequest.request_no,
                   document_issued_on : new Date(),
                   document_issued_by : doc_issuer.document_issued_by,
-                  document_issued_to : DocRequest.empl_id 
+                  document_requested_by : DocRequest.empl_id ,
+                  document_issued_to : DocRequest.empl_id,
+                  document_request_department : DocRequest.doc_requested_department
                 }
               
               
@@ -233,14 +233,13 @@ export class DocRequestService {
               const newProduct = new this.documentModal(newDcoument); 
               newProduct.isActive = false;
               newProduct.isRequestedDocument = true; 
-              console.log("Insert");
+            
               newProduct.save().then((res)=>{
                 console.log("+++++++++INsert DONE=");
               });
             }) 
           }
-        }     
-        console.log("doc----", doc);     
+        }        
         return doc 
       });
      /*  let documentList = [];

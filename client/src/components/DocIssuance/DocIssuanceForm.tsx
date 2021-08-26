@@ -59,6 +59,7 @@ const ProductForm: React.FC = () => {
         issued_on: new Date(),
         doc_issued_by: [],
       },
+      doc_requested_department :{}
     };
   }
 
@@ -85,6 +86,8 @@ const ProductForm: React.FC = () => {
     emp_code_approval_1: { value: docIssuance.emp_code_approval_1 },
     emp_code_approval_2: { value: docIssuance.emp_code_approval_2 },
     approval: { value: docIssuance.approval },
+    doc_requested_department: { error: "", value: docIssuance.doc_requested_department },
+
   };
   const [formState, setFormState] = useState(intialFormState);
 
@@ -105,6 +108,7 @@ const ProductForm: React.FC = () => {
       issued_on: new Date(),
       doc_issued_by: [],
     },
+    doc_requested_department: {}
   };
   const [selectedDocForPrint, setSelectedDocForPrint] = useState(
     initialSelectedDocForPrint
@@ -129,6 +133,7 @@ const ProductForm: React.FC = () => {
     document_no: "",
     no_of_page: 0,
     no_of_copy: 0,
+    doc_requested_department:{}
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -308,6 +313,7 @@ const ProductForm: React.FC = () => {
       approval: formState.approval.value,
       id: formState._id.value,
       issuance: doc_issuances_status_info,
+      doc_requested_department : formState.doc_requested_department.value,
     };
 
     issueGenaralIssuance(approvalInfo, account).then((status) => {
@@ -1161,9 +1167,9 @@ const ProductForm: React.FC = () => {
                           onChange={() => {}}
                           required={true}
                           maxLength={100}
-                          label="Document Numbers"
+                          label="Document Number"
                           customError={""}
-                          placeholder="Email"
+                          placeholder="Document Number"
                         />
                       </div>
                       <div className="form-group font-14">

@@ -387,11 +387,11 @@ export function getDocumentList(options) {
     });
 }
 
-export function getIssuedDocumentList(options) {
+export function getIssuedDocumentList(options, {userId=""}) {
 
   var myOptions = getDocCustomGetOptions(options);
 
-  return fetch(APP_CONST.API_HOST_AT + "/products/issued", myOptions)
+  return fetch(APP_CONST.API_HOST_AT + "/products/issued/"+userId, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);

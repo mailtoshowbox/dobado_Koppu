@@ -21,10 +21,10 @@ export class DocumentsService {
     @InjectModel(Boxes.name) private readonly boxModel: Model<Boxes>, 
     @InjectModel(Racks.name) private readonly rackModel: Model<Racks>) { }
 
-  async findAll(mode): Promise<Document[]> {
+  async findAll(mode, id=null): Promise<Document[]> {
 
     if(mode === 'issued'){
-      return await  this.productModel.find({ isActive: false, isRequestedDocument : true }).then((res:any)=>{   
+      return await  this.productModel.find({ isActive: false, isRequestedDocument : true,  }).then((res:any)=>{   
          return res;
       });
     }else if(mode === 'log-sheet'){

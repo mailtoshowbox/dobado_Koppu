@@ -24,7 +24,7 @@ export interface IProductFormState {
     type_of_space : IFormStateField<string>;
     document_type : IFormStateField<string>;
     retension_time :IFormStateField<object>;
-
+    document_request_info:any
     
     
      

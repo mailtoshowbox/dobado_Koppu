@@ -23,6 +23,7 @@ export class AuthService {
 
   async validateLogin(email, password) {
     var userFromDb = await this.userModel.findOne({ email: email});
+    console.log("userFromDb----", userFromDb);
     if(!userFromDb) throw new HttpException('LOGIN.USER_NOT_FOUND', HttpStatus.NOT_FOUND);
     if(!userFromDb.auth.email.valid) throw new HttpException('LOGIN.EMAIL_NOT_VERIFIED', HttpStatus.FORBIDDEN);
  

@@ -95,7 +95,20 @@ function DocApprovalList(props: productListProps): JSX.Element {
 
     return stsus;
   };
+  function document_request_format(cell: any, row: any, field: any) {
 
+    console.log("cell--", cell);
+    console.log("row--", row);
+    console.log("field--", field);
+  
+      return (
+        <>
+        { row.doc_requested_department[field]}
+        </>
+      );
+  
+    
+  }
   const options = {
     clearSearch: true,
   };
@@ -121,6 +134,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
           dataField="request_no"
           width="10%"
           className="thead-light-1"
+         
         >
           Request No
         </TableHeaderColumn>

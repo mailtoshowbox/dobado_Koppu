@@ -44,6 +44,7 @@ const ProductForm: React.FC = () => {
     doccategory = { _id: "", name: "", description: "" };
   }
 
+
   const [formState, setFormState] = useState({
     _id: { error: "", value: doccategory._id },
     name: { error: "", value: doccategory.name },

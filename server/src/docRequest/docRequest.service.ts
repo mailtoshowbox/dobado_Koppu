@@ -46,18 +46,23 @@ export class DocRequestService {
       
       });
     }else if(mode === 'issuance'){ 
-      return await   this.DocRequestModel.find({"doc_issuance_status.is_issued" : { $ne: true } , empl_id: empl_id }).exec().then((resultNew)=>{
-        let approval_list_for_epl : any = [];    
+      return await   this.DocRequestModel.find({"doc_issuance_status.is_issued" : { $ne: true } }).exec().then((resultNew)=>{
+        let approval_list_for_epl : any = [];  
+        let employee_verified = false;  
         if(resultNew.length > 0){         
           resultNew.forEach((req)=>{
             let checkAppor : any    = [];
             let approvalList : any    = req.approval;
-            if(approvalList.length > 0){ 
+            if(approvalList.length > 0 ){ 
               checkAppor     =  approvalList.filter(approv => { 
+                
+                if(!employee_verified){
+                  employee_verified =  empl_id.toString() === approv.empl_id.toString();
+                }
                 return  approv.status === 'approved';
               }) || [];     
 
-              if(checkAppor.length === approvalList.length){               
+              if(checkAppor.length === approvalList.length && employee_verified){               
                 approval_list_for_epl.push(req);
               }
             }

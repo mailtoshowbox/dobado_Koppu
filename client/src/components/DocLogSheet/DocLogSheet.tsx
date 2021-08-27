@@ -49,6 +49,7 @@ const Products: React.FC = () => {
   }, [path.area, dispatch]);
  
 
+  const [dataLogSheetLoaded, setDataLogSheetLoaded] = useState(false);
  
   function setStartDate(date:any) { 
    
@@ -108,9 +109,10 @@ const Products: React.FC = () => {
 
   let date3 = new Date(endDate).toDateString();
   date3 = moment(date3).format('YYYY-MM-DD'); 
- 
+  setDataLogSheetLoaded(false)
   getLogSheet(account, {startDate : date2, endDate:date3}).then((items: IProductList) => {
     dispatch(loadDocumentLogSheet(items));
+    setDataLogSheetLoaded(true)
   });
 
  }
@@ -154,7 +156,7 @@ const Products: React.FC = () => {
      
       </div>
     
-      </div>
+      </div>  { dataLogSheetLoaded &&
         <div className="col-xl-12 col-lg-12">
           <div className="card shadow mb-4">
 
@@ -175,7 +177,7 @@ const Products: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </div> }
       </div>
 
      

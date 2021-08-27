@@ -52,7 +52,7 @@ const Products: React.FC = () => {
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
-  const numberItemsCount: number = products.products.length;
+ 
   const [popup, setPopup] = useState(false);
   useEffect(() => {
     //Load Documents
@@ -96,15 +96,7 @@ const Products: React.FC = () => {
   return (
     <Fragment>
       <h1 className="h5 mb-4 text-gray-800 font-bold">Document Submit</h1>
-      {/* <p className="mb-4 font-14">Documents here</p> */}
-      {/*    <div className="row">
-        <TopCard
-          title="Documents COUNT"
-          text={`${numberItemsCount}`}
-          icon="folder-open"
-          class="success"
-        />
-      </div> */}
+  
 
       <div className="row">
         <div className="col-xl-12 col-lg-12">

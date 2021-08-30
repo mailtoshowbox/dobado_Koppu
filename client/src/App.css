@@ -51,7 +51,9 @@ body {
 .left-margin {
     margin-left: 10px;
 }
-
+.fnt{
+    font-size: 14px !important;
+}
 .toast-wrapper {
     position: fixed;
     top     : 80px;
@@ -226,6 +228,7 @@ li a {
 .navbar-nav.sidebar-dark .nav-item .nav-link {
     border-bottom: 1px solid #ccc;
     padding: .8rem;
+    background-color: black;
 }
 
 .navbar-nav.sidebar-dark .nav-item .nav-link i {

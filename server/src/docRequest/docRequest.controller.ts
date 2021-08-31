@@ -78,9 +78,6 @@ export class DocRequestsController {
     @Param('id') id: string,
     @Body() updateDocRequestsDto: CreateDocRequestDto,
   ): Promise<DocRequest> { 
-
-   console.log("updateDocRequestsDto--", updateDocRequestsDto);
-
     if(page_from){
       let createDocRequestsDto : CreateDocApprovalHistoryDto = { 
        history: JSON.stringify(updateDocRequestsDto),
@@ -104,7 +101,6 @@ export class DocRequestsController {
         }        
       }); 
     }
-    
     return this.DocRequestsService.update(id, updateDocRequestsDto, page_from);
   }
   @Put(':id/:uniquenum')

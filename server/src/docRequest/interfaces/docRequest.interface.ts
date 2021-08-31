@@ -21,6 +21,7 @@ export interface DocRequest {
   isActive: boolean; 
   issuance :any;
   doc_requested_department : any;
+  doc_requested_doctype : any;
   
 } 
 

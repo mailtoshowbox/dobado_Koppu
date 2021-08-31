@@ -45,8 +45,7 @@ export class DocumentsController {
 
   @Get(':modes/:id')
   findAll(  @Param('modes') modes: string, @Param('id') id: string ): Promise<Document[]> {
- 
-   console.log("--modes--",modes);
+
     if(modes && modes === "issued" ){
       let res = this.productsService.findAll(modes, id).then((succ=[])=>{   
         let onfo =  succ.map((doc : any)=>{ 

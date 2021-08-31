@@ -9,5 +9,6 @@ export class CreateDocRequestDto {
   readonly comments: string;   
   readonly issuance: {};   
   readonly doc_requested_department: {};   
+  readonly doc_requested_doctype: {};   
   
 } 

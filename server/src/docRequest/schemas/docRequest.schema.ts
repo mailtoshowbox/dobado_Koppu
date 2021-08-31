@@ -140,9 +140,11 @@ export class DocRequests extends Document {
   @Prop()
   issuance : DocumentRequestIssuanceStatus
 
-  
   @Prop()
   doc_requested_department : MasterRowFormat
+
+  @Prop()
+  doc_requested_doctype : MasterRowFormat
   
 }
 

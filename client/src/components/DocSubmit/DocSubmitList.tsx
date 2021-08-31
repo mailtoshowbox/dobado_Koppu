@@ -16,6 +16,7 @@ function ProductList(props: productListProps): JSX.Element {
   const products: IProductState = useSelector(
     (state: IStateType) => state.products
   );
+  console.log("products----", products);
   function convertDate(str: Date) {
     if (!str) return "-";
     var date = new Date(str),
@@ -143,17 +144,26 @@ function ProductList(props: productListProps): JSX.Element {
     
   }
   function document_request_format_dpet_name(cell: any, row: any, field: any) {
- 
-   
-     
     return (
       <>
       { row.document_request_info.document_request_department[field]}
       </>
     );
-  
-  
 }
+function document_request_format_doctype_name
+(cell: any, row: any, field: any) {
+ 
+   
+     
+  return (
+    <>
+    { row.document_request_info.document_request_doc[field] ? row.document_request_info.document_request_doc[field] : "Not Vailable" }
+    </>
+  );
+
+
+}
+
   const options = {
     clearSearch: true,
   };
@@ -194,6 +204,7 @@ function ProductList(props: productListProps): JSX.Element {
           dataField="document_type"
           className="thead-light-1"
           width="14%"
+          dataFormat={document_request_format_doctype_name} formatExtraData ={"name"}
         >
           Doc Type
         </TableHeaderColumn>

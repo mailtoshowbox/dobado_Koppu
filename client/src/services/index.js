@@ -368,11 +368,11 @@ export function getNewQrCode(newitem) {
 
 
 
-export function getDocumentList(options) {
+export function getDocumentList(options,  {userId=""}) {
 
   var myOptions = getDocCustomGetOptions(options);
 
-  return fetch(APP_CONST.API_HOST_AT + "/products/created", myOptions)
+  return fetch(APP_CONST.API_HOST_AT + "/products/created/"+userId, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);

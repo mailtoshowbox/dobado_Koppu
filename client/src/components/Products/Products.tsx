@@ -56,7 +56,7 @@ const Products: React.FC = () => {
   const [popup, setPopup] = useState(false);
   useEffect(() => {
     //Load Documents
-    getDocumentList(account.auth).then((items: IProductList) => {
+    getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
       dispatch(loadListOfProduct(items));
     });
     //Load Available Doc Categories
@@ -64,7 +64,7 @@ const Products: React.FC = () => {
       dispatch(loadListOfDocCategory(items));
     });
     //Load Available Boxes
-    getBoxList(account.auth).then((items: IBoxList) => {
+    getBoxList(account.auth, ).then((items: IBoxList) => {
       dispatch(loadListOfBox(items));
     });
 
@@ -171,7 +171,7 @@ const Products: React.FC = () => {
                       addNotification("Product removed", `Product  was removed`)
                     );
                     dispatch(clearSelectedProduct());
-                    getDocumentList(account).then((items: IProductList) => {
+                    getDocumentList(account,{"userId" : account.emp_id }).then((items: IProductList) => {
                       dispatch(loadListOfProduct(items));
                     });
                     setPopup(false);

@@ -232,10 +232,11 @@ export class DocRequestService {
                   document_issued_to : DocRequest.empl_id,
                   document_request_department : DocRequest.doc_requested_department,
                   document_request_doc_type : DocRequest.doc_requested_doctype
-                }
-              
+                }             
               
               }; 
+              console.log("DocRequest---", DocRequest);
+              console.log("newDcoument---", newDcoument);
               const newProduct = new this.documentModal(newDcoument); 
               newProduct.isActive = false;
               newProduct.isRequestedDocument = true; 

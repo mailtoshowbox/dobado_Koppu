@@ -47,6 +47,7 @@ const ProductForm: React.FC = () => {
   const [loginPopup, setLoginPopup] = useState(false);
 
 
+
   if (!docIssuance || isCreate) {
     docIssuance = {
       _id: "",
@@ -332,6 +333,7 @@ const ProductForm: React.FC = () => {
       id: formState._id.value,
       issuance: doc_issuances_status_info,
       doc_requested_department : formState.doc_requested_department.value,
+      doc_requested_doctype : requested_doc_type 
     };
 
     issueGenaralIssuance(approvalInfo, account).then((status) => {
@@ -359,7 +361,7 @@ const ProductForm: React.FC = () => {
     a?.document.write("<body >");
     if (approved_doc_issuances.length > 0) {
       approved_doc_issuances.forEach((element: any, i: any): any => {
-        console.log("element-----", element);
+ 
         divContents = (
           <div key={i}>
             <div>Logo</div>
@@ -522,6 +524,7 @@ const ProductForm: React.FC = () => {
       id: formState._id.value,
       issuance: doc_issuances_status_info,
       doc_requested_department : formState.doc_requested_department.value,
+      doc_requested_doctype : requested_doc_type 
     }; 
  
 

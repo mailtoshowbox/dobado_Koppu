@@ -151,13 +151,13 @@ function ProductList(props: productListProps): JSX.Element {
     );
 }
 function document_request_format_doctype_name
-(cell: any, row: any, field: any) {
+(cell: any, row: any, field: any) { //TRest
+  const {document_request_info:{document_request_doc_type={}}={}} = row;
+  const {name="Not Available"} =document_request_doc_type;
  
-   
-     
   return (
     <>
-    { row.document_request_info.document_request_doc[field] ? row.document_request_info.document_request_doc[field] : "Not Vailable" }
+    { name }
     </>
   );
 

@@ -10,8 +10,9 @@ export interface IDocIssuance {
     approval : Array<RequestDocumentApproval> 
     emp_code_approval_1: string;
     emp_code_approval_2: string;
-    doc_issuance_status:  DocRequestIssuanceStatus,
-    doc_requested_department : any
+    issuance:  DocRequestIssuanceStatus,
+    doc_requested_department : any,
+    doc_requested_doctype :any
  
 }
 export interface DocRequestIssuanceStatus {

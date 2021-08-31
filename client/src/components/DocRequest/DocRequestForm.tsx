@@ -167,6 +167,13 @@ const ProductForm: React.FC = () => {
 
   function saveRequest(formState: any, saveFn: Function, mode: String): void {
     if (docrequest) {
+
+      console.log("formState----", formState);
+
+     const doc_types =  dcat1.concat(dcat2, dcat3 ).filter((arr) =>arr.id.toString() === formState.doc_type.value.toString());
+ 
+
+
       if (mode === "ADD") { 
         let boxInfo = {
           name: formState.name.value,
@@ -184,7 +191,10 @@ const ProductForm: React.FC = () => {
           },
           comments: formState.comments.value,
           doc_requested_department : formState.doc_requested_department.value,
+          doc_requested_doctype : doc_types.length > 0 ? doc_types[0] : {},
         };
+
+        console.log("boxInfo----", boxInfo);
         addNewDocumentRequest(boxInfo, account).then((status) => {
           setLoginPopup(false);
           setFormState(intialFormState);

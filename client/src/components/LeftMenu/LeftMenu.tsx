@@ -129,13 +129,14 @@ const LeftMenu: React.FC = () => {
                 <i className="fas fa-sitemap"></i>
                 <span>Approve Document</span>
               </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to={`/genarateissuance`}>
-                <i className="fas fa-sitemap"></i>
-                <span>Generate Issuance</span>
-              </Link>
-            </li>
+            </li> 
+            
+          </>
+        )}
+
+         {["Documentcreater"].includes(userRole) && (
+          <>
+            {" "}
             <li className="nav-item">
               <Link className="nav-link" to={`/documentsubmit`}>
                 <i className="fas fa-sitemap"></i>

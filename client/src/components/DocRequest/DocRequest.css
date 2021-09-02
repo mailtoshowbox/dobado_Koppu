@@ -75,7 +75,10 @@
     margin-top: 5px;
     display: inline-block;
     border-radius: 4px;
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
+}
+.issued-cls{
+    text-transform:none !important;
 }
 .react-bs-container-body .table td:last-child {
      text-align: left !important;

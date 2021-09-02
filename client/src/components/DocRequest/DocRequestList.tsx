@@ -89,7 +89,7 @@ function DocRequestList(props: productListProps): JSX.Element {
             "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
             " approval is " +
-            "Pending</span>";
+            "pending</span>";
         } else if (appr.status === "approved") {
           const { doc_issued_by = [], is_issued = false } = doc_issuance_status;
           if (doc_issued_by.length > 0 && !is_issued) {

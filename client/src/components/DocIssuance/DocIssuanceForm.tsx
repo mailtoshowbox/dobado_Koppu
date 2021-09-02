@@ -1194,7 +1194,7 @@ const ProductForm: React.FC = () => {
                           onClick={(e) => issueGenaralIssuanceAll(e)}
                           className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
                         >
-                          APPROVE1
+                          APPROVE
                         </button>
                       )}
                       <button

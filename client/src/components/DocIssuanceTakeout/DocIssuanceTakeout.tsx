@@ -44,15 +44,11 @@ const DocIssuanceTakeout: React.FC = () => {
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
-
-  const [popup, setPopup] = useState(false);
-
-  console.log("state----", docIssuance);
+  const [popup, setPopup] = useState(false); 
 
   useEffect(() => {
     getDocIssuancetakeoutList(account.auth, account.emp_id).then(
-      (items: IDocIssuanceTakeoutList) => {
-        console.log("items---",items);
+      (items: IDocIssuanceTakeoutList) => { 
         dispatch(loadListOfDocIssuanceTakeout(items));
       }
     );

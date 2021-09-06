@@ -542,13 +542,16 @@ const ProductForm: React.FC = () => {
                     className="col-md-3"
                     style={{ textAlign: "center", marginTop: "2%" }}
                   >
-                    <div
-                      className="btn"
-                      onClick={() => loadDocumentforTakeOut()}
-                    >
-                      {" Load Documents "}
+                    
+                     
                       
-                    </div>
+                      <button
+                type="submit"   onClick={() => loadDocumentforTakeOut()}
+                className={`btn btn-success left-margin font-14  }`}
+              >
+                 {" Load Documents "}
+              </button>
+                     
                   </div>
 
                      {/*  <div className="col-md-4"> 

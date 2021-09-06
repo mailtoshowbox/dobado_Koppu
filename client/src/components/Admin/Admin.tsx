@@ -19,6 +19,7 @@ import Notifications from "../../common/components/Notification";
 import { useSelector } from "react-redux";
 import { IStateType } from "../../store/models/root.interface";
 import { IAccount } from "../../store/models/account.interface";
+import DocIssuanceTakeout from "../DocIssuanceTakeout/DocIssuanceTakeout";
 
 const Admin: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -64,6 +65,9 @@ const Admin: React.FC = () => {
               </Route>
               <Route path={`/genarateissuance`}>
                 <DocIssuance />
+              </Route>
+              <Route path={`/genarateissuancetakeout`}>
+                <DocIssuanceTakeout />
               </Route>
               <Route path={`/documentsubmit`}>
                 <DocSubmit />

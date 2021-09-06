@@ -13,9 +13,7 @@ export class RackService {
   async create(box: Rack): Promise<Rack> {
 
     const inestRakcks = new this.rackModel(listOfRacks);
-    const racks=0;
-    console.log("RACJS,", racks);
-    
+    const racks=0;    
     if(racks>0){
       var listOfRacks = [];
       var n=0;
@@ -24,14 +22,7 @@ export class RackService {
         listOfRacks.push(rack);        
         n++;      
       } 
-
-      console.log("listOfRacks--", listOfRacks);
-    
-
-      //const options = { ordered: true };
       const result = await inestRakcks.save();
-  
-      console.log("box----", box);
     } 
     return await inestRakcks.save();
   

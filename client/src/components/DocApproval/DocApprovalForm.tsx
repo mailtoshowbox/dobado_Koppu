@@ -477,6 +477,8 @@ function ProductForm(props: productFormProps): JSX.Element {
     return edited ? "updated_row" : "";
   }
 
+
+
   return (
     <Fragment>
       <div className="col-xl-12 col-lg-12">
@@ -608,7 +610,6 @@ function ProductForm(props: productFormProps): JSX.Element {
                       >
                         DC NO
                       </TableHeaderColumn>
-
                       <TableHeaderColumn
                         dataField="document_name"
                         width="16%"
@@ -616,7 +617,6 @@ function ProductForm(props: productFormProps): JSX.Element {
                       >
                         DC Name
                       </TableHeaderColumn>
-
                       <TableHeaderColumn
                         dataField="no_of_copy"
                         className="thead-light-1"
@@ -632,7 +632,6 @@ function ProductForm(props: productFormProps): JSX.Element {
                       >
                         No of Pages
                       </TableHeaderColumn>
-
                       <TableHeaderColumn
                         dataField="reason_for_request"
                         className="thead-light-1"
@@ -657,7 +656,42 @@ function ProductForm(props: productFormProps): JSX.Element {
                 )}
                 {formState.doc_type.value > 5 && (
                   <div className="dynamic-request-form">
-                    <div className="row">
+                       <div>
+                       <BootstrapTable
+                      options={options}
+                      data={formState.requested_doc.value}
+                      pagination={true}
+                      hover={true}
+                     
+                      keyField="document_no"
+                      trClassName={checkUpdatedRow}
+                    >
+                      <TableHeaderColumn
+                        dataField="document_no"
+                        width="15%"
+                        
+                        
+                      >
+                        DC NO
+                      </TableHeaderColumn>
+                      <TableHeaderColumn
+                        dataField="name"
+                        width="16%"
+                        className="thead-light-1"
+                      >
+                        DC Name
+                      </TableHeaderColumn> 
+                      <TableHeaderColumn
+                        dataField="no_of_page"
+                        className="thead-light-1"
+                        width="14%"
+                      >
+                        No of Pages
+                      </TableHeaderColumn>
+                      
+                    </BootstrapTable>
+                      </div>
+                  {/*   <div className="row">
                       <div className="col-md-4">
                         <TextInput
                           id="input_request_no"
@@ -727,7 +761,7 @@ function ProductForm(props: productFormProps): JSX.Element {
                         />
                       </div>
                     </div>
-                  </div>
+                */}   </div>
                 )}
 
                 <div className="row">

@@ -350,7 +350,7 @@ const ProductForm: React.FC = () => {
         };
 
         addNewDoc(boxInfo, account).then((status) => {
-          getDocumentList(account).then((items: IProductList) => {
+          getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(
@@ -451,7 +451,7 @@ const ProductForm: React.FC = () => {
             })
           );
 
-          getDocumentList(account).then((items: IProductList) => {
+          getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
           });
           dispatch(

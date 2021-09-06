@@ -15,6 +15,7 @@ import requestReducer from "./docrequest.reducer";
 import requestApprovalReducer from "./docapproval.reducer";
 import requestIssuanceReducer from "./docissuance.reducer";
 import docLogSheetReducer from "./doclogsheet.reducer";
+import requestIssuanceTakeoutReducer from "./docissuancetakeout.reducer";
 
 
 const initialState: IRootStateType = {
@@ -33,7 +34,8 @@ function rootReducer(state: IRootStateType = initialState, action: IActionBase):
     }
 }
 
-const rootReducers: Reducer<IStateType> = combineReducers({root: rootReducer,
+const rootReducers: Reducer<IStateType> = combineReducers({
+    root: rootReducer,
     products: productsReducer,
     notifications: notificationReducer,
     users: userReducer,
@@ -47,7 +49,8 @@ const rootReducers: Reducer<IStateType> = combineReducers({root: rootReducer,
     docRequests: requestReducer,
     docApprovals : requestApprovalReducer,
     docIssuances : requestIssuanceReducer,
-    docLogSheetData : docLogSheetReducer
+    docLogSheetData : docLogSheetReducer,
+    docIssuancesTakeout : requestIssuanceTakeoutReducer,
 });
 
 

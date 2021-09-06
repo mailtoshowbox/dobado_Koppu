@@ -23,6 +23,7 @@ import {
   updateDocCat,
   getDocCategoryList,
   loadApproavalAccessUserInfo,
+  loadDocumentforTakeOutList
 } from "../../services/index";
 import {
   OnChangeModel,
@@ -47,6 +48,13 @@ const ProductForm: React.FC = () => {
   const isCreate: boolean =
     docrequests.modificationState === DocRequestModificationStatus.Create;
   const [loginPopup, setLoginPopup] = useState(false);
+  const [available_doc_for_takeout, setAvailable_doc_for_takeout] = useState([]);
+  const [referenceNumberFortakeOut, setReferenceNumberFortakeOut] = useState("DOC6SAION");
+
+  let initialSetSelectDocFortTakeOut: any[] = [];
+  const [selectDocFortTakeOut, setSelectDocFortTakeOut] = useState(initialSetSelectDocFortTakeOut);
+  
+  
   const [requestAuthenticated, setRequestAuthenticated] = useState(false);
   if (!docrequest || isCreate) {
     docrequest = {
@@ -56,23 +64,22 @@ const ProductForm: React.FC = () => {
       empl_id: account.emp_id ? account.emp_id : "XXXX",
       request_no: uniqueId(APP_CONST.REQUEST_DOCUMENT_PREFIX),
       doc_type: 1,
-      requested_doc: [],
+      requested_doc: [],     
       approval: [],
       emp_code_approval_1: "",
       emp_code_approval_2: "",
       comments: "",
       issuance: [],
-      doc_requested_department : account.departments[0]
-
+      doc_requested_department : account.departments[0],
+      requested_doc_for_takeout: [], 
     };
   }
 
   const dcat1 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_ONE;
   const dcat2 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_TWO;
   const dcat3 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_THREE;
-
-  //const [recentSelectedCategory, setRecentSelectedCategory] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("1");
+
   const intialFormState = {
     _id: { error: "", value: docrequest._id },
     name: { error: "", value: docrequest.name },
@@ -87,8 +94,8 @@ const ProductForm: React.FC = () => {
     comments: { value: docrequest.comments },
     doc_requested_department: { error: "", value: docrequest.doc_requested_department },
   };
-  const [formState, setFormState] = useState(intialFormState);
 
+  const [formState, setFormState] = useState(intialFormState);
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
@@ -103,6 +110,11 @@ const ProductForm: React.FC = () => {
       [model.field]: { error: model.error, value: model.value },
     });
   }
+  
+  function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
+    console.log("model.value.toString()---", model.value.toString());
+    setReferenceNumberFortakeOut(model.value.toString());
+  }  
 
   function hasLoginFormValueChanged(model: OnChangeModel): void {
     setLoginForm({
@@ -168,10 +180,10 @@ const ProductForm: React.FC = () => {
   function saveRequest(formState: any, saveFn: Function, mode: String): void {
     if (docrequest) {
 
-      console.log("formState----", formState);
-
      const doc_types =  dcat1.concat(dcat2, dcat3 ).filter((arr) =>arr.id.toString() === formState.doc_type.value.toString());
  
+
+     console.log("mode----", );
 
 
       if (mode === "ADD") { 
@@ -193,8 +205,6 @@ const ProductForm: React.FC = () => {
           doc_requested_department : formState.doc_requested_department.value,
           doc_requested_doctype : doc_types.length > 0 ? doc_types[0] : {},
         };
-
-        console.log("boxInfo----", boxInfo);
         addNewDocumentRequest(boxInfo, account).then((status) => {
           setLoginPopup(false);
           setFormState(intialFormState);
@@ -212,7 +222,7 @@ const ProductForm: React.FC = () => {
               `Document Request ${formState.request_no.value} added by you`
             )
           );
-        });
+        }); 
       } else if (mode === "EDIT") {
       }
     }
@@ -230,7 +240,6 @@ const ProductForm: React.FC = () => {
     }
     return true;
   }
-
   function loadApproavalAccessUserMail(accessLevel: string) {
     let data = {};
 
@@ -272,9 +281,14 @@ const ProductForm: React.FC = () => {
       }
     });
   }
+  function loadDocumentforTakeOut() {
+    let data = {referenceNumber : referenceNumberFortakeOut };
+ 
 
-  //console.log("formState----", formState);
-
+    loadDocumentforTakeOutList(data, account).then((status=[]) => {
+      setAvailable_doc_for_takeout(status);
+    });
+  }
   const approval1 = formState.approval.value[0]
     ? formState.approval.value[0]
     : null;
@@ -317,11 +331,9 @@ const ProductForm: React.FC = () => {
 
     // dispatch(login(formState.email.value));
   }
-
   function setFieldDisabled(cell: any, row: any) {
     return diableFIeldForEdit();
   }
-
   function uniqueFieldinModal(
     column: any,
     attr: any,
@@ -352,7 +364,6 @@ const ProductForm: React.FC = () => {
       />
     );
   }
-
   function createCustomModalHeader(onClose: any, onSave: any) {
     return (
       <div
@@ -373,9 +384,31 @@ const ProductForm: React.FC = () => {
     afterInsertRow: saveDocument,
     ignoreEditable: false,
     insertModalHeader: createCustomModalHeader,
-  };
+  }; 
 
-  console.log("Form STATE--", formState);
+  //Table option for take out
+  function onRowSelect(row :any, isSelected:any, e:any) {
+
+    let tempValr = formState.requested_doc.value || [];
+    const selectedRows =  available_doc_for_takeout.filter((doc:any) => doc._id === row._id );
+    if(selectedRows.length > 0 && isSelected){     
+      tempValr.push(selectedRows[0]);      
+    }else if(!isSelected){     
+      const selectedRowIndex =  tempValr.findIndex((doc:any) =>  doc._id === row._id );       
+      if (selectedRowIndex > -1) {
+        tempValr.splice(selectedRowIndex, 1);
+      }
+    } 
+
+
+    setFormState({
+      ...formState,
+      ["requested_doc"]: { value: tempValr },
+    });   
+  }
+ 
+
+  console.log("selectDocFortTakeOut", selectDocFortTakeOut);
   return (
     <Fragment>
       <div className="col-xl-12 col-lg-12">
@@ -487,6 +520,137 @@ const ProductForm: React.FC = () => {
                     />
                   </div>
                 </div>
+               
+                {formState.doc_type.value > 5 && (
+                  <div className="dynamic-request-form">
+                    <div className="row"> 
+                      <div className="col-md-4">
+                        <TextInput
+                          id="input_request_no"
+                          field="ref_no"
+                          value={referenceNumberFortakeOut}
+                          onChange={referenceNumberFortakeOutChanged}
+                          required={false}
+                          maxLength={100}
+                          label=""
+                          placeholder="Reference No"
+                          customError={""}
+                        />
+                      </div>
+
+                      <div
+                    className="col-md-3"
+                    style={{ textAlign: "center", marginTop: "2%" }}
+                  >
+                    
+                     
+                      
+                      <button
+                type="submit"   onClick={() => loadDocumentforTakeOut()}
+                className={`btn btn-success left-margin font-14  }`}
+              >
+                 {" Load Documents "}
+              </button>
+                     
+                  </div>
+
+                     {/*  <div className="col-md-4"> 
+                  //DOC6SAION
+                        <TextInput
+                          id="input_request_no"
+                          field="description"
+                          value={""}
+                          onChange={hasFormValueChanged}
+                          required={false}
+                          maxLength={100}
+                          label=""
+                          placeholder="Description"
+                          customError={""}
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <TextInput
+                          id="input_request_no"
+                          field="title"
+                          value={""}
+                          onChange={hasFormValueChanged}
+                          required={false}
+                          maxLength={100}
+                          label=" "
+                          placeholder="title "
+                          customError={""}
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <TextInput
+                          id="input_request_no"
+                          field="category"
+                          value={""}
+                          onChange={hasFormValueChanged}
+                          required={false}
+                          maxLength={100}
+                          label=""
+                          placeholder="category"
+                          customError={""}
+                        />
+                      </div> */}
+                    </div>
+                  </div>
+                )}
+               
+               
+                {formState.doc_type.value >= 6 && (
+                  <div>
+                    <BootstrapTable
+                      selectRow={{  mode: 'checkbox',
+                      clickToSelect: true,
+                      onSelect: onRowSelect,
+                      
+                    }}
+                      options={options}
+                      data={available_doc_for_takeout}
+                      pagination={true}
+                      hover={true}
+                      
+                      keyField="_id"
+                    
+                      
+                    >
+                      <TableHeaderColumn
+                        width="25%"
+                        dataField="document_no"
+                        editable={{
+                          defaultValue: uniqueId("DOC"),
+                          validator: requiredField,
+                        }}
+                      >
+                        DC NO -
+                      </TableHeaderColumn>
+
+                      <TableHeaderColumn
+                        dataField="document_name"
+                        width="25%"
+                        className="thead-light-1"
+                        editable={{ validator: requiredField }}
+                      >
+                        DC Name
+                      </TableHeaderColumn>
+ 
+                      <TableHeaderColumn
+                        dataField="no_of_page"
+                        className="thead-light-1"
+                        width="20%"
+                        editable={{ validator: numberValidator }}
+                      >
+                        No of Pages
+                      </TableHeaderColumn>
+
+                      
+                    </BootstrapTable>
+                  </div>
+                )}
                 {formState.doc_type.value < 6 && (
                   <div>
                     <BootstrapTable
@@ -547,66 +711,7 @@ const ProductForm: React.FC = () => {
                     </BootstrapTable>
                   </div>
                 )}
-                {formState.doc_type.value > 5 && (
-                  <div className="dynamic-request-form">
-                    <div className="row"> 
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="ref_no"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="Reference No"
-                          customError={""}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="description"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="Description"
-                          customError={""}
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="title"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=" "
-                          placeholder="title "
-                          customError={""}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="category"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="category"
-                          customError={""}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
+               
                 <div className="row">
                   <div className="col-md-2">
                     <label style={{ margin: "26px 21px 19px 5px" }}>

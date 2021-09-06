@@ -143,12 +143,22 @@ function ProductList(props: productListProps): JSX.Element {
     
     
   }
-  function document_request_format_dpet_name(cell: any, row: any, field: any) {
-    return (
+  function document_request_format_dpet_name(cell: any, row: any, field: any) {    
+    
+    if(row.document_request_info.document_request_department)
+    {
+     return   row.document_request_info.document_request_department[field] ?  row.document_request_info.document_request_department[field] : "-";
+    }else{
+      return "-"
+    }
+    /* )
+    
+    
+    () (
       <>
-      { row.document_request_info.document_request_department[field]}
+      { row.document_request_info.document_request_department[field] ?  row.document_request_info.document_request_department[field] : "-"}
       </>
-    );
+    ); */
 }
 function document_request_format_doctype_name
 (cell: any, row: any, field: any) { //TRest

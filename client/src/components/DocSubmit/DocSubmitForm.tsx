@@ -345,6 +345,8 @@ const ProductForm: React.FC = () => {
           retension_time: formState.retension_time.value,
         };
 
+        console.log("boxInfo----", boxInfo);
+
         addNewDoc(boxInfo, account).then((status) => {
           getIssuedDocumentList(account ,{"userId" : account.emp_id }).then((items: IProductList) => {
             dispatch(loadListOfProduct(items));
@@ -367,8 +369,8 @@ const ProductForm: React.FC = () => {
           box: formState.box.value,
           rack: formState.rack.value,
           category: formState.category.value,
-          manufacturedate: formState.manufacturedate.value,
-          expiredate: formState.expiredate.value,
+          manufacturedate: formState.manufacturedate.value ? formState.manufacturedate.value : new Date(),
+          expiredate: formState.expiredate.value ? formState.expiredate.value : new Date() ,
           type_of_space: formState.type_of_space.value,
           qr_code: formState.qr_code.value,
           document_type: formState.document_type.value,
@@ -443,6 +445,9 @@ const ProductForm: React.FC = () => {
             boxInfoUpt.document_type = selectedTypeOfDoc[0].id;
           }
         }
+
+
+        console.log("boxInfoddd----", boxInfoUpt);
         updateDoc(boxInfoUpt, account).then((status) => {
           dispatch(
             saveFn({

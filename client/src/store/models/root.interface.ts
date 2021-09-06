@@ -6,6 +6,7 @@ import { IDocType, DocTypeModificationStatus } from "./doctype.interface";
 import { IDocRequest, DocRequestModificationStatus } from "./docrequest.interface";
 import { IDocDepartment, DocDepartmentModificationStatus } from "./docdepartment.interface";
 import { IDocApproval, DocApprovalModificationStatus } from "./docapproval.interface";
+import { IDocIssuanceTakeout, DocIssuanceTakeoutModificationStatus } from "./docIssuancetakeout.interface";
 
 import { INotification } from "./notification.interface";
 import { IUser } from "./user.interface";
@@ -15,9 +16,7 @@ import { IAccount } from "./account.interface";
 export interface IRootPageStateType {
     area: string;
     subArea: string;
-}
-
-export interface IRootOption {
+}export interface IRootOption {
     id: string;
     name: string;
 }
@@ -40,6 +39,12 @@ export interface IStateType {
     docIssuances: IDocIssuanceState;
     home: any;
     docLogSheetData: IDocLogSheetState;
+    docIssuancesTakeout: IDocIssuanceTakeoutState;
+}
+export interface IDocIssuanceTakeoutState {
+    docIssuancesTakeout: IDocIssuanceTakeout[];
+    selectedDocIssuanceTakeout: IDocIssuanceTakeout | null;
+    modificationState: DocIssuanceTakeoutModificationStatus;
 }
 export interface IDocIssuanceState {
     docIssuances: IDocIssuance[];

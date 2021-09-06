@@ -77,7 +77,9 @@ export class DocumentsController {
          return onfo;
        });
        return res;
-
+    } if(modes && modes === "takeOutRequest" ){
+      let res = this.productsService.findAll(modes, id);
+       return res;
     }else{
       let res = this.productsService.findAll(modes).then((succ=[])=>{   
         let onfo =  succ.map((doc : any)=>{ 
@@ -130,7 +132,6 @@ export class DocumentsController {
   @Post(":mode")
   logSheets(@Body() params ): Promise<Document[]> {
 
-    console.log("params----", params);
       let res = this.productsService.getLogSheet(params).then((succ=[])=>{   
         let onfo =  succ.map((doc : any)=>{ 
    
@@ -169,13 +170,14 @@ export class DocumentsController {
     
     return this.productsService.getRandomCode(generateQrCode);
   }
-
+*/
   
-  @Post(':getRandomCode')
+  @Post('qrcode/:getRandomCode')
   getRandomCode(@Body() generateQrCode)  {
+    console.log("generateQrCode---", generateQrCode)
  
     return this.productsService.getRandomCode(generateQrCode);
-  } */
+  } 
 
   @Put(':id')
   update(

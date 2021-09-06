@@ -249,6 +249,22 @@ export function getDocIssuanceList(options = {}, id) {
       handleError(error);
     });
 }
+export function getDocIssuancetakeoutList(options = {}, id) {
+  var myOptions = getDocCustomGetOptions(options);
+  return fetch(APP_CONST.API_HOST_AT + "/docrequests/takeoutissuance/" + id, myOptions)
+    .then(response => {
+      if (!response.ok) {
+        handleResponseError(response);
+      }
+      return response.json();
+    })
+    .then(json => {
+      return json;
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
 export function initiateApprovalHistory(options, newitem) {
   let newReq = {
     history: JSON.stringify(newitem),
@@ -291,6 +307,27 @@ export function loadApproavalAccessUserInfo(item, options = {}) {
       handleError(error);
     });
 }
+ 
+
+export function loadDocumentforTakeOutList( {referenceNumber=""}, options) {
+
+  var myOptions = getDocCustomGetOptions(options);
+
+  return fetch(APP_CONST.API_HOST_AT + "/products/takeOutRequest/"+referenceNumber, myOptions)
+    .then(response => {
+      if (!response.ok) {
+        handleResponseError(response);
+      }
+      return response.json();
+    })
+    .then(json => {
+      return json;
+    })
+    .catch(error => {
+      handleError(error);
+    });
+}
+
 
 
 
@@ -346,7 +383,7 @@ export function addNewDoc(newitem, options) {
 }
 
 export function getNewQrCode(newitem) {
-  return fetch(APP_CONST.API_HOST_AT + '/products/getRandomCode', {
+  return fetch(APP_CONST.API_HOST_AT + '/products/qrcode/getRandomCode', {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

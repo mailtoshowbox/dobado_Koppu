@@ -171,7 +171,7 @@ const Products: React.FC = () => {
                       addNotification("Product removed", `Product  was removed`)
                     );
                     dispatch(clearSelectedProduct());
-                    getDocumentList(account,{"userId" : account.emp_id }).then((items: IProductList) => {
+                    getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
                       dispatch(loadListOfProduct(items));
                     });
                     setPopup(false);

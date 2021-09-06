@@ -11,7 +11,8 @@ export interface IDocRequest {
     emp_code_approval_2: string;
     comments : string;
     issuance : Array<RequestDocumentIssuance> ,
-    doc_requested_department : any
+    doc_requested_department : any;
+    requested_doc_for_takeout : any;
 }
 export interface RequestDocumentIssuance {
     empl_id: string;

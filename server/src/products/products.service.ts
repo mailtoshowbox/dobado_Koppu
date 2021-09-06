@@ -14,7 +14,7 @@ var QRCode = require('qrcode')
 
  
 @Injectable()
-export class DocumentsService {
+export class DocumentsService {   
   constructor(
     @InjectModel(Documents.name)
     private productModel: Model<Documents>,
@@ -26,6 +26,11 @@ export class DocumentsService {
     if(mode === 'issued'){
       console.log("id----", id);
       return await  this.productModel.find({ isActive: false, isRequestedDocument : true, "document_request_info.document_requested_by" :id }).then((res:any)=>{   
+         return res;
+      });
+    }else if(mode === 'takeOutRequest'){
+      console.log("id----", id);
+      return await  this.productModel.find({ isActive: true, document_no : id }).then((res:any)=>{   
          return res;
       });
     }else if(mode === 'log-sheet'){
@@ -152,7 +157,7 @@ export class DocumentsService {
   }
 
   async getRandomCode(dat) {
-    console.log("TESTS");
+    console.log("TESTS", dat);
     var text = "";
     var possible =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -169,15 +174,6 @@ export class DocumentsService {
 
 
     });
-
-
-    /* }, function(err, result){
-      if (err) callback(err);
-      else if (result) return this.getNumber(callback);
-      else return {text}
-  }); */
-
-
   }
 
 

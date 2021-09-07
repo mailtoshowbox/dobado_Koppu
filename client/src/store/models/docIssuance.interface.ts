@@ -19,6 +19,7 @@ export interface DocRequestIssuanceStatus {
     is_issued: boolean,
     issued_on:  Date,
     doc_issued_by: Array<RequestDocumentIssuedBy>,
+    is_doc_issuance_cancelled : boolean,
 }
 
 export interface RequestDocumentIssuedBy {

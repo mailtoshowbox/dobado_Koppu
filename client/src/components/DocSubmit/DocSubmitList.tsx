@@ -132,16 +132,11 @@ function ProductList(props: productListProps): JSX.Element {
     }
   }
   function document_request_format(cell: any, row: any, field: any) {
- 
-   
-     
       return (
         <>
-        { row.document_request_info[field]}
+        {  row.document_request_info ? row.document_request_info[field] ?  row.document_request_info[field] : "" : ""}
         </>
       );
-    
-    
   }
   function document_request_format_dpet_name(cell: any, row: any, field: any) {    
     

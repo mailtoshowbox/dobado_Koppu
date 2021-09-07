@@ -76,8 +76,12 @@ function DocApprovalList(props: productListProps): JSX.Element {
             " approval " +
             "Pending</span>&nbsp;";
         } else if (appr.status === "approved") {
-          const { doc_issued_by = [], is_issued = false } = issuance;
-          if (doc_issued_by.length > 0 && !is_issued) {
+          const { doc_issued_by = [], is_issued = false, is_doc_issuance_cancelled = false } = issuance;
+          if (is_doc_issuance_cancelled && !is_issued) {
+            stsus +=
+              "<span class=' approval-status btn-info'>Document request issue has been rejected</span>";
+          }
+          else if (doc_issued_by.length > 0 && !is_issued) {
             stsus +=
               "<span class=' approval-status btn-info'>Part of Request has been issued</span>";
           } else if (is_issued) {

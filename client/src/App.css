@@ -54,6 +54,12 @@ body {
 .fnt{
     font-size: 14px !important;
 }
+.userfnt{
+    font-size: 12px !important;
+}
+.react-bs-container-body .table td, .react-bs-table .table th{
+    font-size: 8px !important;
+}
 .toast-wrapper {
     position: fixed;
     top     : 80px;

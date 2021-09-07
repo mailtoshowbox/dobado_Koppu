@@ -64,6 +64,7 @@ const ProductForm: React.FC = () => {
         is_issued: false,
         issued_on: new Date(),
         doc_issued_by: [],
+        is_doc_issuance_cancelled:false
       },
       doc_requested_department :{},
       doc_requested_doctype : {}
@@ -156,8 +157,7 @@ const ProductForm: React.FC = () => {
       );
       const [requested_doc_department] = useState(
         departments.length > 0  ? departments[0]  : {name : 'Admin'}
-      );
-     
+      );    
  
   function hasFormValueChanged(model: OnChangeModel): void {
     setFormState({
@@ -165,7 +165,6 @@ const ProductForm: React.FC = () => {
       [model.field]: { error: model.error, value: model.value },
     });
   }
-
   function hasLoginFormValueChanged(model: OnChangeModel): void {
     setLoginForm({
       ...loginForm,
@@ -352,8 +351,6 @@ const ProductForm: React.FC = () => {
     const approved_doc_issuances: any = approved_doc_issuance.doc_issuance
       ? approved_doc_issuance.doc_issuance
       : [];
-      console.log("requested_doc_type---RR-", requested_doc_type);
-      console.log("requested_doc_departrment--RR--", requested_doc_department);
 
     let divContents: any = "<div>nothing to display</div>";
     var a = window.open("", "", "height=500, width=500");
@@ -533,6 +530,75 @@ const ProductForm: React.FC = () => {
       //  setSelectedDocForPrint(initialSelectedDocForPrint);
       setShowYes(false);
       dispatch(addNotification("Document issued", `Document request issued`));
+    }) 
+  };
+  const rejectIssueGenaralIssuanceAll = (event: any) => {
+    event.preventDefault();
+    const requestedDoc = formState.requested_doc.value;
+       
+    let doc_issuances_status_info = {
+      is_issued: false,
+      issued_on: new Date(),
+      doc_issued_by: [],
+      is_doc_issuance_cancelled : false
+    };
+    const doc_issuances_status = docIssuance?.issuance;
+    const doc_issued_by = doc_issuances_status?.doc_issued_by || [];
+    let doc_issued_by_list: any = [...doc_issued_by];
+    requestedDoc.map((doc: any) => {
+      let processedDocForApproval: any = [];
+      if (!doc.is_doc_issued && !doc.is_doc_approved) {
+            const processedApproval = Object.assign(
+              { ...doc },
+              {
+                is_doc_approved: false,
+                document_no: doc.document_no,
+                request_no: formState.request_no.value,
+                is_doc_issuance_cancelled: true,
+              }
+            );
+            processedDocForApproval.push(processedApproval);
+        doc.doc_issuance = processedDocForApproval;
+        doc.is_doc_approved = false;    
+      }  
+      const doc_issued = { 
+        document_id: doc.document_no,
+        document_issued_on: new Date(),
+        document_issued_by: account.emp_id,
+      };
+ 
+      doc_issued_by_list.push(doc_issued)
+      return doc;
+    });
+
+
+
+
+    doc_issuances_status_info = {
+      is_issued: false,
+      is_doc_issuance_cancelled: true,
+      issued_on: new Date(),
+      doc_issued_by: doc_issued_by_list,
+    }; 
+  
+ 
+    let approvalInfo = {
+      name: formState.name.value,
+      empl_id: formState.empl_id.value,
+      doc_type: formState.doc_type.value,
+      request_no: formState.request_no.value,
+      requested_doc: requestedDoc,
+      approval: formState.approval.value,
+      id: formState._id.value,
+      issuance: doc_issuances_status_info,
+      doc_requested_department : formState.doc_requested_department.value,
+      doc_requested_doctype : requested_doc_type 
+    }; 
+ 
+
+     issueGenaralIssuance(approvalInfo, account).then((status) => {
+      dispatch(setModificationState(DocIssuanceModificationStatus.None)); 
+      dispatch(addNotification("Document issue rejected", `Document issue rejected`));
     }) 
   };
 
@@ -888,7 +954,7 @@ const ProductForm: React.FC = () => {
                 CLOSE
               </button>
               {((docIssuance.issuance &&
-                !docIssuance.issuance.is_issued) ||
+                !docIssuance.issuance.is_issued && !docIssuance.issuance.is_doc_issuance_cancelled) ||
                 !docIssuance.issuance) && (
                 <span>
                   <button
@@ -899,7 +965,7 @@ const ProductForm: React.FC = () => {
                   </button>
                   <button
                     className="btn btn-warning font-14 left-margin font-14"
-                    onClick={() => cancelForm()}
+                    onClick={(e) => rejectIssueGenaralIssuanceAll(e)}
                   >
                     NO
                   </button>

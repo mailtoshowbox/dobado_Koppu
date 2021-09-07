@@ -79,7 +79,7 @@ function DocRequestList(props: productListProps): JSX.Element {
   }
 
   const docApprovalFormatter = (cell: any, row: any) => {
-    const { approval = [], doc_issuance_status = {} } = row;
+    const { approval = [], issuance = {} } = row;
 
     let stsus = "";
     if (approval.length > 0) {
@@ -89,10 +89,13 @@ function DocRequestList(props: productListProps): JSX.Element {
             "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
             " approval is " +
-            "pending</span>";
-        } else if (appr.status === "approved") {
-          const { doc_issued_by = [], is_issued = false } = doc_issuance_status;
-          if (doc_issued_by.length > 0 && !is_issued) {
+            "Pending</span>";
+        } else if (appr.status === "approved") { 
+          const { doc_issued_by = [], is_issued = false, is_doc_issuance_cancelled = false } = issuance;
+          if (is_doc_issuance_cancelled && !is_issued) {
+            stsus +=
+              "<span class=' approval-status btn-info'>Document request issue has been rejected</span>";
+          }else if (doc_issued_by.length > 0 && !is_issued) {
             stsus +=
               "<span class=' approval-status btn-info'>Part of Request has been issued</span>";
           } else if (is_issued) {

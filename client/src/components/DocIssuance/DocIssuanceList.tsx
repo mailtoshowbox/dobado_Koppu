@@ -83,10 +83,10 @@ function DocApprovalList(props: productListProps): JSX.Element {
           }
           else if (doc_issued_by.length > 0 && !is_issued) {
             stsus +=
-              "<span class=' approval-status btn-info'>Part of Request has been issued</span>";
+              "<span class=' approval-status btn-info issued-cls'>Part of request has been issued</span>";
           } else if (is_issued) {
             stsus +=
-              "<span class=' approval-status btn-info'>Request has been issued</span>";
+              "<span class=' approval-status btn-info issued-cls'>Request has been issued</span>";
           } else {
             stsus +=
               "<span class=' approval-status btn-info'>" +

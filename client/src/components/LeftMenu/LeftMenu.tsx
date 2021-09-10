@@ -157,7 +157,7 @@ const LeftMenu: React.FC = () => {
         {["Superadmin", "Developer"].includes(userRole) && (
           <div className="admin_cls">
             <hr className="sidebar-divider" />
-            <div className="sidebar-heading">Admin</div>
+            <div className="sidebar-heading fnt">Admin</div>
             <li className="nav-item">
               <Link className="nav-link" to={`/users`}>
                 <i className="fas fa-user-friends"></i>

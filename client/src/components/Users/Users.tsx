@@ -325,7 +325,7 @@ const selected_department_details= listOfDept.find((dept)=> dept.id === model.va
       //return row.roles[0] ? row.roles[0] : "No Status";
       return (
         <button
-          className="btn btn-info"
+          className="btn btn-info userfnt"
           onClick={() => {
             openModalToEditActiveUser(row);
           }}

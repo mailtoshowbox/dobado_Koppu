@@ -10626,7 +10626,7 @@ a:focus {
   text-align: center;
   padding: 0 1rem;
   font-weight: 800;
-  font-size: 0.65rem;
+  font-size: 14px !important;
 }
 
 @media (min-width: 768px) {
@@ -10689,6 +10689,7 @@ a:focus {
   }
   .sidebar .sidebar-heading {
     text-align: left;
+    font-size: 16px !important;
   }
   .sidebar.toggled {
     overflow: visible;
@@ -10816,6 +10817,7 @@ a:focus {
 
 .sidebar-dark .sidebar-heading {
   color: #85b841;
+  font-size: 14px !important;
 }
 
 .sidebar-dark .nav-item .nav-link {

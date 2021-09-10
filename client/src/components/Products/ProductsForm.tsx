@@ -131,7 +131,10 @@ const ProductForm: React.FC = () => {
         defaultYear: 4,
         calculateNonPerceptualTime: "",
       },
-      document_request_info:{}
+      document_request_info:{},
+      takeout_return_date: new Date(),
+      is_requested_for_takeout:false,
+      takeout_requested_details : {}
     };
   } else {
     const { box = "", rack = "" } = product;
@@ -176,7 +179,12 @@ const ProductForm: React.FC = () => {
           product.retension_time.calculateNonPerceptualTime,
       },
     },
-    document_request_info :{}
+    document_request_info :{},
+    takeout_return_date:  { error: "", value:product.takeout_return_date },
+    is_requested_for_takeout:  { error: "", value:product.is_requested_for_takeout }
+
+    
+
   });
 
   if (formState.qr_code.value === "") {

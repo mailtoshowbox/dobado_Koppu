@@ -24,13 +24,19 @@ export class DocumentsService {
   async findAll(mode, id=null): Promise<Document[]> {
 
     if(mode === 'issued'){
-      console.log("id----", id);
-      return await  this.productModel.find({ isActive: false, isRequestedDocument : true, "document_request_info.document_requested_by" :id }).then((res:any)=>{   
+      return await  this.productModel.find(
+     // { isActive: false, isRequestedDocument : true, "document_request_info.document_requested_by" :id }
+     {"$or": [{
+      "isActive": false, "isRequestedDocument" : true, "document_request_info.document_requested_by" :id
+  }, {
+      "isActive": true, "is_requested_for_takeout" : true, "document_request_info.document_requested_by" :id
+  }]}
+        
+        ).then((res:any)=>{   
          return res;
       });
-    }else if(mode === 'takeOutRequest'){
-      console.log("id----", id);
-      return await  this.productModel.find({ isActive: true, document_no : id }).then((res:any)=>{   
+    }else if(mode === 'takeOutRequest'){       
+      return await  this.productModel.find({ isActive: true, document_no : id,  is_requested_for_takeout :{ "$ne": true   }  }).then((res:any)=>{   
          return res;
       });
     }else if(mode === 'log-sheet'){
@@ -138,9 +144,142 @@ export class DocumentsService {
   }
 
    async update(id: string, product: Document) {
-    return await this.productModel.findByIdAndUpdate(id, product, {
-      new: true,
-    });
+    const  {is_requested_for_takeout_submit = false, is_requested_for_takeout_return = false,is_requested_for_takeout_return_approve=false } =product;
+  
+    console.log("is_requested_for_takeout_return_approve--", is_requested_for_takeout_return_approve);
+  
+    if(is_requested_for_takeout_submit){
+      return await this.productModel
+      .find({ isActive: true, _id: id })
+      .then((res: any) => {
+        let documenttoEdit = res[0];
+        const {
+          takeout_requested_details: {
+            takeout_request_details_list = [],
+            current_status : {request_no=null} = {}
+          } = {},
+          takeout_requested_details = {},
+        } = documenttoEdit;
+        takeout_request_details_list.forEach((list) => {
+          if (request_no && list.doc_request_no === request_no) {            									
+                list.doc_submitted_by = "XX";										
+                list.doc_submitted_on = new Date();   
+                list.takeout_return_date =product.takeout_return_date;      
+          }         
+        });
+        let requestDetails = takeout_requested_details;
+          requestDetails = {
+            current_status: {
+              ...requestDetails.current_status,
+              code: "submitted",
+              label: "Submitted"
+            },
+            takeout_request_details_list: takeout_request_details_list,
+          };
+
+        documenttoEdit._doc = {
+          ...documenttoEdit._doc,
+          takeout_requested_details: { ...requestDetails },
+        };
+
+        return this.productModel
+          .findByIdAndUpdate(id, documenttoEdit, {
+            new: true,
+          })
+          .then((tre) => {});
+      });
+
+
+      /* return await this.productModel.findByIdAndUpdate(id, product, {
+        new: true,
+      }); */
+    }else if(is_requested_for_takeout_return){
+      return await this.productModel
+      .find({ isActive: true, _id: id })
+      .then((res: any) => {
+        let documenttoEdit = res[0];
+        const {
+          takeout_requested_details: {
+            takeout_request_details_list = [],
+            current_status : {request_no=null} = {}
+          } = {},
+          takeout_requested_details = {},
+        } = documenttoEdit;
+        takeout_request_details_list.forEach((list) => {
+          if (request_no && list.doc_request_no === request_no) {            									
+                list.returned_by = "XX";										
+                list.returned_on = new Date();            
+          }         
+        });
+        let requestDetails = takeout_requested_details;
+          requestDetails = {
+            current_status: {
+              ...requestDetails.current_status,
+              code: "returned",
+              label: "Returned",
+            },
+            takeout_request_details_list: takeout_request_details_list,
+          };
+
+        documenttoEdit._doc = {
+          ...documenttoEdit._doc,
+          takeout_requested_details: { ...requestDetails },
+        };
+
+        return this.productModel
+          .findByIdAndUpdate(id, documenttoEdit, {
+            new: true,
+          })
+          .then((tre) => {});
+      });
+    }else if(is_requested_for_takeout_return_approve){
+      return await this.productModel
+      .find({ isActive: true, _id: id })
+      .then((res: any) => {
+        let documenttoEdit = res[0];
+        const {
+          takeout_requested_details: {
+            takeout_request_details_list = [],
+            current_status : {request_no=null} = {}
+          } = {},
+          takeout_requested_details = {},
+        } = documenttoEdit;
+        takeout_request_details_list.forEach((list) => {
+          if (request_no && list.doc_request_no === request_no) {            									
+                list.return_approved_by = "XX";										
+                list.returned_approved_on = new Date();            
+          }         
+        });
+        let requestDetails = takeout_requested_details;
+          requestDetails = {
+            current_status: {
+              ...requestDetails.current_status,
+              code: "return_approved",
+              label: "Return Approved",
+            },
+            takeout_request_details_list: takeout_request_details_list,
+          };
+          const reset_document = {  is_requested_for_takeout:  false,
+            takeout_return_date : null};
+
+        documenttoEdit._doc = {
+          ...documenttoEdit._doc,
+          ...reset_document,
+          takeout_requested_details: { ...requestDetails },
+        };
+
+        return this.productModel
+          .findByIdAndUpdate(id, documenttoEdit, {
+            new: true,
+          })
+          .then((tre) => {console.log("tre", tre);});
+      });
+    }else{
+      return await this.productModel.findByIdAndUpdate(id, product, {
+        new: true,
+      });
+    }
+   
   } 
 
   async getQRCode(qrData) {

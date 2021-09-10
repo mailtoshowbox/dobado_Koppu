@@ -445,97 +445,6 @@ const ProductForm: React.FC = () => {
     }
   };
 
-  const issueGenaralIssuanceAll = (event: any) => {
-    event.preventDefault();
-    const requestedDoc = formState.requested_doc.value;
-   
-   /*  const apprvedDoc = requestedDoc.map((doc: any) => {
-      let processedDocForApproval: any = [];
-      const no_of_label = 1;
-      for (var i = 0; i < no_of_label; i++) {
-        const processedApproval = Object.assign(
-          { ...doc },
-          {
-            is_doc_approved: true,
-          }
-        );
-        processedDocForApproval.push(processedApproval);
-      }
-      doc.doc_issuance = processedDocForApproval;
-      doc.is_doc_approved = true;
-      return doc;
-    }); */ 
-  //Doc Issuances
-
-    
-    let doc_issuances_status_info = {
-      is_issued: false,
-      issued_on: new Date(),
-      doc_issued_by: [],
-    };
-    const doc_issuances_status = docIssuance?.issuance;
-    const doc_issued_by = doc_issuances_status?.doc_issued_by || [];
-    let doc_issued_by_list: any = [...doc_issued_by];
-    requestedDoc.map((doc: any) => {
-      let processedDocForApproval: any = [];
-      if (!doc.is_doc_issued && !doc.is_doc_approved) {
-
-         // for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
-            const processedApproval = Object.assign(
-              { ...doc },
-              {
-                is_doc_approved: true,
-                document_no: doc.document_no,
-                request_no: formState.request_no.value,
-              }
-            );
-            processedDocForApproval.push(processedApproval);
-         // }
-        
-        doc.doc_issuance = processedDocForApproval;
-        doc.is_doc_approved = true;    
-      }  
-      const doc_issued = { 
-        document_id: doc.document_no,
-        document_issued_on: new Date(),
-        document_issued_by: account.emp_id,
-      };
- 
-      doc_issued_by_list.push(doc_issued)
-  return doc;
-    });
-
-
-
-
-    doc_issuances_status_info = {
-      is_issued: true,
-      issued_on: new Date(),
-      doc_issued_by: doc_issued_by_list,
-    }; 
-  
- 
-    let approvalInfo = {
-      name: formState.name.value,
-      empl_id: formState.empl_id.value,
-      doc_type: formState.doc_type.value,
-      request_no: formState.request_no.value,
-      requested_doc: requestedDoc,
-      approval: formState.approval.value,
-      id: formState._id.value,
-      issuance: doc_issuances_status_info,
-      doc_requested_department : formState.doc_requested_department.value,
-      doc_requested_doctype : requested_doc_type 
-    }; 
- 
-
-     issueGenaralIssuance(approvalInfo, account).then((status) => {
-      setPrintYesDoc(false);
-      //  setSelectedDocForPrint(initialSelectedDocForPrint);
-      setShowYes(false);
-      dispatch(addNotification("Document issued", `Document request issued`));
-    }) 
-  };
 
   const options = { afterInsertRow: saveDocument, ignoreEditable: false };
 
@@ -618,7 +527,153 @@ const ProductForm: React.FC = () => {
   const approved_doc_issuance: any = selectedDocForPrint.doc_issuance
     ? selectedDocForPrint.doc_issuance
     : [];
-    console.log("docIssuances--", docIssuances)
+ 
+
+
+    const rejectIssueGenaralIssuanceAll = (event: any) => {
+      event.preventDefault();
+      const requestedDoc = formState.requested_doc.value;
+         
+      let doc_issuances_status_info = {
+        is_issued: false,
+        issued_on: new Date(),
+        doc_issued_by: [],
+        is_doc_issuance_cancelled : false
+      };
+      const doc_issuances_status = docIssuance?.issuance;
+      const doc_issued_by = doc_issuances_status?.doc_issued_by || [];
+      let doc_issued_by_list: any = [...doc_issued_by];
+      requestedDoc.map((doc: any) => {
+        let processedDocForApproval: any = [];
+        if (!doc.is_doc_issued && !doc.is_doc_approved) {
+              const processedApproval = Object.assign(
+                { ...doc },
+                {
+                  is_doc_approved: false,
+                  document_no: doc.document_no,
+                  request_no: formState.request_no.value,
+                  is_doc_issuance_cancelled: true,
+                }
+              );
+              processedDocForApproval.push(processedApproval);
+          doc.doc_issuance = processedDocForApproval;
+          doc.is_doc_approved = false;    
+        }  
+        const doc_issued = { 
+          document_id: doc.document_no,
+          document_issued_on: new Date(),
+          document_issued_by: account.emp_id,
+        };
+   
+        doc_issued_by_list.push(doc_issued)
+        return doc;
+      });
+  
+  
+  
+  
+      doc_issuances_status_info = {
+        is_issued: false,
+        is_doc_issuance_cancelled: true,
+        issued_on: new Date(),
+        doc_issued_by: doc_issued_by_list,
+      }; 
+    
+   
+      let approvalInfo = {
+        name: formState.name.value,
+        empl_id: formState.empl_id.value,
+        doc_type: formState.doc_type.value,
+        request_no: formState.request_no.value,
+        requested_doc: requestedDoc,
+        approval: formState.approval.value,
+        id: formState._id.value,
+        issuance: doc_issuances_status_info,
+        doc_requested_department : formState.doc_requested_department.value,
+        doc_requested_doctype : requested_doc_type 
+      }; 
+   
+  
+       issueGenaralIssuance(approvalInfo, account).then((status) => {
+        dispatch(setModificationState(DocIssuanceTakeoutModificationStatus.None)); 
+        dispatch(addNotification("Document issue rejected", `Document issue rejected`));
+      }) 
+    };
+
+    
+  const issueGenaralIssuanceAll = (event: any) => {
+    event.preventDefault();
+    const requestedDoc = formState.requested_doc.value;
+  
+
+    
+    let doc_issuances_status_info = {
+      is_issued: false,
+      issued_on: new Date(),
+      doc_issued_by: [],
+    };
+    const doc_issuances_status = docIssuance?.issuance;
+    const doc_issued_by = doc_issuances_status?.doc_issued_by || [];
+    let doc_issued_by_list: any = [...doc_issued_by];
+    requestedDoc.map((doc: any) => {
+      let processedDocForApproval: any = [];
+      if (!doc.is_doc_issued && !doc.is_doc_approved) {
+
+         // for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
+            const processedApproval = Object.assign(
+              { ...doc },
+              {
+                is_doc_approved: true,
+                document_no: doc.document_no,
+                request_no: formState.request_no.value,
+              }
+            );
+            processedDocForApproval.push(processedApproval);
+         // }
+        
+        doc.doc_issuance = processedDocForApproval;
+        doc.is_doc_approved = true;    
+      }  
+      const doc_issued = { 
+        document_id: doc.document_no,
+        document_issued_on: new Date(),
+        document_issued_by: account.emp_id,
+      };
+ 
+      doc_issued_by_list.push(doc_issued)
+  return doc;
+    });
+
+
+
+
+    doc_issuances_status_info = {
+      is_issued: true,
+      issued_on: new Date(),
+      doc_issued_by: doc_issued_by_list,
+    }; 
+  
+ 
+    let approvalInfo = {
+      name: formState.name.value,
+      empl_id: formState.empl_id.value,
+      doc_type: formState.doc_type.value,
+      request_no: formState.request_no.value,
+      requested_doc: requestedDoc,
+      approval: formState.approval.value,
+      id: formState._id.value,
+      issuance: doc_issuances_status_info,
+      doc_requested_department : formState.doc_requested_department.value,
+      doc_requested_doctype : requested_doc_type 
+    }; 
+ 
+
+     issueGenaralIssuance(approvalInfo, account).then((status) => {
+      dispatch(setModificationState(DocIssuanceTakeoutModificationStatus.None));
+
+      dispatch(addNotification("Document issued", `Document request issued`));
+    }) 
+  };
   return (
     <Fragment>
       <div className="col-xl-12 col-lg-12">
@@ -860,16 +915,16 @@ const ProductForm: React.FC = () => {
                 !docIssuance.issuance) && (
                 <span>
                   <button
-                    onClick={() => handleYes(true)}
+                    onClick={(e) => issueGenaralIssuanceAll(e)}
                     className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
                   >
-                    YES
+                    ISSUE
                   </button>
                   <button
                     className="btn btn-warning font-14 left-margin font-14"
                     onClick={() => cancelForm()}
                   >
-                    NO
+                    REJECT
                   </button>
                 </span>
               )}
@@ -886,414 +941,7 @@ const ProductForm: React.FC = () => {
           </div>
         </div>
 
-        <Popup
-          className="popup-modal default-modal-size-digidesk"
-          open={showYes}
-        >
-          <div>
-            {/*  <DocIssuanceYesForm /> */}
-            <Fragment>
-              <div className="col-xl-12 col-lg-12">
-                <div className="card shadow mb-4">
-                  <div className="card-body">
-                    <form onSubmit={saveDocumentRequest}>
-                      <div className="form-group font-14">
-                        <br></br>
-
-                        <BootstrapTable
-                          data={formState.requested_doc.value}
-                          trClassName={rowClassNameFormate}
-                        >
-                          <TableHeaderColumn
-                            dataField="id"
-                            isKey
-                            row={0}
-                            colSpan={1}
-                            csvHeader="Customer"
-                            className="label-field-column-black"
-                          >
-                            Request no
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={1}
-                            csvHeader="order"
-                            dataField="order"
-                            dataSort
-                            className="label-field-column-black"
-                          >
-                            Department1
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            row={2}
-                            csvHeader="order"
-                            dataField="document_no"
-                            dataSort
-                            width="16%"
-                          >
-                            Doc No
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={0}
-                            colSpan={1}
-                            csvHeader="Customer"
-                            filter={{ type: "TextFilter", delay: 1000 }}
-                            className="label-field-column"
-                          >
-                            {formState.request_no.value}
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={1}
-                            csvHeader="order"
-                            dataField="order"
-                            dataSort
-                            className="label-field-column"
-                          >
-                            {department_info}
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            row={2}
-                            csvHeader="order"
-                            dataField="document_name"
-                            dataSort
-                            width="16%"
-                          >
-                            Doc Name
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={0}
-                            colSpan={1}
-                            csvHeader="Customer"
-                            className="label-field-column-black"
-                          >
-                            Requested By
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={1}
-                            csvHeader="order"
-                            dataField="order"
-                            dataSort
-                            className="label-field-column-black"
-                          >
-                            Category
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={0}
-                            colSpan={1}
-                            csvHeader="Customer"
-                            filter={{ type: "TextFilter", delay: 1000 }}
-                            className="label-field-column"
-                          >
-                            {formState.empl_id.value}
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={1}
-                            csvHeader="order"
-                            dataField="order"
-                            dataSort
-                            className="label-field-column"
-                          >
-                            {doc_type_info}
-                            {/* {formState.doc_type.value} */}
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            row={2}
-                            csvHeader="order"
-                            dataField="no_of_copy"
-                            dataSort
-                            width="16%"
-                          >
-                            No of Copy
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={0}
-                            colSpan={3}
-                            csvHeader="Customer"
-                            className="label-field-column-black"
-                            filter={{ type: "TextFilter", delay: 1000 }}
-                          >
-                            Reference Number Generation
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            row={1}
-                            colSpan={2}
-                            csvHeader="order"
-                            dataField="order"
-                            dataSort
-                            className="label-field-column-black"
-                          >
-                            <label className="col-md-6 table-check">
-                              <input
-                                type="checkbox"
-                                name="active"
-                                value="yes"
-                                checked={generateNumYes}
-                                onChange={(eve) =>
-                                  hasGenarateNumberChanged(eve)
-                                }
-                              />
-                              Yes
-                            </label>
-                            <label className="col-md-6 table-check">
-                              <input
-                                type="checkbox"
-                                name="qtype"
-                                value="no"
-                                checked={generateNumNo}
-                                onChange={(eve) =>
-                                  hasGenarateNumberChanged(eve)
-                                }
-                              />
-                              No
-                            </label>
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            row={2}
-                            csvHeader="order"
-                            dataField="no_of_page"
-                            dataSort
-                            width="16%"
-                          >
-                            No of Pages
-                          </TableHeaderColumn>
-                          <TableHeaderColumn
-                            row={2}
-                            csvHeader="order"
-                            dataField="reason_for_request"
-                            dataSort
-                            width="16%"
-                          >
-                            Reason for Request
-                          </TableHeaderColumn>
-
-                          <TableHeaderColumn
-                            row={2}
-                            dataFormat={printOptionFormatter}
-                          >
-                            Print Label
-                          </TableHeaderColumn>
-                        </BootstrapTable>
-
-                        {formState.doc_type.value > 5 && (
-                          <div>
-                            <div className="row">
-                              <div className="col-md-3">
-                                <TextInput
-                                  id="input_request_no"
-                                  field="emp_code"
-                                  value={""}
-                                  onChange={hasFormValueChanged}
-                                  required={false}
-                                  maxLength={100}
-                                  label="Emp Code"
-                                  placeholder="Emp Code"
-                                  customError={""}
-                                />
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-3">
-                                <TextInput
-                                  id="input_request_no"
-                                  field="ref_no"
-                                  value={""}
-                                  onChange={hasFormValueChanged}
-                                  required={false}
-                                  maxLength={100}
-                                  label="Reference No"
-                                  placeholder="Reference No"
-                                  customError={""}
-                                />
-                              </div>
-                              <div className="col-md-3">
-                                <TextInput
-                                  id="input_request_no"
-                                  field="description"
-                                  value={""}
-                                  onChange={hasFormValueChanged}
-                                  required={false}
-                                  maxLength={100}
-                                  label="Description"
-                                  placeholder="Description"
-                                  customError={""}
-                                />
-                              </div>
-                            </div>
-                            <div className="row">
-                              <div className="col-md-3">
-                                <TextInput
-                                  id="input_request_no"
-                                  field="title"
-                                  value={""}
-                                  onChange={hasFormValueChanged}
-                                  required={false}
-                                  maxLength={100}
-                                  label="title "
-                                  placeholder="title "
-                                  customError={""}
-                                />
-                              </div>
-                              <div className="col-md-3">
-                                <TextInput
-                                  id="input_request_no"
-                                  field="category"
-                                  value={""}
-                                  onChange={hasFormValueChanged}
-                                  required={false}
-                                  maxLength={100}
-                                  label="category"
-                                  placeholder="category"
-                                  customError={""}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {generateNumNo && (
-                        <button
-                          onClick={(e) => issueGenaralIssuanceAll(e)}
-                          className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
-                        >
-                          APPROVE1
-                        </button>
-                      )}
-                      <button
-                        className="btn btn-danger font-14 left-margin font-14"
-                        onClick={() => cancelForm()}
-                      >
-                        CLOSE
-                      </button>
-                    </form>
-                  </div>
-                </div>
-
-                <Popup className="popup-modal" open={printYesDoc}>
-                  <div>
-                    <form className="user">
-                      <div className="form-group font-14">
-                        <TextInput
-                          id="input_doc_num"
-                          field="document_number"
-                          value={selectedDocForPrint.document_no}
-                          onChange={() => {}}
-                          required={true}
-                          maxLength={100}
-                          label="Document Number"
-                          customError={""}
-                          placeholder="Document Number"
-                        />
-                      </div>
-                      <div className="form-group font-14">
-                        <NumberInput
-                          id="input_password"
-                          field="no_of_label"
-                          value={selectedDocForPrint.no_of_label}
-                          onChange={hasNoOfLabelValueChanged}
-                          label="No of Labels"
-                          customError={""}
-                        />
-                        <CheckboxInput
-                          id="input_email"
-                          field={"generate_unique_num"}
-                          onChange={hasNoOfLabelValueChanged}
-                          label={"Unique number"}
-                          value={
-                            selectedDocForPrint.generate_unique_num
-                              ? true
-                              : false
-                          }
-                          name={"generate_unique_num"}
-                          customError={""}
-                          disabled={false}
-                        />
-                      </div>
-
-                      <button
-                        className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
-                        onClick={(event) => printLabel(event)}
-                      >
-                        Approve/Print
-                      </button>
-                    </form>
-                  </div>
-                </Popup>
-
-                <Popup className="popup-modal" open={loginPopup}>
-                  <div>
-                    <form className="user" onSubmit={validateLogin}>
-                      <div className="form-group font-14">
-                        <TextInput
-                          id="input_email"
-                          field="email"
-                          value={loginForm.email}
-                          onChange={hasLoginFormValueChanged}
-                          required={true}
-                          maxLength={100}
-                          label=""
-                          customError={""}
-                          placeholder="Email"
-                        />
-                      </div>
-                      <div className="form-group font-14">
-                        <TextInput
-                          id="input_password"
-                          field="password"
-                          value={loginForm.password}
-                          onChange={hasLoginFormValueChanged}
-                          required={true}
-                          maxLength={100}
-                          type="password"
-                          label=""
-                          customError={""}
-                          placeholder="Password"
-                        />
-                      </div>
-
-                      <button
-                        className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
-                        type="submit"
-                      >
-                        Authenticate
-                      </button>
-                    </form>
-                  </div>
-                </Popup>
-
-                <div id="printme">
-                  <div id={"printableIdyu"}>
-                    {" "}
-                    {approved_doc_issuance.map(function (object: any, i: any) {
-                      return (
-                        <div key={i}>
-                          <div>Logo</div>
-                          <div>
-                            Reference Number : {selectedDocForPrint.document_no}{" "}
-                          </div>
-                          <div>Categoy : ? </div>
-                          <div>
-                            Name of Doc : {selectedDocForPrint.document_name}{" "}
-                          </div>
-                          <div>Type of Doc : {formState.doc_type.value} </div>
-                          <div></div>
-                          <br></br>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </Fragment>
-          </div>
-        </Popup>
-
+      
         <Popup className="popup-modal" open={loginPopup}>
           <div>
             <form className="user" onSubmit={validateLogin}>

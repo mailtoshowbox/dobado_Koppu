@@ -254,7 +254,7 @@ function ProductForm(props: productFormProps): JSX.Element {
                 ...rejectDocumentRequestForm,
                 ...{ is_rejected: true },
               },
-            }
+            }  
           );
           approveDocumentRequest(approvalInfo, account).then((status) => {
             cancelForm();

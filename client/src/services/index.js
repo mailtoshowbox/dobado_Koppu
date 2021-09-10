@@ -597,8 +597,12 @@ export function addNewDocDept(newitem, options) {
 
 
 export function addNewDocumentRequest(newitem, options) {
+
+  const {doc_requested_doctype:{id = '0'} = {}} = newitem;
+  console.log("doc_requested_doctype----", newitem, id);
+  const typeofReq = id === '6' ? 'takeout' : 'n-takeout';
   var myOptions = getDocCustomPostOptions(options, newitem);
-  return fetch(APP_CONST.API_HOST_AT + '/docrequests', myOptions)
+  return fetch(APP_CONST.API_HOST_AT + '/docrequests/', myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -636,7 +640,7 @@ export function approveDocumentRequest(item, options) {
     id = ""
   } = item;
   var myOptions = getDocCustomPutOptions(options, item);
-  return fetch(APP_CONST.API_HOST_AT + '/docrequests/approve/' + id, myOptions)
+  return fetch(APP_CONST.API_HOST_AT + '/docrequests/approve/' + id+'/'+options.emp_id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);
@@ -656,7 +660,7 @@ export function issueGenaralIssuance(item, options) {
     id = ""
   } = item;
   var myOptions = getDocCustomPutOptions(options, item);
-  return fetch(APP_CONST.API_HOST_AT + '/docrequests/issueGenaralIssuance/' + id, myOptions)
+  return fetch(APP_CONST.API_HOST_AT + '/docrequests/issueGenaralIssuance/' + id+'/'+options.emp_id, myOptions)
     .then(response => {
       if (!response.ok) {
         handleResponseError(response);

@@ -13,9 +13,13 @@ export interface IProduct {
     document_info : any; 
     retension_time: { time: Number, defaultYear: Number,calculateNonPerceptualTime : String },
     document_request_info : any;
+    is_requested_for_takeout : boolean;
+    takeout_return_date : Date;
    /*  box_info:  Array<IProduct>;
     rack_info:   Array<Info>;
     category_info :   Array<Info>; */
+
+    takeout_requested_details :any
 }
 
 

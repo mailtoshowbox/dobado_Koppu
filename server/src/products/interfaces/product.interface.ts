@@ -12,6 +12,12 @@ export interface Document {
   docType_info: [Info],
   retension_time : any,
   isActive :  boolean;
+  is_requested_for_takeout:  boolean;
+  takeout_return_date :Date;
+  is_requested_for_takeout_submit:boolean;
+  is_requested_for_takeout_return:boolean;
+  is_requested_for_takeout_return_approve:boolean;
+
 }
 
 interface Info{

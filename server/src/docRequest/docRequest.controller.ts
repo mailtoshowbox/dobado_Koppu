@@ -36,6 +36,7 @@ export class DocRequestsController {
 
   @Post()
   create(@Body() createDocRequestsDto: CreateDocRequestDto): Promise<DocRequest> { 
+  
     const d=  this.DocRequestsService.create(createDocRequestsDto);
     d.then((res)=>{
       const {} = res; 
@@ -72,10 +73,11 @@ export class DocRequestsController {
     return this.DocRequestsService.delete(id);
   }
 
-  @Put(':page_from/:id')
+  @Put(':page_from/:id/:approvedBy')
   update(
     @Param('page_from') page_from: string,
     @Param('id') id: string,
+    @Param('approvedBy') approvedBy: string,
     @Body() updateDocRequestsDto: CreateDocRequestDto,
   ): Promise<DocRequest> { 
     if(page_from){
@@ -101,7 +103,7 @@ export class DocRequestsController {
         }        
       }); 
     }
-    return this.DocRequestsService.update(id, updateDocRequestsDto, page_from);
+    return this.DocRequestsService.update(id, updateDocRequestsDto, page_from, approvedBy);
   }
   @Put(':id/:uniquenum')
   issueGenaralIssuance(
@@ -142,6 +144,6 @@ export class DocRequestsController {
 
    // console.log("issueGenaralIssuanceDto----", issueGenaralIssuanceDto);
    // return issueGenaralIssuanceDto;
-    return this.DocRequestsService.update(id, issueGenaralIssuanceDto, 'test');
+    return this.DocRequestsService.update(id, issueGenaralIssuanceDto, 'test','Uy');
   }
 }

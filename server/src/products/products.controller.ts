@@ -46,7 +46,6 @@ export class DocumentsController {
   @Get(':modes/:id')
   findAll(  @Param('modes') modes: string, @Param('id') id: string ): Promise<Document[]> {
 
-    console.log("modes----");
     if(modes && modes === "issued" ){
       let res = this.productsService.findAll(modes, id).then((succ=[])=>{   
         let onfo =  succ.map((doc : any)=>{ 
@@ -183,8 +182,7 @@ export class DocumentsController {
   update(
     @Param('id') id: string,
     @Body() updateProductDto,
-  ) {
-    console.log("updateProductDto----", updateProductDto);
+  ) { 
     return this.productsService.update(id, updateProductDto);
   } 
 }

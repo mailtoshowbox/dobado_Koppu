@@ -25,14 +25,39 @@ export class DocumentRequestInfo extends Document {
 
   @Prop()
   document_requested_by: string;
+}
+export class TakeoutInfo extends Document {
+  @Prop()
+  doc_request_no: string;
+  @Prop()
+  requested_by: string;
+  @Prop()
+  requested_on: Date;
+  @Prop()
+  approved_by: string;
+  @Prop()
+  approved_on: Date;
+
+}
+ 
+
+export class TakeoutRequestStatus extends Document { 
+  @Prop()
+  code: string;
+  @Prop()
+  label: string;
+  @Prop()
+  request_no: string;
+}
+export class TakeoutRequestInfo extends Document { 
+  @Prop()
+  current_status: TakeoutRequestStatus;
+
+  @Prop()
+  takeout_request_details_list : TakeoutInfo[]
 
   
-/* 
-  @Prop()
-  document_submitted_on: Date;
 
-  @Prop()
-  document_submitted_by: string; */
 }
 @Schema()
 export class Documents extends Document {
@@ -89,11 +114,18 @@ export class Documents extends Document {
 
   @Prop()
   no_of_page: number;
-
+  
   @Prop()
   document_request_info:  DocumentRequestInfo
+
+  @Prop()
+  is_requested_for_takeout:  boolean
+
+  @Prop()
+  takeout_requested_details:  TakeoutRequestInfo
   
-  
+  @Prop()
+  takeout_return_date:  Date
 }
 
 

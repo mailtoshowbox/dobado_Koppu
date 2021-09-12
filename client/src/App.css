@@ -57,7 +57,7 @@ body {
 .userfnt{
     font-size: 12px !important;
 }
-.react-bs-container-body .table td, .react-bs-table .table th{
+.logsheet .table th{
     font-size: 8px !important;
 }
 .toast-wrapper {

@@ -100,7 +100,7 @@ function document_submitted_department_format(cell: any, row: any) {
 }
 
   return (
-    <div className="portlet">
+    <div className="portlet logsheet">
       <BootstrapTable  tableContainerClass='my-table-container-hide'data={docLogSheetList} keyField='id' options={options} exportCSV>
 {
     props.selectedFieldsToDownload.filter((item:any) => item.FIELD_VALUE).map( (column :any) => {

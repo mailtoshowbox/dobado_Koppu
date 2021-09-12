@@ -144,10 +144,8 @@ export class DocumentsService {
   }
 
    async update(id: string, product: Document) {
-    const  {is_requested_for_takeout_submit = false, is_requested_for_takeout_return = false,is_requested_for_takeout_return_approve=false } =product;
-  
-    console.log("is_requested_for_takeout_return_approve--", is_requested_for_takeout_return_approve);
-  
+    const  {is_requested_for_takeout = false, is_requested_for_takeout_submit = false, is_requested_for_takeout_return = false,is_requested_for_takeout_return_approve=false } =product;
+    if(is_requested_for_takeout){
     if(is_requested_for_takeout_submit){
       return await this.productModel
       .find({ isActive: true, _id: id })
@@ -279,7 +277,11 @@ export class DocumentsService {
         new: true,
       });
     }
-   
+  }else{
+    return await this.productModel.findByIdAndUpdate(id, product, {
+      new: true,
+    });
+  }
   } 
 
   async getQRCode(qrData) {

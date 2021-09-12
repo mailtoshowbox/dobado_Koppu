@@ -606,9 +606,8 @@ const ProductForm: React.FC = () => {
 		myWindow?.close();
 	}
 
- const  {takeout_requested_details:{current_status : {code = ""} = {}} = {}} =product;
+ const  {takeout_requested_details:{current_status : {code = ""} = {}} = {}, is_requested_for_takeout=false} =product;
 
- console.log("code----", code);
 
 	return (
 		<Fragment>
@@ -921,7 +920,7 @@ const ProductForm: React.FC = () => {
 
                     								 
 
-{ code === 'submitted' && (
+{ code === 'submitted' && is_requested_for_takeout && (
 										<div style={{ padding: "12px 4px 3px 12px" }}>
 											<Checkbox
 												id="input_email"

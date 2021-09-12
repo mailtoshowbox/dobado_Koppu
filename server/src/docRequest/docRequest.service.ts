@@ -446,7 +446,7 @@ export class DocRequestService {
 								newProduct.isRequestedDocument = true;
 
 								newProduct.save().then((res) => {
-									console.log("+++++++++INsert DONE=");
+									console.log("+++++++++INsert DONE=me",);
 								});
 							});
 						}

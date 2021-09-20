@@ -85,8 +85,8 @@ const ProductForm: React.FC = () => {
           );
           dispatch(
             addNotification(
-              "New Box added",
-              `Box ${formState.name.value} added by you`
+              "New Document Type added",
+              `Type ${formState.name.value} added by you`
             )
           );
           getDocTypeList(account.auth).then((items: IDocTypeList) => {

@@ -1020,7 +1020,7 @@ const ProductForm: React.FC = () => {
                             dataSort
                             className="label-field-column-black"
                           >
-                            Department1
+                            Department
                           </TableHeaderColumn>
                           <TableHeaderColumn
                             row={2}

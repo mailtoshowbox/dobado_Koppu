@@ -72,7 +72,7 @@ const Products: React.FC = () => {
 
   return (
     <Fragment>
-      <h1 className="h5 mb-4 font-bold">Categories</h1>
+      <h1 className="h5 mb-4 font-bold">Compactor</h1>
       {/* <p className="mb-4 font-14">Document Category here</p> */}
       <div className="row">
         <TopCard
@@ -88,7 +88,7 @@ const Products: React.FC = () => {
           <div className="card shadow mb-4">
             <div className="card-header py-1">
               <h6 className="m-0 font-weight-bold text-white font-12">
-                Document List
+              Compactor List
               </h6>
               <div className="header-buttons">
                 <button

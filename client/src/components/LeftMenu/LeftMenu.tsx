@@ -111,7 +111,7 @@ const LeftMenu: React.FC = () => {
             <li className="nav-item">
               <Link className="nav-link" to={`/genarateissuancetakeout`}>
                 <i className="fas fa-sitemap"></i>
-                <span>Generate Issuance TakeOut</span>
+                <span>TakeOut</span>
               </Link>
             </li>
             <li className="nav-item">

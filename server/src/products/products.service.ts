@@ -36,7 +36,7 @@ export class DocumentsService {
          return res;
       });
     }else if(mode === 'takeOutRequest'){       
-      return await  this.productModel.find({ isActive: true, document_no : id,  is_requested_for_takeout :{ "$ne": true   }  }).then((res:any)=>{   
+      return await  this.productModel.find({ isActive: true, qr_code : id,  is_requested_for_takeout :{ "$ne": true   }  }).then((res:any)=>{   
          return res;
       });
     }else if(mode === 'log-sheet'){

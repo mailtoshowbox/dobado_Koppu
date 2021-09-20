@@ -240,14 +240,15 @@ function ProductList(props: productListProps): JSX.Element {
 					dataFormat={document_request_format_doctype_name}
 					formatExtraData={"name"}
 				>
-					Doc Type
+					Category
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="category"
 					className="thead-light-1"
 					width="8%"
+					
 				>
-					Category
+					Doc Type 
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="qr_code"
@@ -256,7 +257,7 @@ function ProductList(props: productListProps): JSX.Element {
 					dataFormat={document_request_format_dpet_name}
 					formatExtraData={"name"}
 				>
-					Department
+					Dept
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="manufacturedate"

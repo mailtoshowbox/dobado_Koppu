@@ -639,7 +639,7 @@ const ProductForm: React.FC = () => {
 											</TableHeaderColumn>
 
 											<TableHeaderColumn
-												dataField="document_name"
+												dataField="name"
 												width="25%"
 												className="thead-light-1"
 												editable={{ validator: requiredField }}

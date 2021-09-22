@@ -16,7 +16,6 @@ function ProductList(props: productListProps): JSX.Element {
 	const products: IProductState = useSelector(
 		(state: IStateType) => state.products
 	);
-	console.log("products----", products);
 	function convertDate(str: Date) {
 		if (!str) return "-";
 		var date = new Date(str),
@@ -132,15 +131,15 @@ function ProductList(props: productListProps): JSX.Element {
 		}
 	}
 	function document_request_format(cell: any, row: any, field: any) {
-		const {takeout_requested_details : {current_status:{request_no="XXXXXX"}={}} = {}} = row;
+		const {
+			takeout_requested_details: {
+				current_status: { request_no = "XXXXXX" } = {},
+			} = {},
+		} = row;
 
-		if(row.is_requested_for_takeout){
-			return (
-				<>
-					{request_no}
-				</>
-			);
-		}else{
+		if (row.is_requested_for_takeout) {
+			return <>{request_no}</>;
+		} else {
 			return (
 				<>
 					{row.document_request_info
@@ -151,11 +150,12 @@ function ProductList(props: productListProps): JSX.Element {
 				</>
 			);
 		}
- 
-		
 	}
 	function document_request_format_dpet_name(cell: any, row: any, field: any) {
-		if (row.document_request_info.document_request_department) {
+		if (
+			row.isRequestedDocument &&
+			row.document_request_info.document_request_department
+		) {
 			return row.document_request_info.document_request_department[field]
 				? row.document_request_info.document_request_department[field]
 				: "-";
@@ -176,24 +176,23 @@ function ProductList(props: productListProps): JSX.Element {
 		row: any,
 		field: any
 	) {
-    console.log("row--", row);
-	 
-		const { document_request_info: { document_request_doc_type = {} , } = {},is_requested_for_takeout = false,  takeout_requested_details : {current_status:{label=""} = {}} = {}    } =
-			row;
+		const {
+			document_request_info: { document_request_doc_type = {} } = {},
+			is_requested_for_takeout = false,
+			takeout_requested_details: { current_status: { label = "" } = {} } = {},
+		} = row;
 		const { name = "Not Available" } = document_request_doc_type;
 
-    if(is_requested_for_takeout){
-      return <div>
-      {name}/<b>Takeout Status:</b>{label}
-      </div>;
-    }else{
-      return <div>
-      {name}
-      
-      </div>;
-    }
-
-		 
+		if (is_requested_for_takeout) {
+			return (
+				<div>
+					{name}/<b>Takeout Status:</b>
+					{label}
+				</div>
+			);
+		} else {
+			return <div>{name}</div>;
+		}
 	}
 
 	const options = {
@@ -246,9 +245,8 @@ function ProductList(props: productListProps): JSX.Element {
 					dataField="category"
 					className="thead-light-1"
 					width="8%"
-					
 				>
-					Doc Type 
+					Doc Type
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="qr_code"

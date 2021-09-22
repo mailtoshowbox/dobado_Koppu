@@ -17,7 +17,7 @@ export class DocRequestService {
 		private readonly docApprovalHistModel: Model<DocApprovalHistories>,
 		@InjectModel(Documents.name)
 		private readonly documentModal: Model<Documents> // @InjectModel(RequestedDocuments.name) private readonly requestedDocModal: Model<RequestedDocuments>,
-	) {}
+	) { }
 
 	async findAll(mode: string, empl_id: string): Promise<DocRequest[]> {
 		if (mode === "approval") {
@@ -191,7 +191,7 @@ export class DocRequestService {
 
 							let requestDetails = {
 								takeout_requested_details: {
-									current_status: { code: "requested", label: "Requested", request_no:docRequest.request_no },
+									current_status: { code: "requested", label: "Requested", request_no: docRequest.request_no },
 									takeout_request_details_list: takeout_request_details_list,
 								},
 								is_requested_for_takeout: true,
@@ -266,37 +266,37 @@ export class DocRequestService {
 		});
 
 		/* console.log("initialData----", initialData);
-        if(Object.keys(initialData).length > 0){
-           this.docApprovalHistModel.findOne({ mode_of_access: 'recent', request_no : docApprovalHistory.request_no }).then((recentData)=>{
-            console.log("recentData----", recentData);
-            if(Object.keys(recentData).length > 0){
-                this.docApprovalHistModel.findByIdAndUpdate(recentData._id, docApprovalHistory);
-            }else{
-              docApprovalHistory.mode_of_access ="recent";
-              const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
-              return  newDocRequest.save(); 
-            }
-          });
+		if(Object.keys(initialData).length > 0){
+		   this.docApprovalHistModel.findOne({ mode_of_access: 'recent', request_no : docApprovalHistory.request_no }).then((recentData)=>{
+			console.log("recentData----", recentData);
+			if(Object.keys(recentData).length > 0){
+				this.docApprovalHistModel.findByIdAndUpdate(recentData._id, docApprovalHistory);
+			}else{
+			  docApprovalHistory.mode_of_access ="recent";
+			  const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
+			  return  newDocRequest.save(); 
+			}
+		  });
 
-        } */
+		} */
 
 		// if(Object.keys(data).length > 0){
 		/*    console.log("dasdasdasdasd");
-           this.docApprovalHistModel.findOne({ mode_of_access: 'recent', request_no : docApprovalHistory.request_no }).then((recentData)=>{
-            console.log("recentData----", recentData);
-            if(Object.keys(recentData).length > 0){
-                this.docApprovalHistModel.findByIdAndUpdate(recentData._id, docApprovalHistory);
-            }else{
-              docApprovalHistory.mode_of_access ="recent";
-              const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
-              return  newDocRequest.save(); 
-            }
-          });  */
+		   this.docApprovalHistModel.findOne({ mode_of_access: 'recent', request_no : docApprovalHistory.request_no }).then((recentData)=>{
+			console.log("recentData----", recentData);
+			if(Object.keys(recentData).length > 0){
+				this.docApprovalHistModel.findByIdAndUpdate(recentData._id, docApprovalHistory);
+			}else{
+			  docApprovalHistory.mode_of_access ="recent";
+			  const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
+			  return  newDocRequest.save(); 
+			}
+		  });  */
 
 		//   }else{
 		/*  console.log("dasdasdasdasd");
-          const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
-          return  newDocRequest.save();  */
+		  const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
+		  return  newDocRequest.save();  */
 		//   }        return {};
 		// });
 	}
@@ -318,7 +318,7 @@ export class DocRequestService {
 		} = DocRequest;
 
 		if (doc_type === "6") {
- 
+
 			requested_doc.forEach((doc: any) => {
 				if (doc._id !== "") {
 					this.documentModal
@@ -334,38 +334,38 @@ export class DocRequestService {
 							takeout_request_details_list.forEach((list) => {
 								if (list.doc_request_no === request_no) {
 
-									if(page === 'issueGenaralIssuance'){										
-											list.issued_by = updateBy;										
-											list.issued_on = new Date();
-									}else{
+									if (page === 'issueGenaralIssuance') {
+										list.issued_by = updateBy;
+										list.issued_on = new Date();
+									} else {
 
-									
-									if (list.approved_by_1) {
-										list.approved_by_2 = updateBy;
-									} else {
-										list.approved_by_1 = updateBy;
+
+										if (list.approved_by_1) {
+											list.approved_by_2 = updateBy;
+										} else {
+											list.approved_by_1 = updateBy;
+										}
+										if (list.approved_on_1) {
+											list.approved_on_2 = new Date();
+										} else {
+											list.approved_on_1 = new Date();
+										}
 									}
-									if (list.approved_on_1) {
-										list.approved_on_2 = new Date();
-									} else {
-										list.approved_on_1 = new Date();
-									}
-								}
 								}
 							});
 
 							let requestDetails = takeout_requested_details;
-							if(page === 'issueGenaralIssuance'){ // Issue Call
+							if (page === 'issueGenaralIssuance') { // Issue Call
 								requestDetails = {
 									current_status: {
 										...requestDetails.current_status,
 										code: "issued",
 										label: "Issued",
-										request_no :request_no
+										request_no: request_no
 									},
 									takeout_request_details_list: takeout_request_details_list,
 								};
-							}else{ // Approved Call
+							} else { // Approved Call
 								requestDetails = {
 									current_status: {
 										...requestDetails.current_status,
@@ -375,7 +375,7 @@ export class DocRequestService {
 									takeout_request_details_list: takeout_request_details_list,
 								};
 							}
-							
+
 
 							// console.log("requestDetails---", requestDetails);
 
@@ -388,7 +388,7 @@ export class DocRequestService {
 								.findByIdAndUpdate(doc._id, documenttoEdit, {
 									new: true,
 								})
-								.then((tre) => {});
+								.then((tre) => { });
 						});
 				}
 			});
@@ -400,7 +400,6 @@ export class DocRequestService {
 					issuance: { doc_issued_by = [] },
 					doc_requested_department = {},
 				} = DocRequest;
-
 				// let selectedDocument:any = [];
 				requested_doc.map((doc: any) => {
 					if (doc.is_doc_approved && !doc.is_doc_issued) {
@@ -539,114 +538,114 @@ export class DocRequestService {
 				return doc;
 			});
 			/*  let documentList = [];
-      if(selectedDocument.length === 1){
-         documentList  = selectedDocument[0].doc_issuance ? selectedDocument[0].doc_issuance : [];
-      }else if(selectedDocument.length > 1) {
-         documentList  = selectedDocument.doc_issuance ? selectedDocument.doc_issuance : [];
-      }
+	  if(selectedDocument.length === 1){
+		 documentList  = selectedDocument[0].doc_issuance ? selectedDocument[0].doc_issuance : [];
+	  }else if(selectedDocument.length > 1) {
+		 documentList  = selectedDocument.doc_issuance ? selectedDocument.doc_issuance : [];
+	  }
     
 
-     console.log("documentList---", documentList);
-      if(documentList.length > 0){
-        documentList.forEach((doc)=>{
-          const newDcoument = {  
-            name: doc.document_name,
-            description: doc.document_name,
-            no_of_copy : doc.no_of_copy,
-            no_of_page : doc.no_of_page,
-            document_no : doc.document_no,
-            qr_code : doc.document_no,
-            box: '',
-            rack:  '',
-            category :  "",
-            box_info: [],
-            rack_info: [],
-            category_info: [],
-            document_type : "",
-            docType_info: "",
-            is_Active: true,
-            retension_time : "" }; 
-          const newProduct = new this.documentModal(newDcoument); 
-          newProduct.isActive = false;
-          newProduct.isRequestedDocument = true;
-          console.log("Insert");
-          newProduct.save().then((res)=>{
-            console.log("+++++++++INsert DONE=");
-          });
-        }) 
-      }else{
-         console.log("ALPHA");
-      } */
+	 console.log("documentList---", documentList);
+	  if(documentList.length > 0){
+		documentList.forEach((doc)=>{
+		  const newDcoument = {  
+			name: doc.document_name,
+			description: doc.document_name,
+			no_of_copy : doc.no_of_copy,
+			no_of_page : doc.no_of_page,
+			document_no : doc.document_no,
+			qr_code : doc.document_no,
+			box: '',
+			rack:  '',
+			category :  "",
+			box_info: [],
+			rack_info: [],
+			category_info: [],
+			document_type : "",
+			docType_info: "",
+			is_Active: true,
+			retension_time : "" }; 
+		  const newProduct = new this.documentModal(newDcoument); 
+		  newProduct.isActive = false;
+		  newProduct.isRequestedDocument = true;
+		  console.log("Insert");
+		  newProduct.save().then((res)=>{
+			console.log("+++++++++INsert DONE=");
+		  });
+		}) 
+	  }else{
+		 console.log("ALPHA");
+	  } */
 
 			/*  if(issuanceList.length === requested_doc.length){
-          issuanceList.forEach((doc)=>{
+		  issuanceList.forEach((doc)=>{
 
-            const newDcoument = {  
-              name: doc.document_name,
-              description: doc.document_name,
-              no_of_copy : doc.no_of_copy,
-              no_of_page : doc.no_of_page,
-              document_no : doc.document_no,
-              box: '',
-              rack:  '',
-              category :  "",
-              box_info: [],
-              rack_info: [],
-              category_info: [],
-              document_type : "",
-              docType_info: "",
-              retension_time : "" };
-              console.log("Partially newDcoument>>>", newDcoument);
-            const newProduct = new this.documentModal(newDcoument); 
-            newProduct.isActive = false;
-            newProduct.isRequestedDocument = true;
-            
-            newProduct.save().then((res)=>{
-              console.log("THENEN=", res);
-            });
+			const newDcoument = {  
+			  name: doc.document_name,
+			  description: doc.document_name,
+			  no_of_copy : doc.no_of_copy,
+			  no_of_page : doc.no_of_page,
+			  document_no : doc.document_no,
+			  box: '',
+			  rack:  '',
+			  category :  "",
+			  box_info: [],
+			  rack_info: [],
+			  category_info: [],
+			  document_type : "",
+			  docType_info: "",
+			  retension_time : "" };
+			  console.log("Partially newDcoument>>>", newDcoument);
+			const newProduct = new this.documentModal(newDcoument); 
+			newProduct.isActive = false;
+			newProduct.isRequestedDocument = true;
+		    
+			newProduct.save().then((res)=>{
+			  console.log("THENEN=", res);
+			});
   
-          })
-      }else{
+		  })
+	  }else{
 
-        console.log("issuanceList[0]-----", issuanceList[0]);
+		console.log("issuanceList[0]-----", issuanceList[0]);
 
-      const  {doc_issuance = [], document_no=''} =issuanceList[0] ? issuanceList[0] :[];
-      if(document_no !== ""){
-        requested_doc.map((doc : any)=>{   
-          if(doc.document_no === document_no){
-            doc.is_doc_issued = true;
-          }          
-          return doc 
-        });  
-        doc_issuance.forEach((doc)=>{
-          console.log("Partially doc-------", doc.document_no);
-          const newDcoument = {  
-            name: doc.document_name,
-            description: doc.document_name,
-            no_of_copy : doc.no_of_copy,
-            no_of_page : doc.no_of_page,
-            document_no : doc.document_no,
-            qr_code : doc.document_no,
-            box: '',
-            rack:  '',
-            category :  "",
-            box_info: [],
-            rack_info: [],
-            category_info: [],
-            document_type : "",
-            docType_info: "",
-            is_Active: true,
-            retension_time : "" }; 
-          const newProduct = new this.documentModal(newDcoument); 
-          newProduct.isActive = false;
-          newProduct.isRequestedDocument = true;
-          newProduct.save().then((res)=>{
-          //  console.log("THENEN=", res);
-          });
+	  const  {doc_issuance = [], document_no=''} =issuanceList[0] ? issuanceList[0] :[];
+	  if(document_no !== ""){
+		requested_doc.map((doc : any)=>{   
+		  if(doc.document_no === document_no){
+			doc.is_doc_issued = true;
+		  }          
+		  return doc 
+		});  
+		doc_issuance.forEach((doc)=>{
+		  console.log("Partially doc-------", doc.document_no);
+		  const newDcoument = {  
+			name: doc.document_name,
+			description: doc.document_name,
+			no_of_copy : doc.no_of_copy,
+			no_of_page : doc.no_of_page,
+			document_no : doc.document_no,
+			qr_code : doc.document_no,
+			box: '',
+			rack:  '',
+			category :  "",
+			box_info: [],
+			rack_info: [],
+			category_info: [],
+			document_type : "",
+			docType_info: "",
+			is_Active: true,
+			retension_time : "" }; 
+		  const newProduct = new this.documentModal(newDcoument); 
+		  newProduct.isActive = false;
+		  newProduct.isRequestedDocument = true;
+		  newProduct.save().then((res)=>{
+		  //  console.log("THENEN=", res);
+		  });
 
-        })
-      }
-      } */
+		})
+	  }
+	  } */
 		}
 		return await this.DocRequestModel.findByIdAndUpdate(id, DocRequest, {
 			new: true,

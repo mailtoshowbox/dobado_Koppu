@@ -84,9 +84,10 @@ const ProductForm: React.FC = () => {
 		type_of_space: false,
 	});
 	const [documentReadyToReturn, setDocumentReadyToReturn] = useState(false);
-	const [documentReturnReadyToApprove, setDocumentReturnReadyToApprove] = useState(false);
-	const [documentConfirmToTakeout, setDocumentConfirmToTakeout] = useState(false);
-
+	const [documentReturnReadyToApprove, setDocumentReturnReadyToApprove] =
+		useState(false);
+	const [documentConfirmToTakeout, setDocumentConfirmToTakeout] =
+		useState(false);
 
 	//Document Category loaded
 	const doccategoriesList: IDocCategoryState | null = useSelector(
@@ -140,8 +141,10 @@ const ProductForm: React.FC = () => {
 			document_request_info: {},
 			is_requested_for_takeout: false,
 			takeout_return_date: future,
-      takeout_requested_details : {}
-      
+			takeout_requested_details: {},
+
+			doc_requested_department: {},
+			document_type_details : {}
 		};
 	} else {
 		const { box = "", rack = "" } = product;
@@ -177,7 +180,10 @@ const ProductForm: React.FC = () => {
 		qr_code: { error: "", value: product.qr_code },
 		manufacturedate: { error: "", value: product.manufacturedate },
 		expiredate: { error: "", value: product.expiredate },
-		takeout_return_date: { error: "", value: product.takeout_return_date ?  product.takeout_return_date : future },
+		takeout_return_date: {
+			error: "",
+			value: product.takeout_return_date ? product.takeout_return_date : future,
+		},
 
 		retension_time: {
 			error: "",
@@ -192,7 +198,11 @@ const ProductForm: React.FC = () => {
 			},
 		},
 		document_request_info: { error: "", value: product.document_request_info },
-    is_requested_for_takeout: { error: "", value: product.is_requested_for_takeout },
+		is_requested_for_takeout: {
+			error: "",
+			value: product.is_requested_for_takeout,
+		},
+		document_type_details: { error: "", value: product.document_type_details },
 	});
 
 	if (formState.qr_code.value === "") {
@@ -355,8 +365,8 @@ const ProductForm: React.FC = () => {
 					},
 					isActive: true,
 					retension_time: formState.retension_time.value,
+					document_type_details: formState.document_type_details.value,
 				};
-
 
 				addNewDoc(boxInfo, account).then((status) => {
 					getIssuedDocumentList(account, { userId: account.emp_id }).then(
@@ -374,127 +384,120 @@ const ProductForm: React.FC = () => {
 					dispatch(setModificationState(ProductModificationStatus.None));
 				});
 			} else if (mode === "EDIT") {
-				console.log("formState-", formState);
-				 const sumittedDocInfo = {document_submitted_on : new Date(),document_submitted_by : account.emp_id};
-        let boxInfoUpt = {
-          id: formState._id.value,
-          name: formState.name.value,
-          description: formState.description.value,
-          box: formState.box.value,
-          rack: formState.rack.value,
-          category: formState.category.value,
-          manufacturedate: formState.manufacturedate.value ? formState.manufacturedate.value : new Date(),
-          expiredate: formState.expiredate.value ? formState.expiredate.value : new Date() ,
-          type_of_space: formState.type_of_space.value,
-          qr_code: formState.qr_code.value,
-          document_type: formState.document_type.value,
-          retension_time: formState.retension_time.value,
-          isActive: true,
-          document_request_info : formState.document_request_info.value,
-          is_requested_for_takeout : formState.is_requested_for_takeout.value,
+				const sumittedDocInfo = {
+					document_submitted_on: new Date(),
+					document_submitted_by: account.emp_id,
+				};
+				let boxInfoUpt = {
+					id: formState._id.value,
+					name: formState.name.value,
+					description: formState.description.value,
+					box: formState.box.value,
+					rack: formState.rack.value,
+					category: formState.category.value,
+					manufacturedate: formState.manufacturedate.value
+						? formState.manufacturedate.value
+						: new Date(),
+					expiredate: formState.expiredate.value
+						? formState.expiredate.value
+						: new Date(),
+					type_of_space: formState.type_of_space.value,
+					qr_code: formState.qr_code.value,
+					document_type: formState.document_type.value,
+					retension_time: formState.retension_time.value,
+					isActive: true,
+					document_request_info: formState.document_request_info.value,
+					is_requested_for_takeout: formState.is_requested_for_takeout.value,
+					document_type_details: formState.document_type_details.value,
+				};
+				let seltdPro = products?.products.filter(
+					(pro) => pro._id === formState._id.value
+				)[0];
+				const { document_info = {} } = seltdPro || {};
 
-        };
-        let seltdPro = products?.products.filter(
-          (pro) => pro._id === formState._id.value
-        )[0];
-        const { document_info = {} } = seltdPro || {};
+				let updatedByArrau = [{ ...currentUser, updatedOn: new Date() }];
+				if (document_info.updatedBy) {
+					updatedByArrau = [
+						...document_info.updatedBy,
+						{ ...currentUser, updatedOn: new Date() },
+					];
+				}
+				//,
 
-        let updatedByArrau = [{ ...currentUser, updatedOn: new Date() }];
-        if (document_info.updatedBy) {
-          updatedByArrau = [
-            ...document_info.updatedBy,
-            { ...currentUser, updatedOn: new Date() },
-          ];
-        }
-        //,
-      
+				let updatedDoc_Info = {
+					...document_info,
+					active: true,
+					createdBy: { ...currentUser },
+					createdOn: new Date(),
+					updatedBy: updatedByArrau,
+				};
 
-        let updatedDoc_Info = {
-          ...document_info,
-          updatedBy: updatedByArrau,
-        };
-        if (
-          formState.type_of_space.value &&
-          loggedInUserRole === "Qualityuser" &&
-          document_info.status === "n-approved"
-        ) {
-          updatedDoc_Info = {
-            ...updatedDoc_Info,
-            status: "approved",
-            approvedBy: currentUser,
-          };
-        }
-        //  takeout_return_date : formState.takeout_return_date.value,
-        let takeOut = {};
-      if(formState.is_requested_for_takeout && !documentReadyToReturn && !documentReturnReadyToApprove){
-        takeOut = {takeout_return_date : formState.takeout_return_date.value, is_requested_for_takeout_submit : true};
-      }else if(documentReadyToReturn && !documentReturnReadyToApprove){
-        takeOut = {is_requested_for_takeout_return : true};
-      }else if(documentReturnReadyToApprove){
-        takeOut = {is_requested_for_takeout_return_approve : true};
-      }
 
-      
-        boxInfoUpt = { ...boxInfoUpt,...takeOut, ...{ document_info: updatedDoc_Info , 
-          document_request_info : {...boxInfoUpt.document_request_info, ...sumittedDocInfo } } };
 
-        const {
-          box = "",
-          category = "",
-          rack = "",
-          document_type = "",
-        } = product;
-        if (category && !touchedFields.category) {
-          // console.log("doccategoriesList---", doccategoriesList);
-          let selectedCat =
-            doccategoriesList?.docCategories.filter(
-              (catee) => catee.name === category
-            ) || [];
-          if (selectedCat.length > 0) {
-            boxInfoUpt.category = selectedCat[0]._id;
-          }
-        }
-        if (box && !touchedFields.box) {
-          let selectBox = boxes.boxes.filter((boxe) => boxe.name === box);
-          if (selectBox.length > 0) {
-            boxInfoUpt.box = selectBox[0]._id;
-          }
-        }
-        if (rack && !touchedFields.rack) {
-          let selectedRacks = boxRacks.filter((rck: any) => rck.name === rack);
-          if (selectedRacks.length > 0) {
-            boxInfoUpt.rack = selectedRacks[0]["_id"];
-          }
-        }
-        if (document_type && !touchedFields.document_type) {
-          let selectedTypeOfDoc =
-            listOfType.filter((dcT: any) => dcT.name === document_type) || [];
 
-          if (selectedTypeOfDoc.length > 0) {
-            boxInfoUpt.document_type = selectedTypeOfDoc[0].id;
-          }
-        }
- 
-        updateDoc(boxInfoUpt, account).then((status) => {
-          dispatch(
-            saveFn({
-              ...product,
-              ...status,
-            })
-          );
+				if (
+					formState.type_of_space.value &&
+					loggedInUserRole === "Qualityuser" &&
+					document_info.status === "n-approved"
+				) {
+					updatedDoc_Info = {
+						...updatedDoc_Info,
+						status: "approved",
+						approvedBy: currentUser,
+					};
+				}
+				//  takeout_return_date : formState.takeout_return_date.value,
+				let takeOut = {};
+				if (
+					formState.is_requested_for_takeout &&
+					!documentReadyToReturn &&
+					!documentReturnReadyToApprove
+				) {
+					takeOut = {
+						takeout_return_date: formState.takeout_return_date.value,
+						is_requested_for_takeout_submit: true,
+					};
+				} else if (documentReadyToReturn && !documentReturnReadyToApprove) {
+					takeOut = { is_requested_for_takeout_return: true };
+				} else if (documentReturnReadyToApprove) {
+					takeOut = { is_requested_for_takeout_return_approve: true };
+				}
 
-          getIssuedDocumentList(account,  {"userId" : account.emp_id }).then((items: IProductList) => {
-            dispatch(loadListOfProduct(items));
-          });
-          dispatch(
-            addNotification(
-              "Box ",
-              `Docuemnt ${formState.name.value} edited by you`
-            )
-          );
-          dispatch(clearSelectedProduct());
-          dispatch(setModificationState(ProductModificationStatus.None));
-        }); 
+				boxInfoUpt = {
+					...boxInfoUpt,
+					...takeOut,
+					...{
+						document_info: updatedDoc_Info,
+						document_request_info: {
+							...boxInfoUpt.document_request_info,
+							...sumittedDocInfo,
+						},
+					},
+				};
+
+
+				updateDoc(boxInfoUpt, account).then((status) => {
+					dispatch(
+						saveFn({
+							...product,
+							...status,
+						})
+					);
+
+					getIssuedDocumentList(account, { userId: account.emp_id }).then(
+						(items: IProductList) => {
+							dispatch(loadListOfProduct(items));
+						}
+					);
+					dispatch(
+						addNotification(
+							"Box ",
+							`Docuemnt ${formState.name.value} edited by you`
+						)
+					);
+					dispatch(clearSelectedProduct());
+					dispatch(setModificationState(ProductModificationStatus.None));
+				});
 			}
 		}
 	}
@@ -606,8 +609,10 @@ const ProductForm: React.FC = () => {
 		myWindow?.close();
 	}
 
- const  {takeout_requested_details:{current_status : {code = ""} = {}} = {}, is_requested_for_takeout=false} =product;
-
+	const {
+		takeout_requested_details: { current_status: { code = "" } = {} } = {},
+		is_requested_for_takeout = false,
+	} = product;
 
 	return (
 		<Fragment>
@@ -880,7 +885,7 @@ const ProductForm: React.FC = () => {
 											Cancel
 										</button>
 
-										{documentConfirmToTakeout && code === 'issued'  &&  (
+										{documentConfirmToTakeout && code === "issued" && (
 											<button
 												type="submit"
 												className={`btn btn-success left-margin font-14`}
@@ -888,26 +893,24 @@ const ProductForm: React.FC = () => {
 												Takeout
 											</button>
 										)}
-                   { code === 'issued'  && (
-                      <div style={{ padding: "12px 4px 3px 12px" }}>
-											<Checkbox
-												id="input_email"
-												field={"id_doc_takeout_retuen"}
-												onChange={(e: any) => {
-													setDocumentConfirmToTakeout(!documentConfirmToTakeout);
-												}}
-												label={"Document confirm to takeout"}
-												value={documentConfirmToTakeout}
-												name={"id_doc_takeout_retuen"}
-												disabled={false}
-												customError={""}
-											/>
-										</div>
-
+										{code === "issued" && (
+											<div style={{ padding: "12px 4px 3px 12px" }}>
+												<Checkbox
+													id="input_email"
+													field={"id_doc_takeout_retuen"}
+													onChange={(e: any) => {
+														setDocumentConfirmToTakeout(
+															!documentConfirmToTakeout
+														);
+													}}
+													label={"Document confirm to takeout"}
+													value={documentConfirmToTakeout}
+													name={"id_doc_takeout_retuen"}
+													disabled={false}
+													customError={""}
+												/>
+											</div>
 										)}
-
-
-
 
 										{documentReadyToReturn && (
 											<button
@@ -918,26 +921,24 @@ const ProductForm: React.FC = () => {
 											</button>
 										)}
 
-                    								 
+										{code === "submitted" && is_requested_for_takeout && (
+											<div style={{ padding: "12px 4px 3px 12px" }}>
+												<Checkbox
+													id="input_email"
+													field={"id_doc_takeout_retuen"}
+													onChange={(e: any) => {
+														setDocumentReadyToReturn(!documentReadyToReturn);
+													}}
+													label={"Document ready to return"}
+													value={documentReadyToReturn}
+													name={"id_doc_takeout_retuen"}
+													disabled={false}
+													customError={""}
+												/>
+											</div>
+										)}
 
-{ code === 'submitted' && is_requested_for_takeout && (
-										<div style={{ padding: "12px 4px 3px 12px" }}>
-											<Checkbox
-												id="input_email"
-												field={"id_doc_takeout_retuen"}
-												onChange={(e: any) => {
-													setDocumentReadyToReturn(!documentReadyToReturn);
-												}}
-												label={"Document ready to return"}
-												value={documentReadyToReturn}
-												name={"id_doc_takeout_retuen"}
-												disabled={false}
-												customError={""}
-											/>
-										</div>
-                    	)}
-
-{ code === 'returned' && documentReturnReadyToApprove && (
+										{code === "returned" && documentReturnReadyToApprove && (
 											<button
 												type="submit"
 												className={`btn btn-success left-margin font-14`}
@@ -946,32 +947,24 @@ const ProductForm: React.FC = () => {
 											</button>
 										)}
 
-
-
-{ code === 'returned' && (
-										<div style={{ padding: "12px 4px 3px 12px" }}>
-											<Checkbox
-												id="input_email"
-												field={"id_doc_takeout_retuen"}
-												onChange={(e: any) => {
-													setDocumentReturnReadyToApprove(!documentReturnReadyToApprove);
-												}}
-												label={"Document return ready to approve"}
-												value={documentReturnReadyToApprove}
-												name={"id_doc_takeout_retuen"}
-												disabled={false}
-												customError={""}
-											/>
-										</div>
-                    	)}
-
-
-
-
-
-
-
-                      
+										{code === "returned" && (
+											<div style={{ padding: "12px 4px 3px 12px" }}>
+												<Checkbox
+													id="input_email"
+													field={"id_doc_takeout_retuen"}
+													onChange={(e: any) => {
+														setDocumentReturnReadyToApprove(
+															!documentReturnReadyToApprove
+														);
+													}}
+													label={"Document return ready to approve"}
+													value={documentReturnReadyToApprove}
+													name={"id_doc_takeout_retuen"}
+													disabled={false}
+													customError={""}
+												/>
+											</div>
+										)}
 									</div>
 								)}
 								{!product.is_requested_for_takeout && (

@@ -27,6 +27,7 @@ export interface IProductFormState {
     document_request_info:any,
     takeout_return_date :  IFormStateField<Date>;
     is_requested_for_takeout :   IFormStateField<boolean>;
+    document_type_details: IFormStateField<object>;
     
     
      

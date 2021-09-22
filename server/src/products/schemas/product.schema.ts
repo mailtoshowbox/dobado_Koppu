@@ -38,8 +38,13 @@ export class TakeoutInfo extends Document {
   @Prop()
   approved_on: Date;
 
+} 
+  export class Info extends Document {
+  @Prop()
+  id: string;
+  @Prop()
+  name: string;
 }
- 
 
 export class TakeoutRequestStatus extends Document { 
   @Prop()
@@ -126,6 +131,11 @@ export class Documents extends Document {
   
   @Prop()
   takeout_return_date:  Date
+
+  @Prop()
+  document_type_details: Info;
+
+  
 }
 
 

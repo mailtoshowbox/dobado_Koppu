@@ -17,6 +17,7 @@ export interface Document {
   is_requested_for_takeout_submit:boolean;
   is_requested_for_takeout_return:boolean;
   is_requested_for_takeout_return_approve:boolean;
+  document_type_details :Info;
 
 }
 

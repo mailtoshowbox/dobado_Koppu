@@ -15,6 +15,7 @@ import DocSubmit from "../DocSubmit/DocSubmit";
 import DocDepartment from "../DocDepartment/DocDepartment";
 import DocTypes from "../DocType/DocType";
 import DocLogSheet from "../DocLogSheet/DocLogSheet";
+import DocAuditLog from "../DocAuditLog/DocAuditLog";
 import Notifications from "../../common/components/Notification";
 import { useSelector } from "react-redux";
 import { IStateType } from "../../store/models/root.interface";
@@ -75,7 +76,9 @@ const Admin: React.FC = () => {
               <Route path={`/documentlogsheet`}>
                 <DocLogSheet />
               </Route>
-              
+              <Route path={`/documentauditlog`}>
+                <DocAuditLog />
+              </Route>
 
               <Route path="/">
                 <Home />

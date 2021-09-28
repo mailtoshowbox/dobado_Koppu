@@ -492,7 +492,7 @@ const ProductForm: React.FC = () => {
 					dispatch(
 						addNotification(
 							"Box ",
-							`Docuemnt ${formState.name.value} edited by you`
+							`Document ${formState.name.value} edited by you`
 						)
 					);
 					dispatch(clearSelectedProduct());

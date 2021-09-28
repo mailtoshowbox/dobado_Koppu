@@ -117,13 +117,19 @@ const LeftMenu: React.FC = () => {
             <li className="nav-item">
               <Link className="nav-link" to={`/documentsubmit`}>
                 <i className="fas fa-sitemap"></i>
-                <span>Doc Submit.</span>
+                <span>Doc Submit</span>
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to={`/documentlogsheet`}>
                 <i className="fas fa-sitemap"></i>
-                <span>Doc LogSheet.</span>
+                <span>Doc LogSheet</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={`/documentauditlog`}>
+                <i className="fas fa-sitemap"></i>
+                <span>Audit Log</span>
               </Link>
             </li>
           </>

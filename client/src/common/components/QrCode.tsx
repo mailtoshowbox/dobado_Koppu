@@ -10,7 +10,7 @@ function NumberInput(props: QrCodeProps): JSX.Element {
   const [, setValue] = useState(0);
   const { value = "", modified = true } = props;
   const qrData = modified
-    ? "Yeah, There is new changes in the Docuemnt path, Pleae Save the Doc to Get the New QR Code."
+    ? "Yeah, There is new changes in the Document path, Pleae Save the Doc to Get the New QR Code."
     : value;
 
   function onValueChanged(event: ChangeEvent<HTMLInputElement>): void {}

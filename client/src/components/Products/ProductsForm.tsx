@@ -389,8 +389,8 @@ const ProductForm: React.FC = () => {
 					); 
 					dispatch(
 						addNotification(
-							"New Docuemnt added",
-							`Docuemnt ${formState.name.value} added by you`
+							"New Document added",
+							`Document ${formState.name.value} added by you`
 						)
 					);
 					dispatch(clearSelectedProduct());
@@ -506,7 +506,7 @@ const ProductForm: React.FC = () => {
 					dispatch(
 						addNotification(
 							"Box ",
-							`Docuemnt ${formState.name.value} edited by you`
+							`Document ${formState.name.value} edited by you`
 						)
 					);
 					dispatch(clearSelectedProduct());

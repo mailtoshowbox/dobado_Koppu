@@ -130,7 +130,7 @@ function document_submitted_on_nr_format(cell: any, row: any, inpu : any) {
 
 
   return (
-    <div className="portlet logsheet">
+    <div className="portlet">
       <BootstrapTable  tableContainerClass='my-table-container-hide' data={docLogSheetList} keyField='id' options={options} exportCSV>
 {
     props.selectedFieldsToDownload.filter((item:any) => item.FIELD_VALUE).map( (column :any) => {

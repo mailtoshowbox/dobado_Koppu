@@ -177,6 +177,7 @@ const ProductForm: React.FC = () => {
 			value: {
 				time: product.retension_time.time,
 				defaultYear: product.retension_time.defaultYear,
+				retension_exact_date : new Date(),
 				calculateNonPerceptualTime:
 					product.retension_time.calculateNonPerceptualTime,
 			},
@@ -212,14 +213,17 @@ const ProductForm: React.FC = () => {
 	function add_years(n: number) {
 		let dt = new Date();
 		const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
-		return (
-			("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear()
-		);
+		console.log("calcDat----", calcDat);
+
+		return {exactDate : calcDat, rentention :("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear() }
+		 
 	}
 
 	function hasRetensionChanged(model: OnChangeModel) {
 		const { value = 0 } = model;
 		let timeSeed = parseInt(value.toString());
+
+		const {exactDate = '' , rentention=''} = add_years(timeSeed);
 
 		setFormState({
 			...formState,
@@ -228,7 +232,8 @@ const ProductForm: React.FC = () => {
 				value: {
 					time: timeSeed,
 					defaultYear: 3,
-					calculateNonPerceptualTime: add_years(timeSeed).toString(),
+					retension_exact_date: new Date(exactDate),
+					calculateNonPerceptualTime: rentention.toString(),
 				},
 			},
 		});
@@ -272,6 +277,7 @@ const ProductForm: React.FC = () => {
 							value: {
 								time: 0,
 								defaultYear: 3,
+								retension_exact_date : new Date(),
 								calculateNonPerceptualTime: "",
 							},
 						},
@@ -339,6 +345,9 @@ const ProductForm: React.FC = () => {
 			};
 
 			if (mode === "ADD") {
+
+				console.log("boxRacks--", boxRacks,formState.rack.value );
+
 				let boxInfo = {
 					name: formState.name.value,
 					description: formState.description.value,
@@ -360,10 +369,63 @@ const ProductForm: React.FC = () => {
 					},
 					retension_time: formState.retension_time.value,
 					document_type_details: {},
+					document_box_details: {},
+					document_category_details: {},
+					document_rack_details: {},
 				};
 
+				
+				if (					 
+					loggedInUserRole === "Qualityuser" 
+				) {
+					const document_info = {
+						...boxInfo.document_info,
+						status: "approved",
+						approvedBy: currentUser,
+						approvedOn: new Date()
+					};
+					boxInfo = { ...boxInfo, ...{ document_info: document_info } };
+				}
+
+				if (formState.box.value) {
+					 
+					let selectedboxOfDoc =
+					listOfBoxws.filter((dcT: any) => dcT.id === formState.box.value) || [];
+
+					if (selectedboxOfDoc.length > 0) { 
+						boxInfo.document_box_details = selectedboxOfDoc[0] ? selectedboxOfDoc[0] : {};
+					}
+				}
+				if (formState.category.value) {
+					 
+					let selectedCatOfDoc =
+					listOfCate.filter((dcT: any) => dcT.id === formState.category.value) || [];
+
+					if (selectedCatOfDoc.length > 0) { 
+						boxInfo.document_category_details = selectedCatOfDoc[0] ? selectedCatOfDoc[0] : {};
+					}
+				}
+				if (formState.rack.value) {
+
+					let listOfBoxws: { id: string; name: string }[] = [];
+						boxRacks.forEach((doc:any) => {
+							let me = { id: doc._id, name: doc.name };
+							listOfBoxws.push(me);
+						});
+				 
+					let selectedRackOfDoc =
+					listOfBoxws.filter((dcT: any) => dcT.id === formState.rack.value) || [];
+
+					if (selectedRackOfDoc.length > 0) { 
+						boxInfo.document_rack_details = selectedRackOfDoc[0] ? selectedRackOfDoc[0] : {};
+					}
+				}
+
+
+
+
 				if (formState.document_type.value && !touchedFields.document_type) {
-					console.log(1,listOfType );
+					
 					let selectedTypeOfDoc =
 						listOfType.filter((dcT: any) => dcT.id === formState.document_type.value) || [];
 
@@ -371,7 +433,6 @@ const ProductForm: React.FC = () => {
 						boxInfo.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
 				}else{
-					console.log(2, listOfType);
 					let selectedTypeOfDoc =
 					listOfType.filter((dcT: any) => dcT.id === formState.document_type.value) || [];
 
@@ -379,6 +440,8 @@ const ProductForm: React.FC = () => {
 						boxInfo.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
 				}
+
+				console.log("boxInfo--", boxInfo); 
  
 
 				addNewDoc(boxInfo, account).then((status) => {
@@ -438,6 +501,7 @@ const ProductForm: React.FC = () => {
 						...updatedDoc_Info,
 						status: "approved",
 						approvedBy: currentUser,
+						approvedOn: new Date()
 					};
 				}
 				boxInfoUpt = { ...boxInfoUpt, ...{ document_info: updatedDoc_Info } };

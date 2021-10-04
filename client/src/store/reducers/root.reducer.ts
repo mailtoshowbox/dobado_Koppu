@@ -17,6 +17,8 @@ import requestIssuanceReducer from "./docissuance.reducer";
 import docLogSheetReducer from "./doclogsheet.reducer";
 import requestIssuanceTakeoutReducer from "./docissuancetakeout.reducer";
 
+import docDestructReducer from "./docdestruct.reducer";
+
 
 const initialState: IRootStateType = {
     page: {area: "home", subArea: ""}
@@ -51,6 +53,7 @@ const rootReducers: Reducer<IStateType> = combineReducers({
     docIssuances : requestIssuanceReducer,
     docLogSheetData : docLogSheetReducer,
     docIssuancesTakeout : requestIssuanceTakeoutReducer,
+    docDestructData : docDestructReducer
 });
 
 

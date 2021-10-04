@@ -7,6 +7,7 @@ export interface Document {
   category :  string; 
   box_info: [ Info ],
   rack_info: [ Info ],
+  document_info : any,
   category_info: [Info],
   document_type : string; 
   docType_info: [Info],
@@ -18,6 +19,9 @@ export interface Document {
   is_requested_for_takeout_return:boolean;
   is_requested_for_takeout_return_approve:boolean;
   document_type_details :Info;
+  document_category_details :Info;
+  document_rack_details :Info;
+  document_box_details :Info;
 
 }
 

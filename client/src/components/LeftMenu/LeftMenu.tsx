@@ -126,7 +126,12 @@ const LeftMenu: React.FC = () => {
                 <span>Doc LogSheet</span>
               </Link>
             </li>
-           
+            <li className="nav-item">
+              <Link className="nav-link" to={`/documentdestruct`}>
+                <i className="fas fa-sitemap"></i>
+                <span>Doc Destruct</span>
+              </Link>
+            </li>
           </>
         )}
 

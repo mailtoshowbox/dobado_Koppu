@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { IStateType } from "../../store/models/root.interface";
 import { IAccount } from "../../store/models/account.interface";
 import DocIssuanceTakeout from "../DocIssuanceTakeout/DocIssuanceTakeout";
-
+import DocDestruct from "../DocToDestruct/DocToDestruct";
 const Admin: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
   const { roles } = account;
@@ -75,7 +75,10 @@ const Admin: React.FC = () => {
               <Route path={`/documentlogsheet`}>
                 <DocLogSheet />
               </Route>
-             
+              <Route path={`/documentdestruct`}>
+                <DocDestruct />
+              </Route>
+              
 
               <Route path="/">
                 <Home />

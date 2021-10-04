@@ -129,9 +129,29 @@ export class DocumentsController {
   }
 
   @Post(":mode")
-  logSheets(@Body() params): Promise<Document[]> {
-    console.log("SSS-");
-    let res = this.productsService.getLogSheet(params).then((succ = []) => {
+  logSheets(@Param('mode') mode: string, @Body() params): Promise<Document[]> {
+    console.log("mode---", mode);
+    if(mode === 'destructiveDocList'){
+      let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
+        let onfo = succ.map((doc: any) => {
+  
+          
+  
+          doc.batch = doc.category + '/' + doc.box + '/' + doc.rack
+          delete doc.box_info;
+          delete doc.rack_info;
+          delete doc.category_info;
+          delete doc.docType_info;
+  
+          return doc;
+        })
+        return onfo;
+      });
+      return res;
+    }else if(mode === "destructDoc"){
+      console.log("destructDoc-",params );
+    this.productsService.destructDoc(params);
+    let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
       let onfo = succ.map((doc: any) => {
 
         const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
@@ -161,8 +181,82 @@ export class DocumentsController {
     });
     return res;
 
+    }
+    else{
+      let res = this.productsService.getLogSheet(params).then((succ = []) => {
+        let onfo = succ.map((doc: any) => {
+  
+          const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
+          if (box_info.length > 0) {
+            doc.box = box_info[0].name;
+          }
+          if (box_info.length > 0) {
+            doc.rack = rack_info[0].name;
+          }
+          if (box_info.length > 0) {
+            doc.category = category_info[0].name;
+          }
+          if (docType_info.length > 0) {
+            doc.document_type = docType_info[0].name;
+          }
+  
+  
+          doc.batch = doc.category + '/' + doc.box + '/' + doc.rack
+          delete doc.box_info;
+          delete doc.rack_info;
+          delete doc.category_info;
+          delete doc.docType_info;
+  
+          return doc;
+        })
+        return onfo;
+      });
+      return res;
+    }
+   
 
   }
+  
+  @Post()
+  destructiveDocList(@Body() params): Promise<Document[]> {
+    console.log("SSS-");
+    let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
+      let onfo = succ.map((doc: any) => {
+
+        const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
+        if (box_info.length > 0) {
+          doc.box = box_info[0].name;
+        }
+        if (box_info.length > 0) {
+          doc.rack = rack_info[0].name;
+        }
+        if (box_info.length > 0) {
+          doc.category = category_info[0].name;
+        }
+        if (docType_info.length > 0) {
+          doc.document_type = docType_info[0].name;
+        }
+
+
+        doc.batch = doc.category + '/' + doc.box + '/' + doc.rack
+        delete doc.box_info;
+        delete doc.rack_info;
+        delete doc.category_info;
+        delete doc.docType_info;
+
+        return doc;
+      })
+      return onfo;
+    });
+    return res;
+  }
+
+  @Post()
+  destructDoc(@Body() params) :any {
+    console.log("destructDoc-",params );
+    return this.productsService.destructDoc(params);
+  }
+  
   /* 
     @Post(':getQRCode')
     getQRCode(@Body() generateQrCode)  {

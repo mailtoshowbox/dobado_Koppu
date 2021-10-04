@@ -50,6 +50,15 @@ export interface IDocCategoryFormState {
     name: IFormStateField<string>;
     description: IFormStateField<string>;
 }
+
+ 
+
+export interface IDocDesctFormState {
+    _id: IFormStateField<string>;
+    name: IFormStateField<string>;
+    description: IFormStateField<string>;
+    status: IFormStateField<string>;
+}
 export interface IDocTypeFormState {
     _id: IFormStateField<string>;
     name: IFormStateField<string>;

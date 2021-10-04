@@ -7,6 +7,7 @@ import { IDocRequest, DocRequestModificationStatus } from "./docrequest.interfac
 import { IDocDepartment, DocDepartmentModificationStatus } from "./docdepartment.interface";
 import { IDocApproval, DocApprovalModificationStatus } from "./docapproval.interface";
 import { IDocIssuanceTakeout, DocIssuanceTakeoutModificationStatus } from "./docIssuancetakeout.interface";
+import { IProductDestruct, ProductDestructModificationStatus } from "./productDesctruct.interface";
 
 import { INotification } from "./notification.interface";
 import { IUser } from "./user.interface";
@@ -39,6 +40,7 @@ export interface IStateType {
     docIssuances: IDocIssuanceState;
     home: any;
     docLogSheetData: IDocLogSheetState;
+    docDestructData: IDocDestructState;
     docIssuancesTakeout: IDocIssuanceTakeoutState;
 }
 export interface IDocIssuanceTakeoutState {
@@ -65,7 +67,11 @@ export interface IDocLogSheetState {
     docLogSheetList: IProduct[];
  }
 
-
+ export interface IDocDestructState {
+    docDestructList: IProductDestruct[];
+    selectedDocForDestruct: IProductDestruct | null;
+    modificationState: ProductDestructModificationStatus;
+ }
 export interface IActionBase {
     type: string;
     [prop: string]: any;

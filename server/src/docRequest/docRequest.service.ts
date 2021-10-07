@@ -200,8 +200,6 @@ export class DocRequestService {
 								...documenttoEdit._doc,
 								...requestDetails,
 							};
-
-							console.log("DOCCXKBDE----", documenttoEdit);
 							return this.documentModal
 								.findByIdAndUpdate(
 									doc._id,
@@ -264,41 +262,6 @@ export class DocRequestService {
 			mode_of_access: "initial",
 			request_no: docApprovalHistory.request_no,
 		});
-
-		/* console.log("initialData----", initialData);
-		if(Object.keys(initialData).length > 0){
-		   this.docApprovalHistModel.findOne({ mode_of_access: 'recent', request_no : docApprovalHistory.request_no }).then((recentData)=>{
-			console.log("recentData----", recentData);
-			if(Object.keys(recentData).length > 0){
-				this.docApprovalHistModel.findByIdAndUpdate(recentData._id, docApprovalHistory);
-			}else{
-			  docApprovalHistory.mode_of_access ="recent";
-			  const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
-			  return  newDocRequest.save(); 
-			}
-		  });
-
-		} */
-
-		// if(Object.keys(data).length > 0){
-		/*    console.log("dasdasdasdasd");
-		   this.docApprovalHistModel.findOne({ mode_of_access: 'recent', request_no : docApprovalHistory.request_no }).then((recentData)=>{
-			console.log("recentData----", recentData);
-			if(Object.keys(recentData).length > 0){
-				this.docApprovalHistModel.findByIdAndUpdate(recentData._id, docApprovalHistory);
-			}else{
-			  docApprovalHistory.mode_of_access ="recent";
-			  const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
-			  return  newDocRequest.save(); 
-			}
-		  });  */
-
-		//   }else{
-		/*  console.log("dasdasdasdasd");
-		  const newDocRequest = new this.docApprovalHistModel(docApprovalHistory);
-		  return  newDocRequest.save();  */
-		//   }        return {};
-		// });
 	}
 	async delete(id: string): Promise<DocRequest> {
 		return await this.DocRequestModel.findByIdAndRemove(id);
@@ -318,7 +281,7 @@ export class DocRequestService {
 		} = DocRequest;
 
 		if (doc_type === "6") {
-
+			console.log("^^^^^^");
 			requested_doc.forEach((doc: any) => {
 				if (doc._id !== "") {
 					this.documentModal
@@ -393,23 +356,24 @@ export class DocRequestService {
 				}
 			});
 		} else {
+			console.log("PAGE---", page);
 			if (page === "issueGenaralIssuance") {
 				const {
 					requested_doc = [],
 					doc_type = "0",
 					issuance: { doc_issued_by = [] },
 					doc_requested_department = {},
-				} = DocRequest;
-				// let selectedDocument:any = [];
+				} = DocRequest; 
 				requested_doc.map((doc: any) => {
 					if (doc.is_doc_approved && !doc.is_doc_issued) {
 						const doc_issuer = doc_issued_by.find(
 							(element) => element.document_id === doc.document_no
 						);
 
+
 						doc.is_doc_issued = true;
 						const documentList = doc.doc_issuance ? doc.doc_issuance : [];
-
+						const { document_no = "" } = doc;
 						if (documentList.length > 0) {
 							documentList.forEach((doc) => {
 								const newDcoument = {
@@ -430,6 +394,7 @@ export class DocRequestService {
 									is_Active: true,
 									retension_time: "",
 									document_request_info: {
+										document_issued_from: document_no,
 										document_request_no: DocRequest.request_no,
 										document_issued_on: new Date(),
 										document_issued_by: doc_issuer.document_issued_by,
@@ -445,9 +410,47 @@ export class DocRequestService {
 								newProduct.isRequestedDocument = true;
 
 								newProduct.save().then((res) => {
-									console.log("+++++++++INsert DONE=me",);
-								});
+ 								});
 							});
+						}else{ //request Single document
+						
+								const newDcoument = {
+									name: doc.document_name,
+									description: doc.document_name,
+									no_of_copy: doc.no_of_copy,
+									no_of_page: doc.no_of_page,
+									document_no: doc.document_no,
+									qr_code: doc.document_no,
+									box: "",
+									rack: "",
+									category: "",
+									box_info: [],
+									rack_info: [],
+									category_info: [],
+									document_type: "",
+									docType_info: "",
+									is_Active: true,
+									retension_time: "",
+									document_request_info: {
+										document_issued_from: document_no,
+										document_request_no: DocRequest.request_no,
+										document_issued_on: new Date(),
+										document_issued_by: doc_issuer.document_issued_by,
+										document_requested_by: DocRequest.empl_id,
+										document_issued_to: DocRequest.empl_id,
+										document_request_department:
+											DocRequest.doc_requested_department,
+										document_request_doc_type: DocRequest.doc_requested_doctype,
+									},
+								};
+								const newProduct = new this.documentModal(newDcoument);
+								newProduct.isActive = false;
+								newProduct.isRequestedDocument = true;
+
+								newProduct.save().then((res) => {
+									//console.log("+++++++++INsert Single DOc",);
+								});
+							
 						}
 					}
 					return doc;
@@ -469,25 +472,18 @@ export class DocRequestService {
 		if (page === "issueGenaralIssuance") {
 			const {
 				requested_doc = [],
-				issuance: { doc_issued_by = [] },
+				issuance: { doc_issued_by = [] } = {},
 				doc_requested_department = {},
 			} = DocRequest;
 
 			// let selectedDocument:any = [];
 			requested_doc.map((doc: any) => {
 				if (doc.is_doc_approved && !doc.is_doc_issued) {
-					console.log(
-						"doc.doc_requested_department---",
-						doc_requested_department
-					);
-
 					const doc_issuer = doc_issued_by.find(
 						(element) => element.document_id === doc.document_no
 					);
-
 					doc.is_doc_issued = true;
 					const documentList = doc.doc_issuance ? doc.doc_issuance : [];
-
 					if (documentList.length > 0) {
 						documentList.forEach((doc) => {
 							const newDcoument = {
@@ -523,11 +519,10 @@ export class DocRequestService {
 							const newProduct = new this.documentModal(newDcoument);
 							newProduct.isActive = false;
 							newProduct.isRequestedDocument = true;
-							console.log("newDcoument---", newProduct);
 							newProduct
 								.save()
 								.then((res) => {
-									console.log("+++++++++INsert DONE=", res);
+									//console.log("+++++++++INsert DONE=", res);
 								})
 								.catch((ex) => {
 									console.log(ex);
@@ -537,115 +532,7 @@ export class DocRequestService {
 				}
 				return doc;
 			});
-			/*  let documentList = [];
-	  if(selectedDocument.length === 1){
-		 documentList  = selectedDocument[0].doc_issuance ? selectedDocument[0].doc_issuance : [];
-	  }else if(selectedDocument.length > 1) {
-		 documentList  = selectedDocument.doc_issuance ? selectedDocument.doc_issuance : [];
-	  }
-    
 
-	 console.log("documentList---", documentList);
-	  if(documentList.length > 0){
-		documentList.forEach((doc)=>{
-		  const newDcoument = {  
-			name: doc.document_name,
-			description: doc.document_name,
-			no_of_copy : doc.no_of_copy,
-			no_of_page : doc.no_of_page,
-			document_no : doc.document_no,
-			qr_code : doc.document_no,
-			box: '',
-			rack:  '',
-			category :  "",
-			box_info: [],
-			rack_info: [],
-			category_info: [],
-			document_type : "",
-			docType_info: "",
-			is_Active: true,
-			retension_time : "" }; 
-		  const newProduct = new this.documentModal(newDcoument); 
-		  newProduct.isActive = false;
-		  newProduct.isRequestedDocument = true;
-		  console.log("Insert");
-		  newProduct.save().then((res)=>{
-			console.log("+++++++++INsert DONE=");
-		  });
-		}) 
-	  }else{
-		 console.log("ALPHA");
-	  } */
-
-			/*  if(issuanceList.length === requested_doc.length){
-		  issuanceList.forEach((doc)=>{
-
-			const newDcoument = {  
-			  name: doc.document_name,
-			  description: doc.document_name,
-			  no_of_copy : doc.no_of_copy,
-			  no_of_page : doc.no_of_page,
-			  document_no : doc.document_no,
-			  box: '',
-			  rack:  '',
-			  category :  "",
-			  box_info: [],
-			  rack_info: [],
-			  category_info: [],
-			  document_type : "",
-			  docType_info: "",
-			  retension_time : "" };
-			  console.log("Partially newDcoument>>>", newDcoument);
-			const newProduct = new this.documentModal(newDcoument); 
-			newProduct.isActive = false;
-			newProduct.isRequestedDocument = true;
-		    
-			newProduct.save().then((res)=>{
-			  console.log("THENEN=", res);
-			});
-  
-		  })
-	  }else{
-
-		console.log("issuanceList[0]-----", issuanceList[0]);
-
-	  const  {doc_issuance = [], document_no=''} =issuanceList[0] ? issuanceList[0] :[];
-	  if(document_no !== ""){
-		requested_doc.map((doc : any)=>{   
-		  if(doc.document_no === document_no){
-			doc.is_doc_issued = true;
-		  }          
-		  return doc 
-		});  
-		doc_issuance.forEach((doc)=>{
-		  console.log("Partially doc-------", doc.document_no);
-		  const newDcoument = {  
-			name: doc.document_name,
-			description: doc.document_name,
-			no_of_copy : doc.no_of_copy,
-			no_of_page : doc.no_of_page,
-			document_no : doc.document_no,
-			qr_code : doc.document_no,
-			box: '',
-			rack:  '',
-			category :  "",
-			box_info: [],
-			rack_info: [],
-			category_info: [],
-			document_type : "",
-			docType_info: "",
-			is_Active: true,
-			retension_time : "" }; 
-		  const newProduct = new this.documentModal(newDcoument); 
-		  newProduct.isActive = false;
-		  newProduct.isRequestedDocument = true;
-		  newProduct.save().then((res)=>{
-		  //  console.log("THENEN=", res);
-		  });
-
-		})
-	  }
-	  } */
 		}
 		return await this.DocRequestModel.findByIdAndUpdate(id, DocRequest, {
 			new: true,

@@ -130,7 +130,6 @@ export class DocumentsController {
 
   @Post(":mode")
   logSheets(@Param('mode') mode: string, @Body() params): Promise<Document[]> {
-    console.log("mode--->>", mode);
     if(mode === 'destructiveDocList'){
       let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
         let onfo = succ.map((doc: any) => { 
@@ -148,7 +147,7 @@ export class DocumentsController {
       });
       return res;
     }else if(mode === "destructDoc"){
-      console.log("destructDoc-",params );
+    //  console.log("destructDoc-",params );
     this.productsService.destructDoc(params);
     let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
       let onfo = succ.map((doc: any) => {
@@ -194,12 +193,9 @@ export class DocumentsController {
       });
       return res;
     }
-    else{
-
-      console.log("LOG SHEETS");
+    else{ 
       let res = this.productsService.getLogSheet(params).then((succ = []) => {
-
-        console.log("succ---", succ);
+ 
         let onfo = succ.map((doc: any) => {
   
           const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
@@ -235,7 +231,7 @@ export class DocumentsController {
   
   @Post()
   destructiveDocList(@Body() params): Promise<Document[]> {
-    console.log("SSS-");
+   // console.log("SSS-");
     let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
       let onfo = succ.map((doc: any) => {
 
@@ -269,7 +265,7 @@ export class DocumentsController {
 
   @Post()
   destructDoc(@Body() params) :any {
-    console.log("destructDoc-",params );
+   // console.log("destructDoc-",params );
     return this.productsService.destructDoc(params);
   }
   
@@ -283,8 +279,8 @@ export class DocumentsController {
 
   @Post('qrcode/:getRandomCode')
   getRandomCode(@Body() generateQrCode) {
-    const {noOfId=1} =generateQrCode;
-		if(noOfId > 1){	
+    const {noOfId=0} =generateQrCode;
+		if(noOfId > 0){	
       const promises = Array.from(Array(noOfId).keys()).map(item => {
         return this.productsService.getRandomCode(generateQrCode)
           .then(response=> {

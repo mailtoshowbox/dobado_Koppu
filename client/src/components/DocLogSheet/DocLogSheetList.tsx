@@ -24,13 +24,6 @@ function DocCategoryList(props: productListProps): JSX.Element {
     (state: IStateType) => state.docLogSheetData
   ); 
    const {docLogSheetList = []} = logSheet;
-
- //  const {selectedFieldsToDownload = []} = props;
-
- console.log("docLogSheetList---", docLogSheetList);
-
-   
-  //...
   const options = {
     exportCSVBtn: createCustomExportCSVButton,
     deleteBtn: createCustomExportCSVButton1
@@ -89,6 +82,7 @@ function document_submitted_on_format(cell: any, row: any) {
   return row.document_request_info && row.document_request_info['document_submitted_on'] ? row.document_request_info['document_submitted_on'] : "" ;    
 }
 function document_submitted_by_format(cell: any, row: any) {  
+  console.log("LOG----", row);
 
   return row.document_request_info && row.document_request_info['document_submitted_by'] ? row.document_request_info['document_submitted_by'] : "" ;    
    
@@ -146,10 +140,8 @@ let constructedList:any = [];
 newauditLogList.map((log:any)=>{
 
   const {document_info:{updatedBy=[], createdOn=""}={}} = log;
-  //const doc_CretedDate = convertDate(createdOn); 
- 
+  //const doc_CretedDate = convertDate(createdOn);  
     let ar:any = {};
-
     const {document_request_info:{department="", 
     document_issued_on="",
     document_issued_by="",
@@ -163,10 +155,10 @@ newauditLogList.map((log:any)=>{
       if(fieldName ==='document_request_info.document_request_no'){
         const {document_request_info:{document_request_no=""}={}} = log;
         ar[fieldName] = document_request_no;
-      }else if(fieldName ==='document_request_info.department'){				
-       
+      }else if(fieldName ==='document_request_info.department'){		
         ar[fieldName] = department;
-      }else if(fieldName ==='document_request_info.document_issued_on'){					 
+      }else if(fieldName ==='document_request_info.document_issued_on'){	
+     	 
         ar[fieldName] = convertDate(document_issued_on);
       }else if(fieldName ==='document_request_info.document_issued_to'){					 
         ar[fieldName] = document_issued_to;
@@ -177,7 +169,7 @@ newauditLogList.map((log:any)=>{
       }else if(fieldName ==='document_request_info.document_submitted_by'){					 
         ar[fieldName] = document_submitted_by;
       }else{					
-          ar[fieldName] = log[fieldName];										
+        ar[fieldName] = log[fieldName];										
       }
     })
     constructedList.push(ar); 
@@ -269,7 +261,11 @@ function handleExportCSVButtonClick(onClick:any)  {
         );
       }else if( column.FIELD_NAME === 'document_request_info.document_issued_on'){
         return (
-        <TableHeaderColumn hidden={true} csvHeader={column.FIELD_LABEL} csvFormat={document_issued_on_format} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+        <TableHeaderColumn hidden={true} 
+         csvHeader={column.FIELD_LABEL}
+         csvFormat={document_issued_on_format} 
+         dataFormat={document_issued_on_format} 
+         dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
         );
       }else if( column.FIELD_NAME === 'document_request_info.document_issued_by'){
         return (

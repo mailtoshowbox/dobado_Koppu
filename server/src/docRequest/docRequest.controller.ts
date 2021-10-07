@@ -112,38 +112,6 @@ export class DocRequestsController {
     @Body() issueGenaralIssuanceDto: CreateDocRequestDto,
   ): Promise<DocRequest> { 
 
-
-
-    if(id){
-
-      
-
-      /* 
-      let createDocRequestsDto : CreateDocApprovalHistoryDto = { 
-       history: JSON.stringify(updateDocRequestsDto),
-       updated_by: updateDocRequestsDto.empl_id,
-       updated_on: new Date(),
-       mode_of_access: "history",
-       request_no: updateDocRequestsDto.request_no,
-       page_from: "approve"
-      }
-      this.DocRequestsService.checkInitialHistory(createDocRequestsDto).then((rest)=>{       
-        if(!rest){ 
-          this.DocRequestsService.createInitialHistory(createDocRequestsDto)
-        } else{
-          this.DocRequestsService.checkRecentHistory(createDocRequestsDto).then((rec)=>{
-            console.log("-----rec----",  createDocRequestsDto);           
-          
-              this.DocRequestsService.createDocRequestApprovalHistory(createDocRequestsDto).then((res)=>{
-                console.log("createDocRequestApprovalHistory- res--", res);
-              })
-             });
-        }        
-      }); */ 
-    } 
-
-   // console.log("issueGenaralIssuanceDto----", issueGenaralIssuanceDto);
-   // return issueGenaralIssuanceDto;
     return this.DocRequestsService.update(id, issueGenaralIssuanceDto, 'test','Uy');
   }
 }

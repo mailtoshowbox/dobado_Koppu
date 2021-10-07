@@ -110,28 +110,19 @@ const Products: React.FC = () => {
   let date3 = new Date(endDate).toDateString();
   date3 = moment(date3).format('YYYY-MM-DD'); 
   setDataLogSheetLoaded(false)
-  getLogSheet(account, {startDate : date2, endDate:date3}).then((items: IProductList) => {
-
-    console.log("items-----", items);
+  getLogSheet(account, {startDate : date2, endDate:date3}).then((items: IProductList =[]) => {
     dispatch(loadDocumentLogSheet(items));
     if(items.length > 0){
       setDataLogSheetLoaded(true)
-    }
-    
+    }    
   });
-
  }
   return (
     <Fragment>
-      <h1 className="h5 mb-4 font-bold">Document Log Sheet</h1>
-      {/* <p className="mb-4 font-14">Document Category here</p> */}
-      
-
+      <h1 className="h5 mb-4 font-bold">Document Log Sheet</h1>     
       <div className="row">
-      <div className="col-xl-12 col-lg-12">
-    
-      <div className="card shadow mb-4">
-     
+      <div className="col-xl-12 col-lg-12">    
+      <div className="card shadow mb-4">     
       <div className="card-body">
       <div className="card-title">
       <h1 className="h5 mb-4 font-bold">Load Log Sheet</h1>

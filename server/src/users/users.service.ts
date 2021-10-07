@@ -73,31 +73,28 @@ export class UsersService {
   }
 
   async updateProfile(profileDto: ProfileDto): Promise<User> {
-    console.log("REGEGE");
+ 
 
     let userFromDb = await this.userModel.findOne({ _id: profileDto._id});
 
-    console.log("userFromDb----", userFromDb);
+    
 
    
     
     
     if(!userFromDb) throw new HttpException('COMMON.USER_NOT_FOUND', HttpStatus.NOT_FOUND);
-    console.log(1);
+ 
 
 
     userFromDb.isAllowedForApproval = profileDto.isAllowedForApproval;
-    console.log(1);
+    
     userFromDb.emp_id = profileDto.emp_id;
-    console.log(12);
+     
     if(profileDto.roles) userFromDb.roles = [...profileDto.roles];
-    console.log(13,profileDto.departments);
+    
     if(profileDto.departments) userFromDb.departments =profileDto.departments;
-    console.log(14);
-
-    console.log("profileDto----", profileDto);
-    console.log("departments----", profileDto.departments);
-    console.log("userFromDb----", userFromDb);
+ 
+ 
 
      await userFromDb.save();
     return userFromDb;

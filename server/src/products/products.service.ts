@@ -160,7 +160,7 @@ export class DocumentsService {
 		const newProduct = new this.productModel(product);
 		if (product.document_info) {
 			if (product.document_info.createdOn) {
-				newProduct.document_info.createdOn = new Date(product.document_info.createdOn)
+				//	newProduct.document_info.createdOn = new Date(product.document_info.createdOn)
 			}
 			if (product.document_info.approvedOn) {
 				newProduct.document_info.approvedOn = new Date(product.document_info.approvedOn)
@@ -177,7 +177,7 @@ export class DocumentsService {
 
 	async update(id: string, product: Document) {
 		const {
-			is_requested_for_takeout = false,   
+			is_requested_for_takeout = false,
 			is_requested_for_takeout_submit = false,
 			is_requested_for_takeout_return = false,
 			is_requested_for_takeout_return_approve = false,
@@ -309,7 +309,7 @@ export class DocumentsService {
 								new: true,
 							})
 							.then((tre) => {
-								console.log("tre", tre);
+							//	console.log("tre", tre);
 							});
 					});
 			} else {
@@ -319,12 +319,11 @@ export class DocumentsService {
 			}
 		} else {
 			if (product.document_info.createdOn) {
-				product.document_info.createdOn = new Date(product.document_info.createdOn)
+				//	product.document_info.createdOn = new Date(product.document_info.createdOn)
 			}
-			if (product.document_info.approvedOn) {				
+			if (product.document_info.approvedOn) {
 				product.document_info.approvedOn = new Date(product.document_info.approvedOn)
 			}
-			console.log("Product", product)
 			return await this.productModel.findByIdAndUpdate(id, product, {
 				new: true,
 			});
@@ -336,8 +335,7 @@ export class DocumentsService {
 			let id = idList[idw];
 			this.productModel
 				.find({ isActive: true, _id: id })
-				.then((res: any) => {
-					console.log("AVAilable ");
+				.then((res: any) => { 
 					let documenttoEdit = res[0];
 					const {
 						takeout_requested_details: {
@@ -364,7 +362,7 @@ export class DocumentsService {
 						})
 						.then((tre) => {
 
-							console.log("UPDATED");
+						 
 						});
 				});
 		});
@@ -434,54 +432,62 @@ export class DocumentsService {
 		endDate = new Date(),
 	}): Promise<Document[]> {
 
-		console.log("startDate", startDate);
-		console.log("startDate", endDate);
+	 
 		let date1 = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0));
 		let date2 = new Date(new Date(endDate).setUTCHours(23, 59, 59, 999));
-
-		console.log("date1", date1);
-		console.log("date2", date2);
+ 
 
 
 		return await this.productModel.aggregate([
-			{ "$addFields": {
-			  "document_info.createdOn": {
-				"$dateFromString": {
-				  "dateString": "$document_info.createdOn"
-				}
-			  },
-			  "document_request_info.document_issued_on": {
-				"$dateFromString": {
-				  "dateString": "$document_request_info.document_issued_on"
-				}
-			  }
-			},
-		},
-			{ "$match": { "document_info.createdOn": { "$gte": date1, "$lt":date2}}} 
-		  ])
+			{
+				"$addFields": {
+					"document_info.createdOn": {
+						"$dateFromString": {
+							"dateString": "$document_info.createdOn"
+						}
+					},
 
-	/* 	return await this.productModel
-			.find({
-				$or: [
-					{
-						"document_request_info.document_issued_on": {
-							$gte: date1,
-							$lt: date2,
+				},
+			},
+			{
+				"$match": {
+					"$or":
+						[{ "document_info.createdOn": { "$gte": date1, "$lt": date2 } },
+						{
+							"document_request_info.document_issued_on": {
+								$gte: date1,
+								$lt: date2,
+							}
+						}
+						]
+				}
+			}
+
+			//{ "$match": {"document_info.createdOn": { "$gte": date1, "$lt":date2}}  } 
+		])
+
+		/* 	return await this.productModel
+				.find({
+					$or: [
+						{
+							"document_request_info.document_issued_on": {
+								$gte: date1,
+								$lt: date2,
+							},
 						},
-					},
-					{
-						"document_info.createdOn": {
-							$gte: date1,
-							$lte: date2,
+						{
+							"document_info.createdOn": {
+								$gte: date1,
+								$lte: date2,
+							},
+							isRequestedDocument: false,
+							"document_info.status": "approved",
 						},
-						isRequestedDocument: false,
-						"document_info.status": "approved",
-					},
-				],
-			})
-			.then((res: any) => {
-				return res;
-			}); */
+					],
+				})
+				.then((res: any) => {
+					return res;
+				}); */
 	}
 
 	async getDestructiveDocList({

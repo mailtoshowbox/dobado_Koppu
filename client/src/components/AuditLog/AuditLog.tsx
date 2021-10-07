@@ -79,8 +79,6 @@ const Products: React.FC = () => {
 					const {document_info:{updatedBy=[], createdOn=""}={}} = log;
 					const doc_CretedDate = convertDate(createdOn); 
 			
-					console.log("updatedBy", updatedBy);
-			
 					if(updatedBy.length > 0){
 						let ar:any = {};
 						APP_CONST.EXPORT_PDF_COLUMN_AUDIT_LOG.forEach((elt)=> {
@@ -144,13 +142,7 @@ const Products: React.FC = () => {
 							}
 						})
 						constructedList.push(ar);
-					}
-					console.log("constructedList----",constructedList );
-			
-					
-			
-					
-					
+					} 
 				}) 
 				if(constructedList.length > 0){
 					setLogLoaded(true);

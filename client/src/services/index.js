@@ -493,7 +493,6 @@ export function getAuditLog(options, params) {
 export function getDestructiveList(options, params) {
 	var myOptions = getDocCustomPostOptions(options, params);
 
-  console.log("getDestructiveList----", params);
 	return fetch(
 		APP_CONST.API_HOST_AT + "/products/destructiveDocList",
 		myOptions

@@ -157,12 +157,8 @@ function convertRetentionExactDate(cell: any, row: any) {
 
   }
 
-  function destructDoc( ){
-	  console.log("selectedRowsForDestruct---", account); 
+  function destructDoc( ){destructDocument( account, selectedRowsForDestruct).then((status) => {
 
-
-	  destructDocument( account, selectedRowsForDestruct).then((status) => {
-		  console.log("status----", status);
 		  
 		}); 
 	 
@@ -187,8 +183,6 @@ function convertRetentionExactDate(cell: any, row: any) {
 
 	
  function handleRowSelect( row:any, isSelected:any, e:any){
- 
-	  console.log("isSelected---", isSelected);
 	 
 
 	  const {_id=""} =row;
@@ -203,7 +197,6 @@ function convertRetentionExactDate(cell: any, row: any) {
 		}
 		setRowsForDestruct(selectedRows);	
 	  }
-	  console.log("--setRowsForDestruct--", selectedRowsForDestruct);
 	 
 
 	//setRowsForDestruct

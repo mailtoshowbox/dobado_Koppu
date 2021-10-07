@@ -32,7 +32,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
     const marginLeft = 40;
     const doc = new jsPDF(orientation, unit, size);
     doc.setFontSize(15);
-    const title = "Audit Log Report";
+    const title = APP_CONST.EXPORT_PDF_COLUMN_AUDIT_LOG_NAME;
     const headers = [APP_CONST.EXPORT_PDF_COLUMN_AUDIT_LOG.map(elt=>  elt.FIELD_LABEL)];
 	let newauditLogList = auditLogList;
 	let constructedList:any = [];
@@ -54,7 +54,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
     doc.text(title, marginLeft, 40);
 	autoTable(doc, content)
    // doc.autoTable(content);
-    doc.save("report.pdf")
+    doc.save(APP_CONST.EXPORT_PDF_COLUMN_AUDIT_LOG_FILE_NAME+".pdf")
   } 
   
 	function handleExportCSVButtonClick(onClick:any)  {

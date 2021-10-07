@@ -63,7 +63,6 @@ const Users: React.FC = () => {
     departments: [],
   });
   function closeDocUpdate(): void {
-    console.log("CALLED FOR CLOSE");
     updateModalForEditActiveUser(false);
   }
   useEffect(() => {
@@ -87,16 +86,7 @@ const Users: React.FC = () => {
   });
 
   function updateUser(userMode: string): void {
-
-console.log("listOfDeptlistOfDept---", listOfDept);
-console.log("inActiveUserEdit---", inActiveUserEdit);
- 
- 
-
-//inActiveUserEdit.departments.push(selected_department_details[0]); 
-//inActiveUserEdit.departments = selected_department_details.length > 0 ? selected_department_details : [selected_department];
-
-    updateUserProfile(inActiveUserEdit, account).then((status) => {
+ updateUserProfile(inActiveUserEdit, account).then((status) => {
       getUserList(account.auth).then((items: IUserList) => {
         dispatch(loadListOfuser(items));
         updateModalForEditActiveUser(!openModalForEditActiveUser);
@@ -162,8 +152,6 @@ console.log("inActiveUserEdit---", inActiveUserEdit);
 
   function selectField(userMode: string, model: OnChangeModel): void {
     let userUpdate = inActiveUserEdit;
-
-    console.log("userMode---", userMode, model.value, model.field);
 
     if (userMode === "inActiveUserEdit") {
       if(model.field === 'departments'){

@@ -42,7 +42,7 @@ const Products: React.FC = () => {
 	);
 	const [startDate, setStartDateInfo] = useState(new Date());
 	const [endDate, setEndDateInfo] = useState(new Date());
-	console.log("docDestructData----", docDestructData);
+
 	const path: IRootPageStateType = useSelector(
 		(state: IStateType) => state.root.page
 	);
@@ -61,7 +61,6 @@ const Products: React.FC = () => {
 		setStartDateInfo(date);
 	}
 	function setEnbDate(date: any) {
-		console.log("END ", moment(date).format('YYYY-MM-DD'));
 		const m = moment(date).format('YYYY-MM-DD'); // moment(date).startOf("day").toDate(); // moment(date).format('YYYY-MM-DD');
 		setEndDateInfo(date);
 	}
@@ -77,7 +76,6 @@ const Products: React.FC = () => {
 	}
 
 	function onProductSelect(product: any): void {
-		console.log("product---", product);
 		dispatch(changeSelectedDocForDestruct(product));
 		dispatch(setModificationState(ProductDestructModificationStatus.None));
 		dispatch(setModificationState(ProductDestructModificationStatus.Edit));

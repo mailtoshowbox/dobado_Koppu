@@ -12,7 +12,6 @@ const initialState: IDocDestructState = {
 function docCategoriesReducer(state: IDocDestructState = initialState, action: IActionBase): IDocDestructState {
     switch (action.type) {         
         case LOAD_DOCUMENT_DESTRUCT_LIST: { 
-            console.log("REDU", action);
             return { ...state, docDestructList:  action.docDestructList};
         } 
         case SET_DOCUMENT_DESTRUCT_MODIFICATION_STATE: {

@@ -38,11 +38,7 @@ const ProductForm: React.FC = () => {
   const docIssuances: IDocIssuanceTakeoutState | null = useSelector(
     (state: IStateType) => state.docIssuancesTakeout
   );
-
-  console.log("docIssuancesFORMR---",docIssuances);
-
-
-  let docIssuance: IDocIssuanceTakeout | null = docIssuances.selectedDocIssuanceTakeout;
+   let docIssuance: IDocIssuanceTakeout | null = docIssuances.selectedDocIssuanceTakeout;
   const isCreate: boolean =
     docIssuances.modificationState === DocIssuanceTakeoutModificationStatus.Create;
   const [loginPopup, setLoginPopup] = useState(false);
@@ -353,8 +349,6 @@ const ProductForm: React.FC = () => {
     const approved_doc_issuances: any = approved_doc_issuance.doc_issuance
       ? approved_doc_issuance.doc_issuance
       : [];
-      console.log("requested_doc_type---RR-", requested_doc_type);
-      console.log("requested_doc_departrment--RR--", requested_doc_department);
 
     let divContents: any = "<div>nothing to display</div>";
     var a = window.open("", "", "height=500, width=500");

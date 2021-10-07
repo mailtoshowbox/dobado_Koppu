@@ -56,7 +56,6 @@ const DocIssuanceTakeout: React.FC = () => {
   }, [path.area, dispatch]);
 
   function onApprovalSelect(approvalDoc: IDocIssuanceTakeout): void {
-    console.log("modificationState-approvalDoc---",approvalDoc);
     
     dispatch(changeSelectedDocIssuance(approvalDoc));
     dispatch(setModificationState(DocIssuanceTakeoutModificationStatus.None));

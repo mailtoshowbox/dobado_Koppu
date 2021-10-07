@@ -693,7 +693,6 @@ const ProductForm: React.FC = () => {
 	const approved_doc_issuance: any = selectedDocForPrint.doc_issuance
 		? selectedDocForPrint.doc_issuance
 		: [];
-	console.log("docIssuances--", docIssuances);
 	return (
 		<Fragment>
 			<div className="col-xl-12 col-lg-12">

@@ -415,8 +415,6 @@ const ProductForm: React.FC = () => {
 			["requested_doc"]: { value: tempValr },
 		});
 	}
-
-	console.log("selectDocFortTakeOut", selectDocFortTakeOut);
 	return (
 		<Fragment>
 			<div className="col-xl-12 col-lg-12">

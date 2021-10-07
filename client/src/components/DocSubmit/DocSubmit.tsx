@@ -52,6 +52,7 @@ const Products: React.FC = () => {
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
+  console.log("account---", account);
  
   const [popup, setPopup] = useState(false);
   useEffect(() => {

@@ -31,12 +31,12 @@ export class DocumentsService {
 							{
 								isActive: false,
 								isRequestedDocument: true,
-								"document_request_info.document_requested_by": id,
+								//"document_request_info.document_requested_by": id,
 							},
 							{
 								isActive: true,
 								is_requested_for_takeout: true,
-								"document_request_info.document_requested_by": id,
+								//"document_request_info.document_requested_by": id,
 							},
 						],
 					}

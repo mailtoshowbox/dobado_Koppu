@@ -40,7 +40,6 @@ export function clearSelectedDocIssuance(): IClearSelectedDocCategoryActionType 
 }
 
 export function setModificationState(value: DocIssuanceTakeoutModificationStatus): ISetModificationStateActionType {
-    console.log("value-----", value);
     return { type: SET_DOC_ISSUANCE_TAKEOUT_MODIFICATION_STATE, value: value };
 }
 

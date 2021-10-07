@@ -19,7 +19,7 @@ function TextInput(props: TextInputProps): JSX.Element {
         ? ["Value cannot be empty", "is-invalid"]
         : ["", "is-valid"];
 
-    //console.log("fsdf", props);
+    
     props.onChange({
       value: elementValue,
       error: error,

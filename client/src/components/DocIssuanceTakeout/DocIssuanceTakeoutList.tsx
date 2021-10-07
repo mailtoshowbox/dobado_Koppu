@@ -21,7 +21,6 @@ function DocApprovalList(props: productListProps): JSX.Element {
   const docIssuance: IDocIssuanceTakeoutState = useSelector(
     (state: IStateType) => state.docIssuancesTakeout
   );
-   console.log("state---docIssuance--->>>-", docIssuance.docIssuancesTakeout);
 
   function onClickProductSelected(cell: any, row: any, rowIndex: any) {
     if (props.onSelect) props.onSelect(row);

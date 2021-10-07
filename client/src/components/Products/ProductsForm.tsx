@@ -213,7 +213,7 @@ const ProductForm: React.FC = () => {
 	function add_years(n: number) {
 		let dt = new Date();
 		const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
-		console.log("calcDat----", calcDat);
+		
 
 		return {exactDate : calcDat, rentention :("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear() }
 		 
@@ -346,8 +346,6 @@ const ProductForm: React.FC = () => {
 
 			if (mode === "ADD") {
 
-				console.log("boxRacks--", boxRacks,formState.rack.value );
-
 				let boxInfo = {
 					name: formState.name.value,
 					description: formState.description.value,
@@ -440,8 +438,6 @@ const ProductForm: React.FC = () => {
 						boxInfo.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
 				}
-
-				console.log("boxInfo--", boxInfo); 
  
 
 				addNewDoc(boxInfo, account).then((status) => {
@@ -513,7 +509,6 @@ const ProductForm: React.FC = () => {
 					document_type = "",
 				} = product;
 				if (category && !touchedFields.category) {
-					// console.log("doccategoriesList---", doccategoriesList);
 					let selectedCat =
 						doccategoriesList?.docCategories.filter(
 							(catee) => catee.name === category
@@ -544,7 +539,6 @@ const ProductForm: React.FC = () => {
 						boxInfoUpt.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
 				}else{
-					console.log(2);
 					let selectedTypeOfDoc =
 					listOfType.filter((dcT: any) => dcT.id === document_type) || [];
 
@@ -552,8 +546,6 @@ const ProductForm: React.FC = () => {
 						boxInfoUpt.document_type_details =  selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
 				}
-
-				console.log("boxInfoUpt--", boxInfoUpt);
 				updateDoc(boxInfoUpt, account).then((status) => {
 					dispatch(
 						saveFn({

@@ -15,7 +15,6 @@ class ItemService {
         return response.json();
       })
       .then(json => {
-        console.log(json);
         const items = [];
         const itemArray = json._embedded.collectionItems;
         for (var i = 0; i < itemArray.length; i++) {

@@ -21,6 +21,7 @@ import { IStateType } from "../../store/models/root.interface";
 import { IAccount } from "../../store/models/account.interface";
 import DocIssuanceTakeout from "../DocIssuanceTakeout/DocIssuanceTakeout";
 import DocDestruct from "../DocToDestruct/DocToDestruct";
+import AuditLog from "../AuditLog/AuditLog";
 const Admin: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
   const { roles } = account;
@@ -35,10 +36,23 @@ const Admin: React.FC = () => {
           <div className="container-fluid">
             <Switch>
               {roles[0] === "Superadmin" && (
+               
                 <Route path={`/users`}>
                   <Users />
                 </Route>
+
+               
               )}
+              {roles[0] === "Superadmin" && (
+               
+               <Route path={`/auditLog`}>
+                 <AuditLog />
+               </Route>
+
+              
+             )}
+
+              
               <Route path={`/products`}>
                 <Products />
               </Route>
@@ -78,8 +92,8 @@ const Admin: React.FC = () => {
               <Route path={`/documentdestruct`}>
                 <DocDestruct />
               </Route>
-              
 
+              
               <Route path="/">
                 <Home />
               </Route>

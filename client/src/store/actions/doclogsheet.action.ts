@@ -10,7 +10,7 @@ export const LOAD_DOCUMENT_LOG_SHEET: string = "LOAD_DOCUMENT_LOG_SHEET";
 
     export function loadDocumentLogSheet(items : IProductList) { 
   
-            return { type: LOAD_DOCUMENT_LOG_SHEET , docDestructList:  items  };
+            return { type: LOAD_DOCUMENT_LOG_SHEET , docLogSheetList:  items  };
         
        
     

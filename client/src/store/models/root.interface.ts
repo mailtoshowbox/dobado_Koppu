@@ -9,10 +9,14 @@ import { IDocApproval, DocApprovalModificationStatus } from "./docapproval.inter
 import { IDocIssuanceTakeout, DocIssuanceTakeoutModificationStatus } from "./docIssuancetakeout.interface";
 import { IProductDestruct, ProductDestructModificationStatus } from "./productDesctruct.interface";
 
+import { IAuditLog } from "./auditLog.interface";
+
 import { INotification } from "./notification.interface";
 import { IUser } from "./user.interface";
 import { IOrder } from "./order.interface";
 import { IAccount } from "./account.interface";
+
+
 
 export interface IRootPageStateType {
     area: string;
@@ -42,6 +46,8 @@ export interface IStateType {
     docLogSheetData: IDocLogSheetState;
     docDestructData: IDocDestructState;
     docIssuancesTakeout: IDocIssuanceTakeoutState;
+    auditLogList: IAuditLogState;
+    
 }
 export interface IDocIssuanceTakeoutState {
     docIssuancesTakeout: IDocIssuanceTakeout[];
@@ -65,6 +71,10 @@ export interface IProductState {
 }
 export interface IDocLogSheetState {
     docLogSheetList: IProduct[];
+ }
+
+ export interface IAuditLogState {
+    auditLogList: IAuditLog[];
  }
 
  export interface IDocDestructState {

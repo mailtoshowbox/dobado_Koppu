@@ -111,8 +111,13 @@ const Products: React.FC = () => {
   date3 = moment(date3).format('YYYY-MM-DD'); 
   setDataLogSheetLoaded(false)
   getLogSheet(account, {startDate : date2, endDate:date3}).then((items: IProductList) => {
+
+    console.log("items-----", items);
     dispatch(loadDocumentLogSheet(items));
-    setDataLogSheetLoaded(true)
+    if(items.length > 0){
+      setDataLogSheetLoaded(true)
+    }
+    
   });
 
  }

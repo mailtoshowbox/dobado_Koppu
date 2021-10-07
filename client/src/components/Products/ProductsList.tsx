@@ -225,26 +225,7 @@ function ProductList(props: productListProps): JSX.Element {
 					Action
 				</TableHeaderColumn>
 			</BootstrapTable>
-			{/*  <Table
-        columns={columns}
-        data={products.products}
-        formatFunction={convertDate}
-        onCustomSelect={props.onSelect}
-      /> */}
-			{/*  <table className="table">
-        <thead className="thead-light">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Box</th>
-            <th scope="col">Rack</th>
-            <th scope="col">M Date</th>
-            <th scope="col">E Date</th>
-          </tr>
-        </thead>
-        <tbody>{productElements}</tbody>
-      </table> */}
+			
 		</div>
 	);
 }

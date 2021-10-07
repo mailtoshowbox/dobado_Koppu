@@ -472,6 +472,24 @@ export function getLogSheet(options, params) {
 			handleError(error);
 		});
 }
+
+export function getAuditLog(options, params) {
+	var myOptions = getDocCustomPostOptions(options, params);
+
+	return fetch(APP_CONST.API_HOST_AT + "/products/auditLog", myOptions)
+		.then((response) => {
+			if (!response.ok) {
+				handleResponseError(response);
+			}
+			return response.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((error) => {
+			handleError(error);
+		});
+}
 export function getDestructiveList(options, params) {
 	var myOptions = getDocCustomPostOptions(options, params);
 

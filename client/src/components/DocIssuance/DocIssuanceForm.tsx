@@ -23,7 +23,7 @@ import {
   issueGenaralIssuance,
 } from "../../services/index";
 import { OnChangeModel } from "../../common/types/Form.types";
-import { updateDocumentRequest } from "../../services/index";
+import { updateDocumentRequest , getNewQrCode} from "../../services/index";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import SelectInput from "../../common/components/Select";
 import { IAccount } from "../../store/models/account.interface";
@@ -45,6 +45,7 @@ const ProductForm: React.FC = () => {
   const isCreate: boolean =
     docIssuances.modificationState === DocIssuanceModificationStatus.Create;
   const [loginPopup, setLoginPopup] = useState(false);
+  const [dynamicUniqueIdList, setDynamicIdList] = useState([]);
 
 
 
@@ -259,12 +260,13 @@ const ProductForm: React.FC = () => {
       if (doc.document_no === selectedDocForPrint.document_no) {
         if (selectedDocForPrint.no_of_label > 1) {
           for (var i = 0; i < selectedDocForPrint.no_of_label; i++) {
+            const {code =_uniqueId(doc.document_no)}  = dynamicUniqueIdList[i] || {};
             const processedApproval = Object.assign(
               { ...doc },
               {
                 is_doc_approved: true,
                 document_no: selectedDocForPrint.generate_unique_num
-                  ? _uniqueId(doc.document_no)
+                  ? code
                   : doc.document_no,
                 request_no: formState.request_no.value,
               }
@@ -389,10 +391,32 @@ const ProductForm: React.FC = () => {
     }
   };
   function hasNoOfLabelValueChanged(model: OnChangeModel): void {
+
+    let idsList = [];
+    if(model.field === 'no_of_label'){
+      if(selectedDocForPrint.generate_unique_num){
+        if(model.value > 1){
+           getNewQrCode({"noOfId" : model.value}).then((status) => {  
+            setDynamicIdList(status);
+          });      
+          
+        }     
+      }
+    }else if(model.field ==="generate_unique_num" && model.value){
+        if(dynamicUniqueIdList.length === 0 && selectedDocForPrint.no_of_label > 1){
+          getNewQrCode({"noOfId" : selectedDocForPrint.no_of_label}).then((status) => {  
+            setDynamicIdList(status);
+          }); 
+        }
+    }
     setSelectedDocForPrint({
       ...selectedDocForPrint,
       [model.field]: model.value,
     });
+
+ 
+    
+   
   }
 
   function rowClassNameFormate(row: any, rowIdx: any) {

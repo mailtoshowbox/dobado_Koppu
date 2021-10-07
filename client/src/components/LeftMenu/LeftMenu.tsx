@@ -170,6 +170,15 @@ const LeftMenu: React.FC = () => {
                 <span>Users</span>
               </Link>
             </li>
+            <>
+            {" "}
+            <li className="nav-item">
+              <Link className="nav-link" to={`/auditLog`}>
+                <i className="fas fa-sitemap"></i>
+                <span>Audit Log.</span>
+              </Link>
+            </li>
+          </>
             <hr className="sidebar-divider d-none d-md-block" />{" "}
           </div>
         )}

@@ -41,8 +41,6 @@ const DocToDestructForm: React.FC = () => {
   const isCreate: boolean =
   logSheet.modificationState === ProductDestructModificationStatus.Create;
 
-  
-  console.log("docDesc----", docDesc);
 
 
   const [formState, setFormState] = useState({
@@ -136,19 +134,7 @@ const DocToDestructForm: React.FC = () => {
           <div className="card-body">
             <form onSubmit={saveUser}>
             <div className="form-group row">
-            <div className="form-group col-md-12">
-									<SelectInput
-										id="input_document_type"
-										field="status"
-										label="Status"
-										options={listOfStatus}
-										required={true}
-										onChange={hasFormValueChanged}
-										value={formState.status.value ? formState.status.value : listOfStatus[0].id}
-										type="select"
-										customError={formState.status.error}
-									/>
-								</div>
+  
                 <div className="form-group col-md-6">
                 <TextInput
                   id="input_description"

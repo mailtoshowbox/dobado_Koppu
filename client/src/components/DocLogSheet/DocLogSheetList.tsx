@@ -5,7 +5,10 @@ import {
   IDocLogSheetState,
 } from "../../store/models/root.interface"; 
 import { BootstrapTable, TableHeaderColumn , ExportCSVButton } from "react-bootstrap-table";
- 
+import APP_CONST from "../../common/contant";
+
+import { jsPDF } from "jspdf";
+import autoTable from 'jspdf-autotable'
 import moment, { Moment } from "moment";
 
 export type productListProps = {
@@ -24,20 +27,9 @@ function DocCategoryList(props: productListProps): JSX.Element {
 
  //  const {selectedFieldsToDownload = []} = props;
 
-  
-   function handleExportCSVButtonClick(onClick:any)  {
-    // Custom your onClick event here,
-    // it's not necessary to implement this function if you have no any process before onClick
-  
-    onClick();
-  }
-  function createCustomExportCSVButton(onClick:any)  {
-    return (
-      <ExportCSVButton
-        btnText='Down CSV'
-        onClick={ () => handleExportCSVButtonClick(onClick) }/>
-    );
-  }
+ console.log("docLogSheetList---", docLogSheetList);
+
+   
   //...
   const options = {
     exportCSVBtn: createCustomExportCSVButton,
@@ -71,7 +63,17 @@ function DocCategoryList(props: productListProps): JSX.Element {
     <button style={ { color: 'red' } } onClick={ onClick }>Delete rows</button>
   );
 }
- 
+function convertDate(retensionDateExtended:any) {
+	 
+  if(retensionDateExtended !== ""){
+    var date = new Date(retensionDateExtended),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  
+  return [date.getFullYear(), mnth, day].join("-");
+  }
+  return "-"; 
+  }
 function request_no_format(cell: any, row: any) { 
   console.log("YUUU1?", cell, row);
     return row.document_request_info && row.document_request_info['document_request_no']  ? row.document_request_info['document_request_no']  : "-";    
@@ -125,10 +127,132 @@ function document_submitted_on_nr_format(cell: any, row: any, inpu : any) {
     return row.document_info && row.document_info.createdOn  ? row.document_info.createdOn: "-"; 
   }
   return row.document_request_info && row.document_request_info['document_submitted_on'] ? row.document_request_info['document_submitted_on'] : "" ;    
-   
 }
 
 
+function generatePDF  ()  {	 
+const unit = "pt";
+  const size = "A4"; // Use A1, A2, A3 or A4
+  const orientation = "portrait"; // portrait or landscape
+  const marginLeft = 40;
+  const doc = new jsPDF(orientation, unit, size);
+  doc.setFontSize(15);
+  const title = "Audit Log Report";
+  const headers = [APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET.map(elt=>  elt.FIELD_LABEL)];
+let newauditLogList = docLogSheetList;
+let constructedList:any = [];
+
+
+newauditLogList.map((log:any)=>{
+
+  const {document_info:{updatedBy=[], createdOn=""}={}} = log;
+  //const doc_CretedDate = convertDate(createdOn); 
+ 
+    let ar:any = {};
+
+    const {document_request_info:{department="", 
+    document_issued_on="",
+    document_issued_by="",
+    document_submitted_on="",
+    document_submitted_by="",
+     document_issued_to="", request_no =""
+    }={}} = log;
+      
+    APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET.forEach((elt)=> {
+      let fieldName = elt.FIELD_NAME					
+      if(fieldName ==='document_request_info.document_request_no'){
+        const {document_request_info:{document_request_no=""}={}} = log;
+        ar[fieldName] = document_request_no;
+      }else if(fieldName ==='document_request_info.department'){				
+       
+        ar[fieldName] = department;
+      }else if(fieldName ==='document_request_info.document_issued_on'){					 
+        ar[fieldName] = convertDate(document_issued_on);
+      }else if(fieldName ==='document_request_info.document_issued_to'){					 
+        ar[fieldName] = document_issued_to;
+      }else if(fieldName ==='document_request_info.document_issued_by'){					 
+        ar[fieldName] = document_issued_by;
+      }else if(fieldName ==='document_request_info.document_submitted_on'){					 
+        ar[fieldName] = convertDate(document_submitted_on);
+      }else if(fieldName ==='document_request_info.document_submitted_by'){					 
+        ar[fieldName] = document_submitted_by;
+      }else{					
+          ar[fieldName] = log[fieldName];										
+      }
+    })
+    constructedList.push(ar); 
+}) 
+
+
+ const data =docLogSheetList.map((log:any)=>{
+   let DIP:any = {};
+
+  APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET.forEach((elt)=> {
+
+    console.log("elt.FIELD_NAME---", elt.FIELD_NAME);   
+    let fieldName = elt.FIELD_NAME;
+     DIP[fieldName] = log[fieldName] ? log[fieldName] : "-";				
+   });
+return DIP;
+
+
+ });
+
+ 
+console.log("constructedList----",constructedList );
+console.log("DATA----",data );
+/*
+[elt.name, 
+  elt.document_no,
+  elt.document_category_details,
+  elt.updatedBy,
+  elt.createdOn,
+  elt.updatedOn	
+]);
+ const data =docLogSheetList.map((elt:any)=> [elt.name, 
+  elt.document_no,
+  elt.document_category_details,
+  elt.updatedBy,
+  elt.createdOn,
+  elt.updatedOn	
+]);
+
+*/
+//const data = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,];
+
+  
+  let content:any = {
+    startY: 50,
+    head: headers,
+    body: constructedList
+  };
+
+  doc.text(title, marginLeft, 40);
+autoTable(doc, content)
+ 
+  doc.save("report.pdf")
+} 
+
+function handleExportCSVButtonClick(onClick:any)  {
+  // Custom your onClick event here,
+  // it's not necessary to implement this function if you have no any process before onClick
+  
+  onClick();
+  }
+  
+  function createCustomExportCSVButton(onClick:any)  {
+   return (
+    <>
+    <ExportCSVButton
+    btnText='Down CSV'     
+    onClick={  () => handleExportCSVButtonClick(onClick) }/> &nbsp;&nbsp;
+    <ExportCSVButton
+    btnText='Down PDF'
+    onClick={  () => generatePDF() 
+     }/> 
+    </>
+  );
+  }
   return (
     <div className="portlet">
       <BootstrapTable  tableContainerClass='my-table-container-hide' data={docLogSheetList} keyField='id' options={options} exportCSV>
@@ -145,7 +269,7 @@ function document_submitted_on_nr_format(cell: any, row: any, inpu : any) {
         );
       }else if( column.FIELD_NAME === 'document_request_info.document_issued_on'){
         return (
-        <TableHeaderColumn csvHeader={column.FIELD_LABEL} csvFormat={document_issued_on_format} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+        <TableHeaderColumn hidden={true} csvHeader={column.FIELD_LABEL} csvFormat={document_issued_on_format} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
         );
       }else if( column.FIELD_NAME === 'document_request_info.document_issued_by'){
         return (
@@ -158,12 +282,12 @@ function document_submitted_on_nr_format(cell: any, row: any, inpu : any) {
       }
       else if( column.FIELD_NAME === 'document_request_info.document_submitted_on'){
         return (
-        <TableHeaderColumn csvHeader={column.FIELD_LABEL} csvFormat={document_submitted_on_format} dataFormat={document_submitted_on_nr_format} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+        <TableHeaderColumn hidden={true} csvHeader={column.FIELD_LABEL} csvFormat={document_submitted_on_format} dataFormat={document_submitted_on_nr_format} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
         );
       } 
       else if( column.FIELD_NAME === 'document_request_info.department'){
         return (
-        <TableHeaderColumn csvHeader={column.FIELD_LABEL} csvFormat={document_submitted_department_format} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
+        <TableHeaderColumn hidden={true} csvHeader={column.FIELD_LABEL} csvFormat={document_submitted_department_format} dataField={ column.FIELD_NAME }>{ column.FIELD_LABEL }</TableHeaderColumn>
         );
       } 
       else if( column.FIELD_NAME === 'document_type'){

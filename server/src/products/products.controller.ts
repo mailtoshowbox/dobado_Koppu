@@ -130,11 +130,10 @@ export class DocumentsController {
 
   @Post(":mode")
   logSheets(@Param('mode') mode: string, @Body() params): Promise<Document[]> {
-    console.log("mode---", mode);
+    console.log("mode--->>", mode);
     if(mode === 'destructiveDocList'){
       let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
-        let onfo = succ.map((doc: any) => {
-  
+        let onfo = succ.map((doc: any) => { 
           
   
           doc.batch = doc.category + '/' + doc.box + '/' + doc.rack
@@ -181,9 +180,26 @@ export class DocumentsController {
     });
     return res;
 
+    }else if( mode === "auditLog"){
+      let res = this.productsService.getAuditLogList(params).then((succ = []) => {
+        let onfo = succ.map((doc: any) => {
+          doc.batch = doc.category + '/' + doc.box + '/' + doc.rack
+          delete doc.box_info;
+          delete doc.rack_info;
+          delete doc.category_info;
+          delete doc.docType_info;  
+          return doc;
+        })
+        return onfo;
+      });
+      return res;
     }
     else{
+
+      console.log("LOG SHEETS");
       let res = this.productsService.getLogSheet(params).then((succ = []) => {
+
+        console.log("succ---", succ);
         let onfo = succ.map((doc: any) => {
   
           const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
@@ -267,8 +283,22 @@ export class DocumentsController {
 
   @Post('qrcode/:getRandomCode')
   getRandomCode(@Body() generateQrCode) {
+    const {noOfId=1} =generateQrCode;
+		if(noOfId > 1){	
+      const promises = Array.from(Array(noOfId).keys()).map(item => {
+        return this.productsService.getRandomCode(generateQrCode)
+          .then(response=> {
+          return response
+        });
+      });	
 
+			return Promise.all(promises).then(results => {
+        return results
+      })
+		}else{
     return this.productsService.getRandomCode(generateQrCode);
+    }
+
   }
 
   @Put(':id')

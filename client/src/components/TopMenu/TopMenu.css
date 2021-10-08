@@ -14,3 +14,12 @@
 .navbar .breadcrumb {
     margin-bottom: 0;
 }
+.user-profile {
+    background: url('../../assets/images/default-user.png') no-repeat;
+    background-size: 100%;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    position: relative;
+    top: 4px;
+}

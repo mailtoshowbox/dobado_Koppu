@@ -101,7 +101,7 @@ const DocToDestructForm: React.FC = () => {
         updateDoc(boxInfoUpt, account).then((status) => {	dispatch(
 						addNotification(
 							"Extention ",
-							`Docuemnt ${formState.name.value} edited by you`
+							`Document ${formState.name.value} edited by you`
 						)
 					);
           dispatch(setModificationState(ProductDestructModificationStatus.None));

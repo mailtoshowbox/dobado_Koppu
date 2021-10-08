@@ -257,14 +257,14 @@ function convertRetentionExactDate(cell: any, row: any) {
 					dataField="expiredate"
 					className="thead-light-1"
 					dataFormat={convertRetentionExtentDate}
-					width="10%"
+					width="15%"
 				>
 					Doc timeline Extention
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					 
 					className="thead-light-1" 
-					width="10%"
+					width="15%"
 				>
 					Reason
 				</TableHeaderColumn>

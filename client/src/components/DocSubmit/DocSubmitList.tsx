@@ -276,14 +276,14 @@ function ProductList(props: productListProps): JSX.Element {
 				<TableHeaderColumn
 					dataField="no_of_copy"
 					className="thead-light-1"
-					width="5%"
+					width="10%"
 				>
 					No of Copies
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="no_of_page"
 					className="thead-light-1"
-					width="5%"
+					width="10%"
 				>
 					No of Pages
 				</TableHeaderColumn>

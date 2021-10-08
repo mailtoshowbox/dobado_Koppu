@@ -46,3 +46,53 @@
     background: #82b443;
     color:#FFF;
 }
+.react-datepicker-wrapper {
+    width: auto;
+    min-width: 220px
+}
+.date-filter label {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.date-filter .react-datepicker-wrapper input{
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    border: 1px solid #bdb9b9;
+    width: 100%;
+}
+.date-filter .btn.btn-primary {
+    font-size: 14px;
+}
+.checkbox-conatiner {
+    padding: 15px;
+    border:1px solid #ccc;
+    display: inline-block;
+    border-radius: 4px;
+}
+.checkbox-conatiner label {
+    font-size: 14px;
+}
+
+.react-bs-table-bordered.my-table-container-hide.react-bs-table .table{
+    width: 1600px;
+}
+/* .react-bs-table-bordered.my-table-container-hide.react-bs-table table td {
+    text-overflow: initial;
+    overflow:visible;
+} */
+
+.react-bs-table .table-bordered>thead>tr>td, .react-bs-table .table-bordered>thead>tr>th {
+    border-bottom-width: 2px;
+    width: 150px;
+}
+.react-bs-table-bordered.react-bs-table table td {
+    text-overflow: initial;
+    overflow: visible;
+    width: 150px;
+    white-space: normal;
+}
+.logsheet-btn{
+    padding-top: 29px;
+}

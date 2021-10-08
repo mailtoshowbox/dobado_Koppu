@@ -123,19 +123,19 @@ const Products: React.FC = () => {
       <div className="row">
       <div className="col-xl-12 col-lg-12">    
       <div className="card shadow mb-4">     
-      <div className="card-body">
+      <div className="card-body date-filter">
       <div className="card-title">
       <h1 className="h5 mb-4 font-bold">Load Log Sheet</h1>
       </div>
       <div className="col-xl-4 col-lg-4" style={{"float":"left"}}>
-        Start Date
+      <label>Start Date: </label>
       <DatePicker dateFormat="yyyy/MM/dd" selected={startDate} onChange={(date) => setStartDate(date)} />
       </div>
       <div className="col-xl-4 col-lg-4" style={{"float":"left"}}>
-      End Date
+      <label>End Date: </label>
       <DatePicker dateFormat="yyyy/MM/dd" selected={endDate} onChange={(date) => setEnbDate(date)} />
       </div>
-      <div className="col-xl-4 col-lg-4" style={{"float":"left"}}>
+      <div className="col-xl-3 col-lg-3 logsheet-btn" style={{"float":"left"}}>
       
        <button  type="button"
                   className="btn btn-primary"      
@@ -160,7 +160,10 @@ const Products: React.FC = () => {
       <div className="card-title">
       <h1 className="h5 mb-4 font-bold">Selec CSV Fields to Download</h1>
       </div>
+      <div className="checkbox-conatiner">
         {addCheckBoxInput()}
+
+       </div>
 
        
       </div>

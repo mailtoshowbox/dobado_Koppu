@@ -46,3 +46,25 @@
     background: #82b443;
     color:#FFF;
 }
+.react-datepicker-wrapper {
+    width: auto;
+    min-width: 220px
+}
+.date-filter label {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.date-filter .react-datepicker-wrapper input{
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    border: 1px solid #bdb9b9;
+    width: 100%;
+}
+.date-filter .btn.btn-primary {
+    font-size: 14px;
+}
+.audit-btn{
+    padding-top: 29px;
+}

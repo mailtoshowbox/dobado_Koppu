@@ -44,7 +44,7 @@ const APP_CONST = {
         {"FIELD_LABEL" : 'Issued by', "FIELD_NAME":"document_request_info.document_issued_by" , "FIELD_VALUE":true},
         {"FIELD_LABEL" : 'Sub on', "FIELD_NAME":"document_request_info.document_submitted_on" , "FIELD_VALUE":true},
         {"FIELD_LABEL" : 'Sub by', "FIELD_NAME":"document_request_info.document_submitted_by", "FIELD_VALUE":true },
-        {"FIELD_LABEL" : 'Reason', "FIELD_NAME":"request_no", "FIELD_VALUE":true },
+        {"FIELD_LABEL" : 'Reason', "FIELD_NAME":"reason_for_request", "FIELD_VALUE":true },
         {"FIELD_LABEL" : 'R By', "FIELD_NAME":"request_no", "FIELD_VALUE":true },
         {"FIELD_LABEL" : 'R on', "FIELD_NAME":"request_no" , "FIELD_VALUE":true},
         {"FIELD_LABEL" : 'S loc', "FIELD_NAME":"request_no", "FIELD_VALUE":true },

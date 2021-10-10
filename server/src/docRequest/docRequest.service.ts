@@ -383,6 +383,7 @@ export class DocRequestService {
 									no_of_page: doc.no_of_page,
 									document_no: doc.document_no,
 									qr_code: doc.document_no,
+									reason_for_request : doc.reason_for_request,
 									box: "",
 									rack: "",
 									category: "",
@@ -405,6 +406,8 @@ export class DocRequestService {
 										document_request_doc_type: DocRequest.doc_requested_doctype,
 									},
 								};
+
+								console.log("newDcoument-1--", newDcoument);
 								const newProduct = new this.documentModal(newDcoument);
 								newProduct.isActive = false;
 								newProduct.isRequestedDocument = true;
@@ -421,6 +424,7 @@ export class DocRequestService {
 									no_of_page: doc.no_of_page,
 									document_no: doc.document_no,
 									qr_code: doc.document_no,
+									reason_for_request : doc.reason_for_request,
 									box: "",
 									rack: "",
 									category: "",
@@ -443,6 +447,8 @@ export class DocRequestService {
 										document_request_doc_type: DocRequest.doc_requested_doctype,
 									},
 								};
+
+								console.log("newDcoument--2-", newDcoument);
 								const newProduct = new this.documentModal(newDcoument);
 								newProduct.isActive = false;
 								newProduct.isRequestedDocument = true;

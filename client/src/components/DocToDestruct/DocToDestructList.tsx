@@ -6,7 +6,7 @@ import {
 } from "../../store/models/root.interface"; 
 import { BootstrapTable, TableHeaderColumn , ExportCSVButton } from "react-bootstrap-table";
 import { IAccount } from "../../store/models/account.interface";
-import moment, { Moment } from "moment";
+import moment from "moment";
 import {
 	 
 	destructDocument
@@ -47,12 +47,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 	function onClickProductSelected(cell: any, row: any, rowIndex: any) {
 		if (props.onSelect) props.onSelect(row);
 	}
-  //...
-  const options = {
-    exportCSVBtn: createCustomExportCSVButton,
-    deleteBtn: createCustomExportCSVButton1
-
-  };function buttonFormatter(
+  function buttonFormatter(
 		cell: any,
 		row: any,
 		enumObject: any,
@@ -62,7 +57,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		const {
 			docCategoryModificationStatus = 0,
 			//currentUser: { roles },
-			allowDelete = false,
+			 
 		} = props;
 		//const loggedInUserRole = roles[0] ? roles[0] : "Developer";
 

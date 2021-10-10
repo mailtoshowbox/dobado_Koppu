@@ -67,12 +67,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		}
 		return "-";
 	}
-	function request_no_format(cell: any, row: any) {
-		return row.document_request_info &&
-			row.document_request_info["document_request_no"]
-			? row.document_request_info["document_request_no"]
-			: "-";
-	}
+
 
 	function document_issued_on_format(cell: any, row: any) {
 		const dvv =
@@ -108,6 +103,8 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			row.document_request_info["document_issued_by"]
 			? row.document_request_info["document_issued_by"]
 			: "-";
+
+			
 	}
 	function document_submitted_department_format(cell: any, row: any) {
 		return row.document_request_info &&
@@ -120,6 +117,21 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			return row.document_type_details.name;
 		}
 		return "-";
+	}
+	function document_type_issueto(cell: any, row: any) {
+
+		console.log("cell", cell);
+		console.log("row", row);
+		return row.document_request_info &&
+		row.document_request_info.document_issued_to
+		? row.document_request_info.document_issued_to
+		: "-";
+	}
+	function request_no_format(cell: any, row: any) {
+		return row.document_request_info &&
+			row.document_request_info["document_request_no"]
+			? row.document_request_info["document_request_no"]
+			: "-";
 	}
 
 	function document_submitted_by_nr_format(cell: any, row: any, inpu: any) {
@@ -137,15 +149,18 @@ function DocCategoryList(props: productListProps): JSX.Element {
 	}
 
 	function document_submitted_on_nr_format(cell: any, row: any, inpu: any) {
+		let submittedOn = "";
 		if (!row.isRequestedDocument) {
-			return row.document_info && row.document_info.createdOn
+			submittedOn =  row.document_info && row.document_info.createdOn
 				? row.document_info.createdOn
-				: "-";
-		}
-		return row.document_request_info &&
+				: "";
+		}else{
+			submittedOn =  row.document_request_info &&
 			row.document_request_info["document_submitted_on"]
 			? row.document_request_info["document_submitted_on"]
 			: "";
+		}
+		return convertDate(submittedOn);
 	}
 
 	function generatePDF() {
@@ -284,6 +299,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 				{props.selectedFieldsToDownload
 					.filter((item: any) => item.FIELD_VALUE)
 					.map((column: any) => {
+						console.log("cell----",column.FIELD_NAME);
 						if (
 							column.FIELD_NAME === "document_request_info.document_request_no"
 						) {
@@ -292,18 +308,6 @@ function DocCategoryList(props: productListProps): JSX.Element {
 									csvHeader={column.FIELD_LABEL}
 									dataFormat={request_no_format}
 									csvFormat={request_no_format}
-									dataField={column.FIELD_NAME}
-								>
-									{column.FIELD_LABEL}
-								</TableHeaderColumn>
-							);
-						} else if (
-							column.FIELD_NAME === "document_request_info.document_issued_to"
-						) {
-							return (
-								<TableHeaderColumn
-									csvHeader={column.FIELD_LABEL}
-									csvFormat={document_issued_to_format}
 									dataField={column.FIELD_NAME}
 								>
 									{column.FIELD_LABEL}
@@ -322,16 +326,24 @@ function DocCategoryList(props: productListProps): JSX.Element {
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
+						}else if (column.FIELD_NAME === "document_request_info.document_issued_to") {							
+							return (
+								<TableHeaderColumn								
+									dataFormat={document_type_issueto}
+									csvFormat={document_type_issueto}						 
+									dataField={column.FIELD_NAME}
+								>{column.FIELD_LABEL}</TableHeaderColumn>
+							);
 						} else if (
 							column.FIELD_NAME === "document_request_info.document_issued_by"
 						) {
 							return (
 								<TableHeaderColumn
 									csvHeader={column.FIELD_LABEL}
+									dataFormat={document_issued_by_format}								 
 									csvFormat={document_issued_by_format}
 									dataField={column.FIELD_NAME}
-								>
-									{column.FIELD_LABEL}
+								>{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
 						} else if (
@@ -384,7 +396,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						} else {
+						}else {
 							return (
 								<TableHeaderColumn
 									csvHeader={column.FIELD_LABEL}

@@ -133,6 +133,9 @@ export class Documents extends Document {
 	no_of_page: number;
 
 	@Prop()
+	reason_for_request: string;	
+
+	@Prop()
 	document_request_info: DocumentRequestInfo;
 
 	@Prop()

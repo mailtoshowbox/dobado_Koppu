@@ -120,7 +120,7 @@ const ProductForm: React.FC = () => {
 	}
 
 	function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
-    setNoDocAvailebleForTakeoutRequest(false)
+		setNoDocAvailebleForTakeoutRequest(false);
 		setReferenceNumberFortakeOut(model.value.toString());
 	}
 
@@ -178,11 +178,25 @@ const ProductForm: React.FC = () => {
 	}
 
 	function saveDocumentRequest(e: FormEvent<HTMLFormElement>): void {
-		setLoginPopup(true);
-		e.preventDefault();
-		if (!isFormInvalid()) {
-			return;
+		if (formState.requested_doc.value.length > 0) {
+			setLoginPopup(true);
+			e.preventDefault();
+			if (!isFormInvalid()) {
+				return;
+			}
+		}else{
+			console.log();
+			
+			//addNotification("No Document", "Please Add/Select Document to Proceed");
+			dispatch(
+				addNotification(
+					"Warning!",
+					`Please select Document to Proceed`
+				)
+			);
+			e.preventDefault();
 		}
+		//return false;
 	}
 
 	function saveRequest(formState: any, saveFn: Function, mode: String): void {
@@ -192,43 +206,52 @@ const ProductForm: React.FC = () => {
 				.filter(
 					(arr) => arr.id.toString() === formState.doc_type.value.toString()
 				);
-			if (mode === "ADD") {
-				let boxInfo = {
-					name: formState.name.value,
-					empl_id: formState.empl_id.value,
-					doc_type: formState.doc_type.value,
-					request_no: formState.request_no.value,
-					requested_doc: formState.requested_doc.value,
-					approval: formState.approval.value,
-					rejectDocumentRequest: {
-						is_rejected: false,
-						rejected_by: "",
-						rejected_on: "",
-						rejected_reason: "",
-						rejected_from_page: "",
-					},
-					comments: formState.comments.value,
-					doc_requested_department: formState.doc_requested_department.value,
-					doc_requested_doctype: doc_types.length > 0 ? doc_types[0] : {},
-				};
-				addNewDocumentRequest(boxInfo, account).then((status) => {
-					setLoginPopup(false);
-					setFormState(intialFormState);
-					cancelForm();
-					dispatch(
-						saveFn({
-							...docrequest,
-							...status,
-						})
-					);
-
+			if (mode === "ADD") { 
+				if(formState.requested_doc.value.length > 0){
+					let boxInfo = {
+						name: formState.name.value,
+						empl_id: formState.empl_id.value,
+						doc_type: formState.doc_type.value,
+						request_no: formState.request_no.value,
+						requested_doc: formState.requested_doc.value,
+						approval: formState.approval.value,
+						rejectDocumentRequest: {
+							is_rejected: false,
+							rejected_by: "",
+							rejected_on: "",
+							rejected_reason: "",
+							rejected_from_page: "",
+						},
+						comments: formState.comments.value,
+						doc_requested_department: formState.doc_requested_department.value,
+						doc_requested_doctype: doc_types.length > 0 ? doc_types[0] : {},
+					};
+					addNewDocumentRequest(boxInfo, account).then((status) => {
+						setLoginPopup(false);
+						setFormState(intialFormState);
+						cancelForm();
+						dispatch(
+							saveFn({
+								...docrequest,
+								...status,
+							})
+						);
+	
+						dispatch(
+							addNotification(
+								"New Document Requested",
+								`Document Request ${formState.request_no.value} added by you`
+							)
+						);
+					});
+				}else{
 					dispatch(
 						addNotification(
-							"New Document Requested",
-							`Document Request ${formState.request_no.value} added by you`
+							"Warning!",
+							`Please select Document to Proceed`
 						)
 					);
-				});
+				}				
 			} else if (mode === "EDIT") {
 			}
 		}
@@ -290,10 +313,10 @@ const ProductForm: React.FC = () => {
 
 		loadDocumentforTakeOutList(data, account).then((status = []) => {
 			if (status.length <= 0) {
-        setNoDocAvailebleForTakeoutRequest(true)
-			}else{
-        setNoDocAvailebleForTakeoutRequest(false)
-      }
+				setNoDocAvailebleForTakeoutRequest(true);
+			} else {
+				setNoDocAvailebleForTakeoutRequest(false);
+			}
 			setAvailable_doc_for_takeout(status);
 		});
 	}
@@ -554,16 +577,20 @@ const ProductForm: React.FC = () => {
 												>
 													{" Load Documents "}
 												</div>
-                        
 											</div>
-                      { noDocAvailebleForTakeoutRequest && (
-                         <div
-                         className="col-md-4"
-                         style={{ textAlign: "center", marginTop: "2%" }}
-                       >	                        <p style={{color:"red"}}> no document avaiable for <b>{referenceNumberFortakeOut}</b></p>
-                       </div>
-                        )}
-                     
+											{noDocAvailebleForTakeoutRequest && (
+												<div
+													className="col-md-4"
+													style={{ textAlign: "center", marginTop: "2%" }}
+												>
+													{" "}
+													<p style={{ color: "red" }}>
+														{" "}
+														no document avaiable for{" "}
+														<b>{referenceNumberFortakeOut}</b>
+													</p>
+												</div>
+											)}
 
 											{/*  <div className="col-md-4"> 
                   //DOC6SAION
@@ -720,7 +747,7 @@ const ProductForm: React.FC = () => {
 								<div className="row">
 									<div className="col-md-2">
 										<label style={{ margin: "26px 21px 19px 5px" }}>
-											Approval 1
+											Approval 
 										</label>
 									</div>
 									<div className="col-md-3">

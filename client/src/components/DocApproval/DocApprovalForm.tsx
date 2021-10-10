@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import {
   IDocApproval,
-  DocApprovalModificationStatus,
+  DocApprovalModificationStatus,IDocApprovalList
 } from "../../store/models/docapproval.interface";
 import TextInput from "../../common/components/TextInput";
 import NumberInput from "../../common/components/NumberInput";
@@ -15,12 +15,12 @@ import TextAreaInput from "../../common/components/TextAreaInput";
 
 import {
   setModificationState,
-  updateDocRequestApproval,
+  updateDocRequestApproval,loadListOfDocApproval
 } from "../../store/actions/docapproval.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
   addNewDocumentRequest,
-  loadApproavalAccessUserInfo,
+  loadApproavalAccessUserInfo,getDocRequestApprovalList
 } from "../../services/index";
 import { OnChangeModel } from "../../common/types/Form.types";
 import { approveDocumentRequest } from "../../services/index";
@@ -81,8 +81,8 @@ function ProductForm(props: productFormProps): JSX.Element {
   ];
   const dcat3 = [{ id: "6", name: "Take Out" }];
 
-  //const [recentSelectedCategory, setRecentSelectedCategory] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState("1");
+ 
+  const [, setSelectedCategory] = useState("1");
   const [openRejectReasonModal, setOpenRejectReasonModal] = useState(false);
   if (!isCreate) {
     const { approval = [] } = docrequest;
@@ -264,15 +264,22 @@ function ProductForm(props: productFormProps): JSX.Element {
                 `Document Request ${formState.request_no.value} Rejected by you`
               )
             );
+
+            
           });
         } else {
           approveDocumentRequest(approvalInfo, account).then((status) => {
             cancelForm();
-            dispatch(
-              addNotification(
-                "Document Approved",
-                `Document Request ${formState.request_no.value} Approved by you`
-              )
+            getDocRequestApprovalList(account.auth, account.emp_id).then(
+              (items: IDocApprovalList) => {
+                dispatch(loadListOfDocApproval(items));
+                dispatch(
+                  addNotification(
+                    "Document Approved",
+                    `Document Request ${formState.request_no.value} Approved by you`
+                  )
+                );
+              }
             );
           });
         }
@@ -347,39 +354,7 @@ function ProductForm(props: productFormProps): JSX.Element {
     }
     return true;
   }
-  function loadApproavalAccessUserMail(accessLevel: string) {
-    let data = {};
-    if (accessLevel === "manager") {
-      data = {
-        access: accessLevel,
-        emp_id: formState.emp_code_approval_1.value.toString(),
-      };
-    }
-
-    loadApproavalAccessUserInfo(data, account).then((status) => {
-      if (status.data) {
-        const { email = "" } = status.data.data;
-        const approvedUsers = [];
-        if (email) {
-          approvedUsers.push({
-            empl_id: formState.emp_code_approval_1.value.toString(),
-            empl_email_id: email,
-            status: "pending",
-            approve_access_level: accessLevel, //Manager/Quality user
-          });
-        }
-
-        setFormState({
-          ...formState,
-          ["approval"]: { value: approvedUsers },
-        });
-        /// dispatch(loadedApprovedUser(status.data));
-      }
-    });
-  }
-
   const options = { afterInsertRow: saveDocument, ignoreEditable: false };
-
   function validateLogin(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 

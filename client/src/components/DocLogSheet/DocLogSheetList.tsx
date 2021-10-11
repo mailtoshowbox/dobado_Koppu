@@ -102,15 +102,15 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		return row.document_request_info &&
 			row.document_request_info["document_issued_by"]
 			? row.document_request_info["document_issued_by"]
-			: "-";
-
-			
+			: "-";			
 	}
 	function document_submitted_department_format(cell: any, row: any) {
-		return row.document_request_info &&
-			row.document_request_info.document_request_department["name"]
-			? row.document_request_info.document_request_department["name"]
-			: "-";
+		if(row.document_request_info  && row.document_request_info.document_request_department){
+if(row.document_request_info.document_request_department.name){
+	return row.document_request_info.document_request_department.name;
+}
+		} 
+		return   "-"; 
 	}
 	function document_type_format(cell: any, row: any, inpu: any) {
 		if (row.document_type_details) {
@@ -118,10 +118,47 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		}
 		return "-";
 	}
+	function batch_format(cell: any, row: any, inpu: any) {
+		let batch = "";
+		if (!row.isRequestedDocument) {	
+			const {document_box_details={}, document_category_details={},document_rack_details={}} = row;
+			batch += document_category_details.name ? document_category_details.name+'/' : "";
+			batch += document_box_details.name ? document_box_details.name+'/' : "";
+			batch += document_rack_details.name ? document_rack_details.name+'/' : "";
+			return batch;			 
+		}else{
+			batch = "-";
+		}
+		return batch;		 
+	}
+	//
+	function retension_exact_date_format(cell: any, row: any) {
+		let batch = "";
+		if (!row.isRequestedDocument) {	
+			const {retension_time:{retension_exact_date="", status =""}={} } = row;	
+			//if(status === 'destructed'){
+				//return "Destructed";
+			//}		 
+			return convertDate(retension_exact_date);			 
+		}else{
+			batch = "-";
+		}
+		return batch;		 
+	}
+
+	function retension_destructed_on_format(cell: any, row: any) {
+		let batch = "";
+		if (!row.isRequestedDocument) {	
+			const {retension_time:{destructed_on=""}={} } = row;		 	 
+			return convertDate(destructed_on);			 
+		}else{
+			batch = "-";
+		}
+		return batch;		 
+	}
+	
 	function document_type_issueto(cell: any, row: any) {
 
-		console.log("cell", cell);
-		console.log("row", row);
 		return row.document_request_info &&
 		row.document_request_info.document_issued_to
 		? row.document_request_info.document_issued_to
@@ -298,8 +335,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			>
 				{props.selectedFieldsToDownload
 					.filter((item: any) => item.FIELD_VALUE)
-					.map((column: any) => {
-						console.log("cell----",column.FIELD_NAME);
+					.map((column: any) => { 
 						if (
 							column.FIELD_NAME === "document_request_info.document_request_no"
 						) {
@@ -380,6 +416,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 							return (
 								<TableHeaderColumn
 									csvHeader={column.FIELD_LABEL}
+									dataFormat={document_submitted_department_format}
 									csvFormat={document_submitted_department_format}
 									dataField={column.FIELD_NAME}
 								>
@@ -396,7 +433,42 @@ function DocCategoryList(props: productListProps): JSX.Element {
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						}else {
+						} else if (column.FIELD_NAME === "batch") {
+							return (
+								<TableHeaderColumn
+									dataFormat={batch_format}
+									formatExtraData={column}
+									dataField={column.FIELD_NAME}
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
+							);
+						}   else if (column.FIELD_NAME === "retension_time.retension_exact_date") {
+							return (
+								<TableHeaderColumn
+									dataFormat={retension_exact_date_format}
+									csvFormat={retension_exact_date_format}
+									formatExtraData={column}
+									dataField={column.FIELD_NAME}
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
+							);
+						}else if (column.FIELD_NAME === "retension_time.retension_destruct_on") {
+							return (
+								<TableHeaderColumn
+									dataFormat={retension_destructed_on_format}
+									csvFormat={retension_destructed_on_format}
+									formatExtraData={column}
+									dataField={column.FIELD_NAME}
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
+							);
+						}
+						//
+						
+						else {
 							return (
 								<TableHeaderColumn
 									csvHeader={column.FIELD_LABEL}

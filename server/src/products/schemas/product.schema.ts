@@ -25,6 +25,8 @@ export class Retenstion extends Document {
 	calculateNonPerceptualTime: String;
 	@Prop()
 	status: String;
+	@Prop()
+	destructed_on: Date;
 }
 export class DocumentRequestInfo extends Document {
 	@Prop()

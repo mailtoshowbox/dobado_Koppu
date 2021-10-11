@@ -351,7 +351,8 @@ export class DocumentsService {
 						retension_time: {
 							time: 0, defaultYear: 0,
 							"calculateNonPerceptualTime": "",
-							status: "destructed"
+							status: "destructed",
+							destructed_on: new Date()
 						}
 					}
 						;

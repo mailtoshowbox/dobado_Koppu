@@ -47,10 +47,10 @@ const APP_CONST = {
             { "FIELD_LABEL": 'Reason', "FIELD_NAME": "reason_for_request", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'R By', "FIELD_NAME": "request_no", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'R on', "FIELD_NAME": "request_no", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'S loc', "FIELD_NAME": "batch", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'S loc', "FIELD_NAME": "Location", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'TO by', "FIELD_NAME": "request_no", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'To be dest', "FIELD_NAME": "retension_time.retension_exact_date", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'Dest on', "FIELD_NAME": "retension_time.retension_destruct_on", "FIELD_VALUE": true }
+            { "FIELD_LABEL": 'To be dest', "FIELD_NAME": "To be destruct", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Dest on', "FIELD_NAME": "Destructed On", "FIELD_VALUE": true }
         ], "EXPORT_PDF_COLUMN_LOG_SHEET":
         [
             { "FIELD_LABEL": 'Req No', "PDF_VIEW": true, "FIELD_NAME": "document_request_info.document_request_no", "FIELD_VALUE": true },

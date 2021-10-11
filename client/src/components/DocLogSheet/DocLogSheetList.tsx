@@ -112,13 +112,13 @@ if(row.document_request_info.document_request_department.name){
 		} 
 		return   "-"; 
 	}
-	function document_type_format(cell: any, row: any, inpu: any) {
+	function document_type_format(cell: any, row: any) {
 		if (row.document_type_details) {
 			return row.document_type_details.name;
 		}
 		return "-";
 	}
-	function batch_format(cell: any, row: any, inpu: any) {
+	function batch_format(cell: any, row: any) {
 		let batch = "";
 		if (!row.isRequestedDocument) {	
 			const {document_box_details={}, document_category_details={},document_rack_details={}} = row;
@@ -427,23 +427,25 @@ if(row.document_request_info.document_request_department.name){
 							return (
 								<TableHeaderColumn
 									dataFormat={document_type_format}
+									csvFormat={document_type_format}
 									formatExtraData={column}
 									dataField={column.FIELD_NAME}
-								>
+								> 
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						} else if (column.FIELD_NAME === "batch") {
+						} else if (column.FIELD_NAME === "Location") {
 							return (
 								<TableHeaderColumn
 									dataFormat={batch_format}
+									csvFormat={batch_format}
 									formatExtraData={column}
 									dataField={column.FIELD_NAME}
 								>
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						}   else if (column.FIELD_NAME === "retension_time.retension_exact_date") {
+						}   else if (column.FIELD_NAME === "To be destruct") {
 							return (
 								<TableHeaderColumn
 									dataFormat={retension_exact_date_format}
@@ -454,7 +456,7 @@ if(row.document_request_info.document_request_department.name){
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						}else if (column.FIELD_NAME === "retension_time.retension_destruct_on") {
+						}else if (column.FIELD_NAME === "Destructed On") {
 							return (
 								<TableHeaderColumn
 									dataFormat={retension_destructed_on_format}

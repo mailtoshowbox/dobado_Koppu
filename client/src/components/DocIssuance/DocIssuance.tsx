@@ -51,7 +51,7 @@ const Products: React.FC = () => {
         dispatch(loadListOfDocIssuance(items));
       }
     );
-    dispatch(updateCurrentPath("Home", "Categories"));
+    dispatch(updateCurrentPath("Home", "Genarate Issuance"));
   }, [path.area, dispatch]);
 
   function onApprovalSelect(approvalDoc: IDocIssuance): void {

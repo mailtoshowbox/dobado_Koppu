@@ -113,7 +113,7 @@ const Boxs: React.FC = () => {
               boxes.selectedBox) ? (
               <BoxForm />
             ) : null}
-            <div className="card-body">
+            <div className="card-body"  style={{height: "600px"}}>
               <BoxesList
                 onSelect={onBoxSelect}
                 onSelectDelete={onDeleteProduct}

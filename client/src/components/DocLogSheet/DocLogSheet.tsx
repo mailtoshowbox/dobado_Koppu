@@ -167,7 +167,7 @@ const Products: React.FC = () => {
 
        
       </div>
-            <div className="card-body">
+            <div className="card-body" style={{height: "900px"}}>
               <DocLogSheetList
                 
                 allowDelete={allowedUsers.includes(userRole)}

@@ -116,7 +116,7 @@ const Products: React.FC = () => {
                 </h6>
               </div>
             )}
-            <div className="card-body">
+            <div className="card-body" style={{height: "900px"}}>
               <DocRequestList
                 onSelect={onApprovalSelect}
                 onSelectDelete={onDeleteProduct}

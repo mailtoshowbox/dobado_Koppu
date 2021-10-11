@@ -199,7 +199,7 @@ const Products: React.FC = () => {
 							 
 							</div>
 						</div>
-						<div className="card-body" id="YUSUFF">
+						<div className="card-body"  style={{height: "900px"}} id="YUSUFF">
 							<AuditLogList
 							logLoaded ={isLogLoaded} 
 							/>

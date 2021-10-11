@@ -760,11 +760,11 @@ function ProductForm(props: productFormProps): JSX.Element {
 
                 <div className="row">
                   <div className="col-md-8">
-                    <label>
+                    {/* <label>
                       <span className="blink_me" style={{}}>
                         Waiting for Your Approval
                       </span>
-                    </label>
+                    </label> */}
                   </div>
                 </div>
               </div>

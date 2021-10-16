@@ -203,7 +203,7 @@ if(row.document_request_info.document_request_department.name){
 	function generatePDF() {
 		const unit = "pt";
 		const size = "A4"; // Use A1, A2, A3 or A4
-		const orientation = "portrait"; // portrait or landscape
+		const orientation = "landscape"; // portrait or landscape
 		const marginLeft = 40;
 		const doc = new jsPDF(orientation, unit, size);
 		doc.setFontSize(15);

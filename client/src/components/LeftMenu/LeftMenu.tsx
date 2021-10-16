@@ -78,7 +78,7 @@ const LeftMenu: React.FC = () => {
             <li className="nav-item">
               <Link className="nav-link" to={`/doccategory`}>
                 <i className="fas fa-sitemap"></i>
-                <span>Categories</span>
+                <span>Compactor</span>
               </Link>
             </li>
             <li className="nav-item">

@@ -133,7 +133,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
           className="thead-light-1"
           width="10%"
         >
-          Doc Type
+          Category
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="empl_id"

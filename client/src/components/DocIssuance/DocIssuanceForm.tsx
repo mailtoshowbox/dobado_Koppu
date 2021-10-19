@@ -994,13 +994,13 @@ const ProductForm: React.FC = () => {
 				</div>
 
 				<Popup
-					className="popup-modal default-modal-size-digidesk"
+					className="gen-cls popup-modal default-modal-size-digidesk"
 					open={showYes}
 				>
 					<div>
 						{/*  <DocIssuanceYesForm /> */}
 						<Fragment>
-							<div className="col-xl-12 col-lg-12">
+							<div className="col-xl-12 col-lg-12 gen_popup_content">
 								<div className="card shadow mb-4">
 									<div className="card-body">
 										<form onSubmit={saveDocumentRequest}>

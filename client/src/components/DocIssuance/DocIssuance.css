@@ -87,3 +87,9 @@ th.label-field-column-black {
     text-transform: capitalize;
     margin-right: 5px;
 }
+.gen_popup_content .react-bs-table table{
+    table-layout:initial;
+}
+.gen-cls.popup-content{
+    width: 80% !important;
+}

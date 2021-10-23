@@ -175,8 +175,8 @@ if(row.document_request_info.document_request_department.name){
 		if (!row.isRequestedDocument) {
 			return row.document_info &&
 				row.document_info.createdBy &&
-				row.document_info.createdBy.name
-				? row.document_info.createdBy.name
+				row.document_info.createdBy.emp_id
+				? row.document_info.createdBy.emp_id
 				: "-";
 		}
 		return row.document_request_info &&

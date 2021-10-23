@@ -60,8 +60,8 @@ const ProductForm: React.FC = () => {
 	let product: IProduct | null = products.selectedProduct;
 	const isCreate: boolean =
 		products.modificationState === ProductModificationStatus.Create;
-
-	const { roles = [], name, email } = account;
+console.log("account----", account);
+	const { roles = [], name, email, emp_id } = account;
 
 	const [boxRacks, setBoxRacks] = useState([]);
 	const [formWithError, setFormWithError] = useState(false);
@@ -342,6 +342,7 @@ const ProductForm: React.FC = () => {
 				role: loggedInUserRole,
 				name,
 				email,
+				emp_id
 			};
 
 			if (mode === "ADD") {

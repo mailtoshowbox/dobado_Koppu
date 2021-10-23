@@ -15,16 +15,17 @@ var QRCode = require("qrcode");
 @Injectable()
 export class DocumentsService {
 	constructor(
-		@InjectModel(Documents.name)
+		@InjectModel(Documents.name)  
 		private productModel: Model<Documents>,
 		@InjectModel(Boxes.name) private readonly boxModel: Model<Boxes>,
 		@InjectModel(Racks.name) private readonly rackModel: Model<Racks>
 	) { }
 
-	async findAll(mode, id = null): Promise<Document[]> {
+	async findAll(mode, id = null): Promise<Document[]> { 
 
-		console.log("mode---", mode);
-		if (mode === "issued") {
+		console.log("mode--->>", mode);   
+
+		if (mode === "issued") {  
 			return await this.productModel
 				.find(
 					// { isActive: false, isRequestedDocument : true, "document_request_info.document_requested_by" :id }

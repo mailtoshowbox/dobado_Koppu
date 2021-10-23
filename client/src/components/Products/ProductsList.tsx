@@ -39,10 +39,10 @@ function ProductList(props: productListProps): JSX.Element {
 		} = props;
 		const { status = "n-approved" } = row.document_info || {};
 		const loggedInUserRole = roles[0] ? roles[0] : "Developer";
-    const {takeout_requested_details : {current_status:{request_no="XXXXXX"}={}} = {}} = row;
+     const {isRequestedDocument=false, takeout_requested_details : {current_status:{request_no="XXXXXX"}={}} = {}} = row;
 		return (
 			<>
-				{status === "n-approved" && loggedInUserRole === "Qualityuser" ? (
+				{!isRequestedDocument && status === "n-approved" && loggedInUserRole === "Qualityuser" ? (
 					<div>
 						<span>{documentName}</span>
 						<span

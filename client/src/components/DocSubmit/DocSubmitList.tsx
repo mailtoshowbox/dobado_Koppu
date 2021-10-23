@@ -195,6 +195,23 @@ function ProductList(props: productListProps): JSX.Element {
 		}
 	}
 
+	function document_request_format_gen_name(
+		cell: any,
+		row: any,
+		field: any
+	) {
+		const {
+			document_request_info: { document_issued_by = "N?A" } = {},
+			is_requested_for_takeout = false,
+			takeout_requested_details: { current_status: { label = "" } = {} } = {},
+		} = row;
+ 
+
+		
+			return <div>{document_issued_by}</div>;
+		
+	}
+
 	const options = {
 		clearSearch: true,
 	};
@@ -231,6 +248,15 @@ function ProductList(props: productListProps): JSX.Element {
 					width="12%"
 				>
 					DC NO
+				</TableHeaderColumn>
+								<TableHeaderColumn
+					dataField="document_type"
+					className="thead-light-1"
+					width="14%"
+					dataFormat={document_request_format_gen_name}
+					formatExtraData={"name"}
+				>
+					Gererated By
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="document_type"

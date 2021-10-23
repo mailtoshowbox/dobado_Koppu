@@ -477,7 +477,7 @@ const ProductForm: React.FC = () => {
 											value={formState.request_no.value}
 											onChange={hasFormValueChanged}
 											required={false}
-											maxLength={100}
+											maxLength={10}
 											label=""
 											placeholder="Request Number"
 											customError={formState.description.error}

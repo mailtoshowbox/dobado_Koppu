@@ -22,6 +22,8 @@ export class DocumentsService {
 	) { }
 
 	async findAll(mode, id = null): Promise<Document[]> {
+
+		console.log("mode---", mode);
 		if (mode === "issued") {
 			return await this.productModel
 				.find(
@@ -41,6 +43,7 @@ export class DocumentsService {
 						],
 					}
 				)
+				.sort({ "document_request_info.document_issued_on": -1 })
 				.then((res: any) => {
 					return res;
 				});
@@ -140,6 +143,7 @@ export class DocumentsService {
 						as: "docType_info",
 					},
 				},
+				{ $sort : { "document_info.createdOn": -1 } }
 			]);
 		}
 	}

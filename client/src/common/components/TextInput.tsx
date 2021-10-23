@@ -34,6 +34,8 @@ function TextInput(props: TextInputProps): JSX.Element {
               "is-invalid",
             ]
           : ["", "is-valid"];
+
+         
     }
 
     props.onChange({

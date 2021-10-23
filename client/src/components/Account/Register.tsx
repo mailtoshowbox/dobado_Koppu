@@ -32,19 +32,51 @@ const Register: React.FC = () => {
         typeof value !== "undefined"
       ) {
         if (formState.password.value !== value) {
-          newError = "Confirm Passwords don't match.";
+          newError = "Confirm Passwords don't match.-";
         } else {
           newError = "";
         }
+
+       
       }
     }
+    
 
     setFormState({
       ...formState,
       [field]: { error: newError, value: value },
     });
   }
+  function hasPasswordFormValueChanged(model: OnChangeModel): void {
+    const { field = "", value = "", error } = model;
+    let newError = error;
 
+    if (field === "confirmPassword") {
+      if (
+        typeof formState.password.value !== "undefined" &&
+        typeof value !== "undefined" &&
+        value !== ""
+      ) {
+        if (formState.password.value !== value) {
+          newError = "Confirm Passwords don't match.-";
+        } else {
+          newError = "";
+        }
+
+       
+      }
+    }
+    if (newError === "" && value.toString().length < 8) {
+      newError = "Length should be min 8 charcters.";
+    }  
+    setFormState({
+      ...formState,
+      [field]: { error: newError, value: value },
+    });
+  }
+
+
+  
   function submit(e: FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     if (isFormInvalid()) {
@@ -187,7 +219,8 @@ const Register: React.FC = () => {
                           value={formState.email.value}
                           onChange={hasFormValueChanged}
                           required={true}
-                          maxLength={100}
+                          maxLength={16}
+                          minLength={8}
                           label="Email"
                           customError={formState.email.error}
                           placeholder="Email"
@@ -198,9 +231,10 @@ const Register: React.FC = () => {
                           id="input_password_1"
                           field="password"
                           value={formState.password.value}
-                          onChange={hasFormValueChanged}
+                          onChange={hasPasswordFormValueChanged}
                           required={true}
-                          maxLength={100}
+                          maxLength={16}
+                          minLength={8}
                           label="Password"
                           customError={formState.password.error}
                           placeholder="Password"
@@ -212,7 +246,7 @@ const Register: React.FC = () => {
                           id="input_confirmPassword"
                           field="confirmPassword"
                           value={formState.confirmPassword.value}
-                          onChange={hasFormValueChanged}
+                          onChange={hasPasswordFormValueChanged}
                           required={true}
                           maxLength={100}
                           label="Confirm Password"

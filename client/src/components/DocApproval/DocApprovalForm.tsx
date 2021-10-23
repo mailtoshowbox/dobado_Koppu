@@ -133,6 +133,7 @@ function ProductForm(props: productFormProps): JSX.Element {
     document_no: "",
     no_of_page: 0,
     no_of_copy: 0,
+    OriginalDocNum : ""
   });
 
   function hasFormValueChanged(model: OnChangeModel): void {
@@ -287,31 +288,7 @@ function ProductForm(props: productFormProps): JSX.Element {
       }
     }
 
-    /*  let boxInfoUpt = {
-          id: formState._id.value,
-          name: formState.name.value,
-          description: formState.description.value,
-          racks: formState.racks.value,
-        };
-        updateBox(boxInfoUpt, account).then((status) => {
-          dispatch(
-            saveFn({
-              ...box,
-              ...status,
-            })
-          );
-          getBoxList(account.auth).then((items: IBoxList) => {
-            dispatch(loadListOfBox(items));
-          });
-          dispatch(
-            addNotification(
-              "Box ",
-              `New Box ${formState.name.value} edited by you`
-            )
-          );
-          dispatch(clearSelectedBox());
-          dispatch(setModificationState(BoxModificationStatus.None));
-        }); */
+   
   }
 
   function saveRequest(formState: any, saveFn: Function, mode: String): void {
@@ -402,7 +379,8 @@ function ProductForm(props: productFormProps): JSX.Element {
   });
   function onClickDocumentEdit(cell: any, row: any, rowIndex: any) {
     updateDocumentEditorModal(true);
-    updateDocumentforEdit({ ...documentforEdit, ...row });
+
+    updateDocumentforEdit({ ...documentforEdit, ...row , OriginalDocNum : row.document_no});
   }
   function buttonFormatter(cell: any, row: any, rowIndex: any) {
     return (
@@ -418,11 +396,16 @@ function ProductForm(props: productFormProps): JSX.Element {
     );
   }
   function hasEditDocument(model: OnChangeModel): void {
-    updateDocumentforEdit({
-      ...documentforEdit,
-      [model.field]: model.value,
-      ["edited"]: true,
-    });
+
+
+  
+      updateDocumentforEdit({
+        ...documentforEdit,
+        [model.field]: model.value,
+        ["edited"]: true,
+      });
+  
+    
   }
   function closeDocUpdate(): void {
     updateDocumentEditorModal(false);
@@ -432,14 +415,17 @@ function ProductForm(props: productFormProps): JSX.Element {
     let newDocList: any = [];
 
     docList.map((cat1) => {
-      if (
-        cat1.document_no.toString() === documentforEdit.document_no.toString()
-      ) {
-        newDocList.push(documentforEdit);
-      } else {
-        newDocList.push(cat1);
+      if (  documentforEdit.OriginalDocNum  !== "" &&
+        cat1.document_no.toString() === documentforEdit.OriginalDocNum.toString()
+      ) { 
+        newDocList.push({...documentforEdit, ...{document_no:documentforEdit.document_no} });   
+      } else {newDocList.push(cat1); 
       }
     });
+
+  
+
+
     setFormState({
       ...formState,
       ["requested_doc"]: { value: newDocList },
@@ -666,77 +652,7 @@ function ProductForm(props: productFormProps): JSX.Element {
                       
                     </BootstrapTable>
                       </div>
-                  {/*   <div className="row">
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="emp_code"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="Emp Code"
-                          customError={""}
-                        />
-                      </div>
-
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="ref_no"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="Reference No"
-                          customError={""}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="description"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="Description"
-                          customError={""}
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="title"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=" "
-                          placeholder="title "
-                          customError={""}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="category"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="category"
-                          customError={""}
-                        />
-                      </div>
-                    </div>
-                */}   </div>
+                  </div>
                 )}
 
                 <div className="row">
@@ -904,11 +820,11 @@ function ProductForm(props: productFormProps): JSX.Element {
                           value={documentforEdit.document_no}
                           onChange={hasEditDocument}
                           required={false}
-                          maxLength={6}
+                          maxLength={10}
                           label="Document Number"
                           placeholder="Document Number"
                           customError={""}
-                          disabled={true}
+                          disabled={false}
                         />{" "}
                       </div>
                     </div>

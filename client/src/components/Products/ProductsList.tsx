@@ -16,12 +16,14 @@ function ProductList(props: productListProps): JSX.Element {
 	const products: IProductState = useSelector(
 		(state: IStateType) => state.products
 	);
-	function convertDate(str: Date) {
+	function convertDate(str: Date) {		 
+		if(str === null) {
+			return "-";
+		}
 		var date = new Date(str),
 			mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-			day = ("0" + date.getDate()).slice(-2);
-
-		return [date.getFullYear(), mnth, day].join("-");
+		day = ("0" + date.getDate()).slice(-2);
+		return [date.getFullYear(), mnth, day].join("-");	
 	}
 
 	function onClickProductSelected(cell: any, row: any, rowIndex: any) {

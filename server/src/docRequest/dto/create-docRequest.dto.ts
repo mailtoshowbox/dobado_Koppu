@@ -10,6 +10,8 @@ export class CreateDocRequestDto {
   readonly issuance: {};   
   readonly doc_requested_department: {};   
   readonly doc_requested_doctype: {};   
-  readonly document_request_info: {};   
+  readonly document_request_info: {};  
+  readonly requested_on: any;  
+   
   
 } 

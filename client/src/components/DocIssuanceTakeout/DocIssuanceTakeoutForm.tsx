@@ -10,9 +10,8 @@ import {
 } from "../../store/models/docIssuancetakeout.interface";
 
 import TextInput from "../../common/components/TextInput";
-import NumberInput from "../../common/components/NumberInput";
-import CheckboxInput from "../../common/components/Checkbox";
-import TextAreaInput from "../../common/components/TextAreaInput";
+ 
+import DateInput from "../../common/components/DateInput";
 
 import _uniqueId from "lodash/uniqueId";
 import { setModificationState } from "../../store/actions/docissuancetakeout.action";
@@ -487,6 +486,26 @@ const ProductForm: React.FC = () => {
       return <i className="fa fa-thumbs-up" aria-hidden="true"></i>;
     }
   }
+  function buttonFormatter_takeoutisuance(cell: any, row: any, rowIndex: any) {
+		const { issuance = {} } = row;
+		const { is_issued = false } = issuance;
+
+		if (!is_issued) {
+			return (
+				<>
+					<button
+						type="button"
+						className="btn btn-border"
+						onClick={() => onClickIssuanceDocumentEdit(cell, row, rowIndex)}
+					>
+						<i className="fas fa fa-pen"></i>
+					</button>
+				</>
+			);
+		} else {
+			return <i className="fa fa-thumbs-up" aria-hidden="true"></i>;
+		}
+	}
   function closeDocUpdate(): void {
     updateIssuanceDocumentEditorModal(false);
   }
@@ -498,7 +517,9 @@ const ProductForm: React.FC = () => {
     });
   }
   function updateIssuanceDocument(): void {
-    let docList = docIssuance?.requested_doc ? docIssuance?.requested_doc : [];
+
+    console.log("issuanceDocumentforEdit---", issuanceDocumentforEdit);
+    /* let docList = docIssuance?.requested_doc ? docIssuance?.requested_doc : [];
     let newDocList: any = [];
 
     docList.map((cat1: any) => {
@@ -515,7 +536,7 @@ const ProductForm: React.FC = () => {
       ...formState,
       ["requested_doc"]: { value: newDocList },
     });
-    updateIssuanceDocumentEditorModal(false);
+    updateIssuanceDocumentEditorModal(false); */
   }
 
   const approved_doc_issuance: any = selectedDocForPrint.doc_issuance
@@ -668,6 +689,12 @@ const ProductForm: React.FC = () => {
       dispatch(addNotification("Document issued", `Document request issued`));
     }) 
   };
+
+  
+	var future = new Date();
+	future.setDate(future.getDate() + 30);
+
+
   return (
     <Fragment>
       <div className="col-xl-12 col-lg-12">
@@ -893,7 +920,14 @@ const ProductForm: React.FC = () => {
                       No of Pages
                     </TableHeaderColumn>
 
-                   
+                    <TableHeaderColumn
+												dataField="button"
+												className="thead-light-1"
+												width="10%"
+												dataFormat={buttonFormatter_takeoutisuance}
+											>
+												Action TO
+											</TableHeaderColumn>
                   </BootstrapTable>
                 </div>
                 )}
@@ -989,7 +1023,7 @@ const ProductForm: React.FC = () => {
                   <h5 className="modal-title" id="exampleModalLabel">
                     <b>
                       {" "}
-                      Edit Document {issuanceDocumentforEdit.document_name}
+                      Issue Document {issuanceDocumentforEdit.document_name}
                     </b>
                   </h5>
                 </div>
@@ -1014,75 +1048,25 @@ const ProductForm: React.FC = () => {
                         />{" "}
                       </div>
                     </div>
-                    <div className="row">
+                    <div className="row"> 
                       <div
                         className="mb-3 col-md-8"
                         style={{ textAlign: "left" }}
                       >
-                        <TextInput
-                          id="input_request_no"
-                          field="document_name"
-                          value={issuanceDocumentforEdit.document_name}
-                          onChange={hasEditIssuanceDocument}
-                          required={false}
-                          maxLength={6}
-                          label="Document Name"
-                          placeholder="Document Name"
-                          customError={""}
-                        />{" "}
+                      <DateInput
+											id="takeout_return_date"
+											field="takeout_return_date"
+											value={ future
+											}
+											required={false}
+											label="TakeOut Return date( Default  : 30 Days)"
+											placeholder="Return date"
+											onChange={hasFormValueChanged}
+										/> 
+                        {" "}
                       </div>
                     </div>
-                    <div className="row">
-                      <div
-                        className="mb-3 col-md-8"
-                        style={{ textAlign: "left" }}
-                      >
-                        <NumberInput
-                          id="input_request_no"
-                          field="no_of_copy"
-                          value={issuanceDocumentforEdit.no_of_copy}
-                          onChange={hasEditIssuanceDocument}
-                          label="No of Copy"
-                          customError={""}
-                        />{" "}
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div
-                        className="mb-3 col-md-8"
-                        style={{ textAlign: "left" }}
-                      >
-                        <NumberInput
-                          id="input_request_no"
-                          field="no_of_page"
-                          value={issuanceDocumentforEdit.no_of_page}
-                          onChange={hasEditIssuanceDocument}
-                          label="No of page"
-                          customError={""}
-                        />{" "}
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div
-                        className="mb-3 col-md-8"
-                        style={{ textAlign: "left" }}
-                      >
-                        <div>
-                          <TextAreaInput
-                            id="input_request_no"
-                            field="reason_for_request"
-                            value={issuanceDocumentforEdit.reason_for_request}
-                            onChange={hasEditIssuanceDocument}
-                            required={false}
-                            maxLength={100}
-                            label="Reason for Request"
-                            placeholder="Reason for Request"
-                            customError={""}
-                          />{" "}
-                        </div>
-                      </div>
-                    </div>
+                 
                   </div>
                 </div>
                 <div className="modal-footer">

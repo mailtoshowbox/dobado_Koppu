@@ -224,6 +224,14 @@ function convertRetentionExactDate(cell: any, row: any) {
 					Name
 				</TableHeaderColumn>
 				<TableHeaderColumn
+					dataField="name"
+					width="16%"
+					className="thead-light-1"
+				 
+				>
+					Name
+				</TableHeaderColumn>
+				<TableHeaderColumn
 			 
 					className="thead-light-1"
 					dataFormat={getDocType}

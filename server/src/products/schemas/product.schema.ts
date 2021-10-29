@@ -43,6 +43,10 @@ export class DocumentRequestInfo extends Document {
 	
 	@Prop()
 	document_issued_from: string;
+
+	@Prop()
+	document_request_approved: [];
+	
 }
 export class TakeoutInfo extends Document {
 	@Prop()

@@ -36,6 +36,7 @@ export class UserDto {
   readonly birthdaydate: Date;
   readonly approved: boolean;
   readonly isAllowedForApproval: boolean;
+  readonly isRemoved: boolean;
   readonly emp_id: string;
   settings: SettingsDto
   photos: {

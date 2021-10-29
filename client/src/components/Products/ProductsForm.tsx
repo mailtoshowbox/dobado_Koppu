@@ -60,9 +60,7 @@ const ProductForm: React.FC = () => {
 	let product: IProduct | null = products.selectedProduct;
 	const isCreate: boolean =
 		products.modificationState === ProductModificationStatus.Create;
-console.log("account----", account);
 	const { roles = [], name, email, emp_id } = account;
-
 	const [boxRacks, setBoxRacks] = useState([]);
 	const [formWithError, setFormWithError] = useState(false);
 	const [pickRack, setPickedRack] = useState(false);
@@ -123,13 +121,14 @@ console.log("account----", account);
 			type_of_space: "",
 			document_type: "",
 			qr_code: "",
-			manufacturedate: new Date(),
-			expiredate: new Date(),
+			manufacturedate: "",
+			expiredate: "",
 			document_info: {},
 			retension_time: {
 				time: 0,
 				defaultYear: 4,
 				calculateNonPerceptualTime: "",
+				retension_exact_date : ""
 			},
 			document_request_info: {},
 			takeout_return_date: new Date(),
@@ -159,6 +158,8 @@ console.log("account----", account);
 		}
 	}
 
+	console.log("product---", product);
+
 	const [formState, setFormState] = useState({
 		_id: { error: "", value: product._id },
 		name: { error: "", value: product.name },
@@ -174,10 +175,10 @@ console.log("account----", account);
 		expiredate: { error: "", value: product.expiredate },
 		retension_time: {
 			error: "",
-			value: {
+			value: { 
 				time: product.retension_time.time,
 				defaultYear: product.retension_time.defaultYear,
-				retension_exact_date : new Date(),
+				retension_exact_date : product.retension_time.retension_exact_date, 
 				calculateNonPerceptualTime:
 					product.retension_time.calculateNonPerceptualTime,
 			},
@@ -200,16 +201,6 @@ console.log("account----", account);
 			});
 		});
 	}
-	// function makeid() {
-	//   var text = "";
-	//   var possible =
-	//     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-	//   for (var i = 0; i < 5; i++)
-	//     text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-	//   return text;
-	// }
 	function add_years(n: number) {
 		let dt = new Date();
 		const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
@@ -220,11 +211,16 @@ console.log("account----", account);
 	}
 
 	function hasRetensionChanged(model: OnChangeModel) {
-		const { value = 0 } = model;
-		let timeSeed = parseInt(value.toString());
+		const value : any = model.value ||{};
+		const selDate:any  = value.value;
+ 
 
-		const {exactDate = '' , rentention=''} = add_years(timeSeed);
-
+		
+		let timeSeed = new Date(selDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+		
+		
+		const {  rentention=''} = add_years(timeSeed);
+		console.log("model", model, selDate, timeSeed);
 		setFormState({
 			...formState,
 			["retension_time"]: {
@@ -232,7 +228,7 @@ console.log("account----", account);
 				value: {
 					time: timeSeed,
 					defaultYear: 3,
-					retension_exact_date: new Date(exactDate),
+					retension_exact_date: new Date(selDate).toString(),
 					calculateNonPerceptualTime: rentention.toString(),
 				},
 			},
@@ -277,7 +273,7 @@ console.log("account----", account);
 							value: {
 								time: 0,
 								defaultYear: 3,
-								retension_exact_date : new Date(),
+								retension_exact_date : new Date().toString(),
 								calculateNonPerceptualTime: "",
 							},
 						},
@@ -332,7 +328,7 @@ console.log("account----", account);
 	}
 
 	function saveForm(
-		formState: IProductFormState,
+		formState: IProductFormState,     
 		saveFn: Function,
 		mode: String
 	): void {
@@ -795,8 +791,8 @@ console.log("account----", account);
 										field="manufacturedate"
 										value={
 											formState.manufacturedate.value
-												? formState.manufacturedate.value
-												: new Date()
+												? new Date(formState.manufacturedate.value)
+												: new Date('0001-01-01T00:00:00Z')
 										}
 										required={false}
 										label="Manufacture date"
@@ -811,7 +807,7 @@ console.log("account----", account);
 										value={
 											formState.expiredate.value
 												? new Date(formState.expiredate.value)
-												: new Date()
+												: new Date('0001-01-01T00:00:00Z')
 										}
 										required={false}
 										label="Expire date   "

@@ -1,20 +1,17 @@
 import React, { useState, ChangeEvent } from "react";
-
+import DateInput from "../../common/components/DateInput";
 function TextInput(props: any): JSX.Element {
   const [touched, setTouch] = useState(false);
   const [, setError] = useState("");
   const [, setHtmlClass] = useState("");
   const [, setValue] = useState(0);
 
-  function onValueChanged(event: ChangeEvent<HTMLInputElement>): void {
-    let [error, validClass, elementValue] = ["", "", event.target.value];
+  function onValueChanged(dateValue: ChangeEvent<HTMLInputElement>): void {
+    let [error, validClass, elementValue] = ["", "", dateValue];
 
-    if (elementValue.length > 2) {
-      elementValue = elementValue.slice(0, 2);
-    }
-
+   
     props.onChange({
-      value: parseInt(elementValue),
+      value: elementValue,
       error: error,
       touched: touched,
       field: props.field,
@@ -22,26 +19,19 @@ function TextInput(props: any): JSX.Element {
 
     setTouch(true);
     setError(error);
-    setHtmlClass(validClass);
-    setValue(parseInt(elementValue));
+    setHtmlClass(validClass); 
   }
+ 
 
-  //function add_years(n: number) {
-   // return 2;
-    //return new Date(dt.setFullYear(dt.getFullYear() + n));
-  //}
-
-  //let dt = new Date();
-
-  const {
-    
+  const {    
     value: { time = 0, calculateNonPerceptualTime = "MM/YY" },
   } = props;
+
+  console.log("PROPS",props );
 
   return (
     <div className="form-row">
       <div className="form-group col-md-6">
-        <label style={{ color: "#736AFF" }}>{"To be retention Upto"}</label>
         <input
           value={time}
           onChange={onValueChanged}
@@ -50,13 +40,26 @@ function TextInput(props: any): JSX.Element {
           placeholder={"YY"}
           min="1"
           max="99"
+          style={{"display":"none"}}
         />
+
+<DateInput
+										id="retension_exact_date"
+										field="retension_exact_date"
+										value={ new Date(props.value.retension_exact_date)
+										}
+										required={false}
+										label="To be retention Upto"
+										placeholder="Manufacture date"
+										onChange={onValueChanged}
+                    
+									/>
       </div>
       <div
         className="form-group col-md-6"
         style={{
           padding: "35px 36px 4px 1px",
-          textAlign: "left",
+          textAlign: "left","display":"none"
         }}
       >
         { calculateNonPerceptualTime ?

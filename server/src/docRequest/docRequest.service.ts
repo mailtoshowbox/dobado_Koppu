@@ -277,8 +277,9 @@ export class DocRequestService {
 			doc_type = "0",
 			requested_doc = [],
 			request_no = "",
-			empl_id = "0",
+			empl_id = "0", 
 		} = DocRequest;
+
 
 		if (doc_type === "6") {
 			console.log("^^^^^^");
@@ -356,13 +357,14 @@ export class DocRequestService {
 				}
 			});
 		} else {
-			console.log("PAGE---", page);
 			if (page === "issueGenaralIssuance") {
 				const {
+					requested_on="",
 					requested_doc = [],
 					doc_type = "0",
 					issuance: { doc_issued_by = [] },
 					doc_requested_department = {},
+					approval =[]
 				} = DocRequest; 
 				requested_doc.map((doc: any) => {
 					if (doc.is_doc_approved && !doc.is_doc_issued) {
@@ -395,6 +397,8 @@ export class DocRequestService {
 									is_Active: true,
 									retension_time: "",
 									document_request_info: {
+										document_requested_on : requested_on,
+										document_request_approved: approval,
 										document_issued_from: document_no,
 										document_request_no: DocRequest.request_no,
 										document_issued_on: new Date(),
@@ -407,7 +411,6 @@ export class DocRequestService {
 									},
 								};
 
-								console.log("newDcoument-1--", newDcoument);
 								const newProduct = new this.documentModal(newDcoument);
 								newProduct.isActive = false;
 								newProduct.isRequestedDocument = true;
@@ -447,8 +450,6 @@ export class DocRequestService {
 										document_request_doc_type: DocRequest.doc_requested_doctype,
 									},
 								};
-
-								console.log("newDcoument--2-", newDcoument);
 								const newProduct = new this.documentModal(newDcoument);
 								newProduct.isActive = false;
 								newProduct.isRequestedDocument = true;

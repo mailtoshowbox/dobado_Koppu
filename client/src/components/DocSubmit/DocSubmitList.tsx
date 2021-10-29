@@ -194,6 +194,24 @@ function ProductList(props: productListProps): JSX.Element {
 			return <div>{name}</div>;
 		}
 	}
+	function document_request_format_doctype_cate(
+		cell: any,
+		row: any,
+		field: any
+	) {
+		const {
+			document_type_details: { name = '' } = {},
+		 } = row;
+	 
+
+	 
+			return (
+				<div>
+					{name} 
+				</div>
+			);
+		 
+	}
 
 	function document_request_format_gen_name(
 		cell: any,
@@ -271,6 +289,7 @@ function ProductList(props: productListProps): JSX.Element {
 					dataField="category"
 					className="thead-light-1"
 					width="8%"
+					dataFormat={document_request_format_doctype_cate}
 				>
 					Doc Type
 				</TableHeaderColumn>

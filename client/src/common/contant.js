@@ -33,7 +33,7 @@ const APP_CONST = {
     "EXPORT_CSV_COLUMN":
         [
             { "FIELD_LABEL": 'Req No', "FIELD_NAME": "document_request_info.document_request_no", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'Ref No', "FIELD_NAME": "document_no", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Ref No', "FIELD_NAME": "Reference No", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Doc No', "FIELD_NAME": "document_no", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Doc title', "FIELD_NAME": "name", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Doc type', "FIELD_NAME": "document_type", "FIELD_VALUE": true },
@@ -45,10 +45,10 @@ const APP_CONST = {
             { "FIELD_LABEL": 'Sub on', "FIELD_NAME": "document_request_info.document_submitted_on", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Sub by', "FIELD_NAME": "document_request_info.document_submitted_by", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Reason', "FIELD_NAME": "reason_for_request", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'R By', "FIELD_NAME": "request_no", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'R on', "FIELD_NAME": "request_no", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'R By', "FIELD_NAME": "Received By", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'R on', "FIELD_NAME": "Received On", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'S loc', "FIELD_NAME": "Location", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'TO by', "FIELD_NAME": "request_no", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'TO by', "FIELD_NAME": "TO By", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'To be dest', "FIELD_NAME": "To be destruct", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Dest on', "FIELD_NAME": "Destructed On", "FIELD_VALUE": true }
         ], "EXPORT_PDF_COLUMN_LOG_SHEET":

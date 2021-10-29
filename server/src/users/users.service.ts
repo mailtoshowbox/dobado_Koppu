@@ -19,7 +19,7 @@ export class UsersService {
 
   
   async findAll(): Promise<User[]> {
-    return await this.userModel.find({ roles: { $nin: ["Superadmin"] } }).exec();
+    return await this.userModel.find({ roles: { $nin: ["Superadmin"] } ,  isRemoved : { $ne: true }}).exec();
   }
 
   async findByEmail(email: string): Promise<User> {
@@ -73,29 +73,16 @@ export class UsersService {
   }
 
   async updateProfile(profileDto: ProfileDto): Promise<User> {
- 
 
-    let userFromDb = await this.userModel.findOne({ _id: profileDto._id});
 
-    
-
-   
-    
-    
+    let userFromDb = await this.userModel.findOne({ _id: profileDto._id});  
     if(!userFromDb) throw new HttpException('COMMON.USER_NOT_FOUND', HttpStatus.NOT_FOUND);
- 
-
-
     userFromDb.isAllowedForApproval = profileDto.isAllowedForApproval;
-    
-    userFromDb.emp_id = profileDto.emp_id;
-     
-    if(profileDto.roles) userFromDb.roles = [...profileDto.roles];
-    
-    if(profileDto.departments) userFromDb.departments =profileDto.departments;
- 
- 
+    userFromDb.emp_id = profileDto.emp_id; 
 
+    userFromDb.isRemoved = profileDto.isRemoved ? profileDto.isRemoved:false;
+    if(profileDto.roles) userFromDb.roles = [...profileDto.roles];
+    if(profileDto.departments) userFromDb.departments =profileDto.departments;
      await userFromDb.save();
     return userFromDb;
 

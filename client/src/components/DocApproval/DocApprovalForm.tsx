@@ -223,6 +223,7 @@ function ProductForm(props: productFormProps): JSX.Element {
           formState.approval.value.map((apprv: any) => {
             if (apprv.empl_id === account.emp_id) {
               apprv.status = "approved";
+              apprv.approvedOn = new Date();
             }
           });
         }

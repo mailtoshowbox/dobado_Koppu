@@ -34,6 +34,9 @@ export class RequestedDocumentsApproval extends Document {
 
   @Prop()
   approve_access_level: string;
+
+  @Prop()
+  approvedOn: string;
  
 }
 
@@ -145,6 +148,10 @@ export class DocRequests extends Document {
 
   @Prop()
   doc_requested_doctype : MasterRowFormat
+
+  
+  @Prop()
+  requested_on: string;
   
 }
 

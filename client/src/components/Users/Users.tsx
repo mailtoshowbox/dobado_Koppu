@@ -61,6 +61,7 @@ const Users: React.FC = () => {
     emp_id: "XXXXXX",
     isAllowedForApproval: false,
     departments: [],
+    isRemoved : false
   });
   function closeDocUpdate(): void {
     updateModalForEditActiveUser(false);
@@ -92,6 +93,16 @@ const Users: React.FC = () => {
         updateModalForEditActiveUser(!openModalForEditActiveUser);
       });
     });
+  }
+
+  function removeUser(user:any ): void { 
+    let userUpdate = user;
+      userUpdate = Object.assign(userUpdate, {isRemoved:true});  
+      updateUserProfile(userUpdate, account).then((status) => {
+      getUserList(account.auth).then((items: IUserList) => {
+        dispatch(loadListOfuser(items)); 
+      });
+    }); 
   }
 
   const userRoles = [
@@ -191,7 +202,7 @@ const selected_department_details= listOfDept.find((dept)=> dept.id === model.va
     return (
       <div className="form-group usrpopup">
         <div className="row">
-          <div className="mb-3">Edit User</div>
+          <div className="mb-3">Edit 1</div>
         </div>
         <div className="row">
           <div className="mb-3">
@@ -295,9 +306,11 @@ const selected_department_details= listOfDept.find((dept)=> dept.id === model.va
   const userApprovalFormatter = (cell: any, row: any) => {
     return row.isAllowedForApproval ? "Allowed" : "Not Allowed";
   };
-  const userActionEditor = (onUpdate: any, props: any) => (
-    <EditUser1 onUpdate={onUpdate} {...props} />
-  );
+  const userActionEditor = (onUpdate: any, props: any) => {
+
+   return  <EditUser1 onUpdate={onUpdate} {...props} />
+  
+    }
 
   const openModalToEditActiveUser = (props: any) => {
     // if (inActiveUserEdit.name === "") {
@@ -323,9 +336,19 @@ const selected_department_details= listOfDept.find((dept)=> dept.id === model.va
       );
     }
     return (
+      <>
       <button className="btn btn-light" disabled>
         {"Update"}
       </button>
+       
+
+      <button
+                className="btn btn-primary"
+                onClick={(event: any) => removeUser(row)}
+              >
+                Remove
+              </button>
+      </>
     );
   };
 
@@ -460,7 +483,7 @@ const selected_department_details= listOfDept.find((dept)=> dept.id === model.va
                   data={users}
                   pagination={true}
                   hover={true}
-                  cellEdit={{ mode: "click" }}
+                  
                 >
                   <TableHeaderColumn
                     dataField="_id"
@@ -497,7 +520,7 @@ const selected_department_details= listOfDept.find((dept)=> dept.id === model.va
                     className="thead-light-1"
                     width="20%"
                     dataFormat={actionCoumnFormatter}
-                    customEditor={{ getElement: userActionEditor }}
+                    
                   >
                     Action
                   </TableHeaderColumn>

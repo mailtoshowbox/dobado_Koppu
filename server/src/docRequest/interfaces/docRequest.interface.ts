@@ -22,6 +22,8 @@ export interface DocRequest {
   issuance :any;
   doc_requested_department : any;
   doc_requested_doctype : any;
+  approval : any;
+  requested_on : any
 } 
 
  interface RequestedDoc {

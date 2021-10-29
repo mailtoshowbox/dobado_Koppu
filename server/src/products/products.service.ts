@@ -22,9 +22,6 @@ export class DocumentsService {
 	) { }
 
 	async findAll(mode, id = null): Promise<Document[]> { 
-
-		console.log("mode--->>", mode);   
-
 		if (mode === "issued") {  
 			return await this.productModel
 				.find(
@@ -111,7 +108,6 @@ export class DocumentsService {
 						},
 					},
 				},
-
 				{
 					$lookup: {
 						from: "racks",
@@ -444,7 +440,71 @@ export class DocumentsService {
  
 
 
-		return await this.productModel.aggregate([
+		return await this.productModel.aggregate([		
+				{
+					$addFields: {
+						converted_rack: {
+							$convert: {
+								input: "$rack",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+						converted_category: {
+							$convert: {
+								input: "$category",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+						converted_box: {
+							$convert: {
+								input: "$box",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+						converted_doctype: {
+							$convert: {
+								input: "$document_type",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+					},
+				},
+				{
+					$lookup: {
+						from: "racks",
+						localField: "converted_rack",
+						foreignField: "_id",
+						as: "rack_info",
+					},
+				},
+				{
+					$lookup: {
+						from: "doccategories",
+						localField: "converted_category",
+						foreignField: "_id",
+						as: "category_info",
+					},
+				},
+				{
+					$lookup: {
+						from: "boxes",
+						localField: "converted_box",
+						foreignField: "_id",
+						as: "box_info",
+					},
+				},
+				{
+					$lookup: {
+						from: "doctypes",
+						localField: "converted_doctype",
+						foreignField: "_id",
+						as: "docType_info",
+					},
+				},
 			{
 				"$addFields": {
 					"document_info.createdOn": {
@@ -469,31 +529,7 @@ export class DocumentsService {
 				}
 			}
 
-			//{ "$match": {"document_info.createdOn": { "$gte": date1, "$lt":date2}}  } 
 		])
-
-		/* 	return await this.productModel
-				.find({
-					$or: [
-						{
-							"document_request_info.document_issued_on": {
-								$gte: date1,
-								$lt: date2,
-							},
-						},
-						{
-							"document_info.createdOn": {
-								$gte: date1,
-								$lte: date2,
-							},
-							isRequestedDocument: false,
-							"document_info.status": "approved",
-						},
-					],
-				})
-				.then((res: any) => {
-					return res;
-				}); */
 	}
 
 	async getDestructiveDocList({

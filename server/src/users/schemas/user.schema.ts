@@ -14,6 +14,8 @@ export const UserSchema = new mongoose.Schema({
   approved: { type: Boolean, default: false },
   isAllowedForApproval: { type: Boolean, default: false },
   emp_id :{ type: String, default: "XXXXXX" },
+  isRemoved: { type: Boolean, default: false },
+   
   auth: {
     email : {
       valid : { type: Boolean, default: false }

@@ -68,7 +68,6 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		return "-";
 	}
 
-
 	function document_issued_on_format(cell: any, row: any) {
 		const dvv =
 			row.document_request_info &&
@@ -102,15 +101,18 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		return row.document_request_info &&
 			row.document_request_info["document_issued_by"]
 			? row.document_request_info["document_issued_by"]
-			: "-";			
+			: "-";
 	}
 	function document_submitted_department_format(cell: any, row: any) {
-		if(row.document_request_info  && row.document_request_info.document_request_department){
-if(row.document_request_info.document_request_department.name){
-	return row.document_request_info.document_request_department.name;
-}
-		} 
-		return   "-"; 
+		if (
+			row.document_request_info &&
+			row.document_request_info.document_request_department
+		) {
+			if (row.document_request_info.document_request_department.name) {
+				return row.document_request_info.document_request_department.name;
+			}
+		}
+		return "-";
 	}
 	function document_type_format(cell: any, row: any) {
 		if (row.document_type_details) {
@@ -120,49 +122,119 @@ if(row.document_request_info.document_request_department.name){
 	}
 	function batch_format(cell: any, row: any) {
 		let batch = "";
-		if (!row.isRequestedDocument) {	
-			const {document_box_details={}, document_category_details={},document_rack_details={}} = row;
-			batch += document_category_details.name ? document_category_details.name+'/' : "";
-			batch += document_box_details.name ? document_box_details.name+'/' : "";
-			batch += document_rack_details.name ? document_rack_details.name+'/' : "";
-			return batch;			 
-		}else{
-			batch = "-";
+		if (!row.isRequestedDocument) {
+			const {
+				document_box_details = {},
+				document_category_details = {},
+				document_rack_details = {},
+			} = row;
+			batch += document_category_details.name
+				? document_category_details.name + "/"
+				: "";
+			batch += document_box_details.name ? document_box_details.name + "/" : "";
+			batch += document_rack_details.name
+				? document_rack_details.name + "/"
+				: "";
+			return batch;
+		} else {
+			const { batch = "-" } = row;
+			return batch;
 		}
-		return batch;		 
 	}
 	//
 	function retension_exact_date_format(cell: any, row: any) {
 		let batch = "";
-		if (!row.isRequestedDocument) {	
-			const {retension_time:{retension_exact_date="", status =""}={} } = row;	
+		if (!row.isRequestedDocument) {
+			const {
+				retension_time: { retension_exact_date = "", status = "" } = {},
+			} = row;
 			//if(status === 'destructed'){
-				//return "Destructed";
-			//}		 
-			return convertDate(retension_exact_date);			 
-		}else{
+			//return "Destructed";
+			//}
+			return convertDate(retension_exact_date);
+		} else {
 			batch = "-";
 		}
-		return batch;		 
+		return batch;
 	}
 
 	function retension_destructed_on_format(cell: any, row: any) {
 		let batch = "";
-		if (!row.isRequestedDocument) {	
-			const {retension_time:{destructed_on=""}={} } = row;		 	 
-			return convertDate(destructed_on);			 
-		}else{
+		if (!row.isRequestedDocument) {
+			const { retension_time: { destructed_on = "" } = {} } = row;
+			return convertDate(destructed_on);
+		} else {
 			batch = "-";
 		}
-		return batch;		 
+		return batch;
 	}
-	
-	function document_type_issueto(cell: any, row: any) {
+	function receivedBy(cell: any, row: any) {
+		let batch = "";
+		if (row.isRequestedDocument) {
+			const { document_request_info: { document_request_approved = [] } = {} } =
+				row;
 
+			const apr =
+				document_request_approved.length > 0
+					? document_request_approved[0]
+					: { empl_id: "-" };
+			console.log("document_request_approved", document_request_approved);
+
+			batch = apr["empl_id"];
+		} else {
+			batch = "-";
+		}
+		return batch;
+	}
+
+	function receivedOn(cell: any, row: any) {
+		let batch = "";
+		if (
+			row.document_request_info &&
+			row.document_request_info.document_requested_on
+		) {
+			batch = convertDate(row.document_request_info.document_requested_on);
+		}
+
+		return batch;
+	}
+
+	function takeoutBy(cell: any, row: any) {
+		let batch = "-";
+		const { is_requested_for_takeout = false } = row;
+		if (is_requested_for_takeout) {
+			const {
+				takeout_requested_details: { takeout_request_details_list = [] } = {},
+			} = row;
+			if (takeout_request_details_list.length > 0) {
+				let takeout_request_details =
+					takeout_request_details_list[takeout_request_details_list.length - 1];
+				const { requested_by = "" } = takeout_request_details;
+				batch = requested_by
+			} else {
+				batch = "N/A";
+			}
+		}
+		return batch;
+	}
+
+	function format_reference_no(cell: any, row: any) {
+		let batch = "";
+		if (row.isRequestedDocument) {
+			const { document_request_info: { document_issued_from = "" } = {} } = row;
+			batch = document_issued_from;
+		} else {
+			batch = "-";
+		}
+
+		return batch;
+	}
+
+	function document_type_issueto(cell: any, row: any) {
 		return row.document_request_info &&
-		row.document_request_info.document_issued_to
-		? row.document_request_info.document_issued_to
-		: "-";
+			row.document_request_info.document_issued_to
+			? row.document_request_info.document_issued_to
+			: "-";
 	}
 	function request_no_format(cell: any, row: any) {
 		return row.document_request_info &&
@@ -188,14 +260,16 @@ if(row.document_request_info.document_request_department.name){
 	function document_submitted_on_nr_format(cell: any, row: any, inpu: any) {
 		let submittedOn = "";
 		if (!row.isRequestedDocument) {
-			submittedOn =  row.document_info && row.document_info.createdOn
-				? row.document_info.createdOn
-				: "";
-		}else{
-			submittedOn =  row.document_request_info &&
-			row.document_request_info["document_submitted_on"]
-			? row.document_request_info["document_submitted_on"]
-			: "";
+			submittedOn =
+				row.document_info && row.document_info.createdOn
+					? row.document_info.createdOn
+					: "";
+		} else {
+			submittedOn =
+				row.document_request_info &&
+				row.document_request_info["document_submitted_on"]
+					? row.document_request_info["document_submitted_on"]
+					: "";
 		}
 		return convertDate(submittedOn);
 	}
@@ -242,6 +316,18 @@ if(row.document_request_info.document_request_department.name){
 					const { document_request_info: { document_request_no = "" } = {} } =
 						log;
 					ar[fieldName] = document_request_no;
+				} else if (fieldName === "rdocument_no") {
+					let bs = "";
+					if (isRequestedDocument) {
+						const {
+							isRequestedDocument = false,
+							document_request_info: { document_issued_from = "" } = {},
+						} = log;
+						bs = document_issued_from;
+					} else {
+						bs = "-";
+					}
+					ar[fieldName] = bs;
 				} else if (fieldName === "document_request_info.document_issued_on") {
 					ar[fieldName] = convertDate(document_issued_on);
 				} else if (fieldName === "document_request_info.document_issued_to") {
@@ -335,7 +421,8 @@ if(row.document_request_info.document_request_department.name){
 			>
 				{props.selectedFieldsToDownload
 					.filter((item: any) => item.FIELD_VALUE)
-					.map((column: any) => { 
+					.map((column: any) => {
+						console.log("column.FIELD_NAME---", column.FIELD_NAME);
 						if (
 							column.FIELD_NAME === "document_request_info.document_request_no"
 						) {
@@ -344,6 +431,39 @@ if(row.document_request_info.document_request_department.name){
 									csvHeader={column.FIELD_LABEL}
 									dataFormat={request_no_format}
 									csvFormat={request_no_format}
+									dataField={column.FIELD_NAME}
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
+							);
+						} else if (column.FIELD_NAME === "TO By") {
+							return (
+								<TableHeaderColumn
+									dataFormat={takeoutBy}
+									csvFormat={takeoutBy}
+									formatExtraData={column}
+									dataField={column.FIELD_NAME}
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
+							);
+						} else if (column.FIELD_NAME === "Received By") {
+							return (
+								<TableHeaderColumn
+									dataFormat={receivedBy}
+									csvFormat={receivedBy}
+									formatExtraData={column}
+									dataField={column.FIELD_NAME}
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
+							);
+						} else if (column.FIELD_NAME === "Received On") {
+							return (
+								<TableHeaderColumn
+									dataFormat={receivedOn}
+									csvFormat={receivedOn}
+									formatExtraData={column}
 									dataField={column.FIELD_NAME}
 								>
 									{column.FIELD_LABEL}
@@ -362,13 +482,17 @@ if(row.document_request_info.document_request_department.name){
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						}else if (column.FIELD_NAME === "document_request_info.document_issued_to") {							
+						} else if (
+							column.FIELD_NAME === "document_request_info.document_issued_to"
+						) {
 							return (
-								<TableHeaderColumn								
+								<TableHeaderColumn
 									dataFormat={document_type_issueto}
-									csvFormat={document_type_issueto}						 
+									csvFormat={document_type_issueto}
 									dataField={column.FIELD_NAME}
-								>{column.FIELD_LABEL}</TableHeaderColumn>
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
 							);
 						} else if (
 							column.FIELD_NAME === "document_request_info.document_issued_by"
@@ -376,10 +500,11 @@ if(row.document_request_info.document_request_department.name){
 							return (
 								<TableHeaderColumn
 									csvHeader={column.FIELD_LABEL}
-									dataFormat={document_issued_by_format}								 
+									dataFormat={document_issued_by_format}
 									csvFormat={document_issued_by_format}
 									dataField={column.FIELD_NAME}
-								>{column.FIELD_LABEL}
+								>
+									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
 						} else if (
@@ -430,7 +555,7 @@ if(row.document_request_info.document_request_department.name){
 									csvFormat={document_type_format}
 									formatExtraData={column}
 									dataField={column.FIELD_NAME}
-								> 
+								>
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
@@ -445,7 +570,7 @@ if(row.document_request_info.document_request_department.name){
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						}   else if (column.FIELD_NAME === "To be destruct") {
+						} else if (column.FIELD_NAME === "To be destruct") {
 							return (
 								<TableHeaderColumn
 									dataFormat={retension_exact_date_format}
@@ -456,7 +581,7 @@ if(row.document_request_info.document_request_department.name){
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						}else if (column.FIELD_NAME === "Destructed On") {
+						} else if (column.FIELD_NAME === "Destructed On") {
 							return (
 								<TableHeaderColumn
 									dataFormat={retension_destructed_on_format}
@@ -467,9 +592,19 @@ if(row.document_request_info.document_request_department.name){
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
+						} else if (column.FIELD_NAME === "Reference No") {
+							return (
+								<TableHeaderColumn
+									dataFormat={format_reference_no}
+									csvFormat={format_reference_no}
+									formatExtraData={column}
+									dataField={column.FIELD_NAME}
+								>
+									{column.FIELD_LABEL}
+								</TableHeaderColumn>
+							);
 						}
 						//
-						
 						else {
 							return (
 								<TableHeaderColumn

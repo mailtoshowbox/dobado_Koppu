@@ -8,10 +8,13 @@ export interface IProduct {
     document_type: string;
     type_of_space: string;
     qr_code: string;
-    manufacturedate: Date;
-    expiredate: Date;
+    manufacturedate: string;
+    expiredate: string;
     document_info: any;
-    retension_time: { time: Number, defaultYear: Number, calculateNonPerceptualTime: String },
+    retension_time: {
+         time: Number, defaultYear: Number, 
+         calculateNonPerceptualTime: String,
+         retension_exact_date :string },
     document_request_info: any;
     is_requested_for_takeout: boolean;
     takeout_return_date: Date;

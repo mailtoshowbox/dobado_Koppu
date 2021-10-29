@@ -35,14 +35,20 @@ function TextInput(props: TextInputProps): JSX.Element {
 
     //setStartDate(new Date(dateValue));
   }
-
+  let selectedDate = null;
+  if(props.value !== undefined){
+    if(new Date(props.value).getUTCFullYear()  !==1) {
+      selectedDate =   new Date(props.value)
+    }
+  }
+  
   return (
     <div>
       <label htmlFor={props.id.toString()}>{props.label}</label>
 
       <DatePicker
         className={"form-control"}
-        selected={new Date(props.value)}
+        selected={selectedDate}
         isClearable
         closeOnScroll={true}
         placeholderText={props.placeholder}

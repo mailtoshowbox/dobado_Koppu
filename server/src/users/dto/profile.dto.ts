@@ -11,11 +11,13 @@ export class ProfileDto {
     this.emp_id = object.emp_id;
     this._id = object._id;
     this.departments = object.departments;
+    this.isRemoved = object.isRemoved;
   };
   readonly _id: string;
   readonly roles: string;
   readonly departments: any;
   readonly isAllowedForApproval: boolean;
+  readonly isRemoved: boolean;
   readonly emp_id: string;
 
   readonly email: string;
@@ -24,5 +26,6 @@ export class ProfileDto {
   readonly birthdaydate: Date;
   readonly phone: string;
   readonly profilepicture: string;
+  
   
 }

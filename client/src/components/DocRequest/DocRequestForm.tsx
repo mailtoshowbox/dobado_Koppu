@@ -222,6 +222,7 @@ const ProductForm: React.FC = () => {
 							rejected_reason: "",
 							rejected_from_page: "",
 						},
+						requested_on: new Date(),
 						comments: formState.comments.value,
 						doc_requested_department: formState.doc_requested_department.value,
 						doc_requested_doctype: doc_types.length > 0 ? doc_types[0] : {},

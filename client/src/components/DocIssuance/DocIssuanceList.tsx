@@ -27,6 +27,13 @@ function DocApprovalList(props: productListProps): JSX.Element {
     if (props.onSelectDelete) props.onSelectDelete(row);
   }
 
+  function document_type_format(cell: any, row: any) {
+		if (row.doc_requested_doctype) {
+			return row.doc_requested_doctype.name;
+		}
+		return "-";
+	}
+
   function buttonFormatter(
     cell: any,
     row: any,
@@ -131,6 +138,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
         <TableHeaderColumn
           dataField="doc_type"
           className="thead-light-1"
+          	dataFormat={document_type_format}
           width="10%"
         >
           Category

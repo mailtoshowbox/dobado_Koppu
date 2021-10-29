@@ -65,8 +65,11 @@ const ProductForm: React.FC = () => {
 			},
 			doc_requested_department: {},
 			doc_requested_doctype: {},
+			requested_on : ""
 		};
 	}
+
+	 console.log("docIssuance---", docIssuance);
 
 	const [showYes, setShowYes] = useState(false);
 	const dcat1 = [
@@ -95,6 +98,7 @@ const ProductForm: React.FC = () => {
 			error: "",
 			value: docIssuance.doc_requested_department,
 		},
+		requested_on :{ value: docIssuance.requested_on },
 	};
 	const [formState, setFormState] = useState(intialFormState);
 
@@ -334,6 +338,7 @@ const ProductForm: React.FC = () => {
 			issuance: doc_issuances_status_info,
 			doc_requested_department: formState.doc_requested_department.value,
 			doc_requested_doctype: requested_doc_type,
+			requested_on : formState.requested_on.value
 		};
 
 		issueGenaralIssuance(approvalInfo, account).then((status) => {
@@ -464,23 +469,6 @@ const ProductForm: React.FC = () => {
 	const issueGenaralIssuanceAll = (event: any) => {
 		event.preventDefault();
 		const requestedDoc = formState.requested_doc.value;
-
-		/*  const apprvedDoc = requestedDoc.map((doc: any) => {
-      let processedDocForApproval: any = [];
-      const no_of_label = 1;
-      for (var i = 0; i < no_of_label; i++) {
-        const processedApproval = Object.assign(
-          { ...doc },
-          {
-            is_doc_approved: true,
-          }
-        );
-        processedDocForApproval.push(processedApproval);
-      }
-      doc.doc_issuance = processedDocForApproval;
-      doc.is_doc_approved = true;
-      return doc;
-    }); */
 		//Doc Issuances
 
 		let doc_issuances_status_info = {

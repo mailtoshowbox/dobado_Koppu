@@ -195,7 +195,7 @@ export class DocumentsController {
     }
     else{ 
       let res = this.productsService.getLogSheet(params).then((succ = []) => {
- 
+
         let onfo = succ.map((doc: any) => {
   
           const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;

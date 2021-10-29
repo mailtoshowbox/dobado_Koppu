@@ -130,13 +130,14 @@ const ProductForm: React.FC = () => {
 			type_of_space: "",
 			document_type: "",
 			qr_code: "",
-			manufacturedate: new Date(),
-			expiredate: new Date(),
+			manufacturedate: "",
+			expiredate: "",
 			document_info: {},
 			retension_time: {
 				time: 0,
 				defaultYear: 4,
 				calculateNonPerceptualTime: "",
+				retension_exact_date : ""
 			},
 			document_request_info: {},
 			is_requested_for_takeout: false,
@@ -195,6 +196,8 @@ const ProductForm: React.FC = () => {
 				calculateNonPerceptualTime: product.retension_time
 					? product.retension_time.calculateNonPerceptualTime
 					: 0,
+					retension_exact_date : product.retension_time.retension_exact_date, 
+
 			},
 		},
 		document_request_info: { error: "", value: product.document_request_info },
@@ -224,7 +227,28 @@ const ProductForm: React.FC = () => {
 	}
 
 	function hasRetensionChanged(model: OnChangeModel) {
-		const { value = 0 } = model;
+		const value : any = model.value ||{};
+		const selDate:any  = value.value;
+ 
+
+		
+		let timeSeed = new Date(selDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+
+		console.log("model", model, selDate, timeSeed);
+		setFormState({
+			...formState,
+			["retension_time"]: {
+				error: "",
+				value: {
+					time: timeSeed,
+					defaultYear: 3,
+					retension_exact_date: new Date(selDate).toString(),
+					calculateNonPerceptualTime: add_years(timeSeed).toString(),
+				},
+			},
+		});
+		/*
+		 const { value = 0 } = model;
 		let timeSeed = parseInt(value.toString());
 
 		setFormState({
@@ -234,10 +258,12 @@ const ProductForm: React.FC = () => {
 				value: {
 					time: timeSeed,
 					defaultYear: 3,
+					retension_exact_date: new Date(selDate).toString(),
+
 					calculateNonPerceptualTime: add_years(timeSeed).toString(),
 				},
 			},
-		});
+		}); */
 	}
 	function hasFormValueChanged(model: OnChangeModel): void {
 		const { field, value = "", name = "" } = model;
@@ -278,6 +304,8 @@ const ProductForm: React.FC = () => {
 							value: {
 								time: 0,
 								defaultYear: 3,
+								retension_exact_date : new Date().toString(),
+
 								calculateNonPerceptualTime: "",
 							},
 						},
@@ -397,10 +425,10 @@ const ProductForm: React.FC = () => {
 					category: formState.category.value,
 					manufacturedate: formState.manufacturedate.value
 						? formState.manufacturedate.value
-						: new Date(),
+						: null,
 					expiredate: formState.expiredate.value
 						? formState.expiredate.value
-						: new Date(),
+						: null,
 					type_of_space: formState.type_of_space.value,
 					qr_code: formState.qr_code.value,
 					document_type: formState.document_type.value,
@@ -688,12 +716,12 @@ const ProductForm: React.FC = () => {
 								<div className="form-row 12 font-14">
 									<div className="form-group col-md-6">
 										<DateInput
-											id="manufacturedate"
+											id="manufacturedate" 
 											field="manufacturedate"
 											value={
 												formState.manufacturedate.value
-													? formState.manufacturedate.value
-													: new Date()
+													? new Date(formState.manufacturedate.value) 
+													: new Date('0001-01-01T00:00:00Z')
 											}
 											required={false}
 											label="Manufacture date"
@@ -708,7 +736,7 @@ const ProductForm: React.FC = () => {
 											value={
 												formState.expiredate.value
 													? new Date(formState.expiredate.value)
-													: new Date()
+													: new Date('0001-01-01T00:00:00Z')
 											}
 											required={false}
 											label="Expire date   "

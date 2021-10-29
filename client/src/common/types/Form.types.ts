@@ -19,8 +19,8 @@ export interface IProductFormState {
     rack: IFormStateField<string>;
     category: IFormStateField<string>;
     qr_code: IFormStateField<string>;
-    manufacturedate: IFormStateField<Date>;
-    expiredate: IFormStateField<Date>;
+    manufacturedate:  IFormStateField<string>;
+    expiredate:  IFormStateField<string>;
     type_of_space : IFormStateField<string>;
     document_type : IFormStateField<string>;
     retension_time :IFormStateField<object>;

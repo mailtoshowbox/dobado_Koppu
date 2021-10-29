@@ -42,7 +42,6 @@ export class DocDepartmentsController {
     @Param('id') id: string,
     @Body() updateDocDepartmentsDto: CreateDocDepartmentDto,
   ): Promise<DocDepartment> { 
-    console.log("updateDocDepartmentsDto---", updateDocDepartmentsDto);
     return this.DocDepartmentsService.update(id, updateDocDepartmentsDto);
   }
 }

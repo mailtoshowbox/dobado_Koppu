@@ -33,7 +33,8 @@ export interface User extends Document{
     profilePic: Photo;
     gallery: Photo[];
   }, 
-  departments : department[]
+  departments : department[],
+  isRemoved :boolean
 
   
 }

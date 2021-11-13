@@ -24,16 +24,26 @@ function TextInput(props: any): JSX.Element {
  
 
   const {    
-    value: { time = 0, calculateNonPerceptualTime = "MM/YY" },
+    value: { time = 0, calculateNonPerceptualTime = "MM/YY", defaultYear="3" },
   } = props;
 
-  console.log("PROPS",props );
+  let dt = new Date();
+  let selectedDate = new Date(dt.setFullYear(dt.getFullYear() + defaultYear)); 
+  let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
 
+
+
+  console.log("props----", props);
+  if(props.value.retension_exact_date !== ""){    
+      selectedDate =   new Date(props.value.retension_exact_date);
+      timeSeed = time;
+    
+  }
   return (
     <div className="form-row">
       <div className="form-group col-md-6">
         <input
-          value={time}
+          value={timeSeed}
           onChange={onValueChanged}
           type="number"
           className={`form-control `}
@@ -41,12 +51,13 @@ function TextInput(props: any): JSX.Element {
           min="1"
           max="99"
           style={{"display":"none"}}
+          name="calculateNonPerceptualTime"
         />
 
 <DateInput
 										id="retension_exact_date"
 										field="retension_exact_date"
-										value={ new Date(props.value.retension_exact_date)
+										value={ selectedDate
 										}
 										required={false}
 										label="To be retention Upto"

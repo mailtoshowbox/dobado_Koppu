@@ -22,7 +22,7 @@ import {
   IDocDepartment,
   IDocDepartmentList,
 } from "../../store/models/docdepartment.interface";
-import { getDocDepartmentList, updateDocCat } from "../../services/index";
+import { getDocDepartmentList, updateDocDept } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 import { updateCurrentPath } from "../../store/actions/root.actions";
 
@@ -59,6 +59,7 @@ const Products: React.FC = () => {
   }
 
   function onDeleteProduct(product: IDocDepartment): void {
+
     dispatch(changeSelectedDocDepartment(product));
     dispatch(setModificationState(DocDepartmentModificationStatus.None));
     onProductRemove();
@@ -147,7 +148,7 @@ const Products: React.FC = () => {
                   id: doccategories.selectedDocDepartment._id,
                   isActive: false,
                 };
-                updateDocCat(boxInfoUpt, account)
+                updateDocDept(boxInfoUpt, account)
                   .then((status) => {
                     dispatch(
                       addNotification(

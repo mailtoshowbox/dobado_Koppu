@@ -234,8 +234,7 @@ const ProductForm: React.FC = () => {
 		
 		let timeSeed = new Date(selDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
 
-		console.log("model", model, selDate, timeSeed);
-		setFormState({
+ 		setFormState({
 			...formState,
 			["retension_time"]: {
 				error: "",

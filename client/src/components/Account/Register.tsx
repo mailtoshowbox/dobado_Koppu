@@ -219,7 +219,7 @@ const Register: React.FC = () => {
                           value={formState.email.value}
                           onChange={hasFormValueChanged}
                           required={true}
-                          maxLength={16}
+                          maxLength={200}
                           minLength={8}
                           label="Email"
                           customError={formState.email.error}

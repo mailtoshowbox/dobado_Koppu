@@ -605,7 +605,7 @@ export function updateDocDept(item, options) {
 	const { id = "" } = item;
 	var myOptions = getDocCustomPutOptions(options, item);
 
-	return fetch(APP_CONST.API_HOST_AT + "/doccategory/" + id, myOptions)
+	return fetch(APP_CONST.API_HOST_AT + "/docdepartments/" + id, myOptions)
 		.then((response) => {
 			if (!response.ok) {
 				handleResponseError(response);

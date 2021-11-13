@@ -178,8 +178,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 				document_request_approved.length > 0
 					? document_request_approved[0]
 					: { empl_id: "-" };
-			console.log("document_request_approved", document_request_approved);
-
+ 
 			batch = apr["empl_id"];
 		} else {
 			batch = "-";

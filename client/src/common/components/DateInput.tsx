@@ -35,6 +35,7 @@ function TextInput(props: TextInputProps): JSX.Element {
 
     //setStartDate(new Date(dateValue));
   }
+
   let selectedDate = null;
   if(props.value !== undefined){
     if(new Date(props.value).getUTCFullYear()  !==1) {

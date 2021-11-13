@@ -42,7 +42,7 @@
   "main": "src/main.js",
   "scripts": {
     "dev": "concurrently \"npm start\" \"wait-on http://localhost:3001 && electron .\"",
-    "start": "react-scripts start",
+    "start": "set PORT=3001 &&  react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

@@ -69,7 +69,7 @@ const ProductForm: React.FC = () => {
 		};
 	}
 
-	 console.log("docIssuance---", docIssuance);
+ 
 
 	const [showYes, setShowYes] = useState(false);
 	const dcat1 = [

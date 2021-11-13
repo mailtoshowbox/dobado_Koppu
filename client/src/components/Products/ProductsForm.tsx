@@ -48,7 +48,7 @@ import { IAccount } from "../../store/models/account.interface";
   Day,
 } from "react-modern-calendar-datepicker"; */
 import uniquebg from "../../assets/images/uniquebg.png";
-
+import APP_CONST from "../../common/contant";
 const ProductForm: React.FC = () => {
 	const account: IAccount = useSelector((state: IStateType) => state.account);
 	//const componentRef = useRef();
@@ -126,7 +126,7 @@ const ProductForm: React.FC = () => {
 			document_info: {},
 			retension_time: {
 				time: 0,
-				defaultYear: 4,
+				defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
 				calculateNonPerceptualTime: "",
 				retension_exact_date : ""
 			},
@@ -157,8 +157,7 @@ const ProductForm: React.FC = () => {
 			}
 		}
 	}
-
-	console.log("product---", product);
+ 
 
 	const [formState, setFormState] = useState({
 		_id: { error: "", value: product._id },
@@ -220,14 +219,14 @@ const ProductForm: React.FC = () => {
 		
 		
 		const {  rentention=''} = add_years(timeSeed);
-		console.log("model", model, selDate, timeSeed);
+ ;
 		setFormState({
 			...formState,
 			["retension_time"]: {
 				error: "",
 				value: {
 					time: timeSeed,
-					defaultYear: 3,
+					defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
 					retension_exact_date: new Date(selDate).toString(),
 					calculateNonPerceptualTime: rentention.toString(),
 				},
@@ -264,17 +263,17 @@ const ProductForm: React.FC = () => {
 
 			if (name === "type_of_space") {
 				setTouchedFields({ ...touchedFields, ["type_of_space"]: true });
-
+				 
 				if (model.field === "perceptual") {
 					setFormState({
 						...formState,
 						["retension_time"]: {
 							error: "",
 							value: {
-								time: 0,
-								defaultYear: 3,
-								retension_exact_date : new Date().toString(),
-								calculateNonPerceptualTime: "",
+								time: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+								defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+								retension_exact_date : "",
+								calculateNonPerceptualTime: "", 
 							},
 						},
 						[model.name]: { error: model.error, value: model.field },

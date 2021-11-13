@@ -333,7 +333,7 @@ const ProductForm: React.FC = () => {
 
 			if (name === "type_of_space") {
 
-				console.log("model.field---", model.field);
+				 
 				setTouchedFields({ ...touchedFields, ["type_of_space"]: true });
 
 				if (model.field !== "perceptual") {
@@ -681,6 +681,8 @@ const ProductForm: React.FC = () => {
 		is_requested_for_takeout = false,
 	} = product;
 
+ 
+
 	return (
 		<Fragment>
 			<div className="col-xl-7 col-lg-7">
@@ -785,25 +787,7 @@ const ProductForm: React.FC = () => {
 									</div>
 								</div>
 							)}
-							{product.is_requested_for_takeout && (
-								<div className="form-row 12 font-14">
-									<div className="form-group col-md-7">
-										<DateInput
-											id="takeout_return_date"
-											field="takeout_return_date"
-											value={
-												formState.takeout_return_date.value
-													? formState.takeout_return_date.value
-													: new Date()
-											}
-											required={false}
-											label="TakeOut Return date( Default  : 30 Days)"
-											placeholder="Return date"
-											onChange={hasFormValueChanged}
-										/>
-									</div>
-								</div>
-							)}
+							 
 							{roles[0] === "Qualityuser" && (
 								<div className="form-row 12 font-14">
 									<div className="form-group col-md-6">

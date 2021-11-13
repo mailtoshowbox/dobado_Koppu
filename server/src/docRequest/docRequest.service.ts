@@ -281,10 +281,13 @@ export class DocRequestService {
 		} = DocRequest;
 
 
-		if (doc_type === "6") {
-			console.log("^^^^^^");
+		if (doc_type === "6") { 
 			requested_doc.forEach((doc: any) => {
 				if (doc._id !== "") {
+					const {takeout_return_date=""} = doc;
+
+					console.log("doc---", doc);
+					console.log("takeout_return_date---", takeout_return_date);
 					this.documentModal
 						.find({ isActive: true, _id: doc._id })
 						.then((res: any) => {
@@ -323,6 +326,7 @@ export class DocRequestService {
 								requestDetails = {
 									current_status: {
 										...requestDetails.current_status,
+										takeout_return_date : takeout_return_date,
 										code: "issued",
 										label: "Issued",
 										request_no: request_no

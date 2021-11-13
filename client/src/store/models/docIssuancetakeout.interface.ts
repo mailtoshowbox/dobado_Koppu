@@ -12,7 +12,7 @@ export interface IDocIssuanceTakeout {
     emp_code_approval_2: string;
     issuance:  DocRequestIssuanceStatus,
     doc_requested_department : any,
-    doc_requested_doctype :any
+    doc_requested_doctype :any 
  
 }
 export interface DocRequestIssuanceStatus {

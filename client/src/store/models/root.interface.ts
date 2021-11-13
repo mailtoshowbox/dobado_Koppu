@@ -81,6 +81,8 @@ export interface IDocLogSheetState {
     docDestructList: IProductDestruct[];
     selectedDocForDestruct: IProductDestruct | null;
     modificationState: ProductDestructModificationStatus;
+    searchDates: any;
+       
  }
 export interface IActionBase {
     type: string;

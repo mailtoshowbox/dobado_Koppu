@@ -1,29 +1,27 @@
 import React, { useState, FormEvent, Dispatch, Fragment } from "react";
 import {
   IStateType,
-  IDocCategoryState,IDocDestructState
+   IDocDestructState
 } from "../../store/models/root.interface";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  IProductDestructList,
+import { 
   ProductDestructModificationStatus,
-  IProductDestruct,
+  IProductDestructList
 } from "../../store/models/productDesctruct.interface";     
 import TextInput from "../../common/components/TextInput";
 import {
  
   setModificationState,
- 
+  loadDocumentDescSheet
 } from "../../store/actions/docdestruct.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
-  addNewDocCat,
-  updateDoc,
-  getDocCategoryList,
+   
+  updateDoc,getDestructiveList
+   
 } from "../../services/index";
 import {
-  OnChangeModel,   
-  IDocCategoryFormState,IDocDesctFormState
+  OnChangeModel,    
 } from "../../common/types/Form.types";
 import { IAccount } from "../../store/models/account.interface";
 import SelectInput from "../../common/components/Select";
@@ -40,15 +38,18 @@ const DocToDestructForm: React.FC = () => {
   let docDesc: any = logSheet.selectedDocForDestruct;
   const isCreate: boolean =
   logSheet.modificationState === ProductDestructModificationStatus.Create;
-
-
+ 
+  const selectedSearchDates = logSheet.searchDates;
+;
+console.log("docDesc", docDesc);
 
   const [formState, setFormState] = useState({
     _id: { error: "", value: docDesc._id },
     name: { error: "", value: docDesc.name } ,    
     status: { error: "", value: docDesc.retension_time.status } ,
-    retensionDateActual: { error: "", value: docDesc.retension_time.retension_exact_date } ,
-    retensionDateExtended: { error: "", value: docDesc.retension_time.retension_extended_date } ,    
+    retensionDateActual: { error: "", value: docDesc.retension_time.retensionDateActual ? docDesc.retension_time.retensionDateActual  : docDesc.retension_time.retension_exact_date  } ,
+    retensionDateExtended: { error: "", value: docDesc.retension_time.retensionDateExtended } ,    
+    
    
   }); //    retension_time : {error: "", value: docDesc.retension_time }
 
@@ -64,7 +65,8 @@ const DocToDestructForm: React.FC = () => {
   
       setFormState({
         ...formState,
-        ['retensionDateExtended']: { error: '', value:date },
+        ['retensionDateExtended']: { error: '', value:m.toLocaleString('en-US') },
+      
       });
   }
 
@@ -85,6 +87,14 @@ const DocToDestructForm: React.FC = () => {
    saveForm(formState,  modeOfAction);
   }
 
+	function loadDocToDestruct() {
+    const  {startDate,endDate } = selectedSearchDates
+		const m = moment(startDate).startOf("day").toDate(); // moment(date).format('YYYY-MM-DD');
+		getDestructiveList(account, {startDate :startDate , endDate :endDate }).then((items: IProductDestructList) => {
+			dispatch(loadDocumentDescSheet(items));
+		//	setDataLogSheetLoaded(true);
+		});
+	}
   function saveForm(
     formState: any,  
     mode: String
@@ -95,7 +105,9 @@ const DocToDestructForm: React.FC = () => {
           retension_time : {
             ...docDesc.retension_time,
             status : formState.status.value,
-            retensionDateExtended : formState.retensionDateExtended.value
+            retensionDateExtended : formState.retensionDateExtended.value,
+            retension_exact_date : formState.retensionDateExtended.value,
+            retensionDateActual : formState.retensionDateActual.value
           }
         };       
         updateDoc(boxInfoUpt, account).then((status) => {	dispatch(
@@ -105,6 +117,7 @@ const DocToDestructForm: React.FC = () => {
 						)
 					);
           dispatch(setModificationState(ProductDestructModificationStatus.None));
+          loadDocToDestruct();
 				});   
     }
   } 
@@ -121,7 +134,11 @@ const DocToDestructForm: React.FC = () => {
   function isFormInvalid(): boolean {
     return true;
   }
+ 
 
+  const actualDate= formState.retensionDateActual.value  ? formState.retensionDateActual.value : new Date();
+  const selectedDate= formState.retensionDateExtended.value  ? formState.retensionDateExtended.value : actualDate;
+ 
   return (
     <Fragment>
       <div className="col-xl-7 col-lg-7">
@@ -152,8 +169,8 @@ const DocToDestructForm: React.FC = () => {
                 	</div>
                   <div className="form-group row">
                   <div className="form-group col-md-6">
-        Start Date
-      <DatePicker dateFormat="yyyy/MM/dd"  selected={formState.retensionDateExtended.value}  onChange={(date) => setStartDate(date)} />
+        Extention Date
+      <DatePicker dateFormat="yyyy/MM/dd" minDate={new Date(formState.retensionDateActual.value)}  selected={new Date(selectedDate)}  onChange={(date) => setStartDate(date)} />
       </div>
       </div>
                  

@@ -1,12 +1,19 @@
 import { IProductDestruct, ProductDestructModificationStatus } from "../models/productDesctruct.interface";
 export const LOAD_DOCUMENT_DESTRUCT_LIST: string = "LOAD_DOCUMENT_DESTRUCT_LIST";
 export const CHANGE_DOCUMENT_DESTRUCT_EDIT: string = "CHANGE_DOCUMENT_DESTRUCT_EDIT";
+export const SET_DOCUMENT_DESTRUCT_DATES: string = "SET_DOCUMENT_DESTRUCT_DATES";
  
 export const SET_DOCUMENT_DESTRUCT_MODIFICATION_STATE: string = "SET_DOCUMENT_DESTRUCT_MODIFICATION_STATE";
     export function loadDocumentDescSheet(items : IProductDestructList) { 
        
   
             return { type: LOAD_DOCUMENT_DESTRUCT_LIST , docDestructList:  items  };
+        
+        }
+        export function setSearchDates(dates : any) { 
+       
+            console.log("dates:", dates);
+            return { type: SET_DOCUMENT_DESTRUCT_DATES , dates:  dates  };
         
         }
         export function changeSelectedDocForDestruct(docForDestruct: IProductDestruct): IChangeSelectedDocDesctActionType {

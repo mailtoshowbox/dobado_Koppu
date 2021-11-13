@@ -111,6 +111,16 @@ const ProductForm: React.FC = () => {
 	});
 
 	if (!product || isCreate) {
+
+		
+		let dt = new Date();
+		let selectedDate = new Date(dt.setFullYear(dt.getFullYear() + APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD)); 
+		//let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+		let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+		
+		
+		const {  rentention=''} = add_years(timeSeed);
+
 		product = {
 			_id: "",
 			name: "",
@@ -124,11 +134,11 @@ const ProductForm: React.FC = () => {
 			manufacturedate: "",
 			expiredate: "",
 			document_info: {},
-			retension_time: {
-				time: 0,
-				defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
-				calculateNonPerceptualTime: "",
-				retension_exact_date : ""
+			retension_time: {	 
+				time: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+					defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+					retension_exact_date: new Date(selectedDate).toLocaleString('en-US'),
+					calculateNonPerceptualTime: rentention.toString(),
 			},
 			document_request_info: {},
 			takeout_return_date: new Date(),
@@ -227,7 +237,7 @@ const ProductForm: React.FC = () => {
 				value: {
 					time: timeSeed,
 					defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
-					retension_exact_date: new Date(selDate).toString(),
+					retension_exact_date: new Date(selDate).toLocaleString('en-US'),
 					calculateNonPerceptualTime: rentention.toString(),
 				},
 			},
@@ -451,7 +461,7 @@ const ProductForm: React.FC = () => {
 					dispatch(clearSelectedProduct());
 					dispatch(setModificationState(ProductModificationStatus.None));
 				});
-			} else if (mode === "EDIT") {
+			} else if (mode === "EDIT") { 
 				let boxInfoUpt = {
 					id: formState._id.value,
 					name: formState.name.value,

@@ -11,7 +11,7 @@ import {
 } from "../../store/models/root.interface";
 import Popup from "reactjs-popup";
 import {
-	loadDocumentDescSheet,
+	loadDocumentDescSheet,setSearchDates,
 	changeSelectedDocForDestruct,
 	setModificationState,
 } from "../../store/actions/docdestruct.action";
@@ -40,6 +40,8 @@ const Products: React.FC = () => {
 	const docDestructData: IDocDestructState = useSelector(
 		(state: IStateType) => state.docDestructData
 	);
+
+ 
 	const [startDate, setStartDateInfo] = useState(new Date());
 	const [endDate, setEndDateInfo] = useState(new Date());
 
@@ -69,9 +71,11 @@ const Products: React.FC = () => {
 
 	function loadDocToDestruct() {
 		const m = moment(startDate).startOf("day").toDate(); // moment(date).format('YYYY-MM-DD');
+		
 		getDestructiveList(account, {startDate :startDate , endDate :endDate }).then((items: IProductDestructList) => {
 			dispatch(loadDocumentDescSheet(items));
 			setDataLogSheetLoaded(true);
+			dispatch(setSearchDates({startDate, endDate }));
 		});
 	}
 
@@ -127,7 +131,7 @@ const Products: React.FC = () => {
             (docDestructData.modificationState ===
               ProductDestructModificationStatus.Edit &&
               docDestructData.selectedDocForDestruct) ? (
-              <ProductForm />
+              <ProductForm    />
             ) : null}
 				</div>
 				<div className="col-xl-12 col-lg-12">
@@ -138,6 +142,7 @@ const Products: React.FC = () => {
 								allowDelete={allowedUsers.includes(userRole)}
 								docCategoryModificationStatus={docDestructData.modificationState}
 								selectedFieldsToDownload={selectedFieldsToDownload}
+							
 							/>
 						</div>
 					</div>

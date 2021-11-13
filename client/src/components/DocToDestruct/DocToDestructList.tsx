@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, Dispatch } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   IStateType,
   IDocDestructState,
@@ -8,10 +8,16 @@ import { BootstrapTable, TableHeaderColumn , ExportCSVButton } from "react-boots
 import { IAccount } from "../../store/models/account.interface";
 import moment from "moment";
 import {
-	 
+	getDestructiveList,
 	destructDocument
   } from "../../services/index";
-
+  import {
+  
+	loadDocumentDescSheet
+  } from "../../store/actions/docdestruct.action";
+  import {  
+	IProductDestructList
+  } from "../../store/models/productDesctruct.interface";   
 export type productListProps = {
   
   children?: React.ReactNode;
@@ -32,7 +38,8 @@ function DocCategoryList(props: productListProps): JSX.Element {
    const [selectedRowsForDestruct, setRowsForDestruct] = useState([]);
  
  
-  
+   const selectedSearchDates = logSheet.searchDates;
+   const dispatch: Dispatch<any> = useDispatch();
    function handleExportCSVButtonClick(onClick:any)  {  
     onClick();
   }
@@ -151,10 +158,17 @@ function convertRetentionExactDate(cell: any, row: any) {
 	return "No";
 
   }
-
+  function loadDocToDestruct() {
+    const  {startDate,endDate } = selectedSearchDates
+		const m = moment(startDate).startOf("day").toDate(); // moment(date).format('YYYY-MM-DD');
+		getDestructiveList(account, {startDate :startDate , endDate :endDate }).then((items: IProductDestructList) => {
+			dispatch(loadDocumentDescSheet(items));
+		//	setDataLogSheetLoaded(true);
+		});
+	}
   function destructDoc( ){destructDocument( account, selectedRowsForDestruct).then((status) => {
 
-		  
+	loadDocToDestruct();
 		}); 
 	 
 

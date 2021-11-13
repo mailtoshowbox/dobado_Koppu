@@ -183,6 +183,8 @@ export class DocumentsService {
 			is_requested_for_takeout_return = false,
 			is_requested_for_takeout_return_approve = false,
 		} = product;
+
+		console.log("product---", product);
 		if (is_requested_for_takeout) {
 			if (is_requested_for_takeout_submit) {
 				return await this.productModel
@@ -319,12 +321,14 @@ export class DocumentsService {
 				});
 			}
 		} else {
-			if (product.document_info.createdOn) {
-				//	product.document_info.createdOn = new Date(product.document_info.createdOn)
-			}
-			if (product.document_info.approvedOn) {
-				product.document_info.approvedOn = new Date(product.document_info.approvedOn)
-			}
+			 if(product.document_info !== undefined){
+				if (product.document_info.approvedOn) {
+					product.document_info.approvedOn = new Date(product.document_info.approvedOn)
+				}
+			 }
+			
+
+		 
 			return await this.productModel.findByIdAndUpdate(id, product, {
 				new: true,
 			});
@@ -337,6 +341,7 @@ export class DocumentsService {
 			this.productModel
 				.find({ isActive: true, _id: id })
 				.then((res: any) => { 
+ 
 					let documenttoEdit = res[0];
 					const {
 						takeout_requested_details: {
@@ -344,14 +349,13 @@ export class DocumentsService {
 							current_status: { request_no = null } = {},
 						} = {},
 						takeout_requested_details = {},
-					} = documenttoEdit;
+						retension_time={}					} = documenttoEdit;
 
 
 
 					documenttoEdit._doc = {
 						retension_time: {
-							time: 0, defaultYear: 0,
-							"calculateNonPerceptualTime": "",
+							...retension_time,
 							status: "destructed",
 							destructed_on: new Date()
 						}
@@ -536,17 +540,42 @@ export class DocumentsService {
 		startDate = new Date(),
 		endDate = new Date(),
 	}): Promise<Document[]> {
+		
 		let date1 = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0));
 		let date2 = new Date(new Date(endDate).setUTCHours(23, 59, 59, 999));
-		return await this.productModel.find({
-			"document_info.approvedOn": {
+		return await this.productModel.aggregate([						 
+			{
+				"$addFields": {
+					"retension_time.retension_exact_date": {
+						"$dateFromString": {
+							"dateString": "$retension_time.retension_exact_date"
+						}
+					},
+
+				},
+			},
+			{
+				"$match": 
+					{ "retension_time.retension_exact_date": { "$gte": date1, "$lt": date2 } , type_of_space : "non_perceptual", isActive : true},
+						 
+						
+				
+			}
+
+		]);
+
+
+
+		/* return await this.productModel.find({
+			type_of_space : "non_perceptual",
+			"retension_time.retension_exact_date": {
 				$gte: date1,
 				$lte: date2,
 			}
 		})
 			.then((res: any) => {
 				return res;
-			});
+			}); */
 	}
 
 

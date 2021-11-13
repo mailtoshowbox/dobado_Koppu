@@ -191,7 +191,7 @@ const ProductForm: React.FC = () => {
 			dispatch(
 				addNotification(
 					"Warning!",
-					`Please select Document to Proceed`
+					`Please add Document to Proceed`
 				)
 			);
 			e.preventDefault();

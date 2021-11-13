@@ -48,8 +48,8 @@ import { IAccount } from "../../store/models/account.interface";
   Day,
 } from "react-modern-calendar-datepicker"; */
 import uniquebg from "../../assets/images/uniquebg.png";
-import { trimStart } from "lodash";
-
+ 
+import APP_CONST from "../../common/contant";
 const ProductForm: React.FC = () => {
 	const account: IAccount = useSelector((state: IStateType) => state.account);
 	//const componentRef = useRef();
@@ -120,6 +120,15 @@ const ProductForm: React.FC = () => {
 	future.setDate(future.getDate() + 30);
 
 	if (!product || isCreate) {
+			
+		let dt = new Date();
+		let selectedDate = new Date(dt.setFullYear(dt.getFullYear() + APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD)); 
+		//let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+		let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+		
+		
+		const {  rentention=''} = add_years(timeSeed);
+
 		product = {
 			_id: "",
 			name: "",
@@ -134,10 +143,10 @@ const ProductForm: React.FC = () => {
 			expiredate: "",
 			document_info: {},
 			retension_time: {
-				time: 0,
-				defaultYear: 4,
-				calculateNonPerceptualTime: "",
-				retension_exact_date : ""
+				time: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+				defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+				retension_exact_date: new Date(selectedDate).toLocaleString('en-US'),
+				calculateNonPerceptualTime: rentention.toString(),
 			},
 			document_request_info: {},
 			is_requested_for_takeout: false,
@@ -189,15 +198,22 @@ const ProductForm: React.FC = () => {
 		retension_time: {
 			error: "",
 			value: {
-				time: product.retension_time ? product.retension_time.time : 0,
+				/* time: product.retension_time ? product.retension_time.time : 0,
 				defaultYear: product.retension_time
 					? product.retension_time.defaultYear
 					: 0,
 				calculateNonPerceptualTime: product.retension_time
 					? product.retension_time.calculateNonPerceptualTime
 					: 0,
-					retension_exact_date : product.retension_time.retension_exact_date, 
+					retension_exact_date : product.retension_time.retension_exact_date,  */
 
+
+
+					time: product.retension_time.time,
+					defaultYear: product.retension_time.defaultYear,
+					retension_exact_date : product.retension_time.retension_exact_date, 
+					calculateNonPerceptualTime:
+					product.retension_time.calculateNonPerceptualTime,
 			},
 		},
 		document_request_info: { error: "", value: product.document_request_info },
@@ -221,13 +237,36 @@ const ProductForm: React.FC = () => {
 	function add_years(n: number) {
 		let dt = new Date();
 		const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
-		return (
-			("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear()
-		);
+		
+
+		return {exactDate : calcDat, rentention :("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear() }
+		 
 	}
 
 	function hasRetensionChanged(model: OnChangeModel) {
 		const value : any = model.value ||{};
+		const selDate:any  = value.value;
+ 
+
+		
+		let timeSeed = new Date(selDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+		
+		
+		const {  rentention=''} = add_years(timeSeed);
+ ;
+		setFormState({
+			...formState,
+			["retension_time"]: {
+				error: "",
+				value: {
+					time: timeSeed,
+					defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+					retension_exact_date: new Date(selDate).toLocaleString('en-US'),
+					calculateNonPerceptualTime: rentention.toString(),
+				},
+			},
+		});
+		/* const value : any = model.value ||{};
 		const selDate:any  = value.value;
  
 
@@ -245,7 +284,7 @@ const ProductForm: React.FC = () => {
 					calculateNonPerceptualTime: add_years(timeSeed).toString(),
 				},
 			},
-		});
+		}); */
 		/*
 		 const { value = 0 } = model;
 		let timeSeed = parseInt(value.toString());
@@ -293,19 +332,20 @@ const ProductForm: React.FC = () => {
 			}
 
 			if (name === "type_of_space") {
+
+				console.log("model.field---", model.field);
 				setTouchedFields({ ...touchedFields, ["type_of_space"]: true });
 
-				if (model.field === "perceptual") {
+				if (model.field !== "perceptual") {
 					setFormState({
 						...formState,
 						["retension_time"]: {
 							error: "",
 							value: {
-								time: 0,
-								defaultYear: 3,
-								retension_exact_date : new Date().toString(),
-
-								calculateNonPerceptualTime: "",
+								time: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+								defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+								retension_exact_date : "",
+								calculateNonPerceptualTime: "", 
 							},
 						},
 						[model.name]: { error: model.error, value: model.field },

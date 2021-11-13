@@ -64,38 +64,24 @@ function DocApprovalList(props: productListProps): JSX.Element {
     }
   }
 
-  const docApprovalFormatter = (cell: any, row: any) => {
+  const docApprovalFormatter = (cell: any, row: any) => {  
     const { approval = [], issuance = {} } = row;
+    const { doc_issued_by = [], is_issued = false, is_doc_issuance_cancelled = false } = issuance;
 
-    let stsus = "";
-    if (approval.length > 0) {
-      let issued = false;
-      approval.forEach((appr: any) => {
-        if (appr.status === "pending") {
+  let stsus = "";
+
+        if (is_doc_issuance_cancelled && !is_issued) {
           stsus +=
-            "<span class=' approval-status btn-info'>" +
-            appr.approve_access_level +
-            " approval " +
-            "Pending</span>&nbsp;";
-        } else if (appr.status === "approved") {
-          const { doc_issued_by = [], is_issued = false } = issuance;
-          if (doc_issued_by.length > 0 && !is_issued) {
-            stsus +=
-              "<span class=' approval-status btn-info'>Part of Request has been issued</span>";
-          } else if (is_issued) {
-            stsus +=
-              "<span class=' approval-status btn-info'>Request has been issued</span>";
-          } else {
-            stsus +=
-              "<span class=' approval-status btn-info'>" +
-              appr.approve_access_level +
-              " is Approved</span>";
-          }
+            "<span class=' approval-status btn-info'>Document request issue has been rejected</span>";
         }
-      });
-    }
-
-    return stsus;
+        else if (doc_issued_by.length > 0 && !is_issued) {
+          stsus +=
+            "<span class=' approval-status btn-info issued-cls'>Part of request has been issued</span>";
+        } else if (is_issued) {
+          stsus +=
+            "<span class=' approval-status btn-info issued-cls'>Request has been issued</span>";
+        }  
+  return stsus;
   }; 
 
   

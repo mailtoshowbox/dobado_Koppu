@@ -59,7 +59,7 @@ const ProductForm: React.FC = () => {
       issuance: {
         is_issued: false,
         issued_on: new Date(),
-        doc_issued_by: [],
+        doc_issued_by: [],is_doc_issuance_cancelled: false,
       },
       doc_requested_department :{},
       doc_requested_doctype : {}
@@ -694,6 +694,8 @@ const ProductForm: React.FC = () => {
 	var future = new Date();
 	future.setDate(future.getDate() + 30);
 
+ 
+
 
   return (
     <Fragment>
@@ -938,7 +940,7 @@ const ProductForm: React.FC = () => {
               >
                 CLOSE
               </button>
-              {((docIssuance.issuance &&
+             {/*  {((docIssuance.issuance &&
                 !docIssuance.issuance.is_issued) ||
                 !docIssuance.issuance) && (
                 <span>
@@ -950,12 +952,39 @@ const ProductForm: React.FC = () => {
                   </button>
                   <button
                     className="btn btn-warning font-14 left-margin font-14"
-                    onClick={() => cancelForm()}
+                    onClick={(e) => rejectIssueGenaralIssuanceAll(e)}
                   >
                     REJECT
                   </button>
                 </span>
-              )}
+              )} */}
+              {((docIssuance.issuance &&
+								!docIssuance.issuance.is_issued &&
+								!docIssuance.issuance.is_doc_issuance_cancelled) ||
+								!docIssuance.issuance) && (
+								<span>
+									<button
+										onClick={() => handleYes(true)}
+										className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
+									>
+										YES
+									</button>
+									<button
+										className="btn btn-warning font-14 left-margin font-14"
+										onClick={(e) => rejectIssueGenaralIssuanceAll(e)}
+									>
+										NO
+									</button>
+								</span>
+							)}
+
+							{docIssuance.issuance && docIssuance.issuance.is_issued && (
+								<label>
+									<span className="blink_me" style={{}}>
+										All Documents are issued
+									</span>
+								</label>
+							)}
 
               {docIssuance.issuance &&
                 docIssuance.issuance.is_issued && (

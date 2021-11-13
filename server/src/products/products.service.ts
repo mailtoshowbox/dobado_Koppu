@@ -22,6 +22,7 @@ export class DocumentsService {
 	) { }
 
 	async findAll(mode, id = null): Promise<Document[]> { 
+		console.log("we", mode);
 		if (mode === "issued") {  
 			return await this.productModel
 				.find(
@@ -52,15 +53,14 @@ export class DocumentsService {
 						{
 							isActive: true,
 							isRequestedDocument: true,
-							qr_code: id,
-							is_requested_for_takeout: { $ne: true },
+							qr_code: id, 
 						},
 						{
 							isActive: true,
 							isRequestedDocument: false,
 							qr_code: id,
 							"document_info.status": "approved",
-							is_requested_for_takeout: { $ne: true },
+							 
 						},
 					],
 				})

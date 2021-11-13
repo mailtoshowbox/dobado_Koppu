@@ -43,7 +43,7 @@ export class AuthService {
   async createEmailToken(email: string): Promise<boolean> {
     var emailVerification = await this.emailVerificationModel.findOne({email: email}); 
     //if (emailVerification && ( (new Date().getTime() - emailVerification.timestamp.getTime()) / 60000 < 15 )){
-      if (emailVerification && ( (new Date().getTime() - emailVerification.timestamp.getTime()) / 60000 < 1 )){
+      if (emailVerification && ( (new Date().getTime() - emailVerification.timestamp.getTime()) / 60000 < 15 )){
       throw new HttpException('LOGIN.EMAIL_SENDED_RECENTLY', HttpStatus.INTERNAL_SERVER_ERROR);
     } else {
 
@@ -144,9 +144,9 @@ export class AuthService {
           subject: 'Verify Email', 
           text: 'Verify Email', 
           html: 'Hi! <br><br> Thanks for your registration<br><br>'+
-          '<a href='+ config.clientHost.url + ':' + config.host.port +'/auth/email/verify/'+ model.emailToken + '>Click here to activate your account</a>'  // html body
+       //   '<a href='+ config.clientHost.url + ':' + config.host.port +'/auth/email/verify/'+ model.emailToken + '>Click here to activate your account</a>'  // html body
 
-       //   '<a href='+ config.host.url + ':' + config.host.port +'/emailconfirmation/'+ model.emailToken + '>Click here to activate your account</a>'  // html body
+        '<a href='+ config.host.url + ':' + config.clientHost.port +'/emailconfirmation/'+ model.emailToken + '>Click here to activate your account</a>'  // html body
         };
     
         var sent = await new Promise<boolean>(async function(resolve, reject) {

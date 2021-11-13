@@ -6,7 +6,6 @@ import {
 
 import APP_CONST from "../common/contant";
 export function confirmEmailToken(options) {
-	console.log("options----", options);
 	//localhost:3000http://localhost:3001/emailconfirmation#4295787
 	return fetch(APP_CONST.API_HOST_AT + "/auth/email/verify/"+options)
 		.then((response) => {

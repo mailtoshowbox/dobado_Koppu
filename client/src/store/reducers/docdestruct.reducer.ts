@@ -19,8 +19,7 @@ function docCategoriesReducer(state: IDocDestructState = initialState, action: I
         case SET_DOCUMENT_DESTRUCT_MODIFICATION_STATE: {
             return { ...state, modificationState: action.value };
         }
-        case SET_DOCUMENT_DESTRUCT_DATES: {
-            console.log("Action:", action);
+        case SET_DOCUMENT_DESTRUCT_DATES: { 
             return { ...state, searchDates: action.dates };
         }
         case CHANGE_DOCUMENT_DESTRUCT_EDIT: { 

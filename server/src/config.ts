@@ -11,6 +11,10 @@ export default {
         "url": "localhost",
         "port": "3000"
     },
+    "clientHost": {
+        "url": "localhost",
+        "port": "3001"
+    },
     "jwt": {
         "secretOrKey": "secret",
         "expiresIn": 36000000

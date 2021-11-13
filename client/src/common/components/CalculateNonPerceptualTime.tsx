@@ -30,10 +30,7 @@ function TextInput(props: any): JSX.Element {
   let dt = new Date();
   let selectedDate = new Date(dt.setFullYear(dt.getFullYear() + defaultYear)); 
   let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
-
-
-
-  console.log("props----", props);
+ 
   if(props.value.retension_exact_date !== ""){    
       selectedDate =   new Date(props.value.retension_exact_date);
       timeSeed = time;

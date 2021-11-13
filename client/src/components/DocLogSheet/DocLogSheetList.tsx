@@ -420,8 +420,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			>
 				{props.selectedFieldsToDownload
 					.filter((item: any) => item.FIELD_VALUE)
-					.map((column: any) => {
-						console.log("column.FIELD_NAME---", column.FIELD_NAME);
+					.map((column: any) => { 
 						if (
 							column.FIELD_NAME === "document_request_info.document_request_no"
 						) {

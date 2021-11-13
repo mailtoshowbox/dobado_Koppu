@@ -38,11 +38,7 @@ const DocToDestructForm: React.FC = () => {
   let docDesc: any = logSheet.selectedDocForDestruct;
   const isCreate: boolean =
   logSheet.modificationState === ProductDestructModificationStatus.Create;
- 
   const selectedSearchDates = logSheet.searchDates;
-;
-console.log("docDesc", docDesc);
-
   const [formState, setFormState] = useState({
     _id: { error: "", value: docDesc._id },
     name: { error: "", value: docDesc.name } ,    

@@ -45,6 +45,8 @@ export class AuthController {
 
   @Get('email/verify/:token')
   public async verifyEmail(@Param() params): Promise<IResponse> {
+
+    console.log("params.token----", params.token);
     try {
       var isEmailVerified = await this.authService.verifyEmail(params.token);
       return new ResponseSuccess("LOGIN.EMAIL_VERIFIED", isEmailVerified);

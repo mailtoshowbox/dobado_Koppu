@@ -10,9 +10,7 @@ export const SET_DOCUMENT_DESTRUCT_MODIFICATION_STATE: string = "SET_DOCUMENT_DE
             return { type: LOAD_DOCUMENT_DESTRUCT_LIST , docDestructList:  items  };
         
         }
-        export function setSearchDates(dates : any) { 
-       
-            console.log("dates:", dates);
+        export function setSearchDates(dates : any) {  
             return { type: SET_DOCUMENT_DESTRUCT_DATES , dates:  dates  };
         
         }

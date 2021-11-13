@@ -16,6 +16,7 @@ const Register: React.FC = () => {
   );
   let df: any = useParams(); 
   //
+  console.log("ID", df.id);
 
   const [] = useState({ status: false, message: "" });
   const [emailVerified, setEmailVerified] = useState(false);

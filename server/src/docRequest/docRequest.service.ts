@@ -285,10 +285,7 @@ export class DocRequestService {
 			requested_doc.forEach((doc: any) => {
 				if (doc._id !== "") {
 					const {takeout_return_date=""} = doc;
-
-					console.log("doc---", doc);
-					console.log("takeout_return_date---", takeout_return_date);
-					this.documentModal
+ this.documentModal
 						.find({ isActive: true, _id: doc._id })
 						.then((res: any) => {
 							let documenttoEdit = res[0];

@@ -6,28 +6,22 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {
 	IDocRequest,
-	DocRequestModificationStatus,
-	IDocRequestList,
+	DocRequestModificationStatus, 
 } from "../../store/models/docrequest.interface";
 import TextInput from "../../common/components/TextInput";
 import {
 	editDocRequest,
-	clearSelectedDocRequest,
 	setModificationState,
 	addDocRequest,
-	loadListOfDocRequest,
 } from "../../store/actions/docrequest.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
 	addNewDocumentRequest,
-	updateDocCat,
-	getDocCategoryList,
 	loadApproavalAccessUserInfo,
-	loadDocumentforTakeOutList,
+	loadDocumentforTakeOutList,loginUser
 } from "../../services/index";
 import {
-	OnChangeModel,
-	IDocRequestFormState,
+	OnChangeModel, 
 } from "../../common/types/Form.types";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import SelectInput from "../../common/components/Select";
@@ -47,6 +41,8 @@ const ProductForm: React.FC = () => {
 	const isCreate: boolean =
 		docrequests.modificationState === DocRequestModificationStatus.Create;
 	const [loginPopup, setLoginPopup] = useState(false);
+	const [isUserVerified, setUserVerified] = useState(false);
+	const [isUserVerifiedError, setUserVerifiedError] = useState(false);
 	const [available_doc_for_takeout, setAvailable_doc_for_takeout] = useState(
 		[]
 	);
@@ -206,6 +202,7 @@ const ProductForm: React.FC = () => {
 				.filter(
 					(arr) => arr.id.toString() === formState.doc_type.value.toString()
 				);
+				
 			if (mode === "ADD") { 
 				if(formState.requested_doc.value.length > 0){
 					let boxInfo = {
@@ -229,6 +226,7 @@ const ProductForm: React.FC = () => {
 					};
 					addNewDocumentRequest(boxInfo, account).then((status) => {
 						setLoginPopup(false);
+						setUserVerified(false);
 						setFormState(intialFormState);
 						cancelForm();
 						dispatch(
@@ -331,35 +329,32 @@ const ProductForm: React.FC = () => {
 	function validateLogin(e: FormEvent<HTMLFormElement>): void {
 		e.preventDefault();
 
-		let saveUserFn: Function = isCreate ? addDocRequest : editDocRequest;
+	
 
-		let modeOfAction: String = isCreate ? "ADD" : "EDIT";
-
-		saveRequest(formState, saveUserFn, modeOfAction);
-
-		/* loginUser({
-      email: formState.email.value,
-      password: formState.password.value,
+	loginUser({
+      email: loginForm.email,
+      password: loginForm.password,
     })
       .then((status) => {
-        const { titleMesage = "", bodyMessage = "" } = parseApiResult(status);
-        const { success = false } = status;
-        if (success) {
-          dispatch(addNotification(titleMesage, bodyMessage));
+		const {message=""} = status; 
+		if(message  === "LOGIN.SUCCESS"){ 
+			setUserVerified(true);
+			setUserVerifiedError(false);
+			let saveUserFn: Function = isCreate ? addDocRequest : editDocRequest;
+			let modeOfAction: String = isCreate ? "ADD" : "EDIT";
+			saveRequest(formState, saveUserFn, modeOfAction);
+		}else{
+			setUserVerifiedError(true);
+		}
 
-          dispatch(login(status.data));
-        } else {
-          dispatch(
-            addNotification(
-              titleMesage,
-              bodyMessage ? bodyMessage : "Unable to login"
-            )
-          );
-        }
+		
+
+		
       })
       .catch((err) => {
-        //console.log(err);
-      }); */
+        console.log(err);
+		setUserVerifiedError(true);
+      }); 
 
 		// dispatch(login(formState.email.value));
 	}
@@ -909,13 +904,26 @@ const ProductForm: React.FC = () => {
 									placeholder="Password"
 								/>
 							</div>
-
+ {!isUserVerified && 
 							<button
 								className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
 								type="submit"
 							>
 								Authenticate
 							</button>
+} {isUserVerified && 
+							<button
+								className={`btn btn-success btn-user btn-block ${getDisabledClass()}`}
+								type="submit"
+							>
+								Authenticated
+								
+							</button> 
+}
+{isUserVerifiedError && 
+<>
+<br />	<div role="alert" className="fade alert alert-danger  show">Please enter valid Credentials.</div>
+</>	}
 						</form>
 					</div>
 				</Popup>

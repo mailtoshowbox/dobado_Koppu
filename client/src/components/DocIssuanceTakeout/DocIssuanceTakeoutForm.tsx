@@ -181,8 +181,7 @@ const ProductForm: React.FC = () => {
     }
 
     );
-
-    console.log("model----", model);
+ 
   }
 
   function hasLoginFormValueChanged(model: OnChangeModel): void {

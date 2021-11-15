@@ -6,7 +6,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {
 	IDocIssuance,
-	DocIssuanceModificationStatus,
+	DocIssuanceModificationStatus,IDocIssuanceList
 } from "../../store/models/docIssuance.interface";
 
 import TextInput from "../../common/components/TextInput";
@@ -15,11 +15,9 @@ import CheckboxInput from "../../common/components/Checkbox";
 import TextAreaInput from "../../common/components/TextAreaInput";
 
 import _uniqueId from "lodash/uniqueId";
-import { setModificationState } from "../../store/actions/docissuance.action";
+import { setModificationState, loadListOfDocIssuance } from "../../store/actions/docissuance.action";
 import { addNotification } from "../../store/actions/notifications.action";
-import {
-	addNewDocumentRequest,
-	loadApproavalAccessUserInfo,
+import { getDocIssuanceList,
 	issueGenaralIssuance,
 } from "../../services/index";
 import { OnChangeModel } from "../../common/types/Form.types";
@@ -391,6 +389,12 @@ const ProductForm: React.FC = () => {
 				a?.document.close();
 				a?.print(); 
       }
+
+	  getDocIssuanceList(account.auth, account.emp_id).then(
+		(items: IDocIssuanceList) => {
+		  dispatch(loadListOfDocIssuance(items));
+		}
+	  );
 		});
 	};
 	function hasNoOfLabelValueChanged(model: OnChangeModel): void {
@@ -597,6 +601,12 @@ const ProductForm: React.FC = () => {
 			dispatch(
 				addNotification("Document issue rejected", `Document issue rejected`)
 			);
+
+			getDocIssuanceList(account.auth, account.emp_id).then(
+				(items: IDocIssuanceList) => {
+				  dispatch(loadListOfDocIssuance(items));
+				}
+			  );
 		});
 	};
 

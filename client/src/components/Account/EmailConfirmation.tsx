@@ -15,15 +15,10 @@ const Register: React.FC = () => {
     (state: IStateType) => state.root.page
   );
   let df: any = useParams(); 
-  //
-  console.log("ID", df.id);
-
-  const [] = useState({ status: false, message: "" });
+   const [] = useState({ status: false, message: "" });
   const [emailVerified, setEmailVerified] = useState(false);
   const [confirmationToken] = useState(df.id);
-
   const loaderClass = "";
-
   useEffect(() => {
     confirmEmailToken(confirmationToken).then((result: any) => {
       setEmailVerified(result.success);

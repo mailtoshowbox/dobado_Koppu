@@ -23,8 +23,7 @@ import {
 } from "../../store/models/docIssuance.interface";
 import {
   getDocIssuanceList,
-  updateDocCat,
-  initiateApprovalHistory,
+  updateDocCat, 
 } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 import { updateCurrentPath } from "../../store/actions/root.actions";

@@ -71,6 +71,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
     let stsus = "";
     if (approval.length > 0) {
       let issued = false;
+      let isRejected = false;
       approval.forEach((appr: any) => {
         if (appr.status === "pending") {
           stsus +=
@@ -80,33 +81,37 @@ function DocApprovalList(props: productListProps): JSX.Element {
             "Pending</span>&nbsp;";
         } else if (appr.status === "approved") {
           const { doc_issued_by = [], is_issued = false, is_doc_issuance_cancelled = false } = issuance;
-          if (is_doc_issuance_cancelled && !is_issued) {
+          if (is_doc_issuance_cancelled && !is_issued && !isRejected) {
             stsus +=
               "<span class=' approval-status btn-info'>Document request issue has been rejected</span>";
+              isRejected = true;
           }
-          else if (doc_issued_by.length > 0 && !is_issued) {
+          else if (doc_issued_by.length > 0 && !is_issued && !isRejected) {
             stsus +=
               "<span class=' approval-status btn-info issued-cls'>Part of request has been issued</span>";
-          } else if (is_issued) {
+          } else if (is_issued && !isRejected) {
             stsus +=
               "<span class=' approval-status btn-info issued-cls'>Request has been issued</span>";
           } else {
-            stsus +=
+            if( !isRejected){
+              stsus +=
               "<span class=' approval-status btn-info'>" +
               appr.approve_access_level +
               " is Approved</span>";
+            }
+            
           }
         }
       });
     }
-    const { doc_issued_by = [], is_issued = false, is_doc_issuance_cancelled = false } = issuance;
+    /* const { doc_issued_by = [], is_issued = false, is_doc_issuance_cancelled = false } = issuance;
 
   
 
         if (is_doc_issuance_cancelled && !is_issued) {
           stsus +=
             "<span class=' approval-status btn-info'>Document request issue has been rejected</span>";
-        }  
+        }   */
   return stsus;
   }; 
 

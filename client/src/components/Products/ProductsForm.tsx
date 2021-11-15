@@ -102,7 +102,7 @@ const ProductForm: React.FC = () => {
 
 	//Document Types loaded
 	const docTypeList: IDocTypeState | null = useSelector(
-		(state: IStateType) => state.docTypes 
+		(state: IStateType) => state.docTypes
 	);
 	let listOfType: { id: string; name: string }[] = [];
 	docTypeList.docTypes.forEach((doc) => {
@@ -112,14 +112,14 @@ const ProductForm: React.FC = () => {
 
 	if (!product || isCreate) {
 
-		
+
 		let dt = new Date();
-		let selectedDate = new Date(dt.setFullYear(dt.getFullYear() + APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD)); 
+		let selectedDate = new Date(dt.setFullYear(dt.getFullYear() + APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD));
 		//let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
 		let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
-		
-		
-		const {  rentention=''} = add_years(timeSeed);
+
+
+		const { rentention = '' } = add_years(timeSeed);
 
 		product = {
 			_id: "",
@@ -134,18 +134,18 @@ const ProductForm: React.FC = () => {
 			manufacturedate: "",
 			expiredate: "",
 			document_info: {},
-			retension_time: {	 
+			retension_time: {
 				time: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
-					defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
-					retension_exact_date: new Date(selectedDate).toLocaleString('en-US'),
-					calculateNonPerceptualTime: rentention.toString(),
+				defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+				retension_exact_date: new Date(selectedDate).toLocaleString('en-US'),
+				calculateNonPerceptualTime: rentention.toString(),
 			},
 			document_request_info: {},
 			takeout_return_date: new Date(),
 			is_requested_for_takeout: false,
 			takeout_requested_details: {},
 			doc_requested_department: account.departments[0],
-			document_type_details : {}
+			document_type_details: {}
 		};
 	} else {
 		const { box = "", rack = "" } = product;
@@ -167,7 +167,7 @@ const ProductForm: React.FC = () => {
 			}
 		}
 	}
- 
+
 
 	const [formState, setFormState] = useState({
 		_id: { error: "", value: product._id },
@@ -184,10 +184,10 @@ const ProductForm: React.FC = () => {
 		expiredate: { error: "", value: product.expiredate },
 		retension_time: {
 			error: "",
-			value: { 
+			value: {
 				time: product.retension_time.time,
 				defaultYear: product.retension_time.defaultYear,
-				retension_exact_date : product.retension_time.retension_exact_date, 
+				retension_exact_date: product.retension_time.retension_exact_date,
 				calculateNonPerceptualTime:
 					product.retension_time.calculateNonPerceptualTime,
 			},
@@ -198,7 +198,7 @@ const ProductForm: React.FC = () => {
 			error: "",
 			value: product.is_requested_for_takeout,
 		},
-		document_type_details : { error: "", value: product.document_type_details },
+		document_type_details: { error: "", value: product.document_type_details },
 	});
 
 	if (formState.qr_code.value === "") {
@@ -213,23 +213,23 @@ const ProductForm: React.FC = () => {
 	function add_years(n: number) {
 		let dt = new Date();
 		const calcDat = new Date(dt.setFullYear(dt.getFullYear() + n));
-		
 
-		return {exactDate : calcDat, rentention :("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear() }
-		 
+
+		return { exactDate: calcDat, rentention: ("0" + (calcDat.getMonth() + 1)).slice(-2) + "/" + calcDat.getFullYear() }
+
 	}
 
 	function hasRetensionChanged(model: OnChangeModel) {
-		const value : any = model.value ||{};
-		const selDate:any  = value.value;
- 
+		const value: any = model.value || {};
+		const selDate: any = value.value;
 
-		
+
+
 		let timeSeed = new Date(selDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
-		
-		
-		const {  rentention=''} = add_years(timeSeed);
- ;
+
+
+		const { rentention = '' } = add_years(timeSeed);
+		;
 		setFormState({
 			...formState,
 			["retension_time"]: {
@@ -273,24 +273,29 @@ const ProductForm: React.FC = () => {
 
 			if (name === "type_of_space") {
 				setTouchedFields({ ...touchedFields, ["type_of_space"]: true });
-				 
+
 				if (model.field === "perceptual") {
+					setFormState({
+						...formState,
+						[model.name]: { error: model.error, value: model.field },
+					});
+				} else {
+					let dt = new Date();
+					let selectedDate = new Date(dt.setFullYear(dt.getFullYear() + APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD));
+					let timeSeed = new Date(selectedDate).getUTCFullYear() - new Date().getUTCFullYear();// parseInt(value.toString());
+
+					const { rentention = '' } = add_years(timeSeed);
 					setFormState({
 						...formState,
 						["retension_time"]: {
 							error: "",
 							value: {
-								time: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
+								time: timeSeed,
 								defaultYear: APP_CONST.DEFAULT_PERCEPTUAL_YEAR_TO_ADD,
-								retension_exact_date : "",
-								calculateNonPerceptualTime: "", 
+								retension_exact_date: selectedDate.toLocaleString('en-US'),
+								calculateNonPerceptualTime: rentention,
 							},
 						},
-						[model.name]: { error: model.error, value: model.field },
-					});
-				} else {
-					setFormState({
-						...formState,
 						[model.name]: { error: model.error, value: model.field },
 					});
 				}
@@ -337,7 +342,7 @@ const ProductForm: React.FC = () => {
 	}
 
 	function saveForm(
-		formState: IProductFormState,     
+		formState: IProductFormState,
 		saveFn: Function,
 		mode: String
 	): void {
@@ -378,9 +383,9 @@ const ProductForm: React.FC = () => {
 					document_rack_details: {},
 				};
 
-				
-				if (					 
-					loggedInUserRole === "Qualityuser" 
+
+				if (
+					loggedInUserRole === "Qualityuser"
 				) {
 					const document_info = {
 						...boxInfo.document_info,
@@ -392,35 +397,35 @@ const ProductForm: React.FC = () => {
 				}
 
 				if (formState.box.value) {
-					 
-					let selectedboxOfDoc =
-					listOfBoxws.filter((dcT: any) => dcT.id === formState.box.value) || [];
 
-					if (selectedboxOfDoc.length > 0) { 
+					let selectedboxOfDoc =
+						listOfBoxws.filter((dcT: any) => dcT.id === formState.box.value) || [];
+
+					if (selectedboxOfDoc.length > 0) {
 						boxInfo.document_box_details = selectedboxOfDoc[0] ? selectedboxOfDoc[0] : {};
 					}
 				}
 				if (formState.category.value) {
-					 
-					let selectedCatOfDoc =
-					listOfCate.filter((dcT: any) => dcT.id === formState.category.value) || [];
 
-					if (selectedCatOfDoc.length > 0) { 
+					let selectedCatOfDoc =
+						listOfCate.filter((dcT: any) => dcT.id === formState.category.value) || [];
+
+					if (selectedCatOfDoc.length > 0) {
 						boxInfo.document_category_details = selectedCatOfDoc[0] ? selectedCatOfDoc[0] : {};
 					}
 				}
 				if (formState.rack.value) {
 
 					let listOfBoxws: { id: string; name: string }[] = [];
-						boxRacks.forEach((doc:any) => {
-							let me = { id: doc._id, name: doc.name };
-							listOfBoxws.push(me);
-						});
-				 
-					let selectedRackOfDoc =
-					listOfBoxws.filter((dcT: any) => dcT.id === formState.rack.value) || [];
+					boxRacks.forEach((doc: any) => {
+						let me = { id: doc._id, name: doc.name };
+						listOfBoxws.push(me);
+					});
 
-					if (selectedRackOfDoc.length > 0) { 
+					let selectedRackOfDoc =
+						listOfBoxws.filter((dcT: any) => dcT.id === formState.rack.value) || [];
+
+					if (selectedRackOfDoc.length > 0) {
 						boxInfo.document_rack_details = selectedRackOfDoc[0] ? selectedRackOfDoc[0] : {};
 					}
 				}
@@ -429,29 +434,29 @@ const ProductForm: React.FC = () => {
 
 
 				if (formState.document_type.value && !touchedFields.document_type) {
-					
+
 					let selectedTypeOfDoc =
 						listOfType.filter((dcT: any) => dcT.id === formState.document_type.value) || [];
 
 					if (selectedTypeOfDoc.length > 0) {
 						boxInfo.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
-				}else{
+				} else {
 					let selectedTypeOfDoc =
-					listOfType.filter((dcT: any) => dcT.id === formState.document_type.value) || [];
+						listOfType.filter((dcT: any) => dcT.id === formState.document_type.value) || [];
 
-					if (selectedTypeOfDoc.length > 0) {				 
+					if (selectedTypeOfDoc.length > 0) {
 						boxInfo.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
 				}
- 
+
 
 				addNewDoc(boxInfo, account).then((status) => {
 					getDocumentList(account.auth, { userId: account.emp_id }).then(
 						(items: IProductList) => {
 							dispatch(loadListOfProduct(items));
 						}
-					); 
+					);
 					dispatch(
 						addNotification(
 							"New Document added",
@@ -461,7 +466,7 @@ const ProductForm: React.FC = () => {
 					dispatch(clearSelectedProduct());
 					dispatch(setModificationState(ProductModificationStatus.None));
 				});
-			} else if (mode === "EDIT") { 
+			} else if (mode === "EDIT") {
 				let boxInfoUpt = {
 					id: formState._id.value,
 					name: formState.name.value,
@@ -536,20 +541,20 @@ const ProductForm: React.FC = () => {
 					}
 				}
 				if (document_type && !touchedFields.document_type) {
-					
+
 					let selectedTypeOfDoc =
 						listOfType.filter((dcT: any) => dcT.name === document_type) || [];
-					 
+
 					if (selectedTypeOfDoc.length > 0) {
 						boxInfoUpt.document_type = selectedTypeOfDoc[0].id;
 						boxInfoUpt.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
-				}else{
+				} else {
 					let selectedTypeOfDoc =
-					listOfType.filter((dcT: any) => dcT.id === document_type) || [];
+						listOfType.filter((dcT: any) => dcT.id === document_type) || [];
 
-					if (selectedTypeOfDoc.length > 0) {				 
-						boxInfoUpt.document_type_details =  selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
+					if (selectedTypeOfDoc.length > 0) {
+						boxInfoUpt.document_type_details = selectedTypeOfDoc[0] ? selectedTypeOfDoc[0] : {};
 					}
 				}
 				updateDoc(boxInfoUpt, account).then((status) => {

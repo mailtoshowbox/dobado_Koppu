@@ -121,24 +121,37 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		return "-";
 	}
 	function batch_format(cell: any, row: any) {
-		let batch = "";
+	 
+		console.log("row----", row);
+		const { batch = "N/U" } = row;
 		if (!row.isRequestedDocument) {
-			const {
-				document_box_details = {},
-				document_category_details = {},
-				document_rack_details = {},
-			} = row;
-			batch += document_category_details.name
-				? document_category_details.name + "/"
-				: "";
-			batch += document_box_details.name ? document_box_details.name + "/" : "";
-			batch += document_rack_details.name
-				? document_rack_details.name + "/"
-				: "";
-			return batch;
+			
+			let new_Batch = "";
+			if(batch !== 'N/U'){
+				return batch;
+			}else{
+				const {
+					document_box_details = {},
+					document_category_details = {},
+					document_rack_details = {},
+				} = row;
+				new_Batch += document_category_details.name
+					? document_category_details.name + "/"
+					: "";
+					new_Batch += document_box_details.name ? document_box_details.name + "/" : "";
+					new_Batch += document_rack_details.name
+					? document_rack_details.name + "/"
+					: "";
+				return new_Batch;
+			}
+
+			
+			
 		} else {
-			const { batch = "-" } = row;
-			return batch;
+			if(batch !== '//'){
+				return batch;
+			}
+			return "N/U";
 		}
 	}
 	//
@@ -181,7 +194,16 @@ function DocCategoryList(props: productListProps): JSX.Element {
  
 			batch = apr["empl_id"];
 		} else {
-			batch = "-";
+			const { document_info : {status="", approvedBy={}}={} } = row;
+			if(status === "approved"){
+				batch = "-";
+				if(approvedBy.emp_id){
+					batch = approvedBy.emp_id;
+				}
+			}else if( status === "n-approved"){
+				batch = "W/A";
+			}
+			
 		}
 		return batch;
 	}
@@ -193,7 +215,14 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			row.document_request_info.document_requested_on
 		) {
 			batch = convertDate(row.document_request_info.document_requested_on);
-		}
+		} else if (
+			row.document_info &&
+			row.document_info.createdOn
+		) {
+			batch = convertDate(row.document_info.createdOn);
+		} 
+
+	
 
 		return batch;
 	}

@@ -576,7 +576,6 @@ const ProductForm: React.FC = () => {
     });
     updateIssuanceDocumentEditorModal(false);
 
-    console.log("f---", formState);
   }
 
   const approved_doc_issuance: any = selectedDocForPrint.doc_issuance
@@ -652,6 +651,14 @@ const ProductForm: React.FC = () => {
     issueGenaralIssuance(approvalInfo, account).then((status) => {
       dispatch(setModificationState(DocIssuanceTakeoutModificationStatus.None));
       dispatch(addNotification("Document issue rejected", `Document issue rejected`));
+      
+      getDocIssuancetakeoutList(account.auth, account.emp_id).then(
+        (items: IDocIssuanceTakeoutList) => { 
+          dispatch(loadListOfDocIssuanceTakeout(items));
+        }
+      );
+
+    
     })
   };
 

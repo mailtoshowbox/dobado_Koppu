@@ -36,12 +36,11 @@ const LeftMenu: React.FC = () => {
         className={`navbar-nav bg-gradient-primary-green sidebar sidebar-dark accordion ${getCollapseClass()}`}
         id="collapseMenu"
       >
-        <a
-          className="sidebar-brand logo-bg d-flex align-items-center justify-content-center"
-          href="index.html"
-        >
+        
+       
+        <Link className="nav-link" to="Home">
           <img src={logo} alt="logo" width="130" height="70" />
-        </a>
+          </Link>
 
         <hr className="sidebar-divider my-0" />
 

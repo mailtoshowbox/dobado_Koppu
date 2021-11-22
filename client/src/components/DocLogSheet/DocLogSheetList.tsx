@@ -71,7 +71,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 	function document_issued_on_format(cell: any, row: any) {
 		const dvv =
 			row.document_request_info &&
-			row.document_request_info["document_issued_on"]
+				row.document_request_info["document_issued_on"]
 				? row.document_request_info["document_issued_on"]
 				: "-";
 		return convertDate(dvv);
@@ -80,7 +80,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 	function document_submitted_on_format(cell: any, row: any) {
 		const dvv =
 			row.document_request_info &&
-			row.document_request_info["document_submitted_on"]
+				row.document_request_info["document_submitted_on"]
 				? row.document_request_info["document_submitted_on"]
 				: "";
 		return convertDate(dvv);
@@ -121,15 +121,13 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		return "-";
 	}
 	function batch_format(cell: any, row: any) {
-	 
-		console.log("row----", row);
 		const { batch = "N/U" } = row;
 		if (!row.isRequestedDocument) {
-			
+
 			let new_Batch = "";
-			if(batch !== 'N/U'){
+			if (batch !== 'N/U') {
 				return batch;
-			}else{
+			} else {
 				const {
 					document_box_details = {},
 					document_category_details = {},
@@ -138,17 +136,17 @@ function DocCategoryList(props: productListProps): JSX.Element {
 				new_Batch += document_category_details.name
 					? document_category_details.name + "/"
 					: "";
-					new_Batch += document_box_details.name ? document_box_details.name + "/" : "";
-					new_Batch += document_rack_details.name
+				new_Batch += document_box_details.name ? document_box_details.name + "/" : "";
+				new_Batch += document_rack_details.name
 					? document_rack_details.name + "/"
 					: "";
 				return new_Batch;
 			}
 
-			
-			
+
+
 		} else {
-			if(batch !== '//'){
+			if (batch !== '//') {
 				return batch;
 			}
 			return "N/U";
@@ -191,19 +189,19 @@ function DocCategoryList(props: productListProps): JSX.Element {
 				document_request_approved.length > 0
 					? document_request_approved[0]
 					: { empl_id: "-" };
- 
+
 			batch = apr["empl_id"];
 		} else {
-			const { document_info : {status="", approvedBy={}}={} } = row;
-			if(status === "approved"){
+			const { document_info: { status = "", approvedBy = {} } = {} } = row;
+			if (status === "approved") {
 				batch = "-";
-				if(approvedBy.emp_id){
+				if (approvedBy.emp_id) {
 					batch = approvedBy.emp_id;
 				}
-			}else if( status === "n-approved"){
+			} else if (status === "n-approved") {
 				batch = "W/A";
 			}
-			
+
 		}
 		return batch;
 	}
@@ -220,9 +218,9 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			row.document_info.createdOn
 		) {
 			batch = convertDate(row.document_info.createdOn);
-		} 
+		}
 
-	
+
 
 		return batch;
 	}
@@ -295,7 +293,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		} else {
 			submittedOn =
 				row.document_request_info &&
-				row.document_request_info["document_submitted_on"]
+					row.document_request_info["document_submitted_on"]
 					? row.document_request_info["document_submitted_on"]
 					: "";
 		}
@@ -311,8 +309,11 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		doc.setFontSize(15);
 		const title = APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET_NAME;
 
-		const headersw = APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET.filter(
-			(elt) => elt.PDF_VIEW
+		console.log("props.selectedFieldsToDownload----", props.selectedFieldsToDownload);
+		console.log("props.EXPORT_PDF_COLUMN_LOG_SHEET----", APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET);
+
+		const headersw = props.selectedFieldsToDownload.filter(
+			(elt:any) => elt.FIELD_VALUE
 		);
 
 		let newauditLogList = docLogSheetList;
@@ -338,7 +339,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 				isRequestedDocument = false,
 			} = log;
 
-			headersw.forEach((elt) => {
+			headersw.forEach((elt:any) => {
 				let fieldName = elt.FIELD_NAME;
 				if (fieldName === "document_request_info.document_request_no") {
 					const { document_request_info: { document_request_no = "" } = {} } =
@@ -398,7 +399,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 
 		let data = constructedList.map((log: any) => {
 			let tem: any = [];
-			headersw.forEach((elt) => {
+			headersw.forEach((elt:any) => {
 				let fieldName = elt.FIELD_NAME;
 				const fd = log[fieldName] ? log[fieldName] : "-";
 				tem.push(fd);
@@ -406,7 +407,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			return tem;
 		});
 
-		const headers = [headersw.map((elt) => elt.FIELD_LABEL)];
+		const headers = [headersw.map((elt:any) => elt.FIELD_LABEL)];
 
 		let content: any = {
 			startY: 50,
@@ -449,7 +450,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 			>
 				{props.selectedFieldsToDownload
 					.filter((item: any) => item.FIELD_VALUE)
-					.map((column: any) => { 
+					.map((column: any) => {
 						if (
 							column.FIELD_NAME === "document_request_info.document_request_no"
 						) {
@@ -575,7 +576,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
 									{column.FIELD_LABEL}
 								</TableHeaderColumn>
 							);
-						} else if (column.FIELD_NAME === "document_type") {
+						} else if (column.FIELD_NAME === "Document Type") {
 							return (
 								<TableHeaderColumn
 									dataFormat={document_type_format}

@@ -28,6 +28,7 @@ import {
 import APP_CONST from "../../common/contant";
  
 import moment, { Moment } from "moment";
+import { values } from "lodash";
 
 const Products: React.FC = () => {
   const account: IAccount = useSelector((state: IStateType) => state.account);
@@ -72,12 +73,34 @@ const Products: React.FC = () => {
     let fiueld = selectedFieldsToDownload;
   //  let fiueld = JSON.parse(JSON.stringify(selectedFieldsToDownload)); 
 
-    fiueld.map((selField:any)=>{
-      if(selField.FIELD_LABEL === label && selField.FIELD_NAME === field){     
-        selField.FIELD_VALUE = value;// value === 'false' ? false : true;
-      }
-    })
-    setSelectedFieldsToDownload(JSON.parse(JSON.stringify(fiueld))); 
+    
+
+    const result = fiueld.filter(seleField => seleField.FIELD_VALUE); 
+    if(!value){
+      fiueld.map((selField:any)=>{
+        if(selField.FIELD_LABEL === label && selField.FIELD_NAME === field){     
+          selField.FIELD_VALUE = value;// value === 'false' ? false : true;
+        }
+      })
+      setSelectedFieldsToDownload(JSON.parse(JSON.stringify(fiueld))); 
+    }
+    if(APP_CONST.ALLOWED_DOC_SHEET_FILED_TO_DOWNLOAD <= result.length){
+      dispatch(
+        addNotification(
+          "Not Allowed",
+          APP_CONST.ALLOWED_DOC_SHEET_FILED_TO_DOWNLOAD_MESSAGE + APP_CONST.ALLOWED_DOC_SHEET_FILED_TO_DOWNLOAD
+        )
+      );
+    }else{
+      fiueld.map((selField:any)=>{
+        if(selField.FIELD_LABEL === label && selField.FIELD_NAME === field){     
+          selField.FIELD_VALUE = value;// value === 'false' ? false : true;
+        }
+      })
+      setSelectedFieldsToDownload(JSON.parse(JSON.stringify(fiueld))); 
+    }
+
+    
   }
   function addCheckBoxInput() {    
    return selectedFieldsToDownload.map((field) => {  

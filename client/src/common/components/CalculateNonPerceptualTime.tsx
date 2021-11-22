@@ -4,7 +4,7 @@ function TextInput(props: any): JSX.Element {
   const [touched, setTouch] = useState(false);
   const [, setError] = useState("");
   const [, setHtmlClass] = useState("");
-  const [, setValue] = useState(0);
+  
 
   function onValueChanged(dateValue: ChangeEvent<HTMLInputElement>): void {
     let [error, validClass, elementValue] = ["", "", dateValue];

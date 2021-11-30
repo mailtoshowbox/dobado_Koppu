@@ -24,6 +24,8 @@ export interface IProduct {
     takeout_requested_details: any;
     doc_requested_department: any;
     document_type_details:any;
+    isRequestedDocument : any,
+    docStatus : string;
 }
 
 

@@ -22,7 +22,7 @@ export class DocumentsService {
 	) { }
 
 	async findAll(mode, id = null): Promise<Document[]> { 
-		console.log("we", mode);
+ 
 		if (mode === "issued") {  
 			return await this.productModel
 				.find(
@@ -184,7 +184,6 @@ export class DocumentsService {
 			is_requested_for_takeout_return_approve = false,
 		} = product;
 
-		console.log("product---", product);
 		if (is_requested_for_takeout) {
 			if (is_requested_for_takeout_submit) {
 				return await this.productModel

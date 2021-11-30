@@ -22,7 +22,6 @@ const App: React.FC = () => {
   useEffect(() => { 
     
    if(APP_CONST.AUTO_LOGOUT_ENABLED){
-    console.log(11);
     const timer = new IdleTimer({
       timeout: APP_CONST.AUTO_LOGOUT_TIME , //expire after 10 seconds
       onTimeout: () => {  

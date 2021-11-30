@@ -169,7 +169,6 @@ export class DocRequestService {
 					this.documentModal
 						.find({ isActive: true, _id: doc._id })
 						.then((res: any) => {
-							//    console.log("res---", res);
 							let documenttoEdit = res[0];
 
 							const takeout_request_detail = {
@@ -209,7 +208,6 @@ export class DocRequestService {
 									}
 								)
 								.then((tre) => {
-									console.log("tretre---", tre);
 								});
 						});
 				}
@@ -341,8 +339,6 @@ export class DocRequestService {
 								};
 							}
 
-
-							// console.log("requestDetails---", requestDetails);
 
 							documenttoEdit._doc = {
 								...documenttoEdit._doc,
@@ -530,7 +526,6 @@ export class DocRequestService {
 							newProduct
 								.save()
 								.then((res) => {
-									//console.log("+++++++++INsert DONE=", res);
 								})
 								.catch((ex) => {
 									console.log(ex);

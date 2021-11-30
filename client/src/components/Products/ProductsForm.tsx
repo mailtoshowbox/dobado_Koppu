@@ -58,6 +58,8 @@ const ProductForm: React.FC = () => {
 	);
 
 	let product: IProduct | null = products.selectedProduct;
+
+	 
 	const isCreate: boolean =
 		products.modificationState === ProductModificationStatus.Create;
 	const { roles = [], name, email, emp_id } = account;
@@ -69,7 +71,13 @@ const ProductForm: React.FC = () => {
 		box: "",
 		rack: "",
 	});
-	const [, setQrModified] = useState(false);
+	const [, setQrModified] = useState(false); 
+
+	const [isRequestedDocument] = useState(product?.isRequestedDocument ? product?.isRequestedDocument : false);
+	//const [docStatus, setDocStatus] = useState(product?.docStatus ? product?.docStatus : 'archived');
+
+ 
+
 	const selectField = ["box"];
 	const dispatch: Dispatch<any> = useDispatch();
 
@@ -145,7 +153,9 @@ const ProductForm: React.FC = () => {
 			is_requested_for_takeout: false,
 			takeout_requested_details: {},
 			doc_requested_department: account.departments[0],
-			document_type_details: {}
+			document_type_details: {},
+			isRequestedDocument : false,
+			docStatus : "archived"
 		};
 	} else {
 		const { box = "", rack = "" } = product;
@@ -199,6 +209,7 @@ const ProductForm: React.FC = () => {
 			value: product.is_requested_for_takeout,
 		},
 		document_type_details: { error: "", value: product.document_type_details },
+		docStatus: { error: "", value: product.docStatus ? product.docStatus  : 'archived' },
 	});
 
 	if (formState.qr_code.value === "") {
@@ -244,6 +255,7 @@ const ProductForm: React.FC = () => {
 		});
 	}
 	function hasFormValueChanged(model: OnChangeModel): void {
+		 
 		const { field, value = "", name = "" } = model;
 		if (selectField.indexOf(field) > -1) {
 			setTouchedFields({ ...touchedFields, [model.field]: true });
@@ -300,11 +312,18 @@ const ProductForm: React.FC = () => {
 					});
 				}
 			} else {
+				if (model.name === "docStatus") {
+					setFormState({
+						...formState,
+						[model.name]: { error: model.error, value: model.field },
+					});
+				}else {
 				setTouchedFields({ ...touchedFields, [model.field]: true });
 				setFormState({
 					...formState,
 					[model.field]: { error: model.error, value: model.value },
 				});
+			}
 			}
 		}
 	}
@@ -356,7 +375,6 @@ const ProductForm: React.FC = () => {
 			};
 
 			if (mode === "ADD") {
-
 				let boxInfo = {
 					name: formState.name.value,
 					description: formState.description.value,
@@ -481,6 +499,7 @@ const ProductForm: React.FC = () => {
 					document_type: formState.document_type.value,
 					retension_time: formState.retension_time.value,
 					document_type_details: formState.document_type_details.value,
+					docStatus: formState.docStatus.value,
 				};
 				let seltdPro = products?.products.filter(
 					(pro) => pro._id === formState._id.value
@@ -716,6 +735,12 @@ const ProductForm: React.FC = () => {
 	if (formState.type_of_space !== undefined) {
 		type_of_space_Check = formState.type_of_space.value;
 	}
+
+ 
+	const	docStatus = formState.docStatus.value ? formState.docStatus.value :  "archived";
+	 
+
+
 	function printOrder() {
 		var myWindow = window.open("", "", "width=750,height=750");
 		myWindow?.document.write(
@@ -830,7 +855,57 @@ const ProductForm: React.FC = () => {
 									/>
 								</div>
 							</div>
-							{roles[0] === "Qualityuser" && (
+
+							{isRequestedDocument && (
+								<div className="form-group col-md-12 font-14 ">
+								{roles[0] === "Qualityuser" && (
+									<>
+										{" "}
+									 
+										<div className="form-row">
+											<div
+												className="col-md-10"
+												style={{ paddingLeft: "10px" }}
+												key={"perceptual_space"}
+											>
+												{" "}
+												<Checkbox
+													id="docStatus"
+													field={"archived"}
+													onChange={hasFormValueChanged}
+													label={"To be archived"}
+													value={
+														docStatus === "archived"
+															? true
+															: false
+													}
+													name={"docStatus"}
+													disabled={false}
+													customError={""}
+												/>
+												<br />{" "}
+												<Checkbox
+													id="docStatus"
+													field={"destroyed"}
+													onChange={hasFormValueChanged}
+													label={"To be destroyed"}
+													value={
+														docStatus === "destroyed"
+															? true
+															: false
+											 		}
+													name={"docStatus"}
+													disabled={false}
+													customError={""}
+												/>
+												 
+											</div>
+										</div>{" "}
+									</>
+								)}
+							</div>
+							)}
+							{docStatus === 'archived' && roles[0] === "Qualityuser" && (
 								<div className="form-row 12 font-14">
 									<div className="form-group col-md-6">
 										<div className="form-row">
@@ -867,7 +942,7 @@ const ProductForm: React.FC = () => {
 
 							<div className="form-row">
 								<div className="form-group col-md-12 font-14">
-									{roles[0] === "Qualityuser" && (
+									{docStatus === 'archived' &&  roles[0] === "Qualityuser" && (
 										<>
 											{" "}
 											<div className="mb-3">Type of Space</div>

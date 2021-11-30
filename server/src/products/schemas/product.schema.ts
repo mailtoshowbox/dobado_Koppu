@@ -164,6 +164,10 @@ export class Documents extends Document {
 
 	@Prop()
 	document_box_details: Info;
+
+	
+	@Prop()
+	docStatus: string;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Documents);

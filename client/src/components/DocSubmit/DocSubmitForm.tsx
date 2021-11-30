@@ -154,7 +154,9 @@ const ProductForm: React.FC = () => {
 			takeout_requested_details: {},
 
 			doc_requested_department: {},
-			document_type_details : {}
+			document_type_details : {},
+			isRequestedDocument: false,
+			docStatus : "archived"
 		};
 	} else {
 		const { box = "", rack = "" } = product;
@@ -222,6 +224,7 @@ const ProductForm: React.FC = () => {
 			value: product.is_requested_for_takeout,
 		},
 		document_type_details: { error: "", value: product.document_type_details },
+		docStatus: { error: "", value: product.docStatus ? product.docStatus  : 'archived' },
 	});
 
 	if (formState.qr_code.value === "") {

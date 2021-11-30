@@ -309,8 +309,6 @@ function DocCategoryList(props: productListProps): JSX.Element {
 		doc.setFontSize(15);
 		const title = APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET_NAME;
 
-		console.log("props.selectedFieldsToDownload----", props.selectedFieldsToDownload);
-		console.log("props.EXPORT_PDF_COLUMN_LOG_SHEET----", APP_CONST.EXPORT_PDF_COLUMN_LOG_SHEET);
 
 		const headersw = props.selectedFieldsToDownload.filter(
 			(elt:any) => elt.FIELD_VALUE

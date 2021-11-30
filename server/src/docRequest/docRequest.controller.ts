@@ -94,7 +94,7 @@ export class DocRequestsController {
           this.DocRequestsService.createInitialHistory(createDocRequestsDto)
         } else{
           this.DocRequestsService.checkRecentHistory(createDocRequestsDto).then((rec)=>{
-          //  console.log("-----rec----",  createDocRequestsDto);           
+            
           
               this.DocRequestsService.createDocRequestApprovalHistory(createDocRequestsDto).then((res)=>{
               //  console.log("createDocRequestApprovalHistory- res--", res);

@@ -5,19 +5,15 @@ import {
   Put,
   Delete,
   Body,
-  Param,
-} from '@nestjs/common';
-import { CreateDocumentDto } from './dto/create-product.dto';
+  Param,UseGuards
+} from '@nestjs/common'; 
 import { Document } from './interfaces/product.interface';
 import { DocumentsService } from './products.service';
 import { BoxService } from '../box/box.service';
-import { DocCategoryService } from '../docCategory/docCategory.service';
-import { UsersService } from '../users/users.service';
-import { DocTypeService } from '../docType/docType.service';
-import { promises } from 'dns';
-import { resolve } from 'path';
 
+import { AuthGuard } from '@nestjs/passport';
 @Controller('products')
+@UseGuards(AuthGuard('jwt'))
 export class DocumentsController {
   constructor(
     private readonly productsService: DocumentsService,
@@ -80,17 +76,17 @@ export class DocumentsController {
       let res = this.productsService.findAll(modes, id);
       return res;
     } else {
-      let res = this.productsService.findAll(modes).then((succ = []) => {
+      let res = this.productsService.findAll(modes).then((succ = []) => {      
         let onfo = succ.map((doc: any) => {
-
+          
           const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
           if (box_info.length > 0) {
             doc.box = box_info[0].name;
           }
-          if (box_info.length > 0) {
+          if (rack_info.length > 0) {
             doc.rack = rack_info[0].name;
           }
-          if (box_info.length > 0) {
+          if (category_info.length > 0) {
             doc.category = category_info[0].name;
           }
           if (docType_info.length > 0) {

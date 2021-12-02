@@ -34,6 +34,7 @@ function ProductList(props: productListProps): JSX.Element {
 	}
 
 	function dataFormatter(documentName: string, row: any) {
+
 		const {
 			// productModificationStatus = 0,
 			currentUser: { roles = [] },
@@ -57,12 +58,21 @@ function ProductList(props: productListProps): JSX.Element {
 				) : (
 					<span>{documentName}</span>
 				)}
-				{row.batch && row.batch.length > 2 && (
+				{row.batch && row.batch.length > 2  && (
 					<span style={{ color: "dodgerblue " }}>
 						<br />
 						Batch : {row.batch}
 					</span>
 				)}
+
+{row.docStatus && row.docStatus === "destroyed" && (
+					<span style={{ color: "dodgerblue " }}>
+						<br />
+						(To be Destroyed)
+					</span>
+				)}
+
+               
         	{row.is_requested_for_takeout && (
 					<span style={{ color: "dodgerblue "  }}>
 						<br />

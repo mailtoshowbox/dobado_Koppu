@@ -611,6 +611,13 @@ const ProductForm: React.FC = () => {
 	//   return isError ? "disabled" : "";
 	// }
 	function isFormInvalid(): boolean {
+
+
+		let  isDestroyedDocument =  false ;
+		if(formState.docStatus.value){
+			isDestroyedDocument = formState.docStatus.value === 'destroyed' ? true : false;
+		}
+
 		let formIsValid = true;
 		if (formState.name.value === "") {
 			formIsValid = false;
@@ -627,10 +634,10 @@ const ProductForm: React.FC = () => {
 		} else if (formState.qr_code.value === "" && roles[0] === "Qualityuser") {
 			formIsValid = false;
 			formState.qr_code.error = "Qr Code for the doc is mandatory";
-		} else if (formState.box.value === "" && roles[0] === "Qualityuser") {
+		} else if (formState.box.value === "" && roles[0] === "Qualityuser" && !isDestroyedDocument) {
 			formIsValid = false;
 			formState.box.error = "Rack system is mandatory";
-		} else if (formState.rack.value === "" && roles[0] === "Qualityuser") {
+		} else if (formState.rack.value === "" && roles[0] === "Qualityuser"  && !isDestroyedDocument) {
 			formIsValid = false;
 			formState.rack.error = "Series is mandatory";
 		} else if (
@@ -640,7 +647,6 @@ const ProductForm: React.FC = () => {
 			formIsValid = false;
 			formState.type_of_space.error = "Type of space is mandatory";
 		}
-
 		setFormState(formState);
 
 		return formIsValid;

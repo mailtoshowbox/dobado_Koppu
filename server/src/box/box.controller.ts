@@ -5,7 +5,7 @@ import {
   Put,
   Delete,
   Body,
-  Param,
+  Param,UseGuards
 } from '@nestjs/common';
 import { CreateBoxDto } from './dto/create-box.dto';
 import { Box } from './interfaces/box.interface';
@@ -13,7 +13,9 @@ import { Rack } from './interfaces/rack.interface';
 import { BoxService } from './Box.service';
 import { RackService } from './Rack.service';
 
+import { AuthGuard } from '@nestjs/passport';
 @Controller('Box')
+@UseGuards(AuthGuard('jwt'))
 export class BoxController {
   constructor(private readonly BoxService: BoxService) {}
 

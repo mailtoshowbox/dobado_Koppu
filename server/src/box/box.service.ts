@@ -31,11 +31,15 @@ export class BoxService {
   
 
 
-  async createRack(rack: Rack): Promise<Rack> {
-      const newRack = new this.rackModel(rack);
-     
+  async createRack(rack: any): Promise<Rack> { 
 
-      return await newRack.save();  
+
+   return await this.rackModel.findOne({ name: rack.name ,box: rack.box}).then((res)=>{
+      if(res === null){
+        const newRack = new this.rackModel(rack);   
+        return newRack.save();  
+      } 
+    }); 
   }
 
   async create(box: Box): Promise<Box> {
@@ -89,6 +93,22 @@ export class BoxService {
   async update(id: string, box: Box): Promise<Box> {
     return await this.boxModel.findByIdAndUpdate(id, box, {
       new: true,
+    }).then((savedResult)=>{
+
+      const {racks = 0} = box;
+      const {_id= ""} = savedResult;
+      if(racks>0){
+        var n=0;
+        while(n<racks){
+          let name = n+1;
+          let rack= {name : name.toString(), status : "Available", box : _id, picked:false };       
+          n++;      
+          this.createRack(rack); 
+        }        
+      }
+    
+     
+      return savedResult;
     });
   }
 }

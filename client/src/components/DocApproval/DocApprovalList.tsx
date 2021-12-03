@@ -118,18 +118,21 @@ function DocApprovalList(props: productListProps): JSX.Element {
     return docRequestDocumentType(cell);
   };
   const options = {
-    clearSearch: true,
+    clearSearch: true ,
+  
   };
+  
 
   return (
     <div className="portlet">
       <BootstrapTable
         options={options}
+       
         data={docApprovals.docApprovals}
         pagination={true}
         hover={true}
         search={true}
-        trClassName={setRequestStatus}
+        trClassName={setRequestStatus}  
       >
         <TableHeaderColumn
           dataField="_id"

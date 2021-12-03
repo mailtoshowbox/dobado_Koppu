@@ -4,6 +4,26 @@ const APP_CONST = {
     "DEFAULT_PERCEPTUAL_YEAR_TO_ADD": 6,
     "REQUEST_DOCUMENT_PREFIX_RECU": "RQ",
     "DOC_REQUEST_DOC_TYPE": {
+        CATEGORY : [
+            {
+                id: "1",
+                name: "Executed Copy"
+            },
+            {
+                id: "2",
+                name: "Controlled Copy"
+            },{
+                id: "4",
+                name: "UC Copy"
+            },{
+                id: "6",
+                name: "Take Out"
+            },
+            {
+                id: "3",
+                name: "Add Docs"
+            }
+        ],
         CATEGORY_ONE: [{
             id: "1",
             name: "Executed Copy"
@@ -91,7 +111,7 @@ const APP_CONST = {
     "EXPORT_PDF_COLUMN_LOG_SHEET_NAME": "LOG S -" + new Date(),
     "LOGIN_URL": "http://localhost:3001/",
     "AUTO_LOGOUT_ENABLED": 1,
-    "AUTO_LOGOUT_TIME": 60,
+    "AUTO_LOGOUT_TIME": 3600,
     "ALLOWED_DOC_SHEET_FILED_TO_DOWNLOAD": 8,
     "ALLOWED_DOC_SHEET_FILED_TO_DOWNLOAD_MESSAGE": "Not allowed to select more than ",
 }

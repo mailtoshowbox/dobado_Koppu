@@ -76,9 +76,10 @@ const ProductForm: React.FC = () => {
 		};
 	}
 
-	const dcat1 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_ONE;
+	const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
+/* 	const dcat1 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_ONE;
 	const dcat2 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_TWO;
-	const dcat3 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_THREE;
+	const dcat3 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_THREE; */
 	const [selectedCategory, setSelectedCategory] = useState("1");
 
 	const intialFormState = {
@@ -153,15 +154,6 @@ const ProductForm: React.FC = () => {
 		return true;
 	}
 
-	const pickOne = dcat1.filter(
-		(cat1) => cat1.id.toString() === formState.doc_type.value.toString()
-	);
-	const pickTwo = dcat2.filter(
-		(cat1) => cat1.id === formState.doc_type.value.toString()
-	);
-	const pickThreee = dcat3.filter(
-		(cat1) => cat1.id === formState.doc_type.value.toString()
-	);
 
 	function saveDocument(row: any) {
 		let requested_doc = formState.requested_doc.value || [];
@@ -197,8 +189,7 @@ const ProductForm: React.FC = () => {
 
 	function saveRequest(formState: any, saveFn: Function, mode: String): void {
 		if (docrequest) {
-			const doc_types = dcat1
-				.concat(dcat2, dcat3)
+			const doc_types = dCat
 				.filter(
 					(arr) => arr.id.toString() === formState.doc_type.value.toString()
 				);
@@ -488,17 +479,14 @@ const ProductForm: React.FC = () => {
 										</label>
 									</div>
 									<div
-										className={
-											pickOne.length > 0
-												? "col-md-3 input_document_type_selected"
-												: "col-md-3 "
+										className={ "col-md-3 "
 										}
 									>
 										<SelectInput
 											id="input_document_type"
 											field="doc_type"
 											label={""}
-											options={dcat1}
+											options={dCat}
 											required={true}
 											onChange={hasFormValueChanged}
 											value={formState.doc_type.value.toString()}
@@ -506,7 +494,7 @@ const ProductForm: React.FC = () => {
 											customError={""}
 										/>
 									</div>
-									<div
+								{/* 	<div
 										className={
 											pickTwo.length > 0
 												? "col-md-3 input_document_type_selected"
@@ -543,7 +531,7 @@ const ProductForm: React.FC = () => {
 											type="select"
 											customError={""}
 										/>
-									</div>
+									</div> */}
 								</div>
 
 								{formState.doc_type.value > 5 && (

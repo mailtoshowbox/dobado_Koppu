@@ -70,16 +70,9 @@ function ProductForm(props: productFormProps): JSX.Element {
     };
   }
 
-  const dcat1 = [
-    { id: "1", name: "Executed Copy" },
-    { id: "2", name: "Controlled Copy" },
-    { id: "3", name: "Add Docs" },
-  ];
-  const dcat2 = [
-    { id: "4", name: "UC Copy" },
-    { id: "5", name: "Add Docs" },
-  ];
-  const dcat3 = [{ id: "6", name: "Take Out" }];
+ 
+
+  const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
 
  
   const [, setSelectedCategory] = useState("1");
@@ -173,15 +166,7 @@ function ProductForm(props: productFormProps): JSX.Element {
     return true;
   }
 
-  const pickOne = dcat1.filter(
-    (cat1) => cat1.id.toString() === formState.doc_type.value.toString()
-  );
-  const pickTwo = dcat2.filter(
-    (cat1) => cat1.id === formState.doc_type.value.toString()
-  );
-  const pickThreee = dcat3.filter(
-    (cat1) => cat1.id === formState.doc_type.value.toString()
-  );
+   
 
   function saveDocument(row: any) {
     let requested_doc = formState.requested_doc.value || [];
@@ -495,17 +480,14 @@ function ProductForm(props: productFormProps): JSX.Element {
                     </label>
                   </div>
                   <div
-                    className={
-                      pickOne.length > 0
-                        ? "col-md-3 input_document_type_selected"
-                        : "col-md-3 "
+                    className={ "col-md-3 "
                     }
                   >
                     <SelectInput
                       id="input_document_type"
                       field="doc_type"
-                      label={pickOne.length > 0 ? "" : ""}
-                      options={dcat1}
+                      label={ ""}
+                      options={dCat}
                       required={true}
                       onChange={hasFormValueChanged}
                       value={formState.doc_type.value.toString()}
@@ -513,44 +495,7 @@ function ProductForm(props: productFormProps): JSX.Element {
                       customError={""}
                     />
                   </div>
-                  <div
-                    className={
-                      pickTwo.length > 0
-                        ? "col-md-3 input_document_type_selected"
-                        : "col-md-3 "
-                    }
-                  >
-                    <SelectInput
-                      id="input_document_type"
-                      field="doc_type"
-                      label={pickTwo.length > 0 ? "" : ""}
-                      options={dcat2}
-                      required={true}
-                      onChange={hasFormValueChanged}
-                      value={formState.doc_type.value.toString()}
-                      type="select"
-                      customError={""}
-                    />
-                  </div>
-                  <div
-                    className={
-                      pickThreee.length > 0
-                        ? "col-md-3 input_document_type_selected"
-                        : "col-md-3 "
-                    }
-                  >
-                    <SelectInput
-                      id="input_document_type"
-                      field="doc_type"
-                      label={pickThreee.length > 0 ? "" : ""}
-                      options={dcat3}
-                      required={true}
-                      onChange={hasFormValueChanged}
-                      value={formState.doc_type.value.toString()}
-                      type="select"
-                      customError={""}
-                    />
-                  </div>
+                 
                 </div>
                 {formState.doc_type.value < 6 && (
                   <div>

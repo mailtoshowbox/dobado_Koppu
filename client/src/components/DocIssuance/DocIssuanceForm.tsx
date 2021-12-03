@@ -531,10 +531,19 @@ const ProductForm: React.FC = () => {
 		};
 
 		issueGenaralIssuance(approvalInfo, account).then((status) => {
+		
+
+			cancelForm();
 			setPrintYesDoc(false);
-			//  setSelectedDocForPrint(initialSelectedDocForPrint);
 			setShowYes(false);
+
+
 			dispatch(addNotification("Document issued", `Document request issued`));
+			getDocIssuanceList(account.auth, account.emp_id).then(
+				(items: IDocIssuanceList) => {
+				  dispatch(loadListOfDocIssuance(items));
+				}
+			  );
 		});
 	};
 	const rejectIssueGenaralIssuanceAll = (event: any) => {

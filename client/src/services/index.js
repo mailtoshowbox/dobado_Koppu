@@ -523,13 +523,19 @@ export function getBoxList(options) {
 		});
 }
 
-export function getRacks(id) {
-	return fetch(APP_CONST.API_HOST_AT + "/box/racks/" + id)
+export function getRacks(id,options) {
+	var myOptions = getDocCustomPostOptions(options, {rack:id});
+	return fetch( 
+		APP_CONST.API_HOST_AT + "/box/racks/getRacksN",myOptions 
+	)
 		.then((response) => {
 			if (!response.ok) {
 				handleResponseError(response);
 			}
 			return response.json();
+		})
+		.then((json) => {
+			return json;
 		})
 		.catch((error) => {
 			handleError(error);

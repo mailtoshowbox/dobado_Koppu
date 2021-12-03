@@ -50,6 +50,15 @@ export class BoxController {
     @Param('id') id: string,
     @Body() updateBoxDto: CreateBoxDto,
   ): Promise<Box> {
+
     return this.BoxService.update(id, updateBoxDto);
   }
+
+  @Post('racks/:getRacksN')
+  getRacksN(@Body() param) { 
+    return this.BoxService.getRacks(param.rack);
+
+  }
+
+
 }

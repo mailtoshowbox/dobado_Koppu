@@ -212,8 +212,9 @@ const ProductForm: React.FC = () => {
 		docStatus: { error: "", value: product.docStatus ? product.docStatus  : 'archived' },
 	});
 
+
 	if (formState.qr_code.value === "") {
-		generateCode().then((res) => {
+		generateCode(account).then((res) => {
 			setFormState({
 				...formState,
 
@@ -731,8 +732,8 @@ const ProductForm: React.FC = () => {
 		}
 	}
 
-	function generateCode() {
-		return getNewQrCode(formState).then((status) => {
+	function generateCode(account:any) {
+		return getNewQrCode(formState,account).then((status) => {
 			return status;
 		});
 	}

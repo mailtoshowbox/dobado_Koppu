@@ -184,7 +184,7 @@ function convertRetentionExactDate(cell: any, row: any) {
         <button type='button'
 		 onClick={() => destructDoc()}
           className={ `btn btn-primary` }>
-          Desctruct
+          Destruct
         </button>
       </div>
     );

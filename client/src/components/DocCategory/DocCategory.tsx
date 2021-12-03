@@ -49,7 +49,7 @@ const Products: React.FC = () => {
     getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
     });
-    dispatch(updateCurrentPath("Home", "Categories"));
+    dispatch(updateCurrentPath("Home", "Compactor"));
   }, [path.area, dispatch]);
 
   function onProductSelect(product: IDocCategory): void {
@@ -76,7 +76,7 @@ const Products: React.FC = () => {
       {/* <p className="mb-4 font-14">Document Category here</p> */}
       <div className="row">
         <TopCard
-          title="Categories"
+          title="Compactor"
           text={`${numberItemsCount}`}
           icon="sitemap"
           class="success"

@@ -397,14 +397,9 @@ export function addNewDoc(newitem, options) {
 		});
 }
 
-export function getNewQrCode(newitem) {
-	return fetch(APP_CONST.API_HOST_AT + "/products/qrcode/getRandomCode", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(newitem),
-	})
+export function getNewQrCode(newitem,options) {
+	var myOptions = getDocCustomPostOptions(options, newitem);
+	return fetch(APP_CONST.API_HOST_AT + "/products/qrcode/getRandomCode",myOptions )
 		.then((response) => {
 			if (!response.ok) {
 				handleResponseError(response);

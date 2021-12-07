@@ -145,6 +145,30 @@ export class DocumentsService {
 		}
 	}
 
+
+	async takeOutRequest(params : any) { 
+		return await this.productModel
+				.find({
+					$or: [
+						{
+							isActive: true,
+							isRequestedDocument: true,
+							qr_code: params.referenceNumber, 
+						},
+						{
+							isActive: true,
+							isRequestedDocument: false,
+							qr_code: params.referenceNumber,
+							"document_info.status": "approved",
+							 
+						},
+					],
+				})
+				.then((res: any) => {
+					return res;
+				});
+	}
+
 	async findAllDocuments() {
 		return await this.productModel.find().exec();
 	}

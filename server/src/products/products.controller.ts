@@ -126,6 +126,7 @@ export class DocumentsController {
 
   @Post(":mode")
   logSheets(@Param('mode') mode: string, @Body() params): Promise<Document[]> {
+ 
     if(mode === 'destructiveDocList'){
       let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
         let onfo = succ.map((doc: any) => { 
@@ -188,6 +189,9 @@ export class DocumentsController {
         return onfo;
       });
       return res;
+    }else if(mode === "takeOutRequest"){
+      let res = this.productsService.takeOutRequest(params);
+   return res;
     }
     else{ 
       let res = this.productsService.getLogSheet(params).then((succ = []) => {
@@ -224,6 +228,8 @@ export class DocumentsController {
    
 
   }
+ 
+
   
   @Post()
   destructiveDocList(@Body() params): Promise<Document[]> {

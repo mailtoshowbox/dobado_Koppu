@@ -309,10 +309,12 @@ export function loadApproavalAccessUserInfo(item, options = {}) {
 		});
 }
 
-export function loadDocumentforTakeOutList({ referenceNumber = "" }, options) {
-	var myOptions = getDocCustomPostOptions(options, {referenceNumber:referenceNumber});
+export function loadDocumentforTakeOutList(item, options) {
+	var myOptions = getDocCustomPostOptions(options, item);
+
 	return fetch(
-		APP_CONST.API_HOST_AT + "/products/takeOutRequest/",myOptions
+		APP_CONST.API_HOST_AT + "/products/takeOutRequest/" , 
+		myOptions
 	)
 		.then((response) => {
 			if (!response.ok) {

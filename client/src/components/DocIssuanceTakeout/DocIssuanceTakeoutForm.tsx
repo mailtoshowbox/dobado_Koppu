@@ -1020,7 +1020,7 @@ const ProductForm: React.FC = () => {
                       className="btn btn-warning font-14 left-margin font-14"
                       onClick={(e) => rejectIssueGenaralIssuanceAll(e)}
                     >
-                      CANCEL
+                      REJECT
                     </button>
                   </span>
                 )}

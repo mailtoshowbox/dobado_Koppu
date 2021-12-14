@@ -411,7 +411,7 @@ const ProductForm: React.FC = () => {
 			if (
 				selectedDocForPrint.no_of_label > 0
 			) {
-				getNewQrCode({ noOfId: selectedDocForPrint.no_of_label }).then(
+				getNewQrCode({ noOfId: selectedDocForPrint.no_of_label },account).then(
 					(status) => {
 						setDynamicIdList(status);
 					}

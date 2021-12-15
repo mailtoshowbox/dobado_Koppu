@@ -542,6 +542,24 @@ export function getRacks(id,options) {
 		});
 }
 
+export function getCountOf(item,options) {
+	var myOptions = getDocCustomPostOptions(options, item);
+	return fetch( 
+		APP_CONST.API_HOST_AT + "/products/getCountOfDoc/getCountOfDoc",myOptions 
+	)
+		.then((response) => {
+			if (!response.ok) {
+				handleResponseError(response);
+			}
+			return response.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((error) => {
+			handleError(error);
+		});
+}
 export function updateBox(item, options) {
 	var myOptions = getDocCustomPutOptions(options, item);
 	const { id = "" } = item;

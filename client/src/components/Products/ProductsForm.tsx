@@ -34,6 +34,7 @@ import {
 	getRacks,
 	getDocumentList,
 	getNewQrCode,
+	getCountOf
 } from "../../services/index";
 import {
 	OnChangeModel,
@@ -72,13 +73,17 @@ const ProductForm: React.FC = () => {
 		rack: "",
 	});
 	const [, setQrModified] = useState(false); 
+	const [categoryDocCount, setCategoryDocCount] = useState(null); 
+	const [racksDocCount, setRacksDocCount] = useState(null); 
+	const [seriesDocCount, setSeriesDocCount] = useState(null); 
+ 
 
 	const [isRequestedDocument] = useState(product?.isRequestedDocument ? product?.isRequestedDocument : false);
 	//const [docStatus, setDocStatus] = useState(product?.docStatus ? product?.docStatus : 'archived');
 
  
 
-	const selectField = ["box"];
+	const selectField = ["box", 'category'];
 	const dispatch: Dispatch<any> = useDispatch();
 
 	const [touchedFields, setTouchedFields] = useState({
@@ -259,22 +264,44 @@ const ProductForm: React.FC = () => {
 		 
 		const { field, value = "", name = "" } = model;
 		if (selectField.indexOf(field) > -1) {
-			setTouchedFields({ ...touchedFields, [model.field]: true });
-			getRacks(value, account).then((racks = []) => {
-				if (racks.length > 0) {
-					setPickedRack(true);
-					setBoxRacks(racks);
-					// dispatch(updateRacks(racks));
-				}
-			});
-			setFormState({
-				...formState,
-				[model.field]: { error: model.error, value: model.value },
-			});
-			setQrRequested(
-				Object.assign({ ...qrRequested }, { [model.field]: model.value })
-			);
-			setQrModified(true);
+
+			if(field === 'category'){ //Compactor
+ 
+				getCountOf(model, account).then((result = []) => {
+					setCategoryDocCount(result);					/*
+					const [categoryDocCount, setCategoryDocCount] = useState(null); 
+					const [racksDocCount, setracksDocCount] = useState(null); 
+					const [seriesDocCount, setSeriesDocCount] = useState(null); 
+					*/
+					setTouchedFields({ ...touchedFields, [model.field]: true });
+					setFormState({
+						...formState,
+						[model.field]: { error: model.error, value: model.value },
+					});
+				});
+			}else if(field === 'box'){// racks
+
+				setSeriesDocCount(null)
+				getCountOf(model, account).then((result = []) => {
+					setRacksDocCount(result);
+					setTouchedFields({ ...touchedFields, [model.field]: true });
+					getRacks(value, account).then((racks = []) => {
+						if (racks.length > 0) {
+							setPickedRack(true);
+							setBoxRacks(racks);
+							// dispatch(updateRacks(racks));
+						}
+					});
+					setFormState({
+						...formState,
+						[model.field]: { error: model.error, value: model.value },
+					});
+					setQrRequested(
+						Object.assign({ ...qrRequested }, { [model.field]: model.value })
+					);
+					setQrModified(true);					 
+				});	
+			}	
 		} else {
 			//Prepare QR
 			if (field === "name") {
@@ -339,13 +366,21 @@ const ProductForm: React.FC = () => {
 				newObj[index]["picked"] = false;
 			}
 		});
-		setBoxRacks(newObj);
 
-		setFormState({
-			...formState,
-			["rack"]: { error: model.error, value: field },
+
+		getCountOf({...model, field:"series", value:model.field}, account).then((result = []) => {
+
+			setSeriesDocCount(result);
+			console.log("result--resultresultresult---", result);
+			setBoxRacks(newObj);
+	
+			setFormState({
+				...formState,
+				["rack"]: { error: model.error, value: field },
+			});
+			setTouchedFields({ ...touchedFields, ["rack"]: true });
 		});
-		setTouchedFields({ ...touchedFields, ["rack"]: true });
+		
 	}
 
 	function saveUser(event: FormEvent<HTMLFormElement>): void {
@@ -800,6 +835,7 @@ const ProductForm: React.FC = () => {
 									/>
 								</div>
 								{roles[0] === "Qualityuser" && (
+									<div className="form-row col-md-12">
 									<div className="form-group col-md-6">
 										<SelectInput
 											id="input_category"
@@ -813,6 +849,12 @@ const ProductForm: React.FC = () => {
 											customError={formState.category.error}
 										/>
 									</div>
+								{ categoryDocCount !== null && (	<div className="form-group col-md-6" 
+								style={{    "textAlign": "left",    "paddingTop": "22px", color:"green"}}  > 
+									 there are {categoryDocCount} document under this Compactor
+									</div>
+	                            )}
+								</div>
 								)}
 							</div>
 							<div className="form-row 13 font-14">
@@ -914,9 +956,9 @@ const ProductForm: React.FC = () => {
 							)}
 							{docStatus === 'archived' && roles[0] === "Qualityuser" && (
 								<div className="form-row 12 font-14">
-									<div className="form-group col-md-6">
+									<div className="form-group col-md-12">
 										<div className="form-row">
-											<div className="form-group col-md-12">
+											<div className="form-group col-md-6">
 												<SelectInput
 													id="input_box"
 													field="box"
@@ -929,6 +971,11 @@ const ProductForm: React.FC = () => {
 													customError={formState.box.error}
 												/>
 											</div>
+											{ racksDocCount !== null && (	<div className="form-group col-md-6" 
+								style={{    "textAlign": "left",    "paddingTop": "22px", color:"green"}}  > 
+									 there are {racksDocCount} document under this rack
+									</div>
+	                            )}
 										</div>
 										<div className="form-row">
 											<div className="form-group col-md-12">
@@ -941,6 +988,12 @@ const ProductForm: React.FC = () => {
 														{formState.rack.error}
 													</div>
 												) : null}
+
+{ seriesDocCount !== null && (	<div className="form-group col-md-6" 
+								style={{    "textAlign": "left",    "paddingTop": "22px", color:"green"}}  > 
+									 there are {seriesDocCount} document under this Series
+									</div>
+	                            )}
 											</div>
 										</div>
 									</div>

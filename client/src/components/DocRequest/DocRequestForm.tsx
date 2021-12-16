@@ -116,9 +116,22 @@ const ProductForm: React.FC = () => {
 		});
 	}
 
+	/* BLock for Search DDocument */
+	const intialSearchDocParam = {
+		search_desc: { error: "", value: ""},
+		search_doc_type: { error: "", value: ""},
+		search_doc_name: { error: "", value: ""},
+		search_doc_num: { error: "", value: ""},
+		ref_no: { error: "", value: ""} 
+	};
+ 
+
+	const [searchDocParam, setSearchDocParam] = useState(intialSearchDocParam);
 	function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
-		setNoDocAvailebleForTakeoutRequest(false);
-		setReferenceNumberFortakeOut(model.value.toString());
+		setSearchDocParam({
+			...searchDocParam,
+			[model.field]: { error: model.error, value: model.value },
+		});
 	}
 
 	function hasLoginFormValueChanged(model: OnChangeModel): void {
@@ -299,9 +312,9 @@ const ProductForm: React.FC = () => {
 		});
 	}
 	function loadDocumentforTakeOut() {
-		let data = { referenceNumber: referenceNumberFortakeOut };
 
-		loadDocumentforTakeOutList(data, account).then((status = []) => {
+
+		loadDocumentforTakeOutList(searchDocParam, account).then((status = []) => {
 			if (status.length <= 0) {
 				setNoDocAvailebleForTakeoutRequest(true);
 			} else {
@@ -537,11 +550,11 @@ const ProductForm: React.FC = () => {
 								{formState.doc_type.value > 5 && (
 									<div className="dynamic-request-form">
 										<div className="row">
-											<div className="col-md-4">
+											<div className="col-md-2">
 												<TextInput
 													id="input_request_no"
 													field="ref_no"
-													value={referenceNumberFortakeOut}
+													value={searchDocParam.ref_no.value ? searchDocParam.ref_no.value  : ""}
 													onChange={referenceNumberFortakeOutChanged}
 													required={false}
 													maxLength={100}
@@ -550,9 +563,60 @@ const ProductForm: React.FC = () => {
 													customError={""}
 												/>
 											</div>
-
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_doc_num"
+													value={searchDocParam.search_doc_num.value ? searchDocParam.search_doc_num.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="DC No"
+													customError={""}
+												/>
+											</div>
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_doc_name"
+													value={searchDocParam.search_doc_name.value ? searchDocParam.search_doc_name.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="DC Name"
+													customError={""}
+												/>
+											</div>
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_doc_type"
+													value={searchDocParam.search_doc_type.value ? searchDocParam.search_doc_type.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="Doc.type"
+													customError={""}
+												/>
+											</div>
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_desc"
+													value={searchDocParam.search_desc.value ? searchDocParam.search_desc.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="Description"
+													customError={""}
+												/>
+											</div>
 											<div
-												className="col-md-3"
+												className="col-md-2"
 												style={{ textAlign: "center", marginTop: "2%" }}
 											>
 												<div

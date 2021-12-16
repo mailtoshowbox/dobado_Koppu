@@ -148,25 +148,56 @@ export class DocumentsService {
 
 	async takeOutRequest(params : any) { 
 		return await this.productModel
-				.find({
+		.find({
+			$or: [
+				{
+					qr_code: params.ref_no.value,
+					"document_info.status": "approved"
+				},
+				{
+					name:params.search_doc_name.value,					
+					qr_code: params.ref_no.value,
+				   "document_info.status": "approved"
+				 },
+				{
+					description:params.search_desc.value,
+					 qr_code: params.ref_no.value,			 
+					"document_info.status": "approved"
+				},
+				{
+					"document_type_details.name":params.search_doc_type.value ,
+				  "document_info.status": "approved"
+				}
+			],
+		})
+		.then((res: any) => {
+			return res;
+		});
+			/* 	.find({
 					$or: [
 						{
 							isActive: true,
 							isRequestedDocument: true,
 							qr_code: params.referenceNumber, 
+							description : params.search_desc.value,
+							document_type_details:params.search_doc_type.value,
+							name:params.search_doc_name.value,
 						},
 						{
 							isActive: true,
 							isRequestedDocument: false,
 							qr_code: params.referenceNumber,
 							"document_info.status": "approved",
+							description : params.search_desc.value,
+							document_type_details:params.search_doc_type.value,
+							name:params.search_doc_name.value,
 							 
 						},
 					],
 				})
 				.then((res: any) => {
 					return res;
-				});
+				}); */
 	}
 
 

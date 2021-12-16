@@ -126,7 +126,7 @@ export class DocumentsController {
 
   @Post(":mode")
   logSheets(@Param('mode') mode: string, @Body() params): Promise<Document[]> {
- 
+
     if(mode === 'destructiveDocList'){
       let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
         let onfo = succ.map((doc: any) => { 
@@ -233,8 +233,7 @@ export class DocumentsController {
   
   @Post()
   destructiveDocList(@Body() params): Promise<Document[]> {
-   // console.log("SSS-");
-    let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
+       let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
       let onfo = succ.map((doc: any) => {
 
         const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
@@ -306,4 +305,11 @@ export class DocumentsController {
   ) {
     return this.productsService.update(id, updateProductDto);
   }
+
+
+  @Post('getCountOfDoc/:getCountOfDoc')
+  getCountOfDoc(@Body() generateQrCode) {    
+    return this.productsService.getCountOfDoc(generateQrCode);
+  }
+
 }

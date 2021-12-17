@@ -1,8 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import { useSelector } from "react-redux";
 import { IStateType, IProductState } from "../../store/models/root.interface";
 import { IProduct } from "../../store/models/product.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import {
+	OnChangeModel,
+	IProductFormState,
+} from "../../common/types/Form.types";
+
+import TextInput from "../../common/components/TextInput";
 export type productListProps = {
 	onSelect?: (product: IProduct) => void;
 	productModificationStatus: any;
@@ -130,27 +136,7 @@ function ProductList(props: productListProps): JSX.Element {
 			);
 		}
 	}
-	function document_request_format(cell: any, row: any, field: any) {
-		const {
-			takeout_requested_details: {
-				current_status: { request_no = "XXXXXX" } = {},
-			} = {},
-		} = row;
 
-		if (row.is_requested_for_takeout) {
-			return <>{request_no}</>;
-		} else {
-			return (
-				<>
-					{row.document_request_info
-						? row.document_request_info[field]
-							? row.document_request_info[field]
-							: ""
-						: ""}
-				</>
-			);
-		}
-	}
 	function document_request_format_dpet_name(cell: any, row: any, field: any) {
 		if (
 			row.isRequestedDocument &&
@@ -230,11 +216,146 @@ function ProductList(props: productListProps): JSX.Element {
 		
 	}
 
+
+	function document_request_format(cell: any, row: any, field: any, field2: any) {
+		 
+		const {
+			takeout_requested_details: {
+				current_status: { request_no = "XXXXXX" } = {},
+			} = {},
+		} = row;
+
+		if (row.is_requested_for_takeout) {
+			return <>{request_no}</>;
+		} else {
+			return (
+				<>
+					{row.document_request_info
+						? row.document_request_info[field]
+							? row.document_request_info[field]
+							: ""
+						: ""}
+				</>
+			);
+		}
+	}
+ 
+ 
+
+ 
+
 	const options = {
-		clearSearch: true,
+		clearSearch: true
 	};
+
+		/* BLock for Search DDocument */
+		const intialSearchDocParam = {
+			search_desc: { error: "", value: ""},
+			search_doc_type: { error: "", value: ""},
+			search_doc_name: { error: "", value: ""},
+			search_doc_num: { error: "", value: ""},
+			ref_no: { error: "", value: ""} 
+		};
+	 
+	
+		const [searchDocParam, setSearchDocParam] = useState(intialSearchDocParam);
+		function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
+			setSearchDocParam({
+				...searchDocParam,
+				[model.field]: { error: model.error, value: model.value },
+			});
+		}
+		function loadDocumentforTakeOut() {
+
+
+			 console.log("ARUN UPADTE YOUR LOGIC her to Filter the  products", products);
+		}
 	return (
 		<div className="portlet">
+
+<div className="dynamic-request-form">
+										<div className="row">
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="ref_no"
+													value={searchDocParam.ref_no.value ? searchDocParam.ref_no.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="Reference No"
+													customError={""}
+												/>
+											</div>
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_doc_num"
+													value={searchDocParam.search_doc_num.value ? searchDocParam.search_doc_num.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="DC No"
+													customError={""}
+												/>
+											</div>
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_doc_name"
+													value={searchDocParam.search_doc_name.value ? searchDocParam.search_doc_name.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="DC Name"
+													customError={""}
+												/>
+											</div>
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_doc_type"
+													value={searchDocParam.search_doc_type.value ? searchDocParam.search_doc_type.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="Doc.type"
+													customError={""}
+												/>
+											</div>
+											<div className="col-md-2">
+												<TextInput
+													id="input_request_no"
+													field="search_desc"
+													value={searchDocParam.search_desc.value ? searchDocParam.search_desc.value  : ""}
+													onChange={referenceNumberFortakeOutChanged}
+													required={false}
+													maxLength={100}
+													label=""
+													placeholder="Description"
+													customError={""}
+												/>
+											</div>
+											<div
+												className="col-md-2"
+												style={{ textAlign: "center", marginTop: "2%" }}
+											>
+												<div
+													onClick={(e) => loadDocumentforTakeOut()}
+													className={`btn btn-success left-margin font-14  }`}
+												>
+													{" Load Documents "}
+												</div>
+											</div>
+											 
+
+										
+										</div>
+									</div>
 			<BootstrapTable
 				options={options}
 				data={products.products}
@@ -253,13 +374,12 @@ function ProductList(props: productListProps): JSX.Element {
 				<TableHeaderColumn
 					dataField="name"
 					width="16%"
-					className="thead-light-1"
+					className="thead-light-1" 
 					dataFormat={document_request_format}
-					formatExtraData={"document_request_no"}
+					formatExtraData={"document_request_no"} 				 
 				>
 					Request NO
 				</TableHeaderColumn>
-
 				<TableHeaderColumn
 					dataField="document_no"
 					className="thead-light-1"
@@ -267,7 +387,7 @@ function ProductList(props: productListProps): JSX.Element {
 				>
 					DC NO
 				</TableHeaderColumn>
-								<TableHeaderColumn
+				<TableHeaderColumn
 					dataField="document_type"
 					className="thead-light-1"
 					width="14%"
@@ -341,26 +461,6 @@ function ProductList(props: productListProps): JSX.Element {
 					Action
 				</TableHeaderColumn>
 			</BootstrapTable>
-			{/*  <Table
-        columns={columns}
-        data={products.products}
-        formatFunction={convertDate}
-        onCustomSelect={props.onSelect}
-      /> */}
-			{/*  <table className="table">
-        <thead className="thead-light">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Box</th>
-            <th scope="col">Rack</th>
-            <th scope="col">M Date</th>
-            <th scope="col">E Date</th>
-          </tr>
-        </thead>
-        <tbody>{productElements}</tbody>
-      </table> */}
 		</div>
 	);
 }

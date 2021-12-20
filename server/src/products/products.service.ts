@@ -156,12 +156,14 @@ export class DocumentsService {
 				},
 				{
 					name:params.search_doc_name.value,					
-					qr_code: params.ref_no.value,
 				   "document_info.status": "approved"
 				 },
 				{
-					description:params.search_desc.value,
-					 qr_code: params.ref_no.value,			 
+					description:params.search_desc.value,		 
+					"document_info.status": "approved"
+				},
+				{
+					document_no:params.search_doc_num.value,		 
 					"document_info.status": "approved"
 				},
 				{

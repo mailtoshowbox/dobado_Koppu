@@ -589,19 +589,24 @@ const ProductForm: React.FC = () => {
 													customError={""}
 												/>
 											</div>
-											<div className="col-md-2">
-												<TextInput
-													id="input_request_no"
-													field="search_doc_type"
-													value={searchDocParam.search_doc_type.value ? searchDocParam.search_doc_type.value  : ""}
-													onChange={referenceNumberFortakeOutChanged}
-													required={false}
-													maxLength={100}
-													label=""
-													placeholder="Doc.type"
-													customError={""}
-												/>
-											</div>
+											
+								
+									<div className="col-md-2">
+										<SelectInput
+											id="input_document_type"
+											field="search_doc_type"
+											label={""}
+										
+											options={dCat}
+											required={true}
+											onChange={referenceNumberFortakeOutChanged}
+											value={formState.doc_type.value.toString()}
+											type="select"
+											customError={""}
+										/>
+									</div>
+									
+											
 											<div className="col-md-2">
 												<TextInput
 													id="input_request_no"

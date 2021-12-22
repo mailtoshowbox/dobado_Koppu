@@ -141,7 +141,7 @@ function DocApprovalList(props: productListProps): JSX.Element {
           	dataFormat={document_type_format}
           width="10%"
         >
-          Category
+          Doc Type
         </TableHeaderColumn>
         <TableHeaderColumn
           dataField="empl_id"

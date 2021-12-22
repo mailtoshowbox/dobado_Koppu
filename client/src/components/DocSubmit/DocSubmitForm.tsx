@@ -169,7 +169,7 @@ const ProductForm: React.FC = () => {
 			}
 
 			if (selectedBox && rack && boxRacks.length === 0) {
-				getRacks(selectedBox).then((racks = []) => {
+				getRacks(selectedBox,account).then((racks = []) => {
 					if (racks.length > 0) {
 						setBoxRacks(racks);
 						setPickedRack(true);
@@ -310,7 +310,7 @@ const ProductForm: React.FC = () => {
 		const { field, value = "", name = "" } = model;
 		if (selectField.indexOf(field) > -1) {
 			setTouchedFields({ ...touchedFields, [model.field]: true });
-			getRacks(value).then((racks = []) => {
+			getRacks(value,account).then((racks = []) => {
 				if (racks.length > 0) {
 					setPickedRack(true);
 					setBoxRacks(racks);

@@ -403,7 +403,7 @@ function ProductList(props: productListProps): JSX.Element {
 					dataFormat={document_request_format_doctype_name}
 					formatExtraData={"name"}
 				>
-					Category
+					Doc Type
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="category"

@@ -833,29 +833,7 @@ const ProductForm: React.FC = () => {
 										type="select"
 										customError={formState.document_type.error}
 									/>
-								</div>
-								{roles[0] === "Qualityuser" && (
-									<div className="form-row col-md-12">
-									<div className="form-group col-md-6">
-										<SelectInput
-											id="input_category"
-											field="category"
-											label="Compactor"
-											options={listOfCate}
-											required={true}
-											onChange={hasFormValueChanged}
-											value={formState.category.value}
-											type="select"
-											customError={formState.category.error}
-										/>
-									</div>
-								{ categoryDocCount !== null && (	<div className="form-group col-md-6" 
-								style={{    "textAlign": "left",    "paddingTop": "22px", color:"green"}}  > 
-									 there are {categoryDocCount} document under this Compactor
-									</div>
-	                            )}
-								</div>
-								)}
+								</div>								
 							</div>
 							<div className="form-row 13 font-14">
 								<div className="form-group col-md-12">
@@ -954,7 +932,29 @@ const ProductForm: React.FC = () => {
 								)}
 							</div>
 							)}
+						 
 							{docStatus === 'archived' && roles[0] === "Qualityuser" && (
+								<>
+								<div className="form-row">
+								<div className="form-group col-md-6">
+									<SelectInput
+										id="input_category"
+										field="category"
+										label="Compactor"
+										options={listOfCate}
+										required={true}
+										onChange={hasFormValueChanged}
+										value={formState.category.value}
+										type="select"
+										customError={formState.category.error}
+									/>
+								</div>
+							{ categoryDocCount !== null && (	<div className="form-group col-md-6" 
+							style={{    "textAlign": "left",    "paddingTop": "22px", color:"green"}}  > 
+								 there are {categoryDocCount} document under this Compactor
+								</div>
+							)}
+							</div>
 								<div className="form-row 12 font-14">
 									<div className="form-group col-md-12">
 										<div className="form-row">
@@ -998,6 +998,7 @@ const ProductForm: React.FC = () => {
 										</div>
 									</div>
 								</div>
+								</>
 							)}
 
 							<div className="form-row">

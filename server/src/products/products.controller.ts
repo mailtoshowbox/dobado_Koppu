@@ -43,10 +43,11 @@ export class DocumentsController {
   findAll(@Param('modes') modes: string, @Param('id') id: string): Promise<Document[]> {
 
     if (modes && modes === "issued") {
+      console.log("ENTERE");
       let res = this.productsService.findAll(modes, id).then((succ = []) => {
         let onfo = succ.map((doc: any) => {
 
-          const { box_info = [], rack_info = [], category_info = [], docType_info = [] } = doc;
+          const { box_info = [], rack_info = [], category_info = [], docType_info = [] , document_request_info:{document_request_no=null}={}} = doc;
           if (box_info.length > 0) {
             doc.box = box_info[0].name;
           }
@@ -59,6 +60,11 @@ export class DocumentsController {
           if (docType_info.length > 0) {
             doc.document_type = docType_info[0].name;
           }
+          if(document_request_no){
+            doc['document_request_no'] = document_request_no;
+        
+          }
+          
 
 
           doc.batch = doc.category + '/' + doc.box + '/' + doc.rack

@@ -269,6 +269,8 @@ function ProductList(props: productListProps): JSX.Element {
 
 
 			 console.log("ARUN UPADTE YOUR LOGIC her to Filter the  products", products);
+
+			 console.log("intialSearchDocParam---", intialSearchDocParam);
 		}
 	return (
 		<div className="portlet">

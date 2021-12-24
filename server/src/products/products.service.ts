@@ -148,27 +148,129 @@ export class DocumentsService {
 
 	async takeOutRequest(params : any) { 
 		return await this.productModel
-				.find({
+		.find({
+			$or: [
+				{
+					qr_code: params.ref_no.value,
+					"document_info.status": "approved"
+				},
+				{
+					name:params.search_doc_name.value,					
+				   "document_info.status": "approved"
+				 },
+				{
+					description:params.search_desc.value,		 
+					"document_info.status": "approved"
+				},
+				{
+					document_no:params.search_doc_num.value,		 
+					"document_info.status": "approved"
+				},
+				{
+					"document_type_details.name":params.search_doc_type.value ,
+				  "document_info.status": "approved"
+				}
+			],
+		})
+		.then((res: any) => {
+			return res;
+		});
+			/* 	.find({
 					$or: [
 						{
 							isActive: true,
 							isRequestedDocument: true,
 							qr_code: params.referenceNumber, 
+							description : params.search_desc.value,
+							document_type_details:params.search_doc_type.value,
+							name:params.search_doc_name.value,
 						},
 						{
 							isActive: true,
 							isRequestedDocument: false,
 							qr_code: params.referenceNumber,
 							"document_info.status": "approved",
+							description : params.search_desc.value,
+							document_type_details:params.search_doc_type.value,
+							name:params.search_doc_name.value,
 							 
 						},
 					],
 				})
 				.then((res: any) => {
 					return res;
-				});
+				}); */
 	}
 
+
+	async getCountOfDoc(params : any) 
+	{
+
+		console.log("params", params);
+		const {field = "", value=""} = params
+		if(field === 'category'){
+			return await this.productModel
+			.find(				
+				{
+					$or: [
+						{
+							isActive: false,
+							'document_category_details.id': value,
+						},
+						{
+							isActive: true,
+							category: value,
+						},
+					],
+				}
+			).count()
+			.then((res: any) => {
+				return res;
+			});
+		}else if(field === 'box'){
+			return await this.productModel
+			.find(				
+				{
+					$or: [
+						{
+							isActive: false,
+							'document_rack_details.id': value,
+						},
+						{
+							isActive: true,
+							box: value,
+						},
+					],
+				}
+			).count()
+			.then((res: any) => {
+				return res;
+			});
+		}else if(field === 'series'){
+			return await this.productModel
+			.find(				
+				{
+					$or: [
+						{
+							isActive: false,
+							'document_rack_details.id': value,
+						},
+						{
+							isActive: true,
+							rack: value,
+						},
+					],
+				}
+			).count()
+			.then((res: any) => {
+				return res;
+			});
+		}
+		else {
+			return []
+		}
+		
+	}
 	async findAllDocuments() {
 		return await this.productModel.find().exec();
 	}

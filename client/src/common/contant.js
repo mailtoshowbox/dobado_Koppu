@@ -18,10 +18,6 @@ const APP_CONST = {
             },{
                 id: "6",
                 name: "Take Out"
-            },
-            {
-                id: "3",
-                name: "Add Docs"
             }
         ],
         CATEGORY_ONE: [{
@@ -32,19 +28,13 @@ const APP_CONST = {
             id: "2",
             name: "Controlled Copy"
         },
-        {
-            id: "3",
-            name: "Add Docs"
-        },
+        
         ],
         CATEGORY_TWO: [{
             id: "4",
             name: "UC Copy"
         },
-        {
-            id: "5",
-            name: "Add Docs"
-        },
+       
         ],
         CATEGORY_THREE: [{
             id: "6",

@@ -402,7 +402,7 @@ const ProductForm: React.FC = () => {
 		if (model.field === "no_of_label") {
 			if (selectedDocForPrint.generate_unique_num) {
 				if (model.value > 1) {
-					getNewQrCode({ noOfId: model.value }).then((status) => {
+					getNewQrCode({ noOfId: model.value },account).then((status) => {
 						setDynamicIdList(status);
 					});
 				}

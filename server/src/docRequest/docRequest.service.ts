@@ -22,6 +22,7 @@ export class DocRequestService {
 	async findAll(mode: string, empl_id: string): Promise<DocRequest[]> {
 		if (mode === "approval") {
 			return await this.DocRequestModel.find({})
+			.sort({ "requested_on": -1 })
 				.exec()
 				.then((resultNew) => {
 					let approval_list_for_epl: any = [];
@@ -87,7 +88,7 @@ export class DocRequestService {
 			return await this.DocRequestModel.find({
 				"doc_issuance_status.is_issued": { $ne: true },
 				"doc_requested_doctype.id": { $ne: "6" },
-			})
+			}).sort({ "requested_on": -1 })
 				.exec()
 				.then((resultNew) => {
 					let approval_list_for_epl: any = [];
@@ -122,6 +123,7 @@ export class DocRequestService {
 		} else {
 			const wr = empl_id !== "0" ? { empl_id } : {};
 			return await this.DocRequestModel.find(wr)
+			.sort({ "requested_on": -1 })
 				.exec()
 				.then((resultNew) => {
 					let approval_list_for_epl: any = [];
@@ -168,6 +170,7 @@ export class DocRequestService {
 				if (doc._id !== "") {
 					this.documentModal
 						.find({ isActive: true, _id: doc._id })
+						.sort({ "document_request_info.document_issued_on": -1 })
 						.then((res: any) => {
 							let documenttoEdit = res[0];
 

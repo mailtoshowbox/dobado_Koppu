@@ -26,7 +26,7 @@ export class BoxService {
   }
 
   async getRacks(id: string): Promise<Rack[]> { 
-    return await this.rackModel.find({ box: id });
+    return await this.rackModel.find({ box: id }).sort({name: 1}).collation({locale: "en_US", numericOrdering: true});
   }
   
 

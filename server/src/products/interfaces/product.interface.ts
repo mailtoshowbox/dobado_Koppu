@@ -22,7 +22,7 @@ export interface Document {
   document_category_details :Info;
   document_rack_details :Info;
   document_box_details :Info;
-  docStatus :string;
+  docStatus :string; 
 
 }
 

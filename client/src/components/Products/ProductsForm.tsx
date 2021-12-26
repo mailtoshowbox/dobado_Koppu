@@ -661,7 +661,7 @@ const ProductForm: React.FC = () => {
 		} else if (formState.document_type.value === "") {
 			formIsValid = false;
 			formState.document_type.error = "Document Type is mandatory";
-		} else if (formState.category.value === "" && roles[0] === "Qualityuser") {
+		} else if (formState.category.value === "" && roles[0] === "Qualityuser" && !isDestroyedDocument) {
 			formIsValid = false;
 			formState.category.error = "Compactor is mandatory";
 		} else if (formState.description.value === "") {

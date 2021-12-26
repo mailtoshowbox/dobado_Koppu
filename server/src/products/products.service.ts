@@ -75,7 +75,7 @@ export class DocumentsService {
 				});
 		} else {
 			return await this.productModel.aggregate([
-				{ $match: { name: { $ne: "" }, isActive: { $ne: false } } },
+				{ $match: { name: { $ne: "" }, isActive: { $ne: false },docStatus:{$ne:'destroyed'} } },
 				{
 					$addFields: {
 						converted_rack: {

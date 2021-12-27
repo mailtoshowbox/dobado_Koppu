@@ -167,6 +167,7 @@ export class DocumentsService {
 					"document_info.status": "approved"
 				} ,
 				{ 
+				 isRequestedDocument: true, 
 				 "document_request_info.document_request_doc_type.id":  params.search_doc_type.value  ,
 				 "isActive":  true
 				}

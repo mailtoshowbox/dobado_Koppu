@@ -78,7 +78,7 @@ export class DocumentsController {
         return onfo;
       });
       return res;
-    } if (modes && modes === "takeOutRequest") {
+    } if (modes && modes === "takeOutRequest") { 
       let res = this.productsService.findAll(modes, id);
       return res;
     } else {

@@ -165,10 +165,10 @@ export class DocumentsService {
 				{
 					document_no:params.search_doc_num.value,		 
 					"document_info.status": "approved"
-				},
-				{
-					"document_type_details.name":params.search_doc_type.value ,
-				  "document_info.status": "approved"
+				} ,
+				{ 
+				 "document_request_info.document_request_doc_type.id":  params.search_doc_type.value  ,
+				 "isActive":  true
 				}
 			],
 		})

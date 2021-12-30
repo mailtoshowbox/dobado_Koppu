@@ -22,6 +22,7 @@ function ProductList(props: productListProps): JSX.Element {
 	const products: IProductState = useSelector(
 		(state: IStateType) => state.products
 	);
+	const [tempProducts, setSearchFilterParam] = useState(products.products);
 	function convertDate(str: Date) {
 		if (!str) return "-";
 		var date = new Date(str),
@@ -259,6 +260,7 @@ function ProductList(props: productListProps): JSX.Element {
 	 
 	
 		const [searchDocParam, setSearchDocParam] = useState(intialSearchDocParam);
+	
 		function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
 			setSearchDocParam({
 				...searchDocParam,
@@ -266,11 +268,24 @@ function ProductList(props: productListProps): JSX.Element {
 			});
 		}
 		function loadDocumentforTakeOut() {
+			let temp:any=[];
+			//let temp = products.filter(x=>x.name===searchDocParam.search_doc_name.value);
+			if(searchDocParam.search_doc_name.value!==''){
+				 temp = tempProducts.filter((x:any)=>x.name===searchDocParam.search_doc_name.value);
+				 setSearchFilterParam(temp);
+			}
+			if(searchDocParam.search_doc_num.value!==''){
+				temp = tempProducts.filter((x:any)=>x.document_no===searchDocParam.search_doc_num.value);
+				setSearchFilterParam(temp);
+		   }
+		   if(searchDocParam.search_desc.value!==''){
+				temp = tempProducts.filter((x:any)=>x.description===searchDocParam.search_desc.value);
+				setSearchFilterParam(temp);
+	   		}
 
+			 console.log("ARUN UPADTE YOUR LOGIC her to Filter the  products", temp);
 
-			 console.log("ARUN UPADTE YOUR LOGIC her to Filter the  products", products);
-
-			 console.log("intialSearchDocParam---", intialSearchDocParam);
+			 console.log("intialSearchDocParam---", searchDocParam.search_doc_name.value);
 		}
 	return (
 		<div className="portlet">
@@ -360,7 +375,7 @@ function ProductList(props: productListProps): JSX.Element {
 									</div>
 			<BootstrapTable
 				options={options}
-				data={products.products}
+				data={tempProducts}
 				pagination={true}
 				hover={true}
 				search={true}

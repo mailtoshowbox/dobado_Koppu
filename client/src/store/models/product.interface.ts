@@ -26,6 +26,8 @@ export interface IProduct {
     document_type_details:any;
     isRequestedDocument : any,
     docStatus : string;
+    no_of_copy : any;
+    no_of_page : any;
 }
 
 

@@ -29,6 +29,8 @@ export interface IProductFormState {
     is_requested_for_takeout :   IFormStateField<boolean>;
     document_type_details: IFormStateField<object>;
     docStatus:  IFormStateField<string>;
+    no_of_copy: any;
+    no_of_page: any;
     
     
      

@@ -156,7 +156,9 @@ const ProductForm: React.FC = () => {
 			doc_requested_department: {},
 			document_type_details : {},
 			isRequestedDocument: false,
-			docStatus : "archived"
+			docStatus : "archived",
+			no_of_copy : "",
+			no_of_page : ""
 		};
 	} else {
 		const { box = "", rack = "" } = product;
@@ -188,7 +190,8 @@ const ProductForm: React.FC = () => {
 		category: { error: "", value: product.category },
 		type_of_space: { error: "", value: product.type_of_space },
 		document_type: { error: "", value: product.document_type },
-
+		no_of_copy: { error: "", value: product.no_of_copy },
+		no_of_page: { error: "", value: product.no_of_page },
 		qr_code: { error: "", value: product.qr_code },
 		manufacturedate: { error: "", value: product.manufacturedate },
 		expiredate: { error: "", value: product.expiredate },

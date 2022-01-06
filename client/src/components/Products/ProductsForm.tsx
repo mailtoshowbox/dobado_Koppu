@@ -160,7 +160,9 @@ const ProductForm: React.FC = () => {
 			doc_requested_department: account.departments[0],
 			document_type_details: {},
 			isRequestedDocument : false,
-			docStatus : "archived"
+			docStatus : "archived",
+			no_of_copy : "",
+			no_of_page : ""
 		};
 	} else {
 		const { box = "", rack = "" } = product;
@@ -193,7 +195,8 @@ const ProductForm: React.FC = () => {
 		category: { error: "", value: product.category },
 		type_of_space: { error: "", value: product.type_of_space },
 		document_type: { error: "", value: product.document_type },
-
+		no_of_copy: { error: "", value: product.no_of_copy },
+		no_of_page: { error: "", value: product.no_of_page },
 		qr_code: { error: "", value: product.qr_code },
 		manufacturedate: { error: "", value: product.manufacturedate },
 		expiredate: { error: "", value: product.expiredate },
@@ -414,6 +417,8 @@ const ProductForm: React.FC = () => {
 				let boxInfo = {
 					name: formState.name.value,
 					description: formState.description.value,
+					no_of_copy: formState.no_of_copy.value,
+					no_of_page: formState.no_of_page.value,
 					box: formState.box.value,
 					rack: formState.rack.value,
 					category: formState.category.value,
@@ -525,6 +530,8 @@ const ProductForm: React.FC = () => {
 					id: formState._id.value,
 					name: formState.name.value,
 					description: formState.description.value,
+					no_of_copy: formState.no_of_copy.value,
+					no_of_page: formState.no_of_page.value,
 					box: formState.box.value,
 					rack: formState.rack.value,
 					category: formState.category.value,
@@ -847,6 +854,37 @@ const ProductForm: React.FC = () => {
 										label="Description"
 										placeholder="Description"
 										customError={formState.description.error}
+									/>
+								</div>
+							</div>
+						
+							<div className="form-row 13 font-14">
+								<div className="form-group col-md-12">
+									<TextInput
+										id="no_of_copy"
+										field="no_of_copy"
+										value={formState.no_of_copy.value}
+										onChange={hasFormValueChanged}
+										required={false}
+										maxLength={100}
+										label="No of copy"
+										placeholder="No of copy"
+										customError={""}
+									/>
+								</div>
+							</div>
+							<div className="form-row 13 font-14">
+								<div className="form-group col-md-12">
+									<TextInput
+										id="no_of_page"
+										field="no_of_page"
+										value={formState.no_of_page.value}
+										onChange={hasFormValueChanged}
+										required={false}
+										maxLength={100}
+										label="No of page"
+										placeholder="No of page"
+										customError={""}
 									/>
 								</div>
 							</div>

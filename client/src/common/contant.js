@@ -44,8 +44,8 @@ const APP_CONST = {
     "EXPORT_CSV_COLUMN":
         [
             { "FIELD_LABEL": 'Req No', "FIELD_NAME": "document_request_info.document_request_no", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'Ref No', "FIELD_NAME": "Reference No", "FIELD_VALUE": true },
-            { "FIELD_LABEL": 'Doc No', "FIELD_NAME": "document_no", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Doc No', "FIELD_NAME": "Reference No", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Ref No', "FIELD_NAME": "document_no", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Doc title', "FIELD_NAME": "name", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Doc type', "FIELD_NAME": "Document Type", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Desc', "FIELD_NAME": "description", "FIELD_VALUE": true },

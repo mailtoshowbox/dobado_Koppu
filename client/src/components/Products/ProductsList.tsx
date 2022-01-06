@@ -225,12 +225,16 @@ function ProductList(props: productListProps): JSX.Element {
 		});
 	}
 	function loadInitialSearchData() {
+		setSearchTriggered(false);
 		setSearchDocParam(intialSearchDocParam);
-		setpageProducts([]);
+	//	setpageProducts([]);
 		if (props.loadInitialSearchData) props.loadInitialSearchData();
 	} 
+ 
+ 
+	const finalProducts = pageProducts.length > 0 || isSearchTriggered ? pageProducts : products.products;
+ 
 	
-	const finalProducts = pageProducts.length > 0 || isSearchTriggered ? pageProducts : pageProductsTemp;
 	const options = {
 		clearSearch: true,
 	};

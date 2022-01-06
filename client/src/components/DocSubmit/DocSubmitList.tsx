@@ -317,9 +317,9 @@ function ProductList(props: productListProps): JSX.Element {
 			  setpageProducts(temp);
 		}
 		function loadInitialSearchData() {
+			setSearchTriggered(false);
 			setSearchDocParam(intialSearchDocParam);
-			setpageProducts([]);
-			
+			setpageProducts([]);			
 			if (props.loadInitialSearchData) props.loadInitialSearchData();
 		}
 		const finalProducts = pageProducts.length > 0 || isSearchTriggered ? pageProducts : pageProductsTemp;

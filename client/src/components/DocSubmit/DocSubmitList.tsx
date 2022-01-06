@@ -298,9 +298,9 @@ function ProductList(props: productListProps): JSX.Element {
 					  newtemp.push(element);
 				  }
 			  });
-			  if(newtemp.length > 0){
+			 // if(newtemp.length > 0){
 				  temp =newtemp;
-			  }
+			//  }
 			}
 			  if(searchDocParam.search_doc_type.value!==''){
 				  let newtemp:any = [];
@@ -310,9 +310,9 @@ function ProductList(props: productListProps): JSX.Element {
 						newtemp.push(element);
 					}
 				});
-				if(newtemp.length > 0){
+			//	if(newtemp.length > 0){
 					temp =newtemp;
-				}
+			//	}
 			  }
 			  setpageProducts(temp);
 		}
@@ -377,7 +377,7 @@ function ProductList(props: productListProps): JSX.Element {
 											field="search_doc_type"
 											label={""}
 											options={dCat}
-											required={true}
+											required={false}
 											onChange={referenceNumberFortakeOutChanged}
 											value={searchDocParam.search_doc_type.toString()}
 											type="select"

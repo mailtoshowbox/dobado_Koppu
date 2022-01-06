@@ -185,8 +185,7 @@ function ProductList(props: productListProps): JSX.Element {
 			temp = temp.filter((x: any) => x.document_no.includes(searchDocParam.search_doc_num.value.trim()));
 		}
 		if (searchDocParam.search_doc_name.value !== '') {
-			temp =  temp.filter((x: any) => x.name.includes(searchDocParam.search_doc_name.value.trim()));
-			 
+			temp =  temp.filter((x: any) => x.name.includes(searchDocParam.search_doc_name.value.trim())); 
 		}
 		if (searchDocParam.ref_no.value !== '') {
 			let newtemp: any = [];
@@ -196,9 +195,9 @@ function ProductList(props: productListProps): JSX.Element {
 					newtemp.push(element);
 				}
 			});
-			if (newtemp.length > 0) {
+			//if (newtemp.length > 0) {
 				temp = newtemp;
-			}
+			//}
 		}
 		if (searchDocParam.search_desc.value !== '') {
 			temp = temp.filter((x: any) => x.description.includes(searchDocParam.search_desc.value.trim()));
@@ -211,9 +210,9 @@ function ProductList(props: productListProps): JSX.Element {
 					newtemp.push(element);
 				}
 			});
-			if (newtemp.length > 0) {
+			//if (newtemp.length > 0) {
 				temp = newtemp;
-			}
+			//}
 		}
 		setpageProducts(temp);
 	}
@@ -287,7 +286,7 @@ function ProductList(props: productListProps): JSX.Element {
 							field="search_doc_type"
 							label={""}
 							options={dCat}
-							required={true}
+							required={false}
 							onChange={referenceNumberFortakeOutChanged}
 							value={searchDocParam.search_doc_type.toString()}
 							type="select"

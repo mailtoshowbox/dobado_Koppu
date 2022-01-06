@@ -602,7 +602,7 @@ const ProductForm: React.FC = () => {
 											label={""}
 										
 											options={dCat}
-											required={true}
+											required={false}
 											onChange={referenceNumberFortakeOutChanged}
 											value={formState.doc_type.value.toString()}
 											type="select"

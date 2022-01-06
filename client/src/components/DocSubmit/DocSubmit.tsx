@@ -54,11 +54,13 @@ const Products: React.FC = () => {
   );
  
   const [popup, setPopup] = useState(false);
+  const [productCount, setProductCount] = useState(0);
   useEffect(() => {
     //Load Documents
-    getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
+    loadMainDoc()
+   /*  getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
       dispatch(loadListOfProduct(items));
-    });
+    }); */
     //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
@@ -74,6 +76,12 @@ const Products: React.FC = () => {
     });
     dispatch(updateCurrentPath("Home", "Document Submit"));
   }, [path.area, dispatch]);
+
+  function loadMainDoc(){
+    getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {   
+      dispatch(loadListOfProduct(items));
+    });
+  }
 
   function onProductSelect(product: IProduct): void {
     dispatch(changeSelectedProduct(product));
@@ -92,6 +100,7 @@ const Products: React.FC = () => {
       setPopup(true);
     }
   }
+ 
 
   return (
     <Fragment>
@@ -130,6 +139,8 @@ const Products: React.FC = () => {
                 allowDelete={allowedUsers.includes(userRole)}
                 productModificationStatus={products.modificationState}
                 currentUser={account}
+                
+                loadInitialSearchData={loadMainDoc}
               />
             </div>
           </div>

@@ -7,7 +7,8 @@ import {
 	OnChangeModel,
 	IProductFormState,
 } from "../../common/types/Form.types";
-
+import SelectInput from "../../common/components/Select";
+import APP_CONST from "../../common/contant";
 import TextInput from "../../common/components/TextInput";
 export type productListProps = {
 	onSelect?: (product: IProduct) => void;
@@ -16,13 +17,24 @@ export type productListProps = {
 	currentUser: any;
 	allowDelete: boolean;
 	children?: React.ReactNode;
+ 
+	loadInitialSearchData? : any;
 };
-
+const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
 function ProductList(props: productListProps): JSX.Element {
 	const products: IProductState = useSelector(
 		(state: IStateType) => state.products
 	);
-	const [tempProducts, setSearchFilterParam] = useState(products.products);
+	const productsTemp: IProductState = useSelector(
+		(state: IStateType) => state.products
+	);
+
+    const pageProductsTemp = productsTemp.products; 
+ 
+
+
+	const [pageProducts, setpageProducts] = useState(pageProductsTemp);
+
 	function convertDate(str: Date) {
 		if (!str) return "-";
 		var date = new Date(str),
@@ -240,11 +252,6 @@ function ProductList(props: productListProps): JSX.Element {
 			);
 		}
 	}
- 
- 
-
- 
-
 	const options = {
 		clearSearch: true
 	};
@@ -260,33 +267,65 @@ function ProductList(props: productListProps): JSX.Element {
 	 
 	
 		const [searchDocParam, setSearchDocParam] = useState(intialSearchDocParam);
-	
 		function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
 			setSearchDocParam({
 				...searchDocParam,
 				[model.field]: { error: model.error, value: model.value },
 			});
 		}
-		function loadDocumentforTakeOut() {
-			let temp:any=[];
-			//let temp = products.filter(x=>x.name===searchDocParam.search_doc_name.value);
+		function loadDocumentforTakeOut() { 
+			//if (props.searchCallback) props.searchCallback(searchDocParam);
+			let temp:any = pageProductsTemp;
+
 			if(searchDocParam.search_doc_name.value!==''){
-				 temp = tempProducts.filter((x:any)=>x.name===searchDocParam.search_doc_name.value);
-				 setSearchFilterParam(temp);
+				temp = temp.filter((x:any)=>x.name.includes(searchDocParam.search_doc_name.value.trim()));
 			}
-			if(searchDocParam.search_doc_num.value!==''){
-				temp = tempProducts.filter((x:any)=>x.document_no===searchDocParam.search_doc_num.value);
-				setSearchFilterParam(temp);
-		   }
-		   if(searchDocParam.search_desc.value!==''){
-				temp = tempProducts.filter((x:any)=>x.description===searchDocParam.search_desc.value);
-				setSearchFilterParam(temp);
-	   		}
+			  if(searchDocParam.search_doc_num.value !== ''){
+				temp = temp.filter((x:any)=>x.document_no.includes(searchDocParam.search_doc_num.value.trim()));
+			  }
+			  if(searchDocParam.search_desc.value!==''){
+				temp = temp.filter((x:any)=>x.description.includes(searchDocParam.search_desc.value.trim()));
+			  } 
+			  if(searchDocParam.search_doc_name.value!==''){
+				temp = temp.filter((x:any)=>x.name.includes(searchDocParam.search_doc_name.value.trim()));
+			  }
+			  if(searchDocParam.ref_no.value!==''){
+				let newtemp:any = [];
+			  temp.forEach((element:any) => {
+				  const {document_request_info : {document_request_no =0 }={}} =element;
+				  if(document_request_no === searchDocParam.ref_no.value.trim()){
+					  newtemp.push(element);
+				  }
+			  });
+			  if(newtemp.length > 0){
+				  temp =newtemp;
+			  }
+			}
+			  if(searchDocParam.search_doc_type.value!==''){
+				  let newtemp:any = [];
+				temp.forEach((element:any) => {
+					const {document_request_info : {document_request_doc_type:{id=0} ={}}={}} =element;
+					if(id === searchDocParam.search_doc_type.value.trim()){
+						newtemp.push(element);
+					}
+				});
+				if(newtemp.length > 0){
+					temp =newtemp;
+				}
+			  }
+			  setpageProducts(temp);
 
-			 console.log("ARUN UPADTE YOUR LOGIC her to Filter the  products", temp);
 
-			 console.log("intialSearchDocParam---", searchDocParam.search_doc_name.value);
+
 		}
+		function loadInitialSearchData() {
+			setSearchDocParam(intialSearchDocParam);
+			setpageProducts([]);
+			
+			if (props.loadInitialSearchData) props.loadInitialSearchData();
+		}
+		const finalProducts = pageProducts.length > 0 ? pageProducts : pageProductsTemp;
+	
 	return (
 		<div className="portlet">
 
@@ -301,7 +340,7 @@ function ProductList(props: productListProps): JSX.Element {
 													required={false}
 													maxLength={100}
 													label=""
-													placeholder="Reference No"
+													placeholder="Request No"
 													customError={""}
 												/>
 											</div>
@@ -331,19 +370,22 @@ function ProductList(props: productListProps): JSX.Element {
 													customError={""}
 												/>
 											</div>
-											<div className="col-md-2">
-												<TextInput
-													id="input_request_no"
-													field="search_doc_type"
-													value={searchDocParam.search_doc_type.value ? searchDocParam.search_doc_type.value  : ""}
-													onChange={referenceNumberFortakeOutChanged}
-													required={false}
-													maxLength={100}
-													label=""
-													placeholder="Doc.type"
-													customError={""}
-												/>
-											</div>
+											<div
+										className={ "col-md-2 "
+										}
+									>
+										<SelectInput
+											id="input_document_type"
+											field="search_doc_type"
+											label={""}
+											options={dCat}
+											required={true}
+											onChange={referenceNumberFortakeOutChanged}
+											value={searchDocParam.search_doc_type.toString()}
+											type="select"
+											customError={""}
+										/>
+									</div>
 											<div className="col-md-2">
 												<TextInput
 													id="input_request_no"
@@ -357,15 +399,24 @@ function ProductList(props: productListProps): JSX.Element {
 													customError={""}
 												/>
 											</div>
+											 
+											
 											<div
 												className="col-md-2"
-												style={{ textAlign: "center", marginTop: "2%" }}
+												style={{  marginTop: "2%" }}
 											>
+												<div
+													onClick={(e) => loadInitialSearchData()}
+													className={`btn btn-success left-margin font-14`}
+												>
+											<i className="fas fa-sync-alt"></i>
+
+												</div>
 												<div
 													onClick={(e) => loadDocumentforTakeOut()}
 													className={`btn btn-success left-margin font-14  }`}
 												>
-													{" Load Documents "}
+													<i className="fas fa-search"></i>
 												</div>
 											</div>
 											 
@@ -375,7 +426,7 @@ function ProductList(props: productListProps): JSX.Element {
 									</div>
 			<BootstrapTable
 				options={options}
-				data={tempProducts}
+				data={finalProducts}
 				pagination={true}
 				hover={true}
 				search={true}

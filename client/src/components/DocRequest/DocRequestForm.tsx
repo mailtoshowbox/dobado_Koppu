@@ -438,6 +438,13 @@ const ProductForm: React.FC = () => {
 			["requested_doc"]: { value: tempValr },
 		});
 	}
+	function loadInitialSearchData() {
+		setSearchDocParam(intialSearchDocParam);
+		setAvailable_doc_for_takeout([]);
+	//	setpageProducts([]);
+		
+		//if (props.loadInitialSearchData) props.loadInitialSearchData();
+	}
 	return (
 		<Fragment>
 			<div className="col-xl-12 col-lg-12">
@@ -620,7 +627,7 @@ const ProductForm: React.FC = () => {
 													customError={""}
 												/>
 											</div>
-											<div
+											{/* <div
 												className="col-md-2"
 												style={{ textAlign: "center", marginTop: "2%" }}
 											>
@@ -629,6 +636,24 @@ const ProductForm: React.FC = () => {
 													className={`btn btn-success left-margin font-14  }`}
 												>
 													{" Load Documents "}
+												</div>
+											</div> */}
+											<div
+												className="col-md-2"
+												style={{  marginTop: "2%" }}
+											>
+												<div
+													onClick={(e) => loadInitialSearchData()}
+													className={`btn btn-success left-margin font-14`}
+												>
+											<i className="fas fa-sync-alt"></i>
+
+												</div>
+												<div
+														onClick={(e) => loadDocumentforTakeOut()}
+													className={`btn btn-success left-margin font-14  }`}
+												>
+													<i className="fas fa-search"></i>
 												</div>
 											</div>
 											{noDocAvailebleForTakeoutRequest && (

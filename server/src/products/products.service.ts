@@ -147,24 +147,38 @@ export class DocumentsService {
 
 
 	async takeOutRequest(params : any) { 
+		console.log("params----", params);
 		return await this.productModel
 		.find({
 			$or: [
 				{
 					qr_code: params.ref_no.value,
-					"document_info.status": "approved"
+					$or :[
+						{"document_info.status": "approved"},
+						{"document_info.active": true},
+
+					]
 				},
 				{
 					name:params.search_doc_name.value,					
-				   "document_info.status": "approved"
+					$or :[
+						{"document_info.status": "approved"},
+						{"document_info.active": true},
+					]
 				 },
 				{
 					description:params.search_desc.value,		 
-					"document_info.status": "approved"
+					$or :[
+						{"document_info.status": "approved"},
+						{"document_info.active": true},
+					]
 				},
 				{
-					document_no:params.search_doc_num.value,		 
-					"document_info.status": "approved"
+					document_no:params.search_doc_num.value,
+					$or :[
+						{"document_info.status": "approved"},
+						{"document_info.active": true},
+					]				
 				} ,
 				{ 
 				 isRequestedDocument: true, 
@@ -647,15 +661,14 @@ export class DocumentsService {
 			},
 			{
 				"$match": {
-					"$or":
-						[{ "document_info.createdOn": { "$gte": date1, "$lt": date2 } },
-						{
-							"document_request_info.document_issued_on": {
-								$gte: date1,
-								$lt: date2,
-							}
+				"$or":
+					[{ "document_info.createdOn": { "$gte": date1, "$lt": date2 } },
+					{
+						"document_request_info.document_issued_on": {
+							$gte: date1,
+							$lt: date2,
 						}
-						]
+						}]
 				}
 			}
 

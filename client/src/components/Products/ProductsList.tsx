@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { IStateType, IProductState } from "../../store/models/root.interface";
 import { IProduct } from "../../store/models/product.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
+import TextInput from "../../common/components/TextInput";
+import SelectInput from "../../common/components/Select";
+import {
+	OnChangeModel
+} from "../../common/types/Form.types";
+import APP_CONST from "../../common/contant";
+
+
 export type productListProps = {
 	onSelect?: (product: IProduct) => void;
 	productModificationStatus: any;
@@ -10,22 +18,29 @@ export type productListProps = {
 	currentUser: any;
 	allowDelete: boolean;
 	children?: React.ReactNode;
+	loadInitialSearchData?: any;
 };
 
 function ProductList(props: productListProps): JSX.Element {
 	const products: IProductState = useSelector(
 		(state: IStateType) => state.products
 	);
-	function convertDate(str: Date) {		 
-		if(str === null) {
+	const productsTemp: IProductState = useSelector(
+		(state: IStateType) => state.products
+	);
+
+	const pageProductsTemp = productsTemp.products;
+	const [pageProducts, setpageProducts] = useState(pageProductsTemp);
+	function convertDate(str: Date) {
+		if (str === null) {
 			return "-";
 		}
 		var date = new Date(str),
 			mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-		day = ("0" + date.getDate()).slice(-2);
-		return [date.getFullYear(), mnth, day].join("-");	
+			day = ("0" + date.getDate()).slice(-2);
+		return [date.getFullYear(), mnth, day].join("-");
 	}
-
+	const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
 	function onClickProductSelected(cell: any, row: any, rowIndex: any) {
 		if (props.onSelect) props.onSelect(row);
 	}
@@ -42,7 +57,7 @@ function ProductList(props: productListProps): JSX.Element {
 		} = props;
 		const { status = "n-approved" } = row.document_info || {};
 		const loggedInUserRole = roles[0] ? roles[0] : "Developer";
-     const {isRequestedDocument=false, takeout_requested_details : {current_status:{request_no="XXXXXX"}={}} = {}} = row;
+		const { isRequestedDocument = false, takeout_requested_details: { current_status: { request_no = "XXXXXX" } = {} } = {} } = row;
 		return (
 			<>
 				{!isRequestedDocument && status === "n-approved" && loggedInUserRole === "Qualityuser" ? (
@@ -58,25 +73,25 @@ function ProductList(props: productListProps): JSX.Element {
 				) : (
 					<span>{documentName}</span>
 				)}
-				{row.batch && row.batch.length > 2  && (
+				{row.batch && row.batch.length > 2 && (
 					<span style={{ color: "dodgerblue " }}>
 						<br />
 						Batch : {row.batch}
 					</span>
 				)}
 
-{row.docStatus && row.docStatus === "destroyed" && (
+				{row.docStatus && row.docStatus === "destroyed" && (
 					<span style={{ color: "dodgerblue " }}>
 						<br />
 						(To be Destroyed)
 					</span>
 				)}
 
-               
-        	{row.is_requested_for_takeout && (
-					<span style={{ color: "dodgerblue "  }}>
+
+				{row.is_requested_for_takeout && (
+					<span style={{ color: "dodgerblue " }}>
 						<br />
-					<b>	Document requested for Takeout({request_no}) </b>
+						<b>	Document requested for Takeout({request_no}) </b>
 					</span>
 				)}
 			</>
@@ -154,15 +169,172 @@ function ProductList(props: productListProps): JSX.Element {
 			);
 		}
 	}
+	/* BLock for Search DDocument */
+	const intialSearchDocParam = {
+		search_desc: { error: "", value: "" },
+		search_doc_type: { error: "", value: "" },
+		search_doc_name: { error: "", value: "" },
+		search_doc_num: { error: "", value: "" },
+		ref_no: { error: "", value: "" }
+	};
+	const [isSearchTriggered, setSearchTriggered] = useState(false);
+	function loadDocumentforTakeOut() {
+		setSearchTriggered(true);
+		let temp: any = pageProductsTemp;
+		if (searchDocParam.search_doc_num.value !== '') {
+			temp = temp.filter((x: any) => x.document_no.includes(searchDocParam.search_doc_num.value.trim()));
+		}
+		if (searchDocParam.search_doc_name.value !== '') {
+			temp =  temp.filter((x: any) => x.name.includes(searchDocParam.search_doc_name.value.trim()));
+			 
+		}
+		if (searchDocParam.ref_no.value !== '') {
+			let newtemp: any = [];
+			temp.forEach((element: any) => {
+				const { document_request_info: { document_request_no = 0 } = {} } = element;
+				if (document_request_no === searchDocParam.ref_no.value.trim()) {
+					newtemp.push(element);
+				}
+			});
+			if (newtemp.length > 0) {
+				temp = newtemp;
+			}
+		}
+		if (searchDocParam.search_desc.value !== '') {
+			temp = temp.filter((x: any) => x.description.includes(searchDocParam.search_desc.value.trim()));
+		} 
+		if (searchDocParam.search_doc_type.value !== '') {
+			let newtemp: any = [];
+			temp.forEach((element: any) => {
+				const { document_request_info: { document_request_doc_type: { id = 0 } = {} } = {} } = element;
+				if (id === searchDocParam.search_doc_type.value.trim()) {
+					newtemp.push(element);
+				}
+			});
+			if (newtemp.length > 0) {
+				temp = newtemp;
+			}
+		}
+		setpageProducts(temp);
+	}
 
+	const [searchDocParam, setSearchDocParam] = useState(intialSearchDocParam);
+	function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
+		setSearchDocParam({
+			...searchDocParam,
+			[model.field]: { error: model.error, value: model.value },
+		});
+	}
+	function loadInitialSearchData() {
+		setSearchDocParam(intialSearchDocParam);
+		setpageProducts([]);
+		if (props.loadInitialSearchData) props.loadInitialSearchData();
+	} 
+	
+	const finalProducts = pageProducts.length > 0 || isSearchTriggered ? pageProducts : pageProductsTemp;
 	const options = {
 		clearSearch: true,
 	};
 	return (
 		<div className="portlet">
+			<div className="dynamic-request-form">
+				<div className="row">
+					<div className="col-md-2">
+						<TextInput
+							id="input_request_no"
+							field="ref_no"
+							value={searchDocParam.ref_no.value ? searchDocParam.ref_no.value : ""}
+							onChange={referenceNumberFortakeOutChanged}
+							required={false}
+							maxLength={100}
+							label=""
+							placeholder="Request No"
+							customError={""}
+						/>
+					</div>
+					<div className="col-md-2">
+						<TextInput
+							id="input_request_no"
+							field="search_doc_num"
+							value={searchDocParam.search_doc_num.value ? searchDocParam.search_doc_num.value : ""}
+							onChange={referenceNumberFortakeOutChanged}
+							required={false}
+							maxLength={100}
+							label=""
+							placeholder="DC No"
+							customError={""}
+						/>
+					</div>
+					<div className="col-md-2">
+						<TextInput
+							id="input_request_no"
+							field="search_doc_name"
+							value={searchDocParam.search_doc_name.value ? searchDocParam.search_doc_name.value : ""}
+							onChange={referenceNumberFortakeOutChanged}
+							required={false}
+							maxLength={100}
+							label=""
+							placeholder="DC Name"
+							customError={""}
+						/>
+					</div>
+					<div
+						className={"col-md-2 "
+						}
+					>
+						<SelectInput
+							id="input_document_type"
+							field="search_doc_type"
+							label={""}
+							options={dCat}
+							required={true}
+							onChange={referenceNumberFortakeOutChanged}
+							value={searchDocParam.search_doc_type.toString()}
+							type="select"
+							customError={""}
+						/>
+					</div>
+					<div className="col-md-2">
+						<TextInput
+							id="input_request_no"
+							field="search_desc"
+							value={searchDocParam.search_desc.value ? searchDocParam.search_desc.value : ""}
+							onChange={referenceNumberFortakeOutChanged}
+							required={false}
+							maxLength={100}
+							label=""
+							placeholder="Description"
+							customError={""}
+						/>
+					</div>
+
+
+					<div
+						className="col-md-2"
+						style={{ marginTop: "2%" }}
+					>
+						<div
+							onClick={(e) => loadInitialSearchData()}
+							className={`btn btn-success left-margin font-14`}
+						>
+							<i className="fas fa-sync-alt"></i>
+
+						</div>
+						<div
+							onClick={(e) => loadDocumentforTakeOut()}
+							className={`btn btn-success left-margin font-14  }`}
+						>
+							<i className="fas fa-search"></i>
+						</div>
+					</div>
+
+
+
+				</div>
+			</div>
 			<BootstrapTable
 				options={options}
-				data={products.products}
+				data={finalProducts}
 				pagination={true}
 				hover={true}
 				search={true}
@@ -237,7 +409,7 @@ function ProductList(props: productListProps): JSX.Element {
 					Action
 				</TableHeaderColumn>
 			</BootstrapTable>
-			
+
 		</div>
 	);
 }

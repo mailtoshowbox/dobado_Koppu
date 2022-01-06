@@ -273,8 +273,9 @@ function ProductList(props: productListProps): JSX.Element {
 				[model.field]: { error: model.error, value: model.value },
 			});
 		}
-		function loadDocumentforTakeOut() { 
-			//if (props.searchCallback) props.searchCallback(searchDocParam);
+		const [isSearchTriggered, setSearchTriggered] = useState(false);
+		function loadDocumentforTakeOut() { 			
+			setSearchTriggered(true);
 			let temp:any = pageProductsTemp;
 
 			if(searchDocParam.search_doc_name.value!==''){
@@ -314,9 +315,6 @@ function ProductList(props: productListProps): JSX.Element {
 				}
 			  }
 			  setpageProducts(temp);
-
-
-
 		}
 		function loadInitialSearchData() {
 			setSearchDocParam(intialSearchDocParam);
@@ -324,7 +322,7 @@ function ProductList(props: productListProps): JSX.Element {
 			
 			if (props.loadInitialSearchData) props.loadInitialSearchData();
 		}
-		const finalProducts = pageProducts.length > 0 ? pageProducts : pageProductsTemp;
+		const finalProducts = pageProducts.length > 0 || isSearchTriggered ? pageProducts : pageProductsTemp;
 	
 	return (
 		<div className="portlet">

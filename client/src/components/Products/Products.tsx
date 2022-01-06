@@ -56,9 +56,7 @@ const Products: React.FC = () => {
   const [popup, setPopup] = useState(false);
   useEffect(() => {
     //Load Documents
-    getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
-      dispatch(loadListOfProduct(items));
-    });
+    loadMainDoc();
     //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
@@ -74,6 +72,13 @@ const Products: React.FC = () => {
     });
     dispatch(updateCurrentPath("Home", "Documents"));
   }, [path.area, dispatch]);
+
+  function loadMainDoc(){
+
+  getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
+    dispatch(loadListOfProduct(items));
+  })
+}
 
   function onProductSelect(product: IProduct): void {
     dispatch(changeSelectedProduct(product));
@@ -138,6 +143,7 @@ const Products: React.FC = () => {
                 allowDelete={allowedUsers.includes(userRole)}
                 productModificationStatus={products.modificationState}
                 currentUser={account}
+                loadInitialSearchData={loadMainDoc}
               />
             </div>
           </div>

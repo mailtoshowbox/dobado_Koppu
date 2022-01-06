@@ -441,9 +441,6 @@ const ProductForm: React.FC = () => {
 	function loadInitialSearchData() {
 		setSearchDocParam(intialSearchDocParam);
 		setAvailable_doc_for_takeout([]);
-	//	setpageProducts([]);
-		
-		//if (props.loadInitialSearchData) props.loadInitialSearchData();
 	}
 	return (
 		<Fragment>

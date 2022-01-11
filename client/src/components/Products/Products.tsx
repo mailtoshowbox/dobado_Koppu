@@ -56,7 +56,9 @@ const Products: React.FC = () => {
   const [popup, setPopup] = useState(false);
   useEffect(() => {
     //Load Documents
-    loadMainDoc();
+    getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
+      dispatch(loadListOfProduct(items));
+    })
     //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
@@ -97,6 +99,25 @@ const Products: React.FC = () => {
       setPopup(true);
     }
   }
+
+/*   const productsSaved: IProductState = useSelector(
+		(state: IStateType) => state.products
+	);
+
+  console.log("productsSaved-----", productsSaved);
+  const availeblePr = productsSaved.products;
+  if(availeblePr === undefined){
+    console.log("No Date Aviualbel-----");
+
+    getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
+      console.log("LOADED");
+      dispatch(loadListOfProduct(items));
+      console.log("No Date ENDED-----");
+    })
+  } */
+
+
+
 
   return (
     <Fragment>

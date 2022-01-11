@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { useSelector } from "react-redux";
-import { IStateType, IProductState } from "../../store/models/root.interface";
+import { IStateType, IProductSubmitState } from "../../store/models/root.interface";
 import { IProduct } from "../../store/models/product.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import {
@@ -18,22 +18,22 @@ export type productListProps = {
 	allowDelete: boolean;
 	children?: React.ReactNode;
  
-	loadInitialSearchData? : any;
+	loadInitialSearchDataNew? : any;
 };
 const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
-function ProductList(props: productListProps): JSX.Element {
-	const products: IProductState = useSelector(
-		(state: IStateType) => state.products
-	);
-	const productsTemp: IProductState = useSelector(
-		(state: IStateType) => state.products
+function ProductSubmitList(props: productListProps): JSX.Element {
+	const products: IProductSubmitState = useSelector(
+		(state: IStateType) => state.productSubmit
 	);
 
-    const pageProductsTemp = productsTemp.products; 
- 
+	console.log("products, products", products);
 
+	const productsTempNew: IProductSubmitState = useSelector(
+		(state: IStateType) => state.productSubmit
+	);
 
-	const [pageProducts, setpageProducts] = useState(pageProductsTemp);
+    const pageProductsNewTemp = productsTempNew.productSubmit;
+	const [pageProductsNew, setpageProductsNew] = useState(pageProductsNewTemp);
 
 	function convertDate(str: Date) {
 		if (!str) return "-";
@@ -276,7 +276,7 @@ function ProductList(props: productListProps): JSX.Element {
 		const [isSearchTriggered, setSearchTriggered] = useState(false);
 		function loadDocumentforTakeOut() { 			
 			setSearchTriggered(true);
-			let temp:any = pageProductsTemp;
+			let temp:any = pageProductsNewTemp;
 
 			if(searchDocParam.search_doc_name.value!==''){
 				temp = temp.filter((x:any)=>x.name.includes(searchDocParam.search_doc_name.value.trim()));
@@ -314,15 +314,15 @@ function ProductList(props: productListProps): JSX.Element {
 					temp =newtemp;
 			//	}
 			  }
-			  setpageProducts(temp);
+			  setpageProductsNew(temp);
 		}
 		function loadInitialSearchData() {
 			setSearchTriggered(false);
 			setSearchDocParam(intialSearchDocParam);
-			setpageProducts([]);			
-			if (props.loadInitialSearchData) props.loadInitialSearchData();
+			setpageProductsNew([]);			
+			if (props.loadInitialSearchDataNew) props.loadInitialSearchDataNew();
 		}
-		const finalProducts = pageProducts.length > 0 || isSearchTriggered ? pageProducts : pageProductsTemp;
+		const finalProductsNew = pageProductsNew.length > 0 || isSearchTriggered ? pageProductsNew : pageProductsNewTemp;
 	
 	return (
 		<div className="portlet">
@@ -424,7 +424,7 @@ function ProductList(props: productListProps): JSX.Element {
 									</div>
 			<BootstrapTable
 				options={options}
-				data={finalProducts}
+				data={finalProductsNew}
 				pagination={true}
 				hover={true}
 				search={true}
@@ -531,4 +531,4 @@ function ProductList(props: productListProps): JSX.Element {
 	);
 }
 
-export default ProductList;
+export default ProductSubmitList;

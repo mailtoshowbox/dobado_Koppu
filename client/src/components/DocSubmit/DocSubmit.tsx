@@ -1,12 +1,11 @@
 import React, { Fragment, Dispatch, useState, useEffect } from "react";
-import ProductList from "./DocSubmitList";
-import ProductForm from "./DocSubmitForm";
-import TopCard from "../../common/components/TopCard";
+import ProductSubmitList from "./DocSubmitList";
+import ProductForm from "./DocSubmitForm"; 
 import "./DocSubmit.css";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  IProductState,
+  IProductSubmitState,
   IStateType,
   IRootPageStateType,
 } from "../../store/models/root.interface";
@@ -16,7 +15,7 @@ import {
   setModificationState,
   changeSelectedProduct,
   loadListOfProduct,
-} from "../../store/actions/products.action";
+} from "../../store/actions/productsubmit.action";
 import { loadListOfDocCategory } from "../../store/actions/doccategory.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
@@ -46,21 +45,21 @@ const Products: React.FC = () => {
   const roles: any = useSelector((state: IStateType) => state.account.roles);
   let [userRole] = useState(roles[0] ? roles[0] : "Developer");
   const dispatch: Dispatch<any> = useDispatch();
-  const products: IProductState = useSelector(
-    (state: IStateType) => state.products
+  const products: IProductSubmitState = useSelector(
+    (state: IStateType) => state.productSubmit
   );
+  console.log("DOX SUBMIT_--", products);
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
  
   const [popup, setPopup] = useState(false);
-  const [productCount, setProductCount] = useState(0);
+ console.log("path.area-",path );
   useEffect(() => {
     //Load Documents
-    loadMainDoc()
-   /*  getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
+    getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
       dispatch(loadListOfProduct(items));
-    }); */
+    });
     //Load Available Doc Categories
     getDocCategoryList(account.auth).then((items: IDocCategoryList) => {
       dispatch(loadListOfDocCategory(items));
@@ -75,12 +74,10 @@ const Products: React.FC = () => {
       dispatch(loadListOfDocType(items));
     });
     dispatch(updateCurrentPath("Home", "Document Submit"));
-  }, [path.area, dispatch]);
+  }, [path.area,  dispatch]);
 
-  function loadMainDoc(){
-    getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {   
-      dispatch(loadListOfProduct(items));
-    });
+  function loadMainDocList(){
+    
   }
 
   function onProductSelect(product: IProduct): void {
@@ -96,7 +93,7 @@ const Products: React.FC = () => {
   }
 
   function onProductRemove() {
-    if (products.selectedProduct) {
+    if (products.selectedForProductSubmit) {
       setPopup(true);
     }
   }
@@ -129,18 +126,17 @@ const Products: React.FC = () => {
             </div>
             {products.modificationState === ProductModificationStatus.Create ||
             (products.modificationState === ProductModificationStatus.Edit &&
-              products.selectedProduct) ? (
+              products.selectedForProductSubmit) ? (
               <ProductForm />
             ) : null}
             <div className="card-body" style={{ height: "980px" }}>
-              <ProductList
+              <ProductSubmitList
                 onSelect={onProductSelect}
                 onSelectDelete={onDeleteProduct}
                 allowDelete={allowedUsers.includes(userRole)}
                 productModificationStatus={products.modificationState}
-                currentUser={account}
-                
-                loadInitialSearchData={loadMainDoc}
+                currentUser={account}                
+                loadInitialSearchDataNew={loadMainDocList}
               />
             </div>
           </div>
@@ -160,12 +156,12 @@ const Products: React.FC = () => {
               type="button"
               className="btn btn-danger font-14"
               onClick={() => {
-                if (!products.selectedProduct) {
+                if (!products.selectedForProductSubmit) {
                   return;
                 }
 
                 let boxInfoUpt = {
-                  id: products.selectedProduct._id,
+                  id: products.selectedForProductSubmit._id,
                   isActive: false,
                 };
                 updateDoc(boxInfoUpt, account)

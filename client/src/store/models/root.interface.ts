@@ -28,9 +28,15 @@ export interface IRootPageStateType {
 export interface IRootStateType {
     page: IRootPageStateType;
 }
+export interface IProductSubmitState {
+    productSubmit: IProduct[];
+    selectedForProductSubmit: IProduct | null;
+    modificationState: ProductModificationStatus;
+}
 export interface IStateType {
     root: IRootStateType;
     products: IProductState;
+    productSubmit: IProductSubmitState;
     notifications: INotificationState;
     users: IUserState;
     orders: IOrdersState;

@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, Dispatch, Fragment } from "react";
 import {
 	IStateType,
-	IProductState,
+	IProductSubmitState,
 	IDocCategoryState,
 	IBoxState,
 	IDocTypeState,
@@ -26,7 +26,7 @@ import {
 	setModificationState,
 	addProduct,
 	loadListOfProduct,
-} from "../../store/actions/products.action";
+} from "../../store/actions/productsubmit.action";
 import { addNotification } from "../../store/actions/notifications.action";
 import {
 	addNewDoc,
@@ -54,11 +54,11 @@ const ProductForm: React.FC = () => {
 	const account: IAccount = useSelector((state: IStateType) => state.account);
 	//const componentRef = useRef();
 
-	const products: IProductState | null = useSelector(
-		(state: IStateType) => state.products
+	const products: IProductSubmitState | null = useSelector(
+		(state: IStateType) => state.productSubmit
 	);
 
-	let product: IProduct | null = products.selectedProduct;
+	let product: IProduct | null = products.selectedForProductSubmit;
 	const isCreate: boolean =
 		products.modificationState === ProductModificationStatus.Create;
 
@@ -483,7 +483,7 @@ const ProductForm: React.FC = () => {
 					is_requested_for_takeout: formState.is_requested_for_takeout.value,
 					document_type_details: formState.document_type_details.value,
 				};
-				let seltdPro = products?.products.filter(
+				let seltdPro = products?.productSubmit.filter(
 					(pro) => pro._id === formState._id.value
 				)[0];
 				const { document_info = {} } = seltdPro || {};
@@ -557,6 +557,15 @@ const ProductForm: React.FC = () => {
 						})
 					);
 
+					/* getIssuedDocumentList(account, { userId: account.emp_id }).then(
+						(items: IProductList) => {
+							dispatch(loadListOfProduct(items));
+						}
+					); */
+
+					getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
+						dispatch(loadListOfProduct(items));
+					  });
 					getIssuedDocumentList(account, { userId: account.emp_id }).then(
 						(items: IProductList) => {
 							dispatch(loadListOfProduct(items));

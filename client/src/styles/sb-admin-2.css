@@ -4894,7 +4894,7 @@ input[type="button"].btn-block {
 .page-link {
   position: relative;
   display: block;
-  padding: 0.5rem 0.75rem;
+  padding: 0.2rem 0.75rem !important;
   margin-left: -1px;
   line-height: 1.25;
   color: #4e73df;
@@ -4959,7 +4959,7 @@ input[type="button"].btn-block {
 }
 
 .pagination-sm .page-link {
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.2rem;
   font-size: 0.875rem;
   line-height: 1.5;
 }

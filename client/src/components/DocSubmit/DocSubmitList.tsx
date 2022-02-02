@@ -322,7 +322,7 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 			setpageProductsNew([]);			
 			if (props.loadInitialSearchDataNew) props.loadInitialSearchDataNew();
 		}
-		const finalProductsNew = pageProductsNew.length > 0 || isSearchTriggered ? pageProductsNew : pageProductsNewTemp;
+		const finalProductsNew = (pageProductsNew!== undefined && pageProductsNew.length > 0) || isSearchTriggered ? pageProductsNew : pageProductsNewTemp;
 	
 	return (
 		<div className="portlet">

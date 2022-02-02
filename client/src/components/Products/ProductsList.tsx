@@ -232,7 +232,7 @@ function ProductList(props: productListProps): JSX.Element {
 	} 
  
  
-	const finalProducts = pageProducts.length > 0 || isSearchTriggered ? pageProducts : products.products;
+	const finalProducts = (pageProducts!== undefined && pageProducts.length > 0  ) || isSearchTriggered ? pageProducts : products.products;
  
 	
 	const options = {

@@ -157,7 +157,7 @@ const Products: React.FC = () => {
               products.selectedProduct) ? (
               <ProductForm />
             ) : null}
-            <div className="card-body" style={{ height: "980px" }}>
+            <div className="card-body" style={{ height: "1500px" }}>
               <ProductList
                 onSelect={onProductSelect}
                 onSelectDelete={onDeleteProduct}

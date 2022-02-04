@@ -7,4 +7,5 @@ export type TextInputProps = {
     value?: Date, 
     inputClass?: string,
     field: string 
+    name?: string
 };

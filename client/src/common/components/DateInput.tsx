@@ -42,7 +42,10 @@ function TextInput(props: TextInputProps): JSX.Element {
       selectedDate =   new Date(props.value)
     }
   }
-  
+  let fieldName = "";
+  if(props.name !== undefined){
+    fieldName  =props.name;
+  }
   return (
     <div>
       <label htmlFor={props.id.toString()}>{props.label}</label>
@@ -53,7 +56,9 @@ function TextInput(props: TextInputProps): JSX.Element {
         isClearable
         closeOnScroll={true}
         placeholderText={props.placeholder}
+        name={props.name}
         onChange={(date: any) => onValueChanged(date)}
+        onChangeRaw={(e)=>{e.preventDefault();}}
       />
 
       {error ? <div className="invalid-feedback">{error}</div> : null}

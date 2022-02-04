@@ -48,12 +48,14 @@ function TextInput(props: any): JSX.Element {
           min="1"
           max="99"
           style={{"display":"none"}}
+          required={false}
           name="calculateNonPerceptualTime"
         />
 
 <DateInput
 										id="retension_exact_date"
 										field="retension_exact_date"
+										name="retension_exact_date"
 										value={ selectedDate
 										}
 										required={false}

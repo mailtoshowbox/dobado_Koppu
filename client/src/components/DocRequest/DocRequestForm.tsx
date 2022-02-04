@@ -196,8 +196,7 @@ const ProductForm: React.FC = () => {
 				)
 			);
 			e.preventDefault();
-		}
-		//return false;
+		} 
 	}
 
 	function saveRequest(formState: any, saveFn: Function, mode: String): void {
@@ -953,7 +952,7 @@ const ProductForm: React.FC = () => {
 					</div>
 				</div>
 
-				<Popup className="popup-modal" open={loginPopup}>
+				<Popup className="popup-modal" open={loginPopup} onClose={()=>{setLoginPopup(false)}}>
 					<div>
 						<form className="user" onSubmit={validateLogin}>
 							<div className="form-group font-14">

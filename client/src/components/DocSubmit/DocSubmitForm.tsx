@@ -483,6 +483,14 @@ const ProductForm: React.FC = () => {
 					is_requested_for_takeout: formState.is_requested_for_takeout.value,
 					document_type_details: formState.document_type_details.value,
 				};
+
+				/* let seltdPro = {};
+				 
+				if(products !== null && products.productSubmit?.length > 0){
+					seltdPro = products?.productSubmit.filter(
+						(pro) => pro._id === formState._id.value
+					)[0];
+				} */
 				let seltdPro = products?.productSubmit.filter(
 					(pro) => pro._id === formState._id.value
 				)[0];

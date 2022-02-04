@@ -361,7 +361,7 @@ const ProductForm: React.FC = () => {
 					a?.document.write(
 						"<div><div>Logo</div><div>Reference Number : " +
 							element.document_no +
-							" </div><div>Categoy : " +
+							" </div><div>Department : " +
 							requested_doc_department.name +
 							" </div><div>Name of Doc :" +
 							element.document_name +
@@ -377,7 +377,7 @@ const ProductForm: React.FC = () => {
         a?.document.write(
           "<div><div>Logo</div><div>Reference Number : " +
           selectedDocForPrint.document_no +
-            " </div><div>Categoy : " +
+            " </div><div>Department : " +
             requested_doc_department.name +
             " </div><div>Name of Doc :" +
             selectedDocForPrint.document_name +

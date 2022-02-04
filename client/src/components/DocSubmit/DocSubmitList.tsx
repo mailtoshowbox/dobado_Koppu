@@ -252,6 +252,28 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 			);
 		}
 	}
+	
+	function document_no_format(cell: any, row: any, field: any, field2: any) { 
+		const {
+			document_request_info: {
+				document_issued_from =""  ,
+			} = {},
+		} = row;
+
+		if (row.isRequestedDocument) {
+			return <>{document_issued_from}</>;
+		} else {
+			return (
+				<>
+					{row.document_no
+						? row.document_no : ""
+					 }
+				</>
+			);
+		}
+	}
+
+	
 	const options = {
 		clearSearch: true
 	};
@@ -450,6 +472,7 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 					dataField="document_no"
 					className="thead-light-1"
 					width="12%"
+					dataFormat={document_no_format}
 				>
 					DC NO
 				</TableHeaderColumn>

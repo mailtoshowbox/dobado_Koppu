@@ -76,6 +76,10 @@ function ProductForm(props: productFormProps): JSX.Element {
 
  
   const [, setSelectedCategory] = useState("1");
+
+  const [validSubmit, setValidSubmit] = useState(false);
+
+  
   const [openRejectReasonModal, setOpenRejectReasonModal] = useState(false);
   if (!isCreate) {
     const { approval = [] } = docrequest;
@@ -179,13 +183,19 @@ function ProductForm(props: productFormProps): JSX.Element {
   }
 
   function saveDocumentRequest(e: FormEvent<HTMLFormElement>): void {
+
     //setLoginPopup(true);
     e.preventDefault();
-    if (!isFormInvalid()) {
-      return;
+    if(validSubmit){
+      if (!isFormInvalid()) {
+        return;
+      }  
+      saveForm(formState, updateDocRequestApproval, "EDIT");
+      setValidSubmit(false)
     }
 
-    saveForm(formState, updateDocRequestApproval, "EDIT");
+  
+   
   }
 
   function rejectDocumentRequest(e: any): void {
@@ -641,6 +651,7 @@ function ProductForm(props: productFormProps): JSX.Element {
                   <button
                     type="submit"
                     className={`btn btn-success left-margin font-14 ${getDisabledClass()}`}
+                    onClick={(eve) => setValidSubmit(true)}
                   >
                     APPROVE
                   </button>

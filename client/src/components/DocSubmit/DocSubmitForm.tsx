@@ -484,16 +484,16 @@ const ProductForm: React.FC = () => {
 					document_type_details: formState.document_type_details.value,
 				};
 
-				/* let seltdPro = {};
+				 let seltdPro:any = {};
 				 
 				if(products !== null && products.productSubmit?.length > 0){
 					seltdPro = products?.productSubmit.filter(
 						(pro) => pro._id === formState._id.value
 					)[0];
-				} */
-				let seltdPro = products?.productSubmit.filter(
-					(pro) => pro._id === formState._id.value
-				)[0];
+				} 
+				// let seltdPro = products?.productSubmit.filter(
+				// 	(pro) => pro._id === formState._id.value
+				// )[0];
 				const { document_info = {} } = seltdPro || {};
 
 				let updatedByArrau = [{ ...currentUser, updatedOn: new Date() }];

@@ -563,22 +563,12 @@ const ProductForm: React.FC = () => {
 							...product,
 							...status,
 						})
-					);
-
-					/* getIssuedDocumentList(account, { userId: account.emp_id }).then(
-						(items: IProductList) => {
-							dispatch(loadListOfProduct(items));
-						}
-					); */
+					); 
 
 					getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
 						dispatch(loadListOfProduct(items));
 					  });
-					getIssuedDocumentList(account, { userId: account.emp_id }).then(
-						(items: IProductList) => {
-							dispatch(loadListOfProduct(items));
-						}
-					);
+					
 					dispatch(
 						addNotification(
 							"Box ",

@@ -1497,7 +1497,7 @@ const ProductForm: React.FC = () => {
 													value={issuanceDocumentforEdit.document_name}
 													onChange={hasEditIssuanceDocument}
 													required={false}
-													maxLength={6}
+													maxLength={60}
 													label="Document Name"
 													placeholder="Document Name"
 													customError={""}

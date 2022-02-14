@@ -111,7 +111,7 @@ const Products: React.FC = () => {
               <h6 className="m-0 font-weight-bold text-white font-12">
                 Document List
               </h6>
-              <div className="header-buttons">
+              {/* <div className="header-buttons">
                 <button
                   className="btn btn-border"
                   onClick={() =>
@@ -122,7 +122,7 @@ const Products: React.FC = () => {
                 >
                   <i className="fas fa fa-plus"></i>
                 </button>
-              </div>
+              </div> */}
             </div>
             {products.modificationState === ProductModificationStatus.Create ||
             (products.modificationState === ProductModificationStatus.Edit &&

@@ -822,7 +822,7 @@ const ProductForm: React.FC = () => {
 										field="name"
 										onChange={hasFormValueChanged}
 										required={true}
-										maxLength={20}
+										maxLength={60}
 										label="Name of the document"
 										placeholder="Name of the document"
 									/>

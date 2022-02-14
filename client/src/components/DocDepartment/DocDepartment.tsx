@@ -113,7 +113,7 @@ const Products: React.FC = () => {
               doccategories.selectedDocDepartment) ? (
               <ProductForm />
             ) : null}
-            <div className="card-body"  style={{height: "600px"}}>
+            <div className="card-body"  style={{height: "1000px"}}>
               <DocDepartmentList
                 onSelect={onProductSelect}
                 onSelectDelete={onDeleteProduct}

@@ -390,7 +390,7 @@ const selected_department_details= listOfDept.find((dept)=> dept.id === model.va
               </h6>
               <div className="header-buttons"></div>
             </div>
-            <div className="card-body"  style={{height: "600px"}}>
+            <div className="card-body"  style={{height: "1000px"}}>
               <div>
                 <BootstrapTable
                   options={{}}

@@ -796,7 +796,7 @@ function ProductForm(props: productFormProps): JSX.Element {
                           value={documentforEdit.document_name}
                           onChange={hasEditDocument}
                           required={false}
-                          maxLength={6}
+                          maxLength={60}
                           label="Document Name"
                           placeholder="Document Name"
                           customError={""}

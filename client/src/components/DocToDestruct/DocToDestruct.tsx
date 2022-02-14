@@ -136,7 +136,7 @@ const Products: React.FC = () => {
 				</div>
 				<div className="col-xl-12 col-lg-12">
 					<div className="card shadow mb-4">
-						<div className="card-body"  style={{height: "600px"}}>
+						<div className="card-body"  style={{height: "1000px"}}>
 							<DocToDestructList
 								onSelect={onProductSelect}
 								allowDelete={allowedUsers.includes(userRole)}

@@ -130,14 +130,14 @@ function ProductList(props: productListProps): JSX.Element {
               New
             </span>
           )} */}
-					{allowDelete && (
+					{/* {allowDelete && (
 						<button
 							className="btn btn-border  btn-red-color"
 							onClick={() => onClickProductDelete(cell, row, rowIndex)}
 						>
 							<i className="fas fa fa-trash" aria-hidden="true"></i>
 						</button>
-					)}
+					)} */}
 				</>
 			);
 		} else {

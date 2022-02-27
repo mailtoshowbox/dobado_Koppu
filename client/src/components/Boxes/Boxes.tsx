@@ -63,7 +63,8 @@ const Boxs: React.FC = () => {
   function onDeleteProduct(box: IBox): void {
     dispatch(changeSelectedBox(box));
     dispatch(setModificationState(BoxModificationStatus.None));
-    onProductRemove();
+    setPopup(true);
+   // onProductRemove();
   }
 
   function onProductRemove() {

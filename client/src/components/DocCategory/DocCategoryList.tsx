@@ -23,6 +23,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
     if (props.onSelect) props.onSelect(row);
   }
   function onClickProductDelete(cell: any, row: any, rowIndex: any) {
+    console.log("1");
     if (props.onSelectDelete) props.onSelectDelete(row);
   }
 

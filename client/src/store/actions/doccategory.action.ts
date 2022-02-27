@@ -35,6 +35,7 @@ export function changeDocCategoryAmount(id: number, amount: number): IChangeDocC
 }
 
 export function changeSelectedDocCategory(docCategory: IDocCategory): IChangeSelectedDocCategoryActionType {
+    console.log("docCategory---", docCategory);
     return { type: CHANGE_DOCCATEGORY_PENDING_EDIT, docCategory: docCategory };
 }
 

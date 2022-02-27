@@ -54,18 +54,23 @@ const Products: React.FC = () => {
 
   function onProductSelect(product: IDocCategory): void {
     dispatch(changeSelectedDocCategory(product));
-    dispatch(setModificationState(DocCategoryModificationStatus.None));
-    dispatch(setModificationState(DocCategoryModificationStatus.Edit));
+  
   }
 
   function onDeleteProduct(product: IDocCategory): void {
-    dispatch(changeSelectedDocCategory(product));
-    dispatch(setModificationState(DocCategoryModificationStatus.None));
-    onProductRemove();
+  
+    dispatch(changeSelectedDocCategory(product)); 
+
+    setPopup(true);
+   
+    
+  //  onProductRemove();
   }
 
   function onProductRemove() {
+
     if (doccategories.selectedDocCategory) {
+
       setPopup(true);
     }
   }
@@ -135,6 +140,7 @@ const Products: React.FC = () => {
               type="button"
               className="btn btn-danger"
               onClick={() => {
+ 
                 if (!doccategories.selectedDocCategory) {
                   return;
                 }

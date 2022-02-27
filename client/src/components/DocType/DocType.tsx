@@ -59,8 +59,9 @@ const Products: React.FC = () => {
 
   function onDeleteProduct(product: IDocType): void {
     dispatch(changeSelectedDocType(product));
-    dispatch(setModificationState(DocTypeModificationStatus.None));
-    onProductRemove();
+   // dispatch(setModificationState(DocTypeModificationStatus.None));
+   // onProductRemove();
+   setPopup(true);
   }
 
   function onProductRemove() {

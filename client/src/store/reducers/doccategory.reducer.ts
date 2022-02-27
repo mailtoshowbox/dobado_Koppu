@@ -31,6 +31,7 @@ function docCategoriesReducer(state: IDocCategoryState = initialState, action: I
             return { ...state, docCategories: state.docCategories.filter(pr => pr._id !== action.id) };
         }
         case CHANGE_DOCCATEGORY_PENDING_EDIT: {
+            console.log("state-----", state, action);
             return { ...state, selectedDocCategory: action.docCategory };
         }
         case CLEAR_DOCCATEGORY_PENDING_EDIT: {

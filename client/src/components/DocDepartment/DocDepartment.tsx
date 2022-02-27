@@ -62,7 +62,8 @@ const Products: React.FC = () => {
 
     dispatch(changeSelectedDocDepartment(product));
     dispatch(setModificationState(DocDepartmentModificationStatus.None));
-    onProductRemove();
+    setPopup(true);
+   // onProductRemove();
   }
 
   function onProductRemove() {

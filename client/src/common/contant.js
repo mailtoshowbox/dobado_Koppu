@@ -94,6 +94,19 @@ const APP_CONST = {
             { "FIELD_LABEL": 'Created On', "FIELD_NAME": "createdOn", "FIELD_VALUE": true },
             { "FIELD_LABEL": 'Modified on', "FIELD_NAME": "updatedOn", "FIELD_VALUE": true }
         ],
+        "EXPORT_DESCTRUCT_LIST_CSV_COLUMN":
+        [
+    
+            { "FIELD_LABEL": 'Name', "FIELD_NAME": "name", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Type', "FIELD_NAME": "Type", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Description', "FIELD_NAME": "Description", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'To be Destructed on', "FIELD_NAME": "To be Destructed on", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Doc timeline Extention            ', "FIELD_NAME": "document_request_info.document_issued_on", "FIELD_VALUE": true },
+            { "FIELD_LABEL": 'Reason', "FIELD_NAME": "document_request_info.document_issued_to", "FIELD_VALUE": false },
+            { "FIELD_LABEL": 'Status', "FIELD_NAME": "document_request_info.document_issued_by", "FIELD_VALUE": false },
+            { "FIELD_LABEL": 'Destructed', "FIELD_NAME": "document_request_info.document_submitted_on", "FIELD_VALUE": false },
+ 
+        ],
     "EXPORT_PDF_COLUMN_AUDIT_LOG_FILE_NAME": "AUDIT -" + new Date(),
     "EXPORT_PDF_COLUMN_AUDIT_LOG_NAME": "AUDIT -" + new Date()
     ,

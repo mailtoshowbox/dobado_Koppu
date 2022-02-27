@@ -687,7 +687,8 @@ export class DocumentsService {
 				"$addFields": {
 					"retension_time.retension_exact_date": {
 						"$dateFromString": {
-							"dateString": "$retension_time.retension_exact_date"
+							"dateString": "$retension_time.retension_exact_date",
+							onError: new Date(0)
 						}
 					},
 

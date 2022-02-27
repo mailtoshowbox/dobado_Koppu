@@ -18,6 +18,8 @@ import {
   import {  
 	IProductDestructList
   } from "../../store/models/productDesctruct.interface";   
+  import APP_CONST from "../../common/contant";
+ 
 export type productListProps = {
   
   children?: React.ReactNode;
@@ -25,13 +27,14 @@ export type productListProps = {
   allowDelete: boolean;
   selectedFieldsToDownload : any;
   onSelect:any
+  logLoaded : boolean
 };
-
+ 
 function DocCategoryList(props: productListProps): JSX.Element {
   const logSheet: IDocDestructState = useSelector(
     (state: IStateType) => state.docDestructData
   ); 
-
+  const  {logLoaded=false} =props;
   const account: IAccount = useSelector((state: IStateType) => state.account);
    const {docDestructList = []} = logSheet; 
 
@@ -44,11 +47,28 @@ function DocCategoryList(props: productListProps): JSX.Element {
     onClick();
   }
   function createCustomExportCSVButton(onClick:any)  {
-    return (
-      <ExportCSVButton
-        btnText='Down CSV'
-        onClick={ () => handleExportCSVButtonClick(onClick) }/>
-    );
+
+	let status = logLoaded ? true  : false;
+	let onclickS = logLoaded ? ""  :'disabled="disabled"';
+	return (
+		<>
+	  <ExportCSVButton
+		btnText='Down CSV' 
+		className= {logLoaded ? "" : " disabled "} 
+		onClick={ logLoaded ?  () => handleExportCSVButtonClick(onClick) : (e)=>e.preventDefault() }/> &nbsp;&nbsp;
+		 
+		 <div className='my-custom-class'  >       
+        <button type='button'
+		 onClick={() => destructDoc()}
+          className={ `btn btn-primary` }>
+          Destruct
+        </button>
+		 
+      </div> 
+	
+	
+		</>
+	);
   }
   
 	function onClickProductSelected(cell: any, row: any, rowIndex: any) {
@@ -111,6 +131,7 @@ function convertRetentionExactDate(cell: any, row: any) {
   }
  
   function checkStatus(cell: any, row: any) { 
+	 
 
 	const {retension_time : {retension_exact_date="", retensionDateExtended="", status=""}={}} = row;
 	
@@ -134,6 +155,10 @@ function convertRetentionExactDate(cell: any, row: any) {
 	  if(document_type_details.name){
 		return document_type_details.name;
 	  }
+	  return "-";
+  }
+  function getReason(cell: any, row: any) {
+	 
 	  return "-";
   }
 
@@ -186,6 +211,7 @@ function convertRetentionExactDate(cell: any, row: any) {
           className={ `btn btn-primary` }>
           Destruct
         </button>
+		 
       </div>
     );
 	}
@@ -212,15 +238,19 @@ function convertRetentionExactDate(cell: any, row: any) {
 
   }
 
+  const options = {
  
+	exportCSVBtn: createCustomExportCSVButton,
+  };
+
 
   return (
     <div className="portlet logsheet">
       <BootstrapTable  data={docDestructList} 
-	   options={{ btnGroup : createCustomButtonGroup }}
+	  options={options}
        selectRow ={{ mode: 'checkbox',
 	   onSelect: handleRowSelect,
-	   clickToSelect: true,}}  >
+	   clickToSelect: true,}} exportCSV >
         <TableHeaderColumn
 					dataField="_id"
 					isKey
@@ -233,40 +263,41 @@ function convertRetentionExactDate(cell: any, row: any) {
 					dataField="name"
 					width="16%"
 					className="thead-light-1"
-				 
+					
 				>
 					Name
 				</TableHeaderColumn>
+
 				<TableHeaderColumn
-					dataField="name"
-					width="16%"
-					className="thead-light-1"
-				 
-				>
-					Name
-				</TableHeaderColumn>
-				<TableHeaderColumn
-			 
-					className="thead-light-1"
-					dataFormat={getDocType}
-					width="10%"
-				>
-					Type
-				</TableHeaderColumn>
-					<TableHeaderColumn
 					dataField="description"
 					className="thead-light-1"
 				 
 					width="10%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[2]['FIELD_LABEL']}
+					 
 				>
 					Decscrption
 				</TableHeaderColumn>
+			 
+				<TableHeaderColumn
+			        dataField="document_type_details.name"
+					className="thead-light-1"
+					dataFormat={getDocType}
+					csvFormat={getDocType}
+					width="10%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[1]['FIELD_LABEL']}
+				>
+					Type
+				</TableHeaderColumn>
+				
 				 
 				<TableHeaderColumn
 					dataField="retension_time.retension_exact_date"
 					className="thead-light-1"
 					dataFormat={convertRetentionExactDate}
+					csvFormat={convertRetentionExactDate}
 					width="10%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[3]['FIELD_LABEL']}
 				>
 					To be Destructed On
 				</TableHeaderColumn>
@@ -274,7 +305,9 @@ function convertRetentionExactDate(cell: any, row: any) {
 					dataField="expiredate"
 					className="thead-light-1"
 					dataFormat={convertRetentionExtentDate}
+					csvFormat={convertRetentionExtentDate}
 					width="15%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[4]['FIELD_LABEL']}
 				>
 					Doc timeline Extention
 				</TableHeaderColumn>
@@ -282,14 +315,20 @@ function convertRetentionExactDate(cell: any, row: any) {
 					 
 					className="thead-light-1" 
 					width="15%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[5]['FIELD_LABEL']}
+					dataFormat={checkStatus}
+					csvFormat={checkStatus}
+					dataField="expiredate"
 				>
 					Reason
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="expiredate"
 					className="thead-light-1"
-					dataFormat={checkStatus}
+					dataFormat={getReason}
+					csvFormat={getReason}
 					width="10%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[6]['FIELD_LABEL']}
 				>
 					Status
 				</TableHeaderColumn>
@@ -297,7 +336,9 @@ function convertRetentionExactDate(cell: any, row: any) {
 					dataField="expiredate"
 					className="thead-light-1"
 					dataFormat={checkDestrucStatus}
+					csvFormat={checkDestrucStatus}
 					width="10%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[7]['FIELD_LABEL']}
 				>
 					Destructed
 				</TableHeaderColumn>
@@ -307,7 +348,8 @@ function convertRetentionExactDate(cell: any, row: any) {
 					dataField="button"
 					dataFormat={buttonFormatter}
 					className="thead-light-1"
-					width="9%"
+					width="9%" 
+					export={ false }
 				>
 					Action
 				</TableHeaderColumn>

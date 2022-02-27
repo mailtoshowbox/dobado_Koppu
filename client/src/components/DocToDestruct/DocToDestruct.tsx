@@ -142,6 +142,7 @@ const Products: React.FC = () => {
 								allowDelete={allowedUsers.includes(userRole)}
 								docCategoryModificationStatus={docDestructData.modificationState}
 								selectedFieldsToDownload={selectedFieldsToDownload}
+								logLoaded = {true}
 							
 							/>
 						</div>

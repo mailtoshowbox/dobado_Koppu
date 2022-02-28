@@ -289,7 +289,15 @@ function convertRetentionExactDate(cell: any, row: any) {
 				>
 					Type
 				</TableHeaderColumn>
-				
+				<TableHeaderColumn
+			        dataField="batch"
+					className="thead-light-1"
+				 
+					width="10%"
+					csvHeader={APP_CONST.EXPORT_DESCTRUCT_LIST_CSV_COLUMN[8]['FIELD_LABEL']}
+				>
+					Location
+				</TableHeaderColumn>
 				 
 				<TableHeaderColumn
 					dataField="retension_time.retension_exact_date"

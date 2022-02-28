@@ -691,15 +691,74 @@ export class DocumentsService {
 							onError: new Date(0)
 						}
 					},
+					
+					converted_rack: {
+						$convert: {
+							input: "$rack",
+							to: "objectId",
+							onError: 0,
+						},
+					},
+					converted_category: {
+						$convert: {
+							input: "$category",
+							to: "objectId",
+							onError: 0,
+						},
+					},
+					converted_box: {
+						$convert: {
+							input: "$box",
+							to: "objectId",
+							onError: 0,
+						},
+					},
+					converted_doctype: {
+						$convert: {
+							input: "$document_type",
+							to: "objectId",
+							onError: 0,
+						},
+					},
 
+				},
+				
+			},
+			{
+				$lookup: {
+					from: "racks",
+					localField: "converted_rack",
+					foreignField: "_id",
+					as: "rack_info",
+				},
+			},
+			{
+				$lookup: {
+					from: "doccategories",
+					localField: "converted_category",
+					foreignField: "_id",
+					as: "category_info",
+				},
+			},
+			{
+				$lookup: {
+					from: "boxes",
+					localField: "converted_box",
+					foreignField: "_id",
+					as: "box_info",
+				},
+			},
+			{
+				$lookup: {
+					from: "doctypes",
+					localField: "converted_doctype",
+					foreignField: "_id",
+					as: "docType_info",
 				},
 			},
 			{
 				"$match": 
 					{ "retension_time.retension_exact_date": { "$gte": date1, "$lt": date2 } , type_of_space : "non_perceptual", isActive : true},
-						 
-						
-				
 			}
 
 		]);

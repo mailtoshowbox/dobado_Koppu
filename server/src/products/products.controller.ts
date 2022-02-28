@@ -42,8 +42,7 @@ export class DocumentsController {
   @Get(':modes/:id')
   findAll(@Param('modes') modes: string, @Param('id') id: string): Promise<Document[]> {
 
-    if (modes && modes === "issued") {
-      console.log("ENTERE");
+    if (modes && modes === "issued") { 
       let res = this.productsService.findAll(modes, id).then((succ = []) => {
         let onfo = succ.map((doc: any) => {
 
@@ -133,12 +132,29 @@ export class DocumentsController {
   @Post(":mode")
   logSheets(@Param('mode') mode: string, @Body() params): Promise<Document[]> {
 
+
+
     if(mode === 'destructiveDocList'){
       let res = this.productsService.getDestructiveDocList(params).then((succ = []) => {
         let onfo = succ.map((doc: any) => { 
           
-  
+          
+
+          const { box_info = [], rack_info = [], category_info = [] } = doc;
+          if (box_info.length > 0) {
+            console.log("doc---", doc);
+            doc.box = box_info[0].name;
+          }
+          if (box_info.length > 0) {
+            doc.rack = rack_info[0].name;
+          }
+          if (box_info.length > 0) {
+            doc.category = category_info[0].name;
+          }
           doc.batch = doc.category + '/' + doc.box + '/' + doc.rack
+           
+  
+         
           delete doc.box_info;
           delete doc.rack_info;
           delete doc.category_info;

@@ -105,6 +105,7 @@ const APP_CONST = {
             { "FIELD_LABEL": 'Reason', "FIELD_NAME": "document_request_info.document_issued_to", "FIELD_VALUE": false },
             { "FIELD_LABEL": 'Status', "FIELD_NAME": "document_request_info.document_issued_by", "FIELD_VALUE": false },
             { "FIELD_LABEL": 'Destructed', "FIELD_NAME": "document_request_info.document_submitted_on", "FIELD_VALUE": false },
+            { "FIELD_LABEL": 'Location', "FIELD_NAME": "batch", "FIELD_VALUE": false },
  
         ],
     "EXPORT_PDF_COLUMN_AUDIT_LOG_FILE_NAME": "AUDIT -" + new Date(),

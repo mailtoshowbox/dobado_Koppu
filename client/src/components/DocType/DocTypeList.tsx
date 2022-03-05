@@ -1,9 +1,9 @@
-import React, { } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { IStateType, IDocTypeState } from "../../store/models/root.interface";
 import { IDocType } from "../../store/models/doctype.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-
+import { IAccount } from "../../store/models/account.interface";
 export type productListProps = {
   onSelect?: (product: IDocType) => void;
   children?: React.ReactNode;
@@ -16,6 +16,8 @@ function DocCategoryList(props: productListProps): JSX.Element {
   const docTypes: IDocTypeState = useSelector(
     (state: IStateType) => state.docTypes
   );
+  const roles: any = useSelector((state: IStateType) => state.account.roles);
+  let [userRole] = useState(roles[0] ? roles[0] : "Superadmin");
   function onClickProductSelected(cell: any, row: any, rowIndex: any) {
     if (props.onSelect) props.onSelect(row);
   }
@@ -38,7 +40,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
           >
             <i className="fas fa fa-pen"></i>
           </button>
-          {allowDelete && (
+          {["Superadmin"].includes(userRole) && (
             <button
               className="btn btn-border btn-red-color"
               onClick={() => onClickProductDelete(cell, row, rowIndex)}
@@ -59,12 +61,14 @@ function DocCategoryList(props: productListProps): JSX.Element {
           >
             <i className="fas fa fa-pen"></i>
           </button>
+          {["Superadmin"].includes(userRole) && (
           <button
             className="btn btn-border  btn-red-color"
             onClick={() => onClickProductDelete(cell, row, rowIndex)}
           >
             <i className="fas fa fa-trash" aria-hidden="true"></i>
           </button>
+           )}
         </>
       );
     }

@@ -136,12 +136,12 @@ const Home: React.FC = () => {
               icon="users"
               class="success"
             />
-            <TopCard
+            {/* <TopCard
               title="Categories"
               text={dashboardCounter.docCategories.toString() || "0"}
               icon="sitemap"
               class="success"
-            />
+            /> */}
             <TopCard
               title="Rack system"
               text={dashboardCounter.boxes.toString() || "0"}

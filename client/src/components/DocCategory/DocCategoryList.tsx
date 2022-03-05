@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   IStateType,
@@ -6,7 +6,7 @@ import {
 } from "../../store/models/root.interface";
 import { IDocCategory } from "../../store/models/doccategory.interface";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
-
+import { IAccount } from "../../store/models/account.interface";
 export type productListProps = {
   onSelect?: (product: IDocCategory) => void;
   onSelectDelete?: (product: IDocCategory) => void;
@@ -19,11 +19,12 @@ function DocCategoryList(props: productListProps): JSX.Element {
   const docCategories: IDocCategoryState = useSelector(
     (state: IStateType) => state.docCategories
   );
+const roles: any = useSelector((state: IStateType) => state.account.roles);
+let [userRole] = useState(roles[0] ? roles[0] : "Superadmin");
   function onClickProductSelected(cell: any, row: any, rowIndex: any) {
     if (props.onSelect) props.onSelect(row);
   }
   function onClickProductDelete(cell: any, row: any, rowIndex: any) {
-    console.log("1");
     if (props.onSelectDelete) props.onSelectDelete(row);
   }
 
@@ -43,7 +44,7 @@ function DocCategoryList(props: productListProps): JSX.Element {
           >
             <i className="fas fa fa-pen"></i>
           </button>
-          {allowDelete && (
+          {["Superadmin"].includes(userRole) && (
             <button
               className="btn btn-border btn-red-color"
               onClick={() => onClickProductDelete(cell, row, rowIndex)}
@@ -59,12 +60,14 @@ function DocCategoryList(props: productListProps): JSX.Element {
           <button type="button" className="btn btn-border" disabled style={{ cursor: "not-allowed" }}>
             <i className="fas fa fa-pen"></i>
           </button>
+          {["Superadmin"].includes(userRole) && (
           <button
             className="btn btn-border  btn-red-color"
             onClick={() => onClickProductDelete(cell, row, rowIndex)}
           >
             <i className="fas fa fa-trash" aria-hidden="true"></i>
           </button>
+          )}
         </>
       );
     }

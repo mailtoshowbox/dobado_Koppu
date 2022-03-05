@@ -745,7 +745,14 @@ const ProductForm: React.FC = () => {
 											>
 												DC Name
 											</TableHeaderColumn>
-
+											<TableHeaderColumn
+												dataField="batch"
+												width="25%"
+												className="thead-light-1"
+												editable={{ validator: requiredField }}
+											>
+												Location
+											</TableHeaderColumn>
 											<TableHeaderColumn
 												dataField="no_of_page"
 												className="thead-light-1"

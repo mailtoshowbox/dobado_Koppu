@@ -159,12 +159,12 @@ function ProductList(props: productListProps): JSX.Element {
               New
             </span>
           )} */}
-					<button
+					{/* <button
 						className="btn btn-border  btn-red-color"
 						onClick={() => onClickProductDelete(cell, row, rowIndex)}
 					>
 						<i className="fas fa fa-trash" aria-hidden="true"></i>
-					</button>
+					</button> */}
 				</>
 			);
 		}
@@ -386,6 +386,13 @@ function ProductList(props: productListProps): JSX.Element {
 					width="10%"
 				>
 					QR Code
+				</TableHeaderColumn>
+				<TableHeaderColumn
+					dataField="type_of_space"
+					className="thead-light-1"
+					width="10%"
+				>
+					Type of space
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="manufacturedate"

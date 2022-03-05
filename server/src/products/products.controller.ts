@@ -78,8 +78,8 @@ export class DocumentsController {
       });
       return res;
     } if (modes && modes === "takeOutRequest") { 
-      let res = this.productsService.findAll(modes, id);
-      return res;
+     let res = this.productsService.findAll(modes, id);
+     return res;
     } else {
       let res = this.productsService.findAll(modes).then((succ = []) => {      
         let onfo = succ.map((doc: any) => {
@@ -212,8 +212,32 @@ export class DocumentsController {
       });
       return res;
     }else if(mode === "takeOutRequest"){
-      let res = this.productsService.takeOutRequest(params);
-   return res;
+      let res = this.productsService.takeOutRequest(params).then((succ = []) => {
+      let onfo = succ.map((doc: any) => {
+        const { box_info = [], rack_info = [], category_info = [] } = doc;
+        if (box_info.length > 0) {
+          doc.box = box_info[0].name;
+        }
+        if (box_info.length > 0) {
+          doc.rack = rack_info[0].name;
+        }
+        if (box_info.length > 0) {
+          doc.category = category_info[0].name;
+        }
+      
+
+
+        doc.batch = doc.category + '/' + doc.box + '/' + doc.rack
+        delete doc.box_info;
+        delete doc.rack_info;
+        delete doc.category_info;
+
+        return doc;
+      })
+      return onfo;
+    });
+    return res;
+
     }
     else{ 
       let res = this.productsService.getLogSheet(params).then((succ = []) => {

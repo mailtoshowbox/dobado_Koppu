@@ -74,11 +74,18 @@ function DocApprovalList(props: productListProps): JSX.Element {
       let isRejected = false;
       approval.forEach((appr: any) => {
         if (appr.status === "pending") {
-          stsus +=
+         /*  stsus +=
             "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
             " approval " +
-            "Pending</span>&nbsp;";
+            "Pending</span>&nbsp;"; */
+            stsus +=
+            "<span class=' approval-status btn-info'>" +
+
+            "<span style=' text-transform: capitalize;'> "+     appr.approve_access_level +  " Appproval" +" </span>"+        
+       
+           
+            " is Pending</span>";
         } else if (appr.status === "approved") {
           const { doc_issued_by = [], is_issued = false, is_doc_issuance_cancelled = false } = issuance;
           if (is_doc_issuance_cancelled && !is_issued && !isRejected) {

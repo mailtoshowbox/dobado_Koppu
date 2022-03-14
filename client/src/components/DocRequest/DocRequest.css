@@ -72,10 +72,10 @@
 .approval-status {
     white-space: nowrap;
     padding: 6px 8px;
-    /* margin-top: 5px; */
+ 
     display: inline-block;
     border-radius: 4px;
-    /* text-transform: capitalize; */
+    
 }
 .issued-cls{
     text-transform:none !important;

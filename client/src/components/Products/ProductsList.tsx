@@ -42,6 +42,7 @@ function ProductList(props: productListProps): JSX.Element {
 	}
 	const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
 	function onClickProductSelected(cell: any, row: any, rowIndex: any) {
+		console.log("row---", row);
 		if (props.onSelect) props.onSelect(row);
 	}
 	function onClickProductDelete(cell: any, row: any, rowIndex: any) {

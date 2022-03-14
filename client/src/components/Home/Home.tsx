@@ -42,6 +42,7 @@ const Home: React.FC = () => {
     //Load Dahsboard contents
 
     let counter: any = {};
+    let dashboardCounterNew: any = {};
     getDashboardList(account.auth).then((dashboardItems: any) => {
       const { box = {}, documents = {} } = dashboardItems;
 
@@ -59,15 +60,41 @@ const Home: React.FC = () => {
             pr.document_info && pr.document_info.status === "approved"
         );
 
+ 
+       /*  counter['perceptual'] = 0;
+        counter['non_perceptual'] = 0;
+        documents.data.filter(
+          (pr: any) =>{
+
+             if(pr.document_info && pr.type_of_space && pr.type_of_space === "perceptual"){
+              counter['perceptual'] = counter['perceptual']++ ;
+            }
+            if(pr.document_info && pr.type_of_space && pr.type_of_space === "non_perceptual"){
+             console.log("DDDDD", pr.name);
+             
+              counter['non_perceptual'] = counter['non_perceptual']++ ;
+            }
+
+          }
+           // pr.document_info && pr.document_info.status === "approved"
+        ); */ 
+ 
+
+
+        
+        
+
         counter["nApprovedDocuments"] = nApprovedDocuments.length;
         counter["approvedDocuments"] = approvedDocuments.length;
 
         const non_perceptual = documents.data.filter(
-          (pr: any) => pr.type_of_space !== "perceptual"
+          (pr: any) => pr.type_of_space === "non_perceptual"
         );
         const perceptual = documents.data.filter(
           (pr: any) => pr.type_of_space === "perceptual"
         );
+
+        setDashboardCounter({ ...dashboardCounter, ...counter });
 
         counter["non_perceptual"] = non_perceptual.length;
         counter["perceptual"] = perceptual.length;

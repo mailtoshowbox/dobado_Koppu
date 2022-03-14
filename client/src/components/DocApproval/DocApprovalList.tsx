@@ -91,11 +91,18 @@ function DocApprovalList(props: productListProps): JSX.Element {
     if (approval.length > 0) {
       approval.forEach((appr: any) => {
         if (appr.status === "pending") {
-          stsus +=
+        /*   stsus +=
             "<span class=' approval-status btn-info'>" +
             appr.approve_access_level +
             " approval  " +
-            "Pending</span>";
+            "Pending</span>"; */
+            stsus +=
+            "<span class=' approval-status btn-info'>" +
+
+            "<span style=' text-transform: capitalize;'> "+     appr.approve_access_level +  " Appproval" +" </span>"+        
+       
+           
+            " is Pending</span>";
         } else if (appr.status === "approved") {
           stsus +=
             "<span class=' approval-status btn-info '>" +

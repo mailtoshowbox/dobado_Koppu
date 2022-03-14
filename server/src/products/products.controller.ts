@@ -78,6 +78,7 @@ export class DocumentsController {
       });
       return res;
     } if (modes && modes === "takeOutRequest") { 
+      console.log("takeOutRequest");
      let res = this.productsService.findAll(modes, id);
      return res;
     } else {
@@ -211,7 +212,8 @@ export class DocumentsController {
         return onfo;
       });
       return res;
-    }else if(mode === "takeOutRequest"){
+    }else if(mode === "takeOutRequest"){ 
+     
       let res = this.productsService.takeOutRequest(params).then((succ = []) => {
       let onfo = succ.map((doc: any) => {
         const { box_info = [], rack_info = [], category_info = [] } = doc;

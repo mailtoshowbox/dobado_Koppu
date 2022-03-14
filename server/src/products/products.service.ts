@@ -47,6 +47,8 @@ export class DocumentsService {
 					return res;
 				});
 		} else if (mode === "takeOutRequest") {
+
+			console.log("DEMo");
 			return await this.productModel
 				.find({
 					$or: [
@@ -147,7 +149,6 @@ export class DocumentsService {
 
 
 	async takeOutRequest(params : any) { 
-		console.log("params----", params);
 		return await this.productModel
 		.find({
 			$or: [
@@ -186,7 +187,9 @@ export class DocumentsService {
 				 "isActive":  true
 				}
 			],
-		})
+		}).collation(
+			{ locale: 'en', strength: 2 }
+		  )
 		.then((res: any) => {
 			return res;
 		});

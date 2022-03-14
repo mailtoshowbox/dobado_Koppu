@@ -310,10 +310,17 @@ const ProductForm: React.FC = () => {
 			}
 		});
 	}
-	function loadDocumentforTakeOut() {
+	function loadDocumentforTakeOut() { 
+		/* BLock for Search DDocument */
+	const intialSearchDocParamnew = {
+		search_desc: { error: "", value: searchDocParam.search_desc.value.toLocaleLowerCase()},
+		search_doc_type: { error: "", value: searchDocParam.search_desc.value},
+		search_doc_name: { error: "", value: searchDocParam.search_doc_name.value.toLocaleLowerCase()},
+		search_doc_num: { error: "", value: searchDocParam.search_doc_num.value.toLocaleLowerCase()},
+		ref_no: { error: "", value: searchDocParam.ref_no.value.toLocaleLowerCase()} 
+	};
 
-
-		loadDocumentforTakeOutList(searchDocParam, account).then((status = []) => {
+		loadDocumentforTakeOutList(intialSearchDocParamnew, account).then((status = []) => {
 			if (status.length <= 0) {
 				setNoDocAvailebleForTakeoutRequest(true);
 			} else {
@@ -752,15 +759,7 @@ const ProductForm: React.FC = () => {
 												editable={{ validator: requiredField }}
 											>
 												Location
-											</TableHeaderColumn>
-											<TableHeaderColumn
-												dataField="no_of_page"
-												className="thead-light-1"
-												width="20%"
-												editable={{ validator: numberValidator }}
-											>
-												No of Pages
-											</TableHeaderColumn>
+											</TableHeaderColumn> 
 										</BootstrapTable>
 									</div>
 								)}

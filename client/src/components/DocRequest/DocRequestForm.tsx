@@ -287,7 +287,7 @@ const ProductForm: React.FC = () => {
 		}
 
 		loadApproavalAccessUserInfo(data, account).then((status) => {
-			if (status.data) {
+			if (status.data.success) {
 				const { email = "", emp_id } = status.data.data;
 				const approvedUsers = formState.approval
 					? formState.approval.value
@@ -307,6 +307,26 @@ const ProductForm: React.FC = () => {
 					["approval"]: { value: approvedUsers },
 				});
 				/// dispatch(loadedApprovedUser(status.data));
+			}else{
+			 
+				const approvedUsers = formState.approval
+					? formState.approval.value
+					: [];
+				const accessLevelPos = accessLevel === "manager" ? 0 : 1;
+				 
+					approvedUsers[accessLevelPos] = {
+						empl_id: "",
+						empl_email_id: "",
+						status: "pending",
+						approve_access_level: accessLevel, //Manager/Quality user
+					};
+			 
+
+				setFormState({
+					...formState,
+					["approval"]: { value: approvedUsers },
+				});
+
 			}
 		});
 	}

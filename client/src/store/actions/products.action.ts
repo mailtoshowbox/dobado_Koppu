@@ -18,6 +18,7 @@ export function updateQrCode(qrCode : string, qrCodeFor : any ) {
 
 
 export function loadListOfProduct(items : IProductList) { 
+    console.log("JAHABAR");
     return { type: LIST_PRODUCT , products:  items  };
 }
             

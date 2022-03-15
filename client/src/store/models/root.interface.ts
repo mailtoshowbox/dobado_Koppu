@@ -74,6 +74,7 @@ export interface IProductState {
     products: IProduct[];
     selectedProduct: IProduct | null;
     modificationState: ProductModificationStatus;
+    searchProductTriggered: boolean;
 }
 export interface IDocLogSheetState {
     docLogSheetList: IProduct[];

@@ -19,15 +19,28 @@ export type productListProps = {
 	allowDelete: boolean;
 	children?: React.ReactNode;
 	loadInitialSearchData?: any;
+	isTableModifed?: boolean;
+	searchDocument?: any;
 };
 
 function ProductList(props: productListProps): JSX.Element {
+
+	
 	const products: IProductState = useSelector(
 		(state: IStateType) => state.products
 	);
+	const getTrsearchTriggered: Boolean = useSelector(
+		(state: IStateType) => state.products.searchProductTriggered
+	);
+	 
 	const productsTemp: IProductState = useSelector(
 		(state: IStateType) => state.products
 	);
+
+	 
+	
+
+	const [isSearchTriggered, setSearchTriggered] = useState(getTrsearchTriggered);
 
 	const pageProductsTemp = productsTemp.products;
 	const [pageProducts, setpageProducts] = useState(pageProductsTemp);
@@ -50,7 +63,6 @@ function ProductList(props: productListProps): JSX.Element {
 	}
 
 	function dataFormatter(documentName: string, row: any) {
-
 		const {
 			// productModificationStatus = 0,
 			currentUser: { roles = [] },
@@ -178,9 +190,24 @@ function ProductList(props: productListProps): JSX.Element {
 		search_doc_num: { error: "", value: "" },
 		ref_no: { error: "", value: "" }
 	};
-	const [isSearchTriggered, setSearchTriggered] = useState(false);
+	
 	function loadDocumentforTakeOut() {
-		setSearchTriggered(true);
+
+		props.searchDocument(searchDocParam);
+
+		console.log("intialSearchDocParam---", searchDocParam);
+
+		/* searchDocument(intialSearchDocParamnew, account).then((status = []) => {
+			if (status.length <= 0) {
+				setNoDocAvailebleForTakeoutRequest(true);
+			} else {
+				setNoDocAvailebleForTakeoutRequest(false);
+			}
+			setAvailable_doc_for_takeout(status);
+		}); */
+
+
+		/* setSearchTriggered(true);
 		let temp: any = pageProductsTemp;
 		if (searchDocParam.search_doc_num.value !== '') {
 			temp = temp.filter((x: any) => x.document_no.includes(searchDocParam.search_doc_num.value.trim()));
@@ -215,7 +242,7 @@ function ProductList(props: productListProps): JSX.Element {
 				temp = newtemp;
 			//}
 		}
-		setpageProducts(temp);
+		setpageProducts(temp); */
 	}
 
 	const [searchDocParam, setSearchDocParam] = useState(intialSearchDocParam);
@@ -232,10 +259,12 @@ function ProductList(props: productListProps): JSX.Element {
 		if (props.loadInitialSearchData) props.loadInitialSearchData();
 	} 
  
- 
+/* 	console.log("finalProducts---FFFF-", isSearchTriggered,pageProducts, products.products );
 	const finalProducts = (pageProducts!== undefined && pageProducts.length > 0  ) || isSearchTriggered ? pageProducts : products.products;
+	console.log("finalProducts----", finalProducts); */
+	const finalProducts = products.products;
+
  
-	
 	const options = {
 		clearSearch: true,
 	};

@@ -133,7 +133,7 @@ const Home: React.FC = () => {
         counter["docCategories"] = items.length;
       }
       setDashboardCounter({ ...dashboardCounter, ...counter });
-      dispatch(updateCurrentPath("Home", ""));
+      dispatch(updateCurrentPath("Home", "Dashboard"));
     });
   }, [path.area, dispatch]);
 

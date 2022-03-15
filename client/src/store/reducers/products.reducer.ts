@@ -8,7 +8,8 @@ import { IProduct, ProductModificationStatus } from "../models/product.interface
 const initialState: IProductState = {
     modificationState: ProductModificationStatus.None,
     selectedProduct: null,
-    products: []
+    products: [],
+    searchProductTriggered : false
 };
 
 function productsReducer(state: IProductState = initialState, action: IActionBase): IProductState {
@@ -20,18 +21,22 @@ function productsReducer(state: IProductState = initialState, action: IActionBas
             return { ...state, products: products };            
         }  
         case LIST_PRODUCT: {
-            return { ...state, products:  action.products};
+
+            console.log("Current State", state);
+            const newprod = JSON.parse(JSON.stringify({...state, products:  action.products, searchProductTriggered:true}));
+      
+            return  newprod;
         }        
         case ADD_PRODUCT: {
           //  let maxId: number = Math.max.apply(Math, state.products.map(function(o) { return o._id; }));
           //  action.product.id = maxId + 1;
-            return { ...state, products: [...state.products, action.product]};
+            return { ...state, products: [...state.products, action.product], searchProductTriggered:true};
         }
         case EDIT_PRODUCT: {
             const foundIndex: number = state.products.findIndex(pr => pr._id === action.product._id);
             let products: IProduct[] = state.products;
             products[foundIndex] = action.product;
-            return { ...state, products: products };
+            return { ...state, products: products , searchProductTriggered:true};
         }
         case REMOVE_PRODUCT: {
             return { ...state, products: state.products.filter(pr => pr._id !== action.id) };

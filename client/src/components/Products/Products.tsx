@@ -36,6 +36,7 @@ import {
   getBoxList,
   getDocTypeList,
   updateDoc,
+  searchDocuments
 } from "../../services/index";
 import { IAccount } from "../../store/models/account.interface";
 import { updateCurrentPath } from "../../store/actions/root.actions";
@@ -99,6 +100,18 @@ const Products: React.FC = () => {
       setPopup(true);
     }
   }
+
+  function searchDocument(params : any) {
+
+    searchDocuments(params, account).then((items = []) => {
+
+      dispatch(loadListOfProduct(items));
+		 
+		});
+     
+  }
+
+  
 
 /*   const productsSaved: IProductState = useSelector(
 		(state: IStateType) => state.products
@@ -165,6 +178,7 @@ const Products: React.FC = () => {
                 productModificationStatus={products.modificationState}
                 currentUser={account}
                 loadInitialSearchData={loadMainDoc}
+                searchDocument ={searchDocument}
               />
             </div>
           </div>

@@ -330,6 +330,28 @@ export function loadDocumentforTakeOutList(item, options) {
 		});
 }
 
+
+export function searchDocuments(item, options) {
+	var myOptions = getDocCustomPostOptions(options, item);
+
+	return fetch(
+		APP_CONST.API_HOST_AT + "/products/searchDocuments/" , 
+		myOptions
+	)
+		.then((response) => {
+			if (!response.ok) {
+				handleResponseError(response);
+			}
+			return response.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((error) => {
+			handleError(error);
+		});
+}
+
 export function getDocDepartmentList(options = {}) {
 	var myOptions = getDocCustomGetOptions(options);
 	return fetch(APP_CONST.API_HOST_AT + "/docdepartments", myOptions)

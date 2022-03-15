@@ -81,6 +81,7 @@ const Orders: React.FC = () => {
               onSelect={selectProduct}
               currentUser={{}}
               allowDelete={true}
+              isTableModifed = {false}
             />
           </div>
         </div>

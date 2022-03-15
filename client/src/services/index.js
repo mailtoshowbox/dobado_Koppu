@@ -330,6 +330,24 @@ export function loadDocumentforTakeOutList(item, options) {
 		});
 }
 
+export function getUsersListForDashbaord(options) {
+	var url = APP_CONST.API_HOST_AT + "/users/dashbaord";
+	var myOptions = getDocCustomGetOptions(options);
+	return fetch(url, myOptions)
+		.then((response) => {
+			if (!response.ok) {
+				handleResponseError(response);
+			}
+			return response.json();
+		})
+		.then((json) => {
+			return json;
+		})
+		.catch((error) => {
+			handleError(error);
+		});
+}
+
 
 export function searchDocuments(item, options) {
 	var myOptions = getDocCustomPostOptions(options, item);

@@ -17,7 +17,8 @@ import { AuthGuard } from '@nestjs/passport';
 export class DocumentsController {
   constructor(
     private readonly productsService: DocumentsService,
-    private readonly boxService: BoxService
+    private readonly boxService: BoxService,
+    
 
   ) { }
 

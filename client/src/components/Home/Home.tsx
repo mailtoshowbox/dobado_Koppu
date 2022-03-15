@@ -10,7 +10,7 @@ import { updateCurrentPath } from "../../store/actions/root.actions";
 import {
   getDashboardList,
   getDocCategoryList,
-  getDocTypeList,
+  getDocTypeList,getUsersListForDashbaord
 } from "../../services/index";
 const Home: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -58,32 +58,7 @@ const Home: React.FC = () => {
         const approvedDocuments = documents.data.filter(
           (pr: any) =>
             pr.document_info && pr.document_info.status === "approved"
-        );
-
- 
-       /*  counter['perceptual'] = 0;
-        counter['non_perceptual'] = 0;
-        documents.data.filter(
-          (pr: any) =>{
-
-             if(pr.document_info && pr.type_of_space && pr.type_of_space === "perceptual"){
-              counter['perceptual'] = counter['perceptual']++ ;
-            }
-            if(pr.document_info && pr.type_of_space && pr.type_of_space === "non_perceptual"){
-             console.log("DDDDD", pr.name);
-             
-              counter['non_perceptual'] = counter['non_perceptual']++ ;
-            }
-
-          }
-           // pr.document_info && pr.document_info.status === "approved"
-        ); */ 
- 
-
-
-        
-        
-
+        );  
         counter["nApprovedDocuments"] = nApprovedDocuments.length;
         counter["approvedDocuments"] = approvedDocuments.length;
 
@@ -99,7 +74,7 @@ const Home: React.FC = () => {
         counter["non_perceptual"] = non_perceptual.length;
         counter["perceptual"] = perceptual.length;
 
-        const docCreater = documents.data.filter(
+       /*  const docCreater = documents.data.filter(
           (pr: any) =>
             pr.document_info &&
             pr.document_info.createdBy &&
@@ -112,10 +87,9 @@ const Home: React.FC = () => {
             pr.document_info.createdBy &&
             pr.document_info.createdBy.role &&
             pr.document_info.createdBy.role === "Documentcreater"
-        );
+        ); */
 
-        counter["docCreater"] = docCreater.length;
-        counter["QtyUser"] = QtyUser.length;
+      
       }
     });
 
@@ -135,6 +109,26 @@ const Home: React.FC = () => {
       setDashboardCounter({ ...dashboardCounter, ...counter });
       dispatch(updateCurrentPath("Home", "Dashboard"));
     });
+
+
+ //Load Available Doc Categories
+ getUsersListForDashbaord(account.auth).then((items: any) => {
+   const {data:{creUser = [], qaUser=[]} = {}} = items;
+
+   console.log(creUser, items);
+ 
+  if (creUser.data && creUser.data.length > 0) {
+    counter['docCreater'] = creUser.data.length;
+  }
+  if (qaUser.data && qaUser.data.length > 0) {
+    counter['QtyUser'] = qaUser.data.length;    
+  } 
+
+  setDashboardCounter({ ...dashboardCounter, ...counter });
+
+});
+
+dispatch(updateCurrentPath("Home", "Dashboard"));
   }, [path.area, dispatch]);
 
   return (

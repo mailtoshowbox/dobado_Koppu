@@ -200,4 +200,11 @@ export class UsersService {
     return userFromDb;
   }
 
+  async getQualityUsers(): Promise<User[]> {
+    return await this.userModel.find({ roles: { $nin: ["Superadmin"], $in : ["Qualityuser"]} }).exec();
+  }
+  async getDocCreaters(): Promise<User[]> {
+    return await this.userModel.find({ roles: { $nin: ["Superadmin"], $in : ["Documentcreater"]} }).exec();
+  }
+
 }

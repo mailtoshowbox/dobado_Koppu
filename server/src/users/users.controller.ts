@@ -57,6 +57,44 @@ export class UsersController {
     }
   }
 
+  
+  @Get('dashbaord')
+  async userList() { 
+
+
+    let dashboardItems = {};
+    var cre =  await this.usersService.getDocCreaters();
+    var qa =  await this.usersService.getQualityUsers();
+    return Promise.all([cre, qa]).then(([cret, QaUser]) => {
+
+      dashboardItems['creUser'] = { data: cret, status: 'Success' }
+      dashboardItems['qaUser'] = { data: QaUser, status: 'Success' }
+      return dashboardItems;
+
+    }).catch((error) => {
+
+
+      dashboardItems['creUser'] = { data: [], status: 'Failed' + error }
+      dashboardItems['qaUser'] = { data: [], status: 'Failed' }
+      return dashboardItems;
+
+      
+    });
+
+
+
+
+    /* console.log("EMPOO");
+    try {
+      var users =  await this.usersService.getDocCreaters();
+      var users =  await this.usersService.getQualityUsers();
+    //  console.log("users---", users);
+      return new ResponseSuccess("COMMON.SUCCESS", new UsersDto({users : users}));
+    } catch(error){
+      return new ResponseError("COMMON.ERROR.GENERIC_ERROR", error);
+    } */
+  }
+
   @Post('profile/updateStatus')
   async updateStatus(@Body() profileDto: ProfileDto): Promise<IResponse> {
    

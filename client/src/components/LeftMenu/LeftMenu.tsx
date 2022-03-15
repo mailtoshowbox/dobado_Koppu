@@ -81,7 +81,7 @@ const LeftMenu: React.FC = () => {
             <span>Document Request</span>
           </Link>
         </li>
-        <li  className={`nav-item ${checkActiveClass(3)}`}  onClick={() => setMenu(4)}>
+        <li  className={`nav-item ${checkActiveClass(4)}`}  onClick={() => setMenu(4)}>
           <Link className="nav-link" to={`/doctype`}>
             <i className="fas fa-project-diagram"></i>
             <span>Types</span>
@@ -89,26 +89,26 @@ const LeftMenu: React.FC = () => {
         </li>
         {["Superadmin", "Developer", "Qualityuser"].includes(userRole) && (
           <>
-            <li  className={`nav-item ${checkActiveClass(4)}`}  onClick={() => setMenu(2)}>
+            <li  className={`nav-item ${checkActiveClass(5)}`}  onClick={() => setMenu(5)}>
               <Link className="nav-link" to={`/doccategory`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Compactor</span>
               </Link>
             </li>
-            <li  className={`nav-item ${checkActiveClass(5)}`}  onClick={() => setMenu(2)}>
+            <li  className={`nav-item ${checkActiveClass(6)}`}  onClick={() => setMenu(6)}>
               <Link className="nav-link" to={`/boxes`}>
                 <i className="fas fa-box-open"></i>
                 <span>Rack system</span>
               </Link>
             </li>
-            <li className={`nav-item ${checkActiveClass(6)}`}  onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(7)}`}  onClick={() => setMenu(7)}>
               <Link className="nav-link" to={`/department`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Department</span>
               </Link>
             </li>
 
-            <li className={`nav-item ${checkActiveClass(7)}`}  onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(8)}`}  onClick={() => setMenu(8)}>
               <Link className="nav-link" to={`/docrequestapproval`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Approve Document</span>
@@ -116,31 +116,31 @@ const LeftMenu: React.FC = () => {
             </li>
             
             
-            <li className={`nav-item ${checkActiveClass(8)}`}  onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(9)}`}  onClick={() => setMenu(9)}>
               <Link className="nav-link" to={`/genarateissuance`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Generate Issuance</span>
               </Link>
             </li>
-            <li className={`nav-item ${checkActiveClass(9)}`} onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(10)}`} onClick={() => setMenu(10)}>
               <Link className="nav-link" to={`/genarateissuancetakeout`}>
                 <i className="fas fa-sitemap"></i>
                 <span>TakeOut</span>
               </Link>
             </li>
-            <li className={`nav-item ${checkActiveClass(10)}`} onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(11)}`} onClick={() => setMenu(11)}>
               <Link className="nav-link" to={`/documentsubmit`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Doc Submit</span>
               </Link>
             </li>
-            <li className={`nav-item ${checkActiveClass(11)}`} onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(12)}`} onClick={() => setMenu(12)}>
               <Link className="nav-link" to={`/documentlogsheet`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Doc LogSheet</span>
               </Link>
             </li>
-            <li className={`nav-item ${checkActiveClass(12)}`} onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(13)}`} onClick={() => setMenu(13)}>
               <Link className="nav-link" to={`/documentdestruct`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Doc Destruct</span>
@@ -152,7 +152,7 @@ const LeftMenu: React.FC = () => {
         {["Documentcreater"].includes(userRole) && isAllowedForApproval && (
           <>
             {" "}
-            <li className={`nav-item ${checkActiveClass(13)}`}  onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(14)}`}  onClick={() => setMenu(14)}>
               <Link className="nav-link" to={`/docrequestapproval`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Approve Document</span>
@@ -165,7 +165,7 @@ const LeftMenu: React.FC = () => {
          {["Documentcreater"].includes(userRole) && (
           <>
             {" "}
-            <li className={`nav-item ${checkActiveClass(14)}`}  onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(15)}`}  onClick={() => setMenu(15)}>
               <Link className="nav-link" to={`/documentsubmit`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Doc Submit.</span>
@@ -178,7 +178,7 @@ const LeftMenu: React.FC = () => {
           <div className="admin_cls">
             <hr className="sidebar-divider" />
             <div className="sidebar-heading fnt">Admin</div>
-            <li className={`nav-item ${checkActiveClass(15)}`}  onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(16)}`}  onClick={() => setMenu(16)}>
               <Link className="nav-link" to={`/users`}>
                 <i className="fas fa-user-friends"></i>
                 <span>Users</span>
@@ -186,7 +186,7 @@ const LeftMenu: React.FC = () => {
             </li>
             <>
             {" "}
-            <li className={`nav-item ${checkActiveClass(16)}`}  onClick={() => setMenu(2)}>
+            <li className={`nav-item ${checkActiveClass(17)}`}  onClick={() => setMenu(17)}>
               <Link className="nav-link" to={`/auditLog`}>
                 <i className="fas fa-sitemap"></i>
                 <span>Audit Log.</span>

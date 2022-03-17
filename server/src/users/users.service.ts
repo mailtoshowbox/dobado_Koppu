@@ -107,7 +107,7 @@ export class UsersService {
    
   }
   async checkApprovalUser(id: string): Promise<User> {
-    return await this.userModel.findOne({emp_id: id, approved:true}).exec();
+    return await this.userModel.findOne({emp_id: id, isAllowedForApproval:true}).exec();
   }
   async updateGallery(galleryRequest: UpdateGalleryDto): Promise<User> {
     let userFromDb = await this.userModel.findOne({ email: galleryRequest.email});

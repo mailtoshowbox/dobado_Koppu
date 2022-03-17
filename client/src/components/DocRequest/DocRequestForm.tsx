@@ -6,7 +6,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import {
 	IDocRequest,
-	DocRequestModificationStatus, 
+	DocRequestModificationStatus,
 } from "../../store/models/docrequest.interface";
 import TextInput from "../../common/components/TextInput";
 import {
@@ -18,10 +18,10 @@ import { addNotification } from "../../store/actions/notifications.action";
 import {
 	addNewDocumentRequest,
 	loadApproavalAccessUserInfo,
-	loadDocumentforTakeOutList,loginUser
+	loadDocumentforTakeOutList, loginUser
 } from "../../services/index";
 import {
-	OnChangeModel, 
+	OnChangeModel,
 } from "../../common/types/Form.types";
 import { BootstrapTable, TableHeaderColumn } from "react-bootstrap-table";
 import SelectInput from "../../common/components/Select";
@@ -32,6 +32,7 @@ import Popup from "reactjs-popup";
 
 const ProductForm: React.FC = () => {
 	const account: IAccount = useSelector((state: IStateType) => state.account);
+
 
 	const dispatch: Dispatch<any> = useDispatch();
 	const docrequests: IDocRequestState | null = useSelector(
@@ -77,9 +78,9 @@ const ProductForm: React.FC = () => {
 	}
 
 	const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
-/* 	const dcat1 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_ONE;
-	const dcat2 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_TWO;
-	const dcat3 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_THREE; */
+	/* 	const dcat1 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_ONE;
+		const dcat2 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_TWO;
+		const dcat3 = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY_THREE; */
 	const [selectedCategory, setSelectedCategory] = useState("1");
 
 	const intialFormState = {
@@ -118,13 +119,13 @@ const ProductForm: React.FC = () => {
 
 	/* BLock for Search DDocument */
 	const intialSearchDocParam = {
-		search_desc: { error: "", value: ""},
-		search_doc_type: { error: "", value: ""},
-		search_doc_name: { error: "", value: ""},
-		search_doc_num: { error: "", value: ""},
-		ref_no: { error: "", value: ""} 
+		search_desc: { error: "", value: "" },
+		search_doc_type: { error: "", value: "" },
+		search_doc_name: { error: "", value: "" },
+		search_doc_num: { error: "", value: "" },
+		ref_no: { error: "", value: "" }
 	};
- 
+
 
 	const [searchDocParam, setSearchDocParam] = useState(intialSearchDocParam);
 	function referenceNumberFortakeOutChanged(model: OnChangeModel): void {
@@ -185,9 +186,9 @@ const ProductForm: React.FC = () => {
 			if (!isFormInvalid()) {
 				return;
 			}
-		}else{
+		} else {
 			console.log();
-			
+
 			//addNotification("No Document", "Please Add/Select Document to Proceed");
 			dispatch(
 				addNotification(
@@ -196,7 +197,7 @@ const ProductForm: React.FC = () => {
 				)
 			);
 			e.preventDefault();
-		} 
+		}
 	}
 
 	function saveRequest(formState: any, saveFn: Function, mode: String): void {
@@ -205,9 +206,9 @@ const ProductForm: React.FC = () => {
 				.filter(
 					(arr) => arr.id.toString() === formState.doc_type.value.toString()
 				);
-				
-			if (mode === "ADD") { 
-				if(formState.requested_doc.value.length > 0){ 
+
+			if (mode === "ADD") {
+				if (formState.requested_doc.value.length > 0) {
 					let boxInfo = {
 						name: formState.name.value,
 						empl_id: formState.empl_id.value,
@@ -238,7 +239,7 @@ const ProductForm: React.FC = () => {
 								...status,
 							})
 						);
-	
+
 						dispatch(
 							addNotification(
 								"New Document Requested",
@@ -246,14 +247,14 @@ const ProductForm: React.FC = () => {
 							)
 						);
 					});
-				}else{
+				} else {
 					dispatch(
 						addNotification(
 							"Warning!",
 							`Please select Document to Proceed`
 						)
 					);
-				}				
+				}
 			} else if (mode === "EDIT") {
 			}
 		}
@@ -307,20 +308,20 @@ const ProductForm: React.FC = () => {
 					["approval"]: { value: approvedUsers },
 				});
 				/// dispatch(loadedApprovedUser(status.data));
-			}else{
-			 
+			} else {
+
 				const approvedUsers = formState.approval
 					? formState.approval.value
 					: [];
 				const accessLevelPos = accessLevel === "manager" ? 0 : 1;
-				 
-					approvedUsers[accessLevelPos] = {
-						empl_id: "",
-						empl_email_id: "",
-						status: "pending",
-						approve_access_level: accessLevel, //Manager/Quality user
-					};
-			 
+
+				approvedUsers[accessLevelPos] = {
+					empl_id: "",
+					empl_email_id: "",
+					status: "pending",
+					approve_access_level: accessLevel, //Manager/Quality user
+				};
+
 
 				setFormState({
 					...formState,
@@ -330,15 +331,15 @@ const ProductForm: React.FC = () => {
 			}
 		});
 	}
-	function loadDocumentforTakeOut() { 
+	function loadDocumentforTakeOut() {
 		/* BLock for Search DDocument */
-	const intialSearchDocParamnew = {
-		search_desc: { error: "", value: searchDocParam.search_desc.value.toLocaleLowerCase()},
-		search_doc_type: { error: "", value: searchDocParam.search_desc.value},
-		search_doc_name: { error: "", value: searchDocParam.search_doc_name.value.toLocaleLowerCase()},
-		search_doc_num: { error: "", value: searchDocParam.search_doc_num.value.toLocaleLowerCase()},
-		ref_no: { error: "", value: searchDocParam.ref_no.value.toLocaleLowerCase()} 
-	};
+		const intialSearchDocParamnew = {
+			search_desc: { error: "", value: searchDocParam.search_desc.value.toLocaleLowerCase() },
+			search_doc_type: { error: "", value: searchDocParam.search_desc.value },
+			search_doc_name: { error: "", value: searchDocParam.search_doc_name.value.toLocaleLowerCase() },
+			search_doc_num: { error: "", value: searchDocParam.search_doc_num.value.toLocaleLowerCase() },
+			ref_no: { error: "", value: searchDocParam.ref_no.value.toLocaleLowerCase() }
+		};
 
 		loadDocumentforTakeOutList(intialSearchDocParamnew, account).then((status = []) => {
 			if (status.length <= 0) {
@@ -358,35 +359,36 @@ const ProductForm: React.FC = () => {
 
 	function validateLogin(e: FormEvent<HTMLFormElement>): void {
 		e.preventDefault();
-
-	
-
-	loginUser({
-      email: loginForm.email,
-      password: loginForm.password,
-    })
-      .then((status) => {
-		const {message=""} = status; 
-		if(message  === "LOGIN.SUCCESS"){ 
-			setUserVerified(true);
-			setUserVerifiedError(false);
-			let saveUserFn: Function = isCreate ? addDocRequest : editDocRequest;
-			let modeOfAction: String = isCreate ? "ADD" : "EDIT";
-			saveRequest(formState, saveUserFn, modeOfAction);
+		const { email = "" } = account;
+		if (email === loginForm.email) {
+			loginUser({
+				email: loginForm.email,
+				password: loginForm.password,
+			})
+				.then((status) => {
+					const { message = "" } = status;
+					if (message === "LOGIN.SUCCESS") {
+						setUserVerified(true);
+						setUserVerifiedError(false);
+						let saveUserFn: Function = isCreate ? addDocRequest : editDocRequest;
+						let modeOfAction: String = isCreate ? "ADD" : "EDIT";
+						saveRequest(formState, saveUserFn, modeOfAction);
+					} else {
+						setUserVerifiedError(true);
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+					setUserVerifiedError(true);
+				});
 		}else{
-			setUserVerifiedError(true);
+			dispatch(
+				addNotification(
+					"Warning!",
+					`Please enter your email address`
+				)
+			);
 		}
-
-		
-
-		
-      })
-      .catch((err) => {
-        console.log(err);
-		setUserVerifiedError(true);
-      }); 
-
-		// dispatch(login(formState.email.value));
 	}
 	function setFieldDisabled(cell: any, row: any) {
 		return diableFIeldForEdit();
@@ -401,12 +403,6 @@ const ProductForm: React.FC = () => {
 			editable: { defaultValue = "" },
 		} = column;
 		return (
-			/*  <input
-        type="text"
-        className=" form-control editor edit-text"
-        value={defaultValue}
-        readonly
-      /> */
 			<TextInput
 				id="document_no"
 				value={defaultValue}
@@ -445,7 +441,7 @@ const ProductForm: React.FC = () => {
 
 	//Table option for take out
 	function onRowSelect(row: any, isSelected: any, e: any) {
-	
+
 		let tempValr = formState.requested_doc.value || [];
 		const selectedRows = available_doc_for_takeout.filter(
 			(doc: any) => doc._id === row._id
@@ -467,25 +463,24 @@ const ProductForm: React.FC = () => {
 	}
 
 	//Table option for take out
-	function onSelectAll(isSelected : any,rows: any ) {
-		console.log("isSelected----", isSelected);
-	 
+	function onSelectAll(isSelected: any, rows: any) { 
+
 		if (isSelected) {
 			setFormState({
 				...formState,
 				["requested_doc"]: { value: available_doc_for_takeout },
 			});
-		  } else {
+		} else {
 			setFormState({
 				...formState,
 				["requested_doc"]: { value: [] },
 			});
-		  }
-		  return true;
-		
+		}
+		return true;
+
 	}
 
-	 
+
 
 	function loadInitialSearchData() {
 		setSearchDocParam(intialSearchDocParam);
@@ -545,7 +540,7 @@ const ProductForm: React.FC = () => {
 										</label>
 									</div>
 									<div
-										className={ "col-md-3 "
+										className={"col-md-3 "
 										}
 									>
 										<SelectInput
@@ -560,7 +555,7 @@ const ProductForm: React.FC = () => {
 											customError={""}
 										/>
 									</div>
-								{/* 	<div
+									{/* 	<div
 										className={
 											pickTwo.length > 0
 												? "col-md-3 input_document_type_selected"
@@ -607,7 +602,7 @@ const ProductForm: React.FC = () => {
 												<TextInput
 													id="input_request_no"
 													field="ref_no"
-													value={searchDocParam.ref_no.value ? searchDocParam.ref_no.value  : ""}
+													value={searchDocParam.ref_no.value ? searchDocParam.ref_no.value : ""}
 													onChange={referenceNumberFortakeOutChanged}
 													required={false}
 													maxLength={100}
@@ -620,7 +615,7 @@ const ProductForm: React.FC = () => {
 												<TextInput
 													id="input_request_no"
 													field="search_doc_num"
-													value={searchDocParam.search_doc_num.value ? searchDocParam.search_doc_num.value  : ""}
+													value={searchDocParam.search_doc_num.value ? searchDocParam.search_doc_num.value : ""}
 													onChange={referenceNumberFortakeOutChanged}
 													required={false}
 													maxLength={100}
@@ -633,7 +628,7 @@ const ProductForm: React.FC = () => {
 												<TextInput
 													id="input_request_no"
 													field="search_doc_name"
-													value={searchDocParam.search_doc_name.value ? searchDocParam.search_doc_name.value  : ""}
+													value={searchDocParam.search_doc_name.value ? searchDocParam.search_doc_name.value : ""}
 													onChange={referenceNumberFortakeOutChanged}
 													required={false}
 													maxLength={100}
@@ -642,29 +637,29 @@ const ProductForm: React.FC = () => {
 													customError={""}
 												/>
 											</div>
-											
-								
-									<div className="col-md-2">
-										<SelectInput
-											id="input_document_type"
-											field="search_doc_type"
-											label={""}
-										
-											options={dCat}
-											required={false}
-											onChange={referenceNumberFortakeOutChanged}
-											value={formState.doc_type.value.toString()}
-											type="select"
-											customError={""}
-										/>
-									</div>
-									
-											
+
+
+											<div className="col-md-2">
+												<SelectInput
+													id="input_document_type"
+													field="search_doc_type"
+													label={""}
+
+													options={dCat}
+													required={false}
+													onChange={referenceNumberFortakeOutChanged}
+													value={formState.doc_type.value.toString()}
+													type="select"
+													customError={""}
+												/>
+											</div>
+
+
 											<div className="col-md-2">
 												<TextInput
 													id="input_request_no"
 													field="search_desc"
-													value={searchDocParam.search_desc.value ? searchDocParam.search_desc.value  : ""}
+													value={searchDocParam.search_desc.value ? searchDocParam.search_desc.value : ""}
 													onChange={referenceNumberFortakeOutChanged}
 													required={false}
 													maxLength={100}
@@ -686,17 +681,17 @@ const ProductForm: React.FC = () => {
 											</div> */}
 											<div
 												className="col-md-2"
-												style={{  marginTop: "2%" }}
+												style={{ marginTop: "2%" }}
 											>
 												<div
 													onClick={(e) => loadInitialSearchData()}
 													className={`btn btn-success left-margin font-14`}
 												>
-											<i className="fas fa-sync-alt"></i>
+													<i className="fas fa-sync-alt"></i>
 
 												</div>
 												<div
-														onClick={(e) => loadDocumentforTakeOut()}
+													onClick={(e) => loadDocumentforTakeOut()}
 													className={`btn btn-success left-margin font-14  }`}
 												>
 													<i className="fas fa-search"></i>
@@ -716,7 +711,7 @@ const ProductForm: React.FC = () => {
 												</div>
 											)}
 
-										
+
 										</div>
 									</div>
 								)}
@@ -744,7 +739,7 @@ const ProductForm: React.FC = () => {
 													validator: requiredField,
 												}}
 											>
-												DC NO 
+												DC NO
 											</TableHeaderColumn>
 
 											<TableHeaderColumn
@@ -773,7 +768,7 @@ const ProductForm: React.FC = () => {
 												editable={{ validator: requiredField }}
 											>
 												Location
-											</TableHeaderColumn> 
+											</TableHeaderColumn>
 										</BootstrapTable>
 									</div>
 								)}
@@ -841,7 +836,7 @@ const ProductForm: React.FC = () => {
 								<div className="row">
 									<div className="col-md-2">
 										<label style={{ margin: "26px 21px 19px 5px" }}>
-											Approval 
+											Approval
 										</label>
 									</div>
 									<div className="col-md-3">
@@ -972,7 +967,7 @@ const ProductForm: React.FC = () => {
 					</div>
 				</div>
 
-				<Popup className="popup-modal" open={loginPopup} onClose={()=>{setLoginPopup(false)}}>
+				<Popup className="popup-modal" open={loginPopup} onClose={() => { setLoginPopup(false) }}>
 					<div>
 						<form className="user" onSubmit={validateLogin}>
 							<div className="form-group font-14">
@@ -1002,26 +997,26 @@ const ProductForm: React.FC = () => {
 									placeholder="Password"
 								/>
 							</div>
- {!isUserVerified && 
-							<button
-								className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
-								type="submit"
-							>
-								Authenticate
-							</button>
-} {isUserVerified && 
-							<button
-								className={`btn btn-success btn-user btn-block ${getDisabledClass()}`}
-								type="submit"
-							>
-								Authenticated
-								
-							</button> 
-}
-{isUserVerifiedError && 
-<>
-<br />	<div role="alert" className="fade alert alert-danger  show">Please enter valid Credentials.</div>
-</>	}
+							{!isUserVerified &&
+								<button
+									className={`btn btn-primary btn-user btn-block ${getDisabledClass()}`}
+									type="submit"
+								>
+									Authenticate
+								</button>
+							} {isUserVerified &&
+								<button
+									className={`btn btn-success btn-user btn-block ${getDisabledClass()}`}
+									type="submit"
+								>
+									Authenticated
+
+								</button>
+							}
+							{isUserVerifiedError &&
+								<>
+									<br />	<div role="alert" className="fade alert alert-danger  show">Please enter valid Credentials.</div>
+								</>}
 						</form>
 					</div>
 				</Popup>

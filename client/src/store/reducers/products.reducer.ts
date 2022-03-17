@@ -21,10 +21,7 @@ function productsReducer(state: IProductState = initialState, action: IActionBas
             return { ...state, products: products };            
         }  
         case LIST_PRODUCT: {
-
-            console.log("Current State", state);
-            const newprod = JSON.parse(JSON.stringify({...state, products:  action.products, searchProductTriggered:true}));
-      
+             const newprod = JSON.parse(JSON.stringify({...state, products:  action.products, searchProductTriggered:true}));      
             return  newprod;
         }        
         case ADD_PRODUCT: {

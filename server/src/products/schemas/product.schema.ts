@@ -74,6 +74,7 @@ export class TakeoutRequestStatus extends Document {
 	label: string;
 	@Prop()
 	request_no: string;
+
 }
 export class TakeoutRequestInfo extends Document {
 	@Prop()
@@ -81,7 +82,16 @@ export class TakeoutRequestInfo extends Document {
 
 	@Prop()
 	takeout_request_details_list: TakeoutInfo[];
+
+	
+	@Prop()
+	doc_request_no: string;
+	@Prop()
+	requested_by: string;
+	@Prop()
+	requested_on: Date;
 }
+
 @Schema()
 export class Documents extends Document {
 	@Prop()

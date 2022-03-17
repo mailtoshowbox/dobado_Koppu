@@ -193,6 +193,7 @@ export class DocRequestService {
 
 							let requestDetails = {
 								takeout_requested_details: {
+									...takeout_request_detail,
 									current_status: { code: "requested", label: "Requested", request_no: docRequest.request_no },
 									takeout_request_details_list: takeout_request_details_list,
 								},
@@ -322,6 +323,7 @@ export class DocRequestService {
 							let requestDetails = takeout_requested_details;
 							if (page === 'issueGenaralIssuance') { // Issue Call
 								requestDetails = {
+
 									current_status: {
 										...requestDetails.current_status,
 										takeout_return_date : takeout_return_date,
@@ -333,6 +335,7 @@ export class DocRequestService {
 								};
 							} else { // Approved Call
 								requestDetails = {
+									...requestDetails.current_status,
 									current_status: {
 										...requestDetails.current_status,
 										code: "approved",

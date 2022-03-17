@@ -152,6 +152,12 @@ export class DocRequests extends Document {
   
   @Prop()
   requested_on: string;
+
+ 
+	@Prop()
+	requested_by: string;
+ 
+}
   
 }
 

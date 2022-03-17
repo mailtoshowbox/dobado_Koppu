@@ -213,16 +213,27 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 		cell: any,
 		row: any,
 		field: any
-	) {
+	) { 
 		const {
-			document_request_info: { document_issued_by = "N?A" } = {},
+			document_request_info: { document_issued_by = "" } = {},
 			is_requested_for_takeout = false,
-			takeout_requested_details: { current_status: { label = "" } = {} } = {},
+			takeout_requested_details: { current_status: { label = "", request_no="" , } = {}, takeout_request_details_list = [] } = {},
 		} = row;
+
+		if(document_issued_by === ""){
+			const fil = takeout_request_details_list.filter((req :  any)=> req.doc_request_no === request_no)[0] || {};
+			return fil?.issued_by ? fil?.issued_by : 'N/I'; 
+
+		}else{
+			return <div>{document_issued_by}</div>;
+		}
+
+
+		
  
 
 		
-			return <div>{document_issued_by}</div>;
+			
 		
 	}
 

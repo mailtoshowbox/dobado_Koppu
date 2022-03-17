@@ -145,10 +145,13 @@ const ProductForm: React.FC = () => {
 		doc_requested_department: {},
 	});
 
+
+	console.log("docIssuance",docIssuance);
 	/** filter Doc request Master Data */
 	const { departments = [] } = account;
-	const { doc_requested_doctype = {} } = docIssuance;
+	const { doc_requested_doctype = {}, doc_requested_department={} } = docIssuance;
 	//  const {issuance: {is_issued = false}} = docIssuance;
+	 departments[0] = doc_requested_department;
 
 	const department_info =
 		departments.length > 0 ? departments[0]["name"] : "Admin";

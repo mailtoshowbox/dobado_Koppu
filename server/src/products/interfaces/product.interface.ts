@@ -24,6 +24,8 @@ export interface Document {
   document_box_details :Info;
   docStatus :string; 
 
+  doc_issuance_ref_num :string; 
+
 }
 
 interface Info{

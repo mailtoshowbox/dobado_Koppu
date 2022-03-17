@@ -110,24 +110,7 @@ const Products: React.FC = () => {
 		});
      
   }
-
-  
-
-/*   const productsSaved: IProductState = useSelector(
-		(state: IStateType) => state.products
-	);
-
-  console.log("productsSaved-----", productsSaved);
-  const availeblePr = productsSaved.products;
-  if(availeblePr === undefined){
-    console.log("No Date Aviualbel-----");
-
-    getDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {
-      console.log("LOADED");
-      dispatch(loadListOfProduct(items));
-      console.log("No Date ENDED-----");
-    })
-  } */
+ 
 
 
 

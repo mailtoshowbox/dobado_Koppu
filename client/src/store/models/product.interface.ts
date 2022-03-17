@@ -8,6 +8,7 @@ export interface IProduct {
     document_type: string;
     type_of_space: string;
     qr_code: string;
+    document_no: string;
     manufacturedate: string;
     expiredate: string;
     document_info: any;

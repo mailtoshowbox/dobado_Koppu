@@ -389,6 +389,8 @@ export class DocumentsController {
     @Param('id') id: string,
     @Body() updateProductDto,
   ) {
+
+    console.log("PUT");
     return this.productsService.update(id, updateProductDto);
   }
 

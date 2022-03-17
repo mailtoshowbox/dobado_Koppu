@@ -742,6 +742,14 @@ const ProductForm: React.FC = () => {
 
   };
 
+   
+
+  function getDocLocation(documentName: string, row: any) {
+		 const {batch = ""} = row 
+    return batch;
+	 
+	}
+
 
 
   return (
@@ -902,10 +910,14 @@ const ProductForm: React.FC = () => {
                       >
                         No of Copy
                       </TableHeaderColumn>
+
+                    
+
                       <TableHeaderColumn
                         dataField="no_of_page"
                         className="thead-light-1"
                         width="10%"
+                        
                       >
                         No of Pages
                       </TableHeaderColumn>
@@ -959,12 +971,20 @@ const ProductForm: React.FC = () => {
                       >
                         DC Name
                       </TableHeaderColumn>
-
+                      <TableHeaderColumn
+                        
+                        className="thead-light-1"
+                        width="15%" 
+                        dataFormat={getDocLocation}
+                         
+                      >
+                        Location
+                      </TableHeaderColumn>
 
                       <TableHeaderColumn
                         dataField="no_of_page"
                         className="thead-light-1"
-                        width="10%"
+                        width="5%"
                       >
                         No of Pages
                       </TableHeaderColumn>

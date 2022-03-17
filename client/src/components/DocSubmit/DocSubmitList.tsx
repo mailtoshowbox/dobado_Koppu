@@ -25,8 +25,7 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 	const products: IProductSubmitState = useSelector(
 		(state: IStateType) => state.productSubmit
 	);
-
-	console.log("products, products", products);
+ 
 
 	const productsTempNew: IProductSubmitState = useSelector(
 		(state: IStateType) => state.productSubmit
@@ -197,17 +196,15 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 		cell: any,
 		row: any,
 		field: any
-	) {
+	) { 
 		const {
-			document_type_details: { name = '' } = {},
+			batch = "",
 		 } = row;
 	 
 
 	 
 			return (
-				<div>
-					{name} 
-				</div>
+				batch === '//' ? "" : batch
 			);
 		 
 	}
@@ -272,7 +269,25 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 			);
 		}
 	}
+	function document_ref_no_format(cell: any, row: any, field: any, field2: any) { 
+		const {
+			qr_code = ""
+		} = row;
 
+		if (row.isRequestedDocument) {
+			return <>{qr_code}</>;
+		} else {
+			return (
+				<>
+					{ qr_code
+					 }
+				</>
+			);
+		}
+	}
+
+
+	
 	
 	const options = {
 		clearSearch: true
@@ -477,6 +492,14 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 					DC NO
 				</TableHeaderColumn>
 				<TableHeaderColumn
+					dataField="document_no"
+					className="thead-light-1"
+					width="12%"
+					dataFormat={document_ref_no_format}
+				>
+					Ref No
+				</TableHeaderColumn>
+				<TableHeaderColumn
 					dataField="document_type"
 					className="thead-light-1"
 					width="14%"
@@ -500,7 +523,7 @@ function ProductSubmitList(props: productListProps): JSX.Element {
 					width="8%"
 					dataFormat={document_request_format_doctype_cate}
 				>
-					Doc Type
+					Location
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="qr_code"

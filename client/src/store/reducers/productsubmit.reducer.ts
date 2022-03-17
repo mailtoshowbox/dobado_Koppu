@@ -19,8 +19,7 @@ function productsReducer(state: IProductSubmitState = initialState, action: IAct
             products[foundIndex] = {...state.productSubmit[foundIndex], ['qr_code'] : action.qrCodeFor};
             return { ...state, productSubmit: products };            
         }  
-        case LIST_SUBMIT_PRODUCT: {
-            console.log("SSSS", action);
+        case LIST_SUBMIT_PRODUCT: { 
             return { ...state, productSubmit:  action.productSubmit};
         }        
         case ADD_PRODUCT: {

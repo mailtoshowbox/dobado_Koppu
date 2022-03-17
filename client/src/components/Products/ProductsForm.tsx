@@ -59,6 +59,7 @@ const ProductForm: React.FC = () => {
 	);
 
 	let product: IProduct | null = products.selectedProduct;
+ 
 
 	 
 	const isCreate: boolean =
@@ -144,6 +145,7 @@ const ProductForm: React.FC = () => {
 			type_of_space: "",
 			document_type: "",
 			qr_code: "",
+			document_no: "",
 			manufacturedate: "",
 			expiredate: "",
 			document_info: {},
@@ -184,6 +186,7 @@ const ProductForm: React.FC = () => {
 			}
 		}
 	}
+ 
 
 
 	const [formState, setFormState] = useState({
@@ -198,6 +201,7 @@ const ProductForm: React.FC = () => {
 		no_of_copy: { error: "", value: product.no_of_copy },
 		no_of_page: { error: "", value: product.no_of_page },
 		qr_code: { error: "", value: product.qr_code },
+		document_no: { error: "", value: product.document_no },
 		manufacturedate: { error: "", value: product.manufacturedate },
 		expiredate: { error: "", value: product.expiredate },
 		retension_time: {
@@ -210,7 +214,7 @@ const ProductForm: React.FC = () => {
 					product.retension_time.calculateNonPerceptualTime,
 			},
 		},
-		document_request_info: {},
+		document_request_info: { error: "", value: product.document_request_info ? product.document_request_info : {} },
 		takeout_return_date: { error: "", value: product.takeout_return_date },
 		is_requested_for_takeout: {
 			error: "",
@@ -218,6 +222,7 @@ const ProductForm: React.FC = () => {
 		},
 		document_type_details: { error: "", value: product.document_type_details },
 		docStatus: { error: "", value: product.docStatus ? product.docStatus  : 'archived' },
+		
 	});
 
 
@@ -373,8 +378,7 @@ const ProductForm: React.FC = () => {
 
 		getCountOf({...model, field:"series", value:model.field}, account).then((result = []) => {
 
-			setSeriesDocCount(result);
-			console.log("result--resultresultresult---", result);
+			setSeriesDocCount(result); 
 			setBoxRacks(newObj);
 	
 			setFormState({
@@ -1131,7 +1135,7 @@ const ProductForm: React.FC = () => {
 													</div>{" "}
 													<PrintCode
 														code={formState}
-														docCategories={doccategoriesList.docCategories}
+														deptonCreate={ account.departments[0]}
 													/>
 												</div>
 												<div className="card-footer text-right">

@@ -24,7 +24,98 @@ export class DocumentsService {
 	async findAll(mode, id = null): Promise<Document[]> { 
  
 		if (mode === "issued") {  
-			return await this.productModel
+			return await this.productModel.aggregate([
+		 
+				{ $match: { $or: [
+					{
+						isActive: false,
+						isRequestedDocument: true,
+						//"document_request_info.document_requested_by": id,
+					},
+					{
+						isActive: true,
+						is_requested_for_takeout: true,
+						//"document_request_info.document_requested_by": id,
+					}
+					  
+					] ,
+					
+					} , 
+				},
+				
+				
+				{
+					$addFields: {
+						converted_rack: {
+							$convert: {
+								input: "$rack",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+						converted_category: {
+							$convert: {
+								input: "$category",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+						converted_box: {
+							$convert: {
+								input: "$box",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+						converted_doctype: {
+							$convert: {
+								input: "$document_type",
+								to: "objectId",
+								onError: 0,
+							},
+						},
+					},
+				},
+				{
+					$lookup: {
+						from: "racks",
+						localField: "converted_rack",
+						foreignField: "_id",
+						as: "rack_info",
+					},
+				},
+				{
+					$lookup: {
+						from: "doccategories",
+						localField: "converted_category",
+						foreignField: "_id",
+						as: "category_info",
+					},
+				},
+				{
+					$lookup: {
+						from: "boxes",
+						localField: "converted_box",
+						foreignField: "_id",
+						as: "box_info",
+					},
+				},
+				{
+					$lookup: {
+						from: "doctypes",
+						localField: "converted_doctype",
+						foreignField: "_id",
+						as: "docType_info",
+					},
+				} 
+			],
+		 
+			
+			
+			).collation(
+				{ locale: 'en', strength: 2 }
+			  )
+		/* 	return await this.productModel
 				.find(
 					// { isActive: false, isRequestedDocument : true, "document_request_info.document_requested_by" :id }
 					{
@@ -45,10 +136,10 @@ export class DocumentsService {
 				.sort({ "document_request_info.document_issued_on": -1 })
 				.then((res: any) => {
 					return res;
-				});
+				}); */
 		} else if (mode === "takeOutRequest") {
 
-			console.log("DEMo");
+			 
 			return await this.productModel
 				.find({
 					$or: [
@@ -146,8 +237,7 @@ export class DocumentsService {
 			]);
 		}
 	}
-	async searchDocument(params : any) { 
-		console.log("searchDocument", params);
+	async searchDocument(params : any) {  
 
 		return await this.productModel.aggregate([
 		 
@@ -552,6 +642,8 @@ export class DocumentsService {
 	}
 
 	async update(id: string, product: Document) {
+
+		
 		const {
 			is_requested_for_takeout = false,
 			is_requested_for_takeout_submit = false,
@@ -701,7 +793,7 @@ export class DocumentsService {
 				}
 			 }
 			
-
+			 console.log("ALANY---", product);
 		 
 			return await this.productModel.findByIdAndUpdate(id, product, {
 				new: true,

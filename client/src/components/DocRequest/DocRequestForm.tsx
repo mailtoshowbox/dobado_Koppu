@@ -207,7 +207,7 @@ const ProductForm: React.FC = () => {
 				);
 				
 			if (mode === "ADD") { 
-				if(formState.requested_doc.value.length > 0){
+				if(formState.requested_doc.value.length > 0){ 
 					let boxInfo = {
 						name: formState.name.value,
 						empl_id: formState.empl_id.value,
@@ -223,7 +223,7 @@ const ProductForm: React.FC = () => {
 							rejected_from_page: "",
 						},
 						requested_on: new Date(),
-						comments: formState.comments.value,
+						comments: formState.comments.value ? formState.comments.value : "",
 						doc_requested_department: formState.doc_requested_department.value,
 						doc_requested_doctype: doc_types.length > 0 ? doc_types[0] : {},
 					};
@@ -445,6 +445,7 @@ const ProductForm: React.FC = () => {
 
 	//Table option for take out
 	function onRowSelect(row: any, isSelected: any, e: any) {
+	
 		let tempValr = formState.requested_doc.value || [];
 		const selectedRows = available_doc_for_takeout.filter(
 			(doc: any) => doc._id === row._id
@@ -464,6 +465,28 @@ const ProductForm: React.FC = () => {
 			["requested_doc"]: { value: tempValr },
 		});
 	}
+
+	//Table option for take out
+	function onSelectAll(isSelected : any,rows: any ) {
+		console.log("isSelected----", isSelected);
+	 
+		if (isSelected) {
+			setFormState({
+				...formState,
+				["requested_doc"]: { value: available_doc_for_takeout },
+			});
+		  } else {
+			setFormState({
+				...formState,
+				["requested_doc"]: { value: [] },
+			});
+		  }
+		  return true;
+		
+	}
+
+	 
+
 	function loadInitialSearchData() {
 		setSearchDocParam(intialSearchDocParam);
 		setAvailable_doc_for_takeout([]);
@@ -693,48 +716,7 @@ const ProductForm: React.FC = () => {
 												</div>
 											)}
 
-											{/*  <div className="col-md-4"> 
-                  //DOC6SAION
-                        <TextInput
-                          id="input_request_no"
-                          field="description"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="Description"
-                          customError={""}
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="title"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=" "
-                          placeholder="title "
-                          customError={""}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <TextInput
-                          id="input_request_no"
-                          field="category"
-                          value={""}
-                          onChange={hasFormValueChanged}
-                          required={false}
-                          maxLength={100}
-                          label=""
-                          placeholder="category"
-                          customError={""}
-                        />
-                      </div> */}
+										
 										</div>
 									</div>
 								)}
@@ -746,6 +728,7 @@ const ProductForm: React.FC = () => {
 												mode: "checkbox",
 												clickToSelect: true,
 												onSelect: onRowSelect,
+												onSelectAll: onSelectAll
 											}}
 											options={options}
 											data={available_doc_for_takeout}
@@ -761,7 +744,18 @@ const ProductForm: React.FC = () => {
 													validator: requiredField,
 												}}
 											>
-												DC NO -
+												DC NO 
+											</TableHeaderColumn>
+
+											<TableHeaderColumn
+												width="25%"
+												dataField="qr_code"
+												editable={{
+													defaultValue: uniqueId("DOC"),
+													validator: requiredField,
+												}}
+											>
+												Ref no
 											</TableHeaderColumn>
 
 											<TableHeaderColumn

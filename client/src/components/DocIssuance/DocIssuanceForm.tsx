@@ -337,8 +337,7 @@ const ProductForm: React.FC = () => {
 			doc_requested_department: formState.doc_requested_department.value,
 			doc_requested_doctype: requested_doc_type,
 			requested_on : formState.requested_on.value
-		};
-		//console.log('-----AAAAA----'+approvalInfo);
+		}; 
 		issueGenaralIssuance(approvalInfo, account).then((status) => {
 			formState.requested_doc.value = status.requested_doc
 				? status.requested_doc

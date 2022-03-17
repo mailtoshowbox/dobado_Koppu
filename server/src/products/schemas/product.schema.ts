@@ -168,6 +168,9 @@ export class Documents extends Document {
 	
 	@Prop()
 	docStatus: string;
+
+	@Prop()
+	doc_issuance_ref_num :string; 
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Documents);

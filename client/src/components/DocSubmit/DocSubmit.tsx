@@ -47,14 +47,13 @@ const Products: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
   const products: IProductSubmitState = useSelector(
     (state: IStateType) => state.productSubmit
-  );
-  console.log("DOX SUBMIT_--", products);
+  ); 
   const path: IRootPageStateType = useSelector(
     (state: IStateType) => state.root.page
   );
  
   const [popup, setPopup] = useState(false);
- console.log("path.area-",path );
+ 
   useEffect(() => {
     //Load Documents
     getIssuedDocumentList(account.auth, {"userId" : account.emp_id }).then((items: IProductList) => {

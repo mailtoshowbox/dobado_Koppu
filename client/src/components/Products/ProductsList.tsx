@@ -55,7 +55,7 @@ function ProductList(props: productListProps): JSX.Element {
 	}
 	const dCat = APP_CONST.DOC_REQUEST_DOC_TYPE.CATEGORY;
 	function onClickProductSelected(cell: any, row: any, rowIndex: any) {
-		console.log("row---", row);
+	 
 		if (props.onSelect) props.onSelect(row);
 	}
 	function onClickProductDelete(cell: any, row: any, rowIndex: any) {
@@ -191,12 +191,7 @@ function ProductList(props: productListProps): JSX.Element {
 		ref_no: { error: "", value: "" }
 	};
 	
-	function loadDocumentforTakeOut() {
-
-		props.searchDocument(searchDocParam);
-
-		console.log("intialSearchDocParam---", searchDocParam);
-
+	function loadDocumentforTakeOut() {		props.searchDocument(searchDocParam); 
 		/* searchDocument(intialSearchDocParamnew, account).then((status = []) => {
 			if (status.length <= 0) {
 				setNoDocAvailebleForTakeoutRequest(true);
@@ -259,9 +254,7 @@ function ProductList(props: productListProps): JSX.Element {
 		if (props.loadInitialSearchData) props.loadInitialSearchData();
 	} 
  
-/* 	console.log("finalProducts---FFFF-", isSearchTriggered,pageProducts, products.products );
-	const finalProducts = (pageProducts!== undefined && pageProducts.length > 0  ) || isSearchTriggered ? pageProducts : products.products;
-	console.log("finalProducts----", finalProducts); */
+ 
 	const finalProducts = products.products;
 
  
@@ -411,11 +404,18 @@ function ProductList(props: productListProps): JSX.Element {
 					Type
 				</TableHeaderColumn>
 				<TableHeaderColumn
+					dataField="document_no"
+					className="thead-light-1"
+					width="10%"
+				>
+					Doc No
+				</TableHeaderColumn>
+				<TableHeaderColumn
 					dataField="qr_code"
 					className="thead-light-1"
 					width="10%"
 				>
-					QR Code
+					Ref No
 				</TableHeaderColumn>
 				<TableHeaderColumn
 					dataField="type_of_space"

@@ -139,6 +139,7 @@ const ProductForm: React.FC = () => {
 			type_of_space: "",
 			document_type: "",
 			qr_code: "",
+			document_no: "",
 			manufacturedate: "",
 			expiredate: "",
 			document_info: {},
@@ -418,6 +419,7 @@ const ProductForm: React.FC = () => {
 			};
 
 			if (mode === "ADD") {
+				const {document_request_info : { value:{ document_issued_from = "", } = {} } = {}} = formState;
 				let boxInfo = {
 					name: formState.name.value,
 					description: formState.description.value,
@@ -439,6 +441,7 @@ const ProductForm: React.FC = () => {
 					isActive: true,
 					retension_time: formState.retension_time.value,
 					document_type_details: formState.document_type_details.value,
+					doc_issuance_ref_num : formState.qr_code.value
 				};
 
 				addNewDoc(boxInfo, account).then((status) => {
@@ -461,6 +464,12 @@ const ProductForm: React.FC = () => {
 					document_submitted_on: new Date(),
 					document_submitted_by: account.emp_id,
 				};
+
+			 
+
+				const {document_request_info : { value:{ document_issued_from = "", } = {} } = {}} = formState;
+
+
 				let boxInfoUpt = {
 					id: formState._id.value,
 					name: formState.name.value,
@@ -476,13 +485,21 @@ const ProductForm: React.FC = () => {
 						: null,
 					type_of_space: formState.type_of_space.value,
 					qr_code: formState.qr_code.value,
+					document_no: document_issued_from,
 					document_type: formState.document_type.value,
 					retension_time: formState.retension_time.value,
 					isActive: true,
 					document_request_info: formState.document_request_info.value,
 					is_requested_for_takeout: formState.is_requested_for_takeout.value,
 					document_type_details: formState.document_type_details.value,
+					doc_issuance_ref_num : formState.qr_code.value
+					
 				};
+
+		 
+
+
+
 
 				 let seltdPro:any = {};
 				 
@@ -558,7 +575,8 @@ const ProductForm: React.FC = () => {
 
 
 				updateDoc(boxInfoUpt, account).then((status) => {
-					dispatch(
+
+					 dispatch(
 						saveFn({
 							...product,
 							...status,
@@ -576,7 +594,7 @@ const ProductForm: React.FC = () => {
 						)
 					);
 					dispatch(clearSelectedProduct());
-					dispatch(setModificationState(ProductModificationStatus.None));
+					dispatch(setModificationState(ProductModificationStatus.None)); 
 				});
 			}
 		}

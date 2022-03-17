@@ -115,7 +115,7 @@ const Home: React.FC = () => {
  getUsersListForDashbaord(account.auth).then((items: any) => {
    const {data:{creUser = [], qaUser=[]} = {}} = items;
 
-   console.log(creUser, items);
+   
  
   if (creUser.data && creUser.data.length > 0) {
     counter['docCreater'] = creUser.data.length;

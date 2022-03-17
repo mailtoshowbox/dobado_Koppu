@@ -1,15 +1,11 @@
 import React, { ReactElement } from "react";
 
-function PrintCode(props: any): ReactElement {
-  const { qr_code = {}, category = {} } = props.code;
-  const { docCategories = [] } = props;
-  let category_name = "";
-  const selectedCatValue = category?.value;
-  let selectedCat =
-    docCategories.filter((catee: any) => catee._id === selectedCatValue) || [];
-  if (selectedCat.length > 0) {
-    category_name = selectedCat[0].name;
-  }
+function PrintCode(props: any): ReactElement { 
+  
+  const { qr_code = {}, category = {},document_no={}, name={} ,document_type={}, document_request_info : {value : {document_request_department = {}}={}}} = props.code;
+  const { deptonCreate ={}} = props;
+ 
+  
   const tableStyle = {
     border: "1px solid #000",
     borderCollapse: "collapse",
@@ -38,18 +34,30 @@ function PrintCode(props: any): ReactElement {
         </h4>
         <table className="print-table" style={tableStyle}>
           <tr>
-            <td style={tableCellStyle}>DOCUMENT NUMBER</td>
+            <td style={tableCellStyle}>REFERENCE NUMBER</td>
             <td style={tableCellStyle}>{qr_code?.value}</td>
           </tr>
+         
           <tr>
-            <td style={tableCellStyle}>CATEGORY</td>
-            <td style={tableCellStyle}>{category_name}</td>
+            <td style={tableCellStyle}>DOCUMENT NUMBER</td>
+            <td style={tableCellStyle}>{document_no?.value}</td>
           </tr>
           <tr>
-            <td style={tableCellStyle}>NO OF COPIES</td>
-            <td style={tableCellStyle}>{0}</td>
+            <td style={tableCellStyle}>DEPARTMENT</td>
+            <td style={tableCellStyle}>{document_request_department.name ? document_request_department?.name : deptonCreate.name ?deptonCreate.name : "No Dept"}</td>
           </tr>
-        </table>
+          
+          <tr>
+            <td style={tableCellStyle}>Name of Doc</td>
+            <td style={tableCellStyle}>{name?.value}</td>
+          </tr>
+          
+          <tr>
+            <td style={tableCellStyle}>Type of Doc</td>
+            <td style={tableCellStyle}>{document_type?.value}</td>
+          </tr> 
+        </table> 
+
         {/* <div className="form-row">
           <div className="form-group col-md-6">DOCUMENT NUMBER</div>
           <div className="form-group col-md-4">{qr_code?.value}</div>

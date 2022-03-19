@@ -159,7 +159,6 @@ export class DocRequests extends Document {
  
 }
   
-}
 
 export const DocRequestsSchema = SchemaFactory.createForClass(DocRequests);
 
